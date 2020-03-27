@@ -1,0 +1,83 @@
+<div mat-dialog-title class="title-bar contain">
+	<img [src]="'./assets/images/drive/doc/' + pgmOutputFileType + '.png'">
+	<span class="title flex-filler">{{pgmName}}</span>
+	<button mat-icon-button color="accent" mat-dialog-close>
+		<mat-icon>close</mat-icon>
+	</button>
+</div>
+<mat-card class="input-card contain" [class.component-loading]="loading">
+	<mat-dialog-content>
+		<div class="description">{{pgmDesc}}</div>
+		<form #programForm *ngIf="!isRerun && isPrivileged">
+			<div *ngFor="let field  of formFields">
+				<mat-form-field *ngIf="field.fieldVisible && field.fieldType == 'Text'">
+					<input matInput [placeholder]="field.fieldTitle + (field.fieldRequired? ' *':'')" [formControl]="formControls[field.fieldID]"
+					 (change)="processValueChange(field.fieldID)">
+					<mat-error *ngIf="formControls[field.fieldID].hasError('required')">
+						This field is required
+					</mat-error>
+				</mat-form-field>
+				<mat-form-field *ngIf="field.fieldVisible && field.fieldType == 'Lov'">
+					<input matInput [placeholder]="field.fieldTitle + (field.fieldRequired? ' *':'')" [formControl]="formControls[field.fieldID]"
+					 [matAutocomplete]="acLov" (change)="processValueChange(field.fieldID)" (blur)="onBlurLOV(field.fieldID)">
+					<mat-icon matSuffix matTooltip="choose option form lov" style=" cursor: pointer;" (click)="openLOV(field,$event)">search</mat-icon>
+					<mat-error *ngIf="formControls[field.fieldID].hasError('required')">
+						This field is required
+					</mat-error>
+					<mat-error *ngIf="formControls[field.fieldID].hasError('invalid')">
+						Choose from available list
+					</mat-error>
+					<mat-autocomplete #acLov="matAutocomplete" [displayWith]="autoCompleteUtils.autoCompleteDisplayFn" (change)="validateLOV(field.fieldID)">
+						<mat-option *ngFor="let option of autoCompletes[field.fieldID] | async" [value]="option">
+							{{option.label}}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+				<mat-form-field *ngIf="field.fieldVisible && field.fieldType == 'ChoiceList'">
+
+					<mat-select [placeholder]="field.fieldTitle + (field.fieldRequired? ' *':'')" [formControl]="formControls[field.fieldID]"
+					 (change)="processValueChange(field.fieldID)">
+						<mat-option *ngFor="let option of field.fieldOptions" [value]="option.value">
+							{{option.label}}
+						</mat-option>
+					</mat-select>
+					<mat-error *ngIf="formControls[field.fieldID].hasError('required')">
+						Choose one from available list
+					</mat-error>
+				</mat-form-field>
+				<mat-form-field *ngIf="field.fieldVisible && field.fieldType == 'Date'">
+					<input trendzDateFormat matInput [matDatepicker]="formDate" [placeholder]="field.fieldTitle + (field.fieldRequired? ' *':'')"
+					 [formControl]="formControls[field.fieldID]" (change)="processValueChange(field.fieldID)">
+					<mat-datepicker-toggle matSuffix [for]="formDate" matTooltip="Choose a date!"></mat-datepicker-toggle>
+					<mat-error *ngIf="formControls[field.fieldID].hasError('required')">
+						This field is required
+					</mat-error>
+				</mat-form-field>
+				<mat-datepicker #formDate></mat-datepicker>
+			</div>
+		</form>
+		<div class="config-options" *ngIf="isPrivileged">
+			<div class="cron">
+				<mat-checkbox [(ngModel)]="runImmediate" (change)="runImmediateChange()">Run Immediate</mat-checkbox>
+				<cron-generator *ngIf="!runImmediate" class="cron-gen" [(cron)]="cronExpression1" [options]="cronOptions" (change)="cronChange($event)"
+				 (click)="cronChange($event)"></cron-generator>
+				<div *ngIf="!runImmediate" class="mdl-cell--12-col-desktop cron-desc">
+					{{cronDescription}}
+				</div>
+				<mat-form-field *ngIf="!runImmediate">
+					<input matInput placeholder="Cron Expression" [(ngModel)]="cronExpression" (ngModelChange)="cronExpressionChanged()">
+				</mat-form-field>
+			</div>
+			<div class="mail">
+				<mat-checkbox [(ngModel)]="sendMail">Send Output as Email</mat-checkbox>
+				<mat-checkbox *ngIf="sendMail" [(ngModel)]="mailToMe" style="margin-top: 8px;">EMail only Me</mat-checkbox>
+				<mat-checkbox [(ngModel)]="runAnother" (ngModelChange)="runAnotherChange($event)">Run Another</mat-checkbox>
+				<mat-checkbox [(ngModel)]="preserveValues" (ngModelChange)="preserveValueChange($event)">Preserve Values</mat-checkbox>
+			</div>
+			<!-- <div><mat-checkbox [(ngModel)]="logEnabled">Enable Log</mat-checkbox></div> -->
+		</div>
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button mat-raised-button color="primary" (click)="submitForm()" [disabled]='loading || !isPrivileged'>{{formAction}}</button>
+	</mat-dialog-actions>
+</mat-card>

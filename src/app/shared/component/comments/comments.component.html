@@ -1,0 +1,73 @@
+<div [class.is-model]="isModel">
+	<mat-toolbar class="header small">
+		<span *ngIf="(commentLength != 0 || commentLength != '0')">{{ totalComments }} &nbsp;</span>
+		<span> Comments</span>
+		<span class="flex-filler"></span>
+		<button mat-icon-button matTooltip="refresh" (click)="refresh()">
+			<mat-icon>refresh</mat-icon>
+		</button>
+	</mat-toolbar>
+	<perfect-scrollbar [style.height]="height > 0 ? (height - 160) + 'px' : 'auto'" [config]="{ wheelPropagation: true }">
+		<div *ngIf="commentLength == 0 || commentLength == '0'">
+			<no-data-to-display message="No comments yet. Be the first one to comment." icon="comment"></no-data-to-display>
+		</div>
+		<div class="older-comments" *ngIf="!fullDataFetched">
+			<a mat-button href="#" (click)="showMore($event)"> Show {{olderCount}} older comments </a>
+		</div>
+
+		<mat-expansion-panel *ngFor="let item of comments; let i= index;" [expanded]="expand[i]" hideToggle="false" (opened)="expansionPanel(true,i)"
+		 (closed)="expansionPanel(false,i)">
+			<mat-expansion-panel-header class="small toggle-left open-right-bottom">
+				<mat-panel-title>
+					<img class="img-style" *ngIf="item.userId" pImage [imageUrl]="'/images/users/'+ item.userId">
+					<span class="person-name">
+						{{item.knownAs}}
+					</span>
+					<span class="info">
+						<small> added a comment on {{ item.commentTime | date:'d-MMM-yy h:mm a'}} </small>
+						<small *ngIf="edited[i]" style="color:#b80b0bcc;"> - edited </small>
+					</span>
+					<span class="message" *ngIf="!expand[i]"> {{commentValue[i] | htmlToPlaintext}} </span>
+				</mat-panel-title>
+				<div *ngIf="expand[i]" class="actions">
+					<button mat-icon-button *ngIf="currentUser[i]" matTooltip="edit" (click)="editRecord($event, item, i)">
+						<mat-icon>mode_edit</mat-icon>
+					</button>
+					<button mat-icon-button *ngIf="currentUser[i]" matTooltip="delete" (click)="deleteRecord($event, item, i)">
+						<mat-icon>remove_circle_outline</mat-icon>
+					</button>
+				</div>
+			</mat-expansion-panel-header>
+			<div *ngIf="(expand[i] || editedData[i]) && !enableTextArea[i]" style="padding-left: 29px;">
+				<div [innerHTML]="item.commentFullText | LineBreakToBR"></div>
+			</div>
+			<div *ngIf="expand[i]" class="comment-edit">
+				<textarea matInput #textAreaForInput *ngIf="enableTextArea[i]" placeholder="Write a comment..." htmlToPlaintext (mouseover)="mouseEvent2($event, i, textAreaForInput)"
+				 [(ngModel)]="editedData[i]" matTextareaAutosize matAutosizeMaxRows="3"> 
+              <div [innerHTML]="item.commentFullText"> </div>
+              </textarea>
+				<div class="actions">
+					<button mat-icon-button matTooltip="save" *ngIf="enableTextArea[i]" (click)="putComment(i)">
+						<mat-icon class="green-color">done</mat-icon>
+					</button>
+					<button mat-icon-button matTooltip="cancel" *ngIf="enableTextArea[i]" (click)="expand[i]=true; enableTextArea[i] = false">
+						<mat-icon class="red-color">close</mat-icon>
+					</button>
+				</div>
+			</div>
+		</mat-expansion-panel>
+	</perfect-scrollbar>
+	<div class="add-comment primary-background">
+		<div class="message">
+			<img *ngIf="currentUserId" pImage [imageUrl]="'/images/users/'+ currentUserId">
+			<textarea matInput #textArea htmlToPlaintext [(ngModel)]="enteredData" placeholder="Write a comment... "
+			 (mouseover)="controlHere(textArea)"> </textarea>
+		</div>
+		<div class="actions">
+			<button mat-raised-button color="accent" matTooltip="post" (click)="postComment()" [disabled]="!enteredData">
+				Post
+			</button>
+			<button mat-button (click)="enteredData=''" color="accent">Clear</button>
+		</div>
+	</div>
+</div>

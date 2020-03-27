@@ -1,0 +1,49 @@
+<span *ngIf="loading" [class.dummy-progress]="loading"></span>
+<ng-container *ngIf="!loading && !isEdit">
+    <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="status">{{displayValue}}</span>
+    <mat-checkbox *ngIf="type == 'checkbox'" [ngModel]="checked" disabled></mat-checkbox>
+</ng-container>
+<ng-container *ngIf="!loading && isEdit">
+
+    <input #Element *ngIf="type == 'text'" [value]="value" [type]="dataType" (change)="onValueChange($event)"
+        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
+    
+    <input #Element *ngIf="type == 'number'" [value]="value" [type]="dataType" (change)="onValueChange($event)"
+        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
+
+    <ng-container *ngIf="type == 'lov'">
+        <input #Element [value]="displayValue" [type]="dataType" [matAutocomplete]="autoComplete"
+            (focus)="resetAutoComplete($event)" (click)="resetAutoComplete($event)" (keyup)="resetAutoComplete($event)"
+            [matTooltip]="alert" [ngClass]="status" />
+        <mat-icon (click)="openLOV()" class="suffix">search</mat-icon>
+        <mat-autocomplete #autoComplete="matAutocomplete" [displayWith]="autoCompleteDisplayFn.bind(this)"
+            (optionSelected)='setLovValue($event.option.value)'>
+            <mat-option *ngFor="let option of autoCompleteOptions" [value]="option">
+                {{ option[displayKey] }}
+            </mat-option>
+        </mat-autocomplete>
+    </ng-container>
+
+    <mat-checkbox #Element *ngIf="type == 'checkbox'" [(ngModel)]="checked" (change)="onValueChange($event)"
+        [matTooltip]="alert" [ngClass]="status"></mat-checkbox>
+
+    <select #Element *ngIf="type == 'select'" [value]="value" (change)="onValueChange($event)" [matTooltip]="alert"
+        [ngClass]="status">
+        <option value="" [disabled]="!nullable" selected>-- select --</option>
+        <option *ngFor="let op of selectOptions" [value]="op[returnKey]"
+            [selected]="op[returnKey]==value">{{op[displayKey]}}</option>
+    </select>
+
+    <ng-container *ngIf="type == 'date'">
+        <input #Element [value]="value" [matDatepicker]="picker" (dateChange)="onValueChange($event)"
+            [matTooltip]="alert" [ngClass]="status">
+        <mat-datepicker-toggle [for]="picker" class="suffix">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </ng-container>
+
+    <button mat-stroked-button #Element *ngIf="type == 'lov-button'" (click)="openLOV()">{{title}}</button>
+
+    <textarea #Element *ngIf="type == 'textarea'" [value]="value" (change)="onValueChange($event)"
+        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)">{{value}}</textarea> 
+</ng-container>

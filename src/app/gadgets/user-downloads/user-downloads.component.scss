@@ -1,0 +1,49 @@
+.input-card {
+    width: 480px;
+}
+
+.job-icon {
+    img {
+        margin-top: 4px;
+        height: 48px;
+    }
+    .mat-icon {
+        position: absolute;
+        bottom: 3px;
+        right: 0px;
+        background: #fff;
+        border-radius: 12px;
+        opacity: 0.9;
+        cursor: default;
+    }
+}
+
+.job {
+    display: flex;
+    padding: 8px 0;
+    .info {
+        width: 100%;
+        flex: 1 1 auto;
+        opacity: .72;
+        cursor: default;
+        .title {
+            font-size: 14px;
+            line-height: 16px;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .timespan {
+            font-size: 11px;
+        }
+        &.active {
+            opacity: 1;
+            .title {
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

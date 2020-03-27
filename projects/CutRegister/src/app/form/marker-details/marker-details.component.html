@@ -1,0 +1,36 @@
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="false" [loading]="_shared.markerDetailsLoading" class="tnz-input-table">
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.getMarkerDetailsEditable()" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data" let-index="index">
+			<div class="row-operations">
+				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="_shared.deleteLine('markerDetails',index)">delete</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Seq#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data">
+			{{model.displayOrder}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Style" field="prodName" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.prodName}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Attribute" field="prodAttr" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.prodAttr}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Ratio" field="markerRatio" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+		 <ng-template let-model="data" let-index="index">
+			<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'markerRatio')" [primaryKey]="_shared.markerDetailsPrimaryKey" [sharedData]="_shared.formData"
+			validators="required,min:0" [isEdit]="_shared.getMarkerDetailsEditable('markerRatio')" [loading]="_shared.markerDetailsLoading || _shared.loading">
+			</tnz-input>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cut Qty." field="currcutqtysql" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data">
+			{{model.currcutqtysql}}
+		</ng-template>
+	</smd-datatable-column>
+</smd-datatable>

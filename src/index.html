@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title> Trendz E3</title>
+	<base href="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link href="./assets/styles/fonts.css" rel="stylesheet" type="text/css"/>
+	<!-- <link href="//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700italic,700,900,900italic"
+		rel="stylesheet" type="text/css"> -->
+</head>
+
+<body>
+	<app-root>
+		<style>
+			body {
+				background: #2f283a;
+				font-family: 'Roboto';
+			}
+
+			.intro {
+				position: fixed;
+				top: 0;
+				right: 0;
+				left: 0;
+				bottom: 0;
+				z-index: 10;
+				background: #2f283a;
+			}
+
+			.intro .logo {
+				width: 150px;
+				height: 150px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -150px;
+				margin-left: -75px;
+				display: block;
+			}
+
+			.intro .logo img {
+				width: 150px;
+				height: 150px;
+			}
+
+			.titles {
+				position: absolute;
+				top: 50%;
+				width: 100%;
+				transform: translate(0, -50%);
+				margin-top: 64px;
+				text-align: center;
+			}
+
+			.titles div {
+				color: #fff;
+				display: inline-block;
+				font-weight: 300;
+				font-size: 44px;
+				margin: 12px;
+			}
+
+			.titles div.first {
+				animation-delay: .7s;
+			}
+
+			.titles div.second {
+				animation-delay: 1s;
+			}
+
+			.titles div.third {
+				animation-delay: 1.3s;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.trendz {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -280px;
+				transform: translate(-50%, 0);
+				color: #fff;
+				font-weight: 400;
+				font-size: 64px;
+
+			}
+
+			.trendz sup {
+				margin-left: 8px
+			}
+
+			.lobster {
+				font-family: 'Lobster';
+			}
+
+			.rotate-scale-up {
+				-webkit-animation: rotate-scale-up 0.65s linear both;
+				animation: rotate-scale-up 0.65s linear both;
+			}
+
+			@-webkit-keyframes rotate-scale-up {
+				0% {
+					-webkit-transform: scale(1) rotateZ(0);
+					transform: scale(1) rotateZ(0);
+					opacity: 0;
+				}
+
+				50% {
+					-webkit-transform: scale(4) rotateZ(180deg);
+					transform: scale(4) rotateZ(180deg);
+				}
+
+				100% {
+					-webkit-transform: scale(1) rotateZ(360deg);
+					transform: scale(1) rotateZ(360deg);
+					opacity: 1;
+				}
+			}
+
+			@keyframes rotate-scale-up {
+				0% {
+					-webkit-transform: scale(1) rotateZ(0);
+					transform: scale(1) rotateZ(0);
+					opacity: 0;
+				}
+
+				50% {
+					-webkit-transform: scale(4) rotateZ(180deg);
+					transform: scale(4) rotateZ(180deg);
+				}
+
+				100% {
+					-webkit-transform: scale(1) rotateZ(360deg);
+					transform: scale(1) rotateZ(360deg);
+					opacity: 1;
+				}
+			}
+
+			.scale-up-center {
+				-webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+				animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+			}
+
+			@-webkit-keyframes scale-up-center {
+				0% {
+					-webkit-transform: scale(0);
+					transform: scale(0);
+					opacity: 0;
+				}
+
+				100% {
+					-webkit-transform: scale(1);
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			@keyframes scale-up-center {
+				0% {
+					-webkit-transform: scale(0);
+					transform: scale(0);
+					opacity: 0;
+				}
+
+				100% {
+					-webkit-transform: scale(1);
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			.intro-ripple {
+				position: relative;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				height: 150px;
+				width: 150px;
+				border-radius: 100%;
+				box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.25);
+			}
+
+			.intro-ripple::after {
+				opacity: 0;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				position: absolute;
+				top: -8px;
+				left: -8px;
+				right: 0;
+				bottom: 0;
+				content: '';
+				height: 100%;
+				width: 100%;
+				border: 8px solid rgba(255, 255, 255, 0.2);
+				border-radius: 100%;
+				-webkit-animation-name: intro-ripple;
+				animation-name: intro-ripple;
+				-webkit-animation-duration: 3s;
+				animation-duration: 3s;
+				-webkit-animation-delay: 0s;
+				animation-delay: 0s;
+				-webkit-animation-iteration-count: infinite;
+				animation-iteration-count: infinite;
+				-webkit-animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+				animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+				z-index: -1;
+			}
+
+			.intro-ripple::before {
+				opacity: 0;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				position: absolute;
+				top: -8px;
+				left: -8px;
+				right: 0;
+				bottom: 0;
+				content: '';
+				height: 100%;
+				width: 100%;
+				border: 8px solid rgba(255, 255, 255, 0.2);
+				border-radius: 100%;
+				-webkit-animation-name: intro-ripple;
+				animation-name: intro-ripple;
+				-webkit-animation-duration: 3s;
+				animation-duration: 3s;
+				-webkit-animation-delay: 0.5s;
+				animation-delay: 0.5s;
+				-webkit-animation-iteration-count: infinite;
+				animation-iteration-count: infinite;
+				-webkit-animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+				animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+				z-index: -1;
+			}
+
+			@-webkit-keyframes intro-ripple {
+				from {
+					opacity: 1;
+					-webkit-transform: scale3d(0.75, 0.75, 1);
+					transform: scale3d(0.75, 0.75, 1);
+				}
+
+				to {
+					opacity: 0;
+					-webkit-transform: scale3d(1.5, 1.5, 1);
+					transform: scale3d(1.5, 1.5, 1);
+				}
+			}
+
+			@keyframes intro-ripple {
+				from {
+					opacity: 1;
+					-webkit-transform: scale3d(0.75, 0.75, 1);
+					transform: scale3d(0.75, 0.75, 1);
+				}
+
+				to {
+					opacity: 0;
+					-webkit-transform: scale3d(1.5, 1.5, 1);
+					transform: scale3d(1.5, 1.5, 1);
+				}
+			}
+		</style>
+		<div class="intro" id="intro">
+			<div class="trendz">TRENDZ <span class="lobster">E<sup>3</sup></span></div>
+			<div class="logo intro-ripple">
+				<img src="./assets/images/ctebs-logo-256.png" class="rotate-scale-up" />
+			</div>
+			<div class="titles lobster">
+				<div class="scale-up-center first">Enable</div>
+				<div class="scale-up-center second">Empower</div>
+				<div class="scale-up-center third">Evolve</div>
+			</div>
+		</div>
+
+	</app-root>
+
+</body>
+
+</html>

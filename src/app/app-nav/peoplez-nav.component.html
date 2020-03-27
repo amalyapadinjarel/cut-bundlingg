@@ -1,0 +1,8 @@
+<nav>
+    <input matInput id=menuItemFilter #subMenuFilter (ngModelChange)="search($event)" [(ngModel)]="subFilter" class="flex-filler"
+     placeholder="search (ctrl+g)" class= "menu-search" />
+    <button mat-menu-item class="title"> {{menu?menu.applicationName:''}} </button>
+    <div *ngIf="menu" #subMenuList>
+         <p-app-nav-menu [menu]="menuDup?menuDup.childList:menu.childList" (menuClicked)="menuClicked()" [menuFilterd]= "menuFilterd"></p-app-nav-menu>
+    </div>
+</nav>

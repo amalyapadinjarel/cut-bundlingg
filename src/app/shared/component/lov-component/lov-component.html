@@ -1,0 +1,44 @@
+<mat-card [class]="width">
+	<mat-toolbar color="accent">
+		<span class="title text-truncated">{{title}}</span>
+		<span class="flex-filler"></span>
+	</mat-toolbar>
+	<mat-dialog-content style="background-color: white;">
+		<smd-datatable [models]="models" [dataUrl]="apiUrl" [dataHeader]="dataHeader" [apiClass]="apiClass"
+			[apiMethod]="apiMethod" (dataChange)="_onDataChange($event)" [searchDB]="searchDB" [postBody]="postBody"
+			[showTableFilter]="showTableFilter" [showColumnFilter]="showColumnFilter"
+			[primaryKey]="primaryKey" (checkedPksNew)="checkedRows($event)" [paginated]="paginated"
+			[isTitleNeeded]="isTitleNeeded" noDataDisplayMessage="No records to display." [rowCount]="rowCount"
+			(onRowSelected)="rowSelected($event)" [showSelectedRow]="true"
+			[showCheckBox]="selectMultiple">
+			<smd-datatable-column [field]="field.key" *ngFor="let field of fields" [title]="field.title"
+				[filterable]="field.filterable" [sortable]="field.sortable" [numeric]="field.numeric">
+				<ng-template let-model="data">
+					<span *ngIf="(field.dateField || field.timeField); else notADateField">
+						<span *ngIf="field.dateField"> {{convertToDate(model[field.key])}} </span>
+						<span *ngIf="field.timeField"> {{convertToDateTime(model[field.key])}} </span>
+					</span>
+					<ng-template #notADateField>
+						<span *ngIf="!field.flag && !field.icon"
+							[matTooltip]="model[field.toolTip] ? model[field.toolTip] : ''">
+							{{model[field.key]}}
+						</span>
+						<img *ngIf="field.flag;" [matTooltip]="model[field.toolTip] ? model[field.toolTip] : ''"
+							style="transform: scale(0.85); margin-top: 9px;"
+							[src]="assetEnv + '/icons/country-flag/'+ toLower(model[field.key]) + '.png'" onerror=''
+							[alt]="model[field.key]">
+						<span *ngIf="field.icon">
+							<mat-icon [ngStyle]="{'color': model[field.iconColor] }"
+								[matTooltip]="model[field.toolTip]">{{model[field.iconImg]}}</mat-icon>
+						</span>
+					</ng-template>
+				</ng-template>
+			</smd-datatable-column>
+		</smd-datatable>
+	</mat-dialog-content>
+	<mat-dialog-actions style="padding: 16px;">
+		<span class="flex-filler"></span>
+		<button mat-raised-button (click)="selectRecord()" color="accent">Select</button>
+		<button mat-button mat-dialog-close color="accent">Cancel</button>
+	</mat-dialog-actions>
+</mat-card>

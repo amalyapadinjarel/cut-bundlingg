@@ -1,0 +1,69 @@
+<mat-toolbar>
+	<div class="sidenav-header">
+		<a class="logo" routerLink="/" (click)="menuItemClicked()">
+			<span class="logo-image"><img src="./assets/images/ctebs-logo.png" /></span>
+			<span class="logo-text">Trendz E <sup>3</sup> <small style="font-size: 10px;">{{version}}</small></span>
+		</a>
+	</div>
+</mat-toolbar>
+<mat-tab-group [selectedIndex]="selectedMenuTab" (selectChange)="menuTabChanged($event)">
+	<!-- <mat-tab label="menu">
+		<ng-template matTabLabel>
+			<mat-icon matTooltip="application menu"> list </mat-icon>
+		</ng-template>
+		<button mat-icon-button class="app-list-btn" (click)="app = 'apps'" *ngIf="app != 'apps'">
+			<mat-icon>keyboard_arrow_left</mat-icon>
+		</button>
+		<perfect-scrollbar class="container">
+			<div class="content">
+				<nav *ngIf="app == 'apps'">
+					<button mat-menu-item class="title"> Apps </button>
+					<input matInput id=menuItemFilter #mainMenuFilter (ngModelChange)="searchApps($event)" [(ngModel)]="mainFilter" class="flex-filler menu-search"
+					 placeholder="search (ctrl+g)" />
+					<div *ngIf="!menuFilterd">
+						<button *ngFor="let menu of appMenus" mat-menu-item (click)="app = menu.applicationShortCode; menuItem = menu; ">
+							<mat-icon> {{menu.iconName?menu.iconName:'palette'}} </mat-icon>
+							{{menu.applicationName}}
+						</button>
+					</div>
+					<div #mainMenuList>
+						<div *ngFor="let menuItem of filterdMenu">
+							<a *ngIf="menuItem.url && menuFilterd" mat-menu-item class="main-menu-button quick-menu-filter-result" [routerLink]="menuItem.url" routerLinkActive="active"
+							 (click)="menuItemClicked(menuItem.menuItemId)" [class.selected]="curMenu === menuItem.menuItemId">
+								<mat-icon *ngIf="!menuItem.parentItem"> {{menuItem.iconName?menuItem.iconName:'palette'}} </mat-icon>
+								{{menuItem.menuItemName}}
+								<span>{{menuItem.info?('in ' + menuItem.info):''}}</span>
+						</a>
+						</div>
+					</div>
+				</nav>
+				<peoplez-nav *ngIf="app != 'apps'" [menu]="menuItem" (menuSelected)="menuItemClicked()"></peoplez-nav>
+			</div>
+		</perfect-scrollbar>
+	</mat-tab> -->
+	<!-- <mat-tab label="Bookmarks">
+		<ng-template matTabLabel>
+			<mat-icon matTooltip="bookmarks"> star </mat-icon>
+		</ng-template>
+		<perfect-scrollbar class="container">
+			<div class="content">
+				<nav>
+					<button mat-menu-item class="title"> Bookmarks </button>
+					<div *ngIf="!menuFilterd">
+						<a *ngFor="let bookmark of bookmarks" mat-menu-item [routerLink]="bookmark.url" routerLinkActive="active">
+							 {{bookmark.bookmarkName}}
+							    <mat-icon class="bookmark-star-selected" (click)="removePin($event, bookmark)"> star </mat-icon>
+						</a>
+					</div>
+				</nav>
+			</div>
+		</perfect-scrollbar>
+	</mat-tab> -->
+</mat-tab-group>
+
+<span class="flex-filler"></span>
+<div>
+	<span class="attribution">
+		&copy; {{ today | date: 'yyyy' }} Trendz
+	</span>
+</div>

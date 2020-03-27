@@ -1,0 +1,26 @@
+:host {
+	display: flex;
+	align-items: center;
+	place-content: center;
+	height: 100%;
+	.content {
+		display: flex;
+		flex-direction: column;
+		place-content: center;
+		align-items: center;
+		width: 90%;
+		.error-code {
+			font-size: 90px;
+			text-align: center;
+			line-height: 1;
+			margin-bottom: 40px;
+			font-weight: 300;
+			color: rgba(0, 0, 0, 0.87);
+		}
+		.message {
+			font-size: 24px;
+			text-align: center;
+			color: rgba(0, 0, 0, 0.54);
+		}
+	}
+}

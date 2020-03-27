@@ -1,0 +1,30 @@
+mat-card {
+    width: 320px;
+    mat-card-content {
+        margin-bottom: 0;
+    }
+    mat-card-subtitle {
+        padding: 8px 16px;
+        margin: 8px 0 0;
+        border-bottom: 1px solid #f6f6f6;
+    }
+    section {
+        border-bottom: 1px solid #e6e6e6;
+        .item {
+            display: block;
+            padding: 8px 16px;
+            border-bottom: 1px solid #ddd;
+            &:last-child {
+                border: none;
+            }
+            &:hover {
+                background: rgba(0, 0, 0, .04);
+            }
+        }
+    }
+    mat-card-footer {
+        padding: 4px 8px;
+        margin: 0;
+        background: #f6f6f6;
+    }
+}

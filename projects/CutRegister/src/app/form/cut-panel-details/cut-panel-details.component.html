@@ -1,0 +1,27 @@
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="false" [loading]="_shared.cutPanelDetailsLoading" class="tnz-input-table">
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode">
+			<ng-template let-model="data" let-index="index">
+				<div class="row-operations">
+					<mat-icon class="mat-color-danger" matTooltip="delete line"
+						(click)="deleteLine(index)">delete</mat-icon>
+					<mat-icon class="mat-color-info" matTooltip="add line" (click)="addLine()">
+						add_box</mat-icon>
+					<mat-icon class="mat-color-success" matTooltip="copy line"
+						(click)="addLine(model)">library_add</mat-icon>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+	<!-- <smd-datatable-column title="Product Name" field="productName" sortable="true" [filterable]="true" [colStyle]="{'min-width':'140px'}">
+		<ng-template let-model="data" let-index="index">
+			{{_shared.getProdAttributeValue(index, 'productName') || '--'}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Product#" field="productNum" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			<tnz-input [path]="_shared.getProductAttrPath(index, 'productNum')" [primaryKey]="_shared.productPrimaryKey"
+			 [sharedData]="_shared.formData" validators="required,min:0" [isEdit]="_shared.getProductEditable('productNum', _shared.getProdAttributeValue(index, _shared.productPrimaryKey))"
+			 [loading]="_shared.prodLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
+			</tnz-input>
+		</ng-template>
+	</smd-datatable-column> -->
+</smd-datatable>

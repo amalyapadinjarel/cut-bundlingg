@@ -1,0 +1,41 @@
+:host {
+    position: relative;
+    display: block;
+    margin: -24px;
+    border-radius: 3px;
+    overflow: hidden;
+    >button {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        z-index: 9;
+    }
+    >mat-dialog-content {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media (min-width: 600px) {
+    :host {
+        >mat-dialog-content {
+            width: 480px;
+        }
+    }
+}
+
+@media (min-width: 840px) {
+    :host {
+        >mat-dialog-content {
+            width: 670px;
+        }
+    }
+}
+
+@media (min-width: 10800px) {
+    :host {
+        >mat-dialog-content {
+            width: 860px;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+
+<button mat-button (click)="showUserSettings()" #settingsBtn matTooltip="settings">
+  <mat-icon> settings </mat-icon>
+</button>
+
+<button mat-button (click)="showUserMenu()" #usermenuBtn matTooltip="user menu">
+  <img class="mat-icon-button-image" pImage [imageUrl]="'/images/users/'+ currentUser.userId">
+</button>

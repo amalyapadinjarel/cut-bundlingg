@@ -1,0 +1,107 @@
+<div class="details">
+    <div>
+        <cut-register-header></cut-register-header>
+        <cut-register-card collapsibleComponent></cut-register-card>
+    </div>
+    <div class="line-details">
+        <div class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
+            on {{_shared.formData.header?.lastUpdateDate}}
+        </div>
+        <!-- <button mat-button matTooltip="delete line">
+            <mat-icon class="mat-color-danger" (click)="print()">print</mat-icon>
+        </button> -->
+        <mat-tab-group>
+            <mat-tab label="Lines">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Order Details</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getOrderDetailsEditable()">
+                                <button mat-button matTooltip="delete line">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('orderDetails')">delete</mat-icon>
+                                </button>
+                                <button mat-button matTooltip="add line">
+                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('orderDetails')">add_box</mat-icon>
+                                </button>
+                                <button mat-button [matMenuTriggerFor]="menu" matTooltip="add line">
+                                    <mat-icon class="mat-color-success">library_add</mat-icon>
+                                    <mat-icon class="mat-color-disabled">expand_more</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item *ngFor="let op of copyFromOptions" (click)="copyFrom(op)">{{op.label}}</button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <order-details></order-details>
+                    </div>
+                    <div class="group-flex">
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Marker Details</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex" *ngIf="_shared.getMarkerDetailsEditable()">
+                                    <button mat-button matTooltip="delete line">
+                                        <mat-icon class="mat-color-danger" (click)="deleteLine('markerDetails')">delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <marker-details></marker-details>
+                        </div>
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Cut Panels</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex" *ngIf="_shared.getLayerDetailsEditable()">
+                                    <button mat-button matTooltip="delete line">
+                                        <mat-icon class="mat-color-danger" (click)="deleteLine('cutPanel')">delete</mat-icon>
+                                    </button>
+                                    <button mat-button matTooltip="add line">
+                                        <mat-icon class="mat-color-info" (click)="_shared.addLine('cutPanel')">add_box</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <cut-register-products></cut-register-products>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Layer Details</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getLayerDetailsEditable()">
+                                <button mat-button matTooltip="delete line">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('layerDetails')">delete</mat-icon>
+                                </button>
+                                <button mat-button matTooltip="add line">
+                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('layerDetails')">add_box</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <layer-details></layer-details>
+                    </div>
+                </perfect-scrollbar>
+            </mat-tab>
+            <mat-tab label="Bundle Generation">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Bundle Lines</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getCutBundleEditable()">
+                                <button mat-button matTooltip="delete lines">
+                                    <mat-icon class="mat-color-danger" (click)="deleteBundleLines()">delete_sweep</mat-icon>
+                                </button>
+                                <button mat-button matTooltip="generate lines">
+                                    <mat-icon class="mat-color-success" (click)="generateBundleLines()">autorenew</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <cut-bundle></cut-bundle>
+                    </div>
+                </perfect-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+
+                        <layer-details></layer-details>

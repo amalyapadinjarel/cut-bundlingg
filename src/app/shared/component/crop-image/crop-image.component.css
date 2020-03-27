@@ -1,0 +1,75 @@
+.file-upload{
+    /* color: rebeccapurple; */
+}
+.ui-inputfile{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+    z-index: -1;
+}
+.ui-image-label{
+    font-weight: 300px;
+    cursor: pointer;
+}
+.ui-default-image{
+    font-size: 272px;
+    width:400px;
+    color: #ececec;
+}
+@media (max-width: 600px){
+    .ui-default-image{
+        font-size: 100px;
+        width:200px;
+        color: #ececec;
+    }
+    
+}
+.ui-dialog-content{
+    text-align: center;
+    padding: 0;
+}
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    cursor: pointer;
+}
+.ui-toolbar{
+    height: 80px;
+}
+.ui-title{
+    margin: 16px 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-weight: 200;
+    font-size: 27px;
+}
+.ui-title strong{
+    font-weight: 400;
+}
+.ui-title mat-icon {
+    vertical-align: middle;
+}
+.ui-default-image{
+    font-size: 180px;
+    width:300px;
+    color: #ececec;
+}
+@media (max-width: 600px){
+    .ui-default-image{
+        font-size: 100px;
+        width:200px;
+        color: #ececec;
+    }
+    .ui-cropper{
+        width:200px !important;
+    }
+    
+}
+.ui-cropper{
+    width:400px;
+    height: 293px;
+}

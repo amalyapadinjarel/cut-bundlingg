@@ -1,0 +1,31 @@
+<div class="smd-paginator">
+    <div class="smd-paginator-selected-count" *ngIf="selectedRowCount > 0"> Selected
+        rows:&nbsp;&nbsp;{{selectedRowCount}} </div>
+    <div class="flex-filler"></div>
+    <div class="smd-paginator-range" *ngIf="ranges.length > 0">
+        Rows per page:
+        <mat-select [(ngModel)]="selectedRange" style="padding:0px" (change)="rangeChanged()">
+            <mat-option *ngFor="let range of ranges" [value]="range">
+                {{range}}
+            </mat-option>
+        </mat-select>
+    </div>
+    <div class="smd-paginator-current-page">
+        {{pageStart}}-{{pageEnd}} of
+        {{dummyRowCount && dummyRowCount != '-1+'? dummyRowCount : totalCount}}{{hasMore?'+':''}}
+    </div>
+    <div class="smd-paginator-navigation">
+        <button mat-icon-button (click)="onFirstClick()" [disabled]="pageStart == 1">
+            <mat-icon>first_page</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onPreviousClick()" [disabled]="pageStart == 1">
+            <mat-icon>navigate_before</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onNextClick()" [disabled]="pageEnd == count && !hasMore">
+            <mat-icon>navigate_next</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onLastClick()" [disabled]="true">
+            <mat-icon>last_page</mat-icon>
+        </button>
+    </div>
+</div>

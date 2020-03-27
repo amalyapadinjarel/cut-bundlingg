@@ -1,0 +1,79 @@
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="false" [loading]="_shared.orderDetailsLoading" class="tnz-input-table">
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.getOrderDetailsEditable()" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data" let-index="index">
+			<div class="row-operations">
+				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="_shared.deleteLine('orderDetails',index)">delete</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Seq#" field="displayOrder" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.displayOrder}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Ref. Doc#" field="refDocNo" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.refDocNo}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Style" field="refProduct" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.refProduct}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Style Attributes" field="refProdAttr" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.refProdAttr}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Order Ref." field="orderRefNo" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.orderRefNo}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Order Qty." field="lineQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.lineQty}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cut Allow(%)" field="cutAllowancePercent" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.cutAllowancePercent}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cut Allow Qty." field="cutAllowanceQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.cutAllowanceQty}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Order Qty. + Allow" field="allwdQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.allwdQty}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Prev Cut Qty." field="prevqty" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.prevqty}}
+		</ng-template>
+	</smd-datatable-column>
+		<smd-datatable-column title="Combo" field="combo" sortable="true" [filterable]="true">
+			<ng-template let-model="data">
+			{{model.combo}}
+		</ng-template>
+	</smd-datatable-column>
+		<smd-datatable-column title="Kit" field="kit" sortable="true" [filterable]="true">
+			<ng-template let-model="data">
+			{{model.kit}}
+		</ng-template>
+	</smd-datatable-column>
+		<smd-datatable-column title="Customer" field="bpartName" sortable="true" [filterable]="true">
+			<ng-template let-model="data">
+			{{model.bpartName}}
+		</ng-template>
+	</smd-datatable-column>
+		<smd-datatable-column title="Ref Doc Date" field="refDocDate" sortable="true" [filterable]="true">
+			<ng-template let-model="data">
+			{{model.refDocDate}}
+		</ng-template>
+	</smd-datatable-column>
+</smd-datatable>

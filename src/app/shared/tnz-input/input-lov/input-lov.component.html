@@ -1,0 +1,17 @@
+<span class="title">{{lovConfig.title ? lovConfig.title : 'LOV'}}</span>
+<mat-dialog-content style="background-color: white;">
+	<smd-datatable [dataUrl]="lovConfig.url" [preFilters]="lovConfig.filter" [dataHeader]="lovConfig.dataHeader" (onRowSelected)="rowSelected($event)"
+		[primaryListing]="true" [selectMultiple]="!!lovConfig.allowMultiple">
+		<smd-datatable-column [field]="field.key" *ngFor="let field of lovConfig.displayFields" [title]="field.title"
+			[filterable]="true" [sortable]="true">
+			<ng-template let-model="data">
+				<tnz-input [type]="field.type ? field.type : 'text'" [value]="model[field.key]"></tnz-input>
+			</ng-template>
+		</smd-datatable-column>
+	</smd-datatable>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<span class="flex-filler"></span>
+	<button mat-raised-button (click)="selectRecord()" color="accent">Select</button>
+	<button mat-button mat-dialog-close color="accent">Cancel</button>
+</mat-dialog-actions>
