@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CutRegisterSharedService } from './_service/cut-register-shared.service';
 import { CutRegisterService } from './_service/cut-register.service';
+import { AlertUtilities } from 'app/shared/utils';
 
 @Component({
   selector: 'app-cutRegister',
@@ -15,7 +16,8 @@ export class CutRegisterComponent {
   constructor(private router: Router,
     private location: Location,
     public _shared: CutRegisterSharedService,
-    public _service: CutRegisterService) {
+    public _service: CutRegisterService,
+    private alertutils: AlertUtilities) {
       this._shared.init();
   }
 
@@ -58,6 +60,14 @@ export class CutRegisterComponent {
       if (exit) {
         this.cancelEdit();
       }
+    })
+  }
+
+  generateNextCut(){
+    this._service.generateNextCut().then( data => {
+      console.log(data);
+    }).catch( err => {
+      this.alertutils.showAlerts(err)
     })
   }
 }

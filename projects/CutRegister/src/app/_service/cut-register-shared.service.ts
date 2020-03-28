@@ -8,7 +8,7 @@ import { Product, OrderDetails, LayerDetails, MarkerDetails } from '../models/cu
 export class CutRegisterSharedService {
 
     appKey = 'cutRegister';
-    apiBase = 'cut-register';
+    apiBase = '/cut-register';
     editMode = false;
     id: number;
     formData: any = {};
@@ -45,15 +45,15 @@ export class CutRegisterSharedService {
     cutPanelDetailsAttributes = [];
     cutBundleAttributes = [];
 
-    _orderDetailsSeq = 10;
-    _layerDetailsSeq = 10;
-    _markerDetailsSeq = 10;
-    _cutPanelDetailsSeq = 10;
+    _orderDetailsSeq = 1;
+    _layerDetailsSeq = 1;
+    _markerDetailsSeq = 1;
+    _cutPanelDetailsSeq = 1;
 
-    orderDetailsSeqIncBy = 10;
-    layerDetailsSeqIncBy = 10;
-    markerDetailsSeqIncBy = 10;
-    cutPanelDetailsSeqIncBy = 10;
+    orderDetailsSeqIncBy = 1;
+    layerDetailsSeqIncBy = 1;
+    markerDetailsSeqIncBy = 1;
+    cutPanelDetailsSeqIncBy = 1;
 
     selectedLines = {};
 
@@ -94,10 +94,10 @@ export class CutRegisterSharedService {
         this._layerDetailsSeq = 1;
         this._markerDetailsSeq = 1;
         this._cutPanelDetailsSeq = 1;
-        this.orderDetailsSeqIncBy = 10;
-        this.layerDetailsSeqIncBy = 10;
-        this.markerDetailsSeqIncBy = 10;
-        this.cutPanelDetailsSeqIncBy = 10;
+        this.orderDetailsSeqIncBy = 1;
+        this.layerDetailsSeqIncBy = 1;
+        this.markerDetailsSeqIncBy = 1;
+        this.cutPanelDetailsSeqIncBy = 1;
     }
 
     clear() {
@@ -200,7 +200,7 @@ export class CutRegisterSharedService {
         this._cutPanelDetailsSeq = value + this.cutPanelDetailsSeqIncBy;
     }
 
-    getHeaderData(){
+    getHeaderData() {
         return this.formData.header;
     }
 
@@ -259,7 +259,7 @@ export class CutRegisterSharedService {
     }
 
     getMarkerDetailsEditable(attr = null) {
-        let editable = this.editMode ;
+        let editable = this.editMode;
         return editable;
     }
 
@@ -280,7 +280,7 @@ export class CutRegisterSharedService {
 
     getHeaderAttributeValue(key) {
         let val = this.inputService.getInputValue(this.getHeaderAttrPath(key));
-        val =  typeof val != 'undefined' ? val : this.formData.header ? this.formData.header[key] : null;
+        val = typeof val != 'undefined' ? val : this.formData.header ? this.formData.header[key] : null;
         return val;
     }
 
@@ -443,7 +443,7 @@ export class CutRegisterSharedService {
     setLines(key, data) {
         if (!data || !data.length)
             this.formData[key] = this[key] = [];
-        else{
+        else {
             this[key] = JSON.parse(JSON.stringify(data));
             this.formData[key] = data;
         }
@@ -467,17 +467,50 @@ export class CutRegisterSharedService {
         return seq;
     }
 
-    setSelectedLines(key,models){
+    setSelectedLines(key, models) {
         this.selectedLines[key] = models;
     }
 
-    deleteLines(key){
+    deleteLines(key) {
         let primaryKey = this[key + 'PrimaryKey'];
-        this.selectedLines[key].forEach( line=> {
-            let index = this.formData[key].findIndex(data => {
-                return data[primaryKey] == line[primaryKey]
+        if (this.selectedLines[key])
+            this.selectedLines[key].forEach(line => {
+                let index = this.formData[key].findIndex(data => {
+                    return data[primaryKey] == line[primaryKey]
+                });
+                this.deleteDetailsLine(key, index, line);
             });
-            this.deleteLine(key,index);
-        });
+        this.setSelectedLines(key, [])
+    }
+
+    deleteDetailsLine(key, index, model) {
+        let productId, orderDetails,orders;
+        switch (key) {
+            case 'markerDetails':
+                productId = model['productId'];
+                this.deleteLine(key, index);
+                orderDetails = this.formData.orderDetails
+                orders = orderDetails.filter(data => { return data.refProductId == productId });
+                orders.forEach(order => {
+                    let i = orderDetails.indexOf(order);
+                    this.deleteLine('orderDetails', i);
+                })
+                break;
+            case 'orderDetails':
+                productId = model['refProductId'];
+                this.deleteLine(key,index);
+                orderDetails = this.formData.orderDetails
+                orders = orderDetails.filter(data => { return data.refProductId == productId });
+                if(!orders || !orders.length ){
+                    let markerDetails = this.formData.markerDetails;
+                    let i = markerDetails.findIndex(data=> { return data.productId == productId});
+                    this.deleteLine('markerDetails', i);
+                }
+                break;
+            default:
+                this.deleteLine(key, index);
+                break;
+        }
+
     }
 }

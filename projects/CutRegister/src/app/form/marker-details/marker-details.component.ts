@@ -12,6 +12,7 @@ import { Product } from '../../models/cut-register.model';
 })
 export class MarkerDetailsComponent implements OnInit, OnDestroy {
 
+	key = 'markerDetails';
 	private refreshSub: Subscription;
 	private refreshMarkerDetails: Subscription;
 
@@ -26,7 +27,7 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
-			this._service.loadData("markerDetails");
+			this._service.loadData(this.key);
 		});
 		this.refreshMarkerDetails = this._shared.refreshMarkerDetails.subscribe(change => {
 				this.refreshTable();
@@ -50,7 +51,16 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	refreshTable(){
-		this.dataTable.refresh( this._shared.formData.markerDetails);
+	refreshTable() {
+		this.dataTable.refresh(this._shared.formData[this.key]);
+	}
+
+	onRowSelected() {
+		console.log(this.dataTable.selectedModels())
+		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
+	}
+
+	deleteLine(index,model){
+		this._shared.deleteDetailsLine(this.key,index,model)
 	}
 }

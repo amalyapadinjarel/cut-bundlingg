@@ -1,4 +1,5 @@
-<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="false" [loading]="_shared.cutPanelDetailsLoading" class="tnz-input-table">
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="true" [loading]="_shared.cutPanelDetailsLoading" class="tnz-input-table"
+(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode">
 			<ng-template let-model="data" let-index="index">
 				<div class="row-operations">

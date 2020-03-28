@@ -14,6 +14,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
 	private refreshSub: Subscription;
 	private refreshOrderDetails: Subscription;
+	public key = 'orderDetails';
 
 	@ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
 
@@ -26,7 +27,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
-			this._service.loadData("orderDetails");
+			this._service.loadData(this.key);
 		});
 		this.refreshOrderDetails = this._shared.refreshOrderDetails.subscribe(change => {
 				this.refreshTable();
@@ -78,6 +79,14 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	refreshTable(){
-		this.dataTable.refresh(this._shared.formData.orderDetails);
+		this.dataTable.refresh(this._shared.formData[this.key]);
+	}
+
+	onRowSelected() {
+		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
+	}
+
+	deleteLine(index, model){
+		this._shared.deleteDetailsLine(this.key,index,model);
 	}
 }

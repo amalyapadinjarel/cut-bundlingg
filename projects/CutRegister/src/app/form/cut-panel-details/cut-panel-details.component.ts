@@ -12,6 +12,7 @@ import { Product } from '../../models/cut-register.model';
 })
 export class CutPanelDetailsComponent implements OnInit, OnDestroy {
 
+	key = 'cutPanelDetails'
 	private refreshSub: Subscription;
 	private refreshCutPanelDetails: Subscription;
 
@@ -26,7 +27,7 @@ export class CutPanelDetailsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
-				this._service.loadData("cutPanelDetails");
+				this._service.loadData(this.key);
 		});
 		this.refreshCutPanelDetails = this._shared.refreshCutPanelDetails.subscribe(change => {
 			if (change)
@@ -54,7 +55,11 @@ export class CutPanelDetailsComponent implements OnInit, OnDestroy {
 		this._shared.refreshCutPanelDetails.next(true);
 	}
 
-	refreshTable(){
-		this.dataTable.refresh(this._shared.formData.cutPanelDetails);
+	refreshTable() {
+		this.dataTable.refresh(this._shared.formData[this.key]);
+	}
+
+	onRowSelected() {
+		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 }

@@ -1,12 +1,13 @@
-<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="false" [loading]="_shared.markerDetailsLoading" class="tnz-input-table">
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="true" [loading]="_shared.markerDetailsLoading" class="tnz-input-table"
+[filterEnabled]="!_shared.getMarkerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getMarkerDetailsEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
-				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="_shared.deleteLine('markerDetails',index)">delete</mat-icon>
+				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index,model)">delete</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Seq#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+	<smd-datatable-column title="#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data">
 			{{model.displayOrder}}
 		</ng-template>

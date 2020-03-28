@@ -77,23 +77,14 @@ export class AuthComponent {
 					} else {
 						this.eventService.isLoadingPage.next(true);
 						this.eventService.onLogin.next(true);
-						this.navService.fetchMenuData().then(() => {
-							this.navService.fetchMenuData().then(() => {
-							});
-							if (this.userService.redirectUrl && this.navService.isValidUrl(this.userService.redirectUrl) && this.userService.redirectUrl !== '/login' && this.userService.redirectUrl !== '/not-found') {
-								this.alertUtils.allowAlerts();
-								this.router.navigateByUrl(this.userService.redirectUrl).then(() => {
-									this.eventService.isLoadingPage.next(false);
-								});
-							} else {
-								this.alertUtils.allowAlerts();
-								this.router.navigateByUrl('/cut-register/list').then(() => {
-									this.eventService.isLoadingPage.next(false);
-								});
-							}
-						}, () => {
-							this.alertUtils.showAlerts('Failed to fetch menu items', true)
-						});
+						this.navigateAfterLogin();
+						// this.navService.fetchMenuData().then(() => {
+						// 	this.navigateAfterLogin();
+						// }, () => {
+						// 	this.router.navigateByUrl('/cut-register/list').then(() => {
+						// 		this.eventService.isLoadingPage.next(false);
+						// 	});
+						// });
 					}
 				},
 				errorResponse => {
@@ -178,7 +169,22 @@ export class AuthComponent {
 		}
 
 	}
+
 	getPasswordValidity(event) {
 		this.blnValidPassword = event;
+	}
+
+	navigateAfterLogin(){
+		if (this.userService.redirectUrl && this.navService.isValidUrl(this.userService.redirectUrl) && this.userService.redirectUrl !== '/login' && this.userService.redirectUrl !== '/not-found') {
+			this.alertUtils.allowAlerts();
+			this.router.navigateByUrl(this.userService.redirectUrl).then(() => {
+				this.eventService.isLoadingPage.next(false);
+			});
+		} else {
+			this.alertUtils.allowAlerts();
+			this.router.navigateByUrl('/cut-register/list').then(() => {
+				this.eventService.isLoadingPage.next(false);
+			});
+		}
 	}
 }

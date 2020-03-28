@@ -78,7 +78,7 @@
                 <label>Cut #</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('cutNo')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="required,min:0" [isEdit]="_shared.getHeaderEditable('cutNo', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="_shared.getHeaderEditable('cutNo', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>

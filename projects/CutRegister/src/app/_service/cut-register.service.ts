@@ -5,6 +5,7 @@ import { CutRegister, Product } from '../models/cut-register.model';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Router } from '@angular/router';
 import { AlertUtilities } from 'app/shared/utils';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class CutRegisterService {
@@ -167,6 +168,24 @@ export class CutRegisterService {
         });
     }
 
+    generateNextCut() {
+        let defaultMsg = "Unknown Error. Failed to generate next cut.";
+        let params:HttpParams = new HttpParams();
+        params = params.set('docNum', this._shared.getHeaderAttributeValue('documentNo'))
+        return new Promise((resolve, reject) => {
+            this.apiService.get(this._shared.apiBase + '/generate-next-cut',params)
+                .subscribe(ret => {
+                    if (ret.data) {
+                        if (ret.data.returnCode && ret.data.returnCode == 1)
+                            resolve(ret.data);
+                        else if (ret.data.message)
+                            reject(ret.data.message)
+                    }
+                    reject(defaultMsg);
+                }, err => reject(defaultMsg));
+        });
+    }
+
     generateBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to generate bundle.";
         return new Promise((resolve, reject) => {
@@ -181,7 +200,7 @@ export class CutRegisterService {
                     reject(defaultMsg);
                 }, err => reject(defaultMsg));
         });
-    }
+    } 
 
     deleteBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to delete bundle.";

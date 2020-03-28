@@ -47,7 +47,7 @@ export const AttributeSetLovConfig: any = {
 
 export const CopyFromSOLovConfig: any = {
     title: 'Select SO',
-    url: 'cut-register/copy-from-so',
+    url: '/cut-register/copy-from-so',
     dataHeader: 'orders',
     filterAttributes: [
         'productTitle'
@@ -120,7 +120,7 @@ export const CutTypeLovConfig: any = {
 
 export class FabricLovConfig {
     title: 'Select Fabric';
-    url: '/lovs/fabric--and-attributes?cutRegister=';
+    url: 'lovs/fabric--and-attributes?cutRegister=';
     dataHeader: 'data';
     returnKey: 'productId';
     displayKey: 'productTitleNum';

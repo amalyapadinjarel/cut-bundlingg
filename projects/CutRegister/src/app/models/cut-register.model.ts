@@ -33,6 +33,7 @@ export class CutRegister {
 
     division: ChoiceList;
     docStatus: string;
+    docStatusName: string;
     docType: ChoiceList;
     layItem: string;
     operationCode: string;
@@ -70,6 +71,7 @@ export class CutRegister {
         this.token = model.token;
         this.division = model.division;
         this.docStatus = model.docStatus;
+        this.docStatusName = model.docStatusName;
         this.docType = model.docType;
         this.layItem = model.layItem;
         this.operationCode = model.operationCode;
