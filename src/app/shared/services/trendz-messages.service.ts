@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { ApiServiceV4 } from './api-v4.service';
 import { AlertUtilities } from '../utils/alert.utility';
+import { ApiService } from 'app/shared/services/api.service';
 
 
 @Injectable()
@@ -11,7 +12,7 @@ export class TrendzMessageService {
 	public checkNotification: Subscription;
 
 	constructor(
-		private apiService: ApiServiceV4,
+		private apiService: ApiService,
 		private alertUtils: AlertUtilities,
 	) {
 	}

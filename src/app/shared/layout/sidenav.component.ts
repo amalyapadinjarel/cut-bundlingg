@@ -35,8 +35,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit(): void {
-		this.fetchMenuData();
-		this.navService.fetchBookmarks();
+		// this.fetchMenuData();
+		// this.navService.fetchBookmarks();
 	}
 
 	fetchMenuData() {

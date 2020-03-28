@@ -10,8 +10,8 @@ import {
 } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { EventService, UserService } from './shared/services';
-import { ApiServiceV4, NavigationService } from 'app/shared/services';
+import { EventService, UserService, ApiService } from './shared/services';
+import { NavigationService } from 'app/shared/services';
 import { MatDialog } from '@angular/material/dialog';
 import { PushMessageService } from 'app/shared/websocket/push-message.service';
 import { AlertUtilities } from './shared/utils/alert.utility';
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 		public navService: NavigationService,
 		public alertUtil: AlertUtilities,
 		private eventService: EventService,
-		private apiService: ApiServiceV4,
+		private apiService: ApiService,
 		private dialog: MatDialog,
 		private router: Router,
 		public pushMessageService: PushMessageService,
@@ -97,14 +97,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
 		this.userSubs = this.userService.isAuthenticated.subscribe(
 			(isAuthenticated) => {
+				console.log(isAuthenticated)
 				if (isAuthenticated) {
 					this.isAuthenticated = true;
-					this.pushMessageService.initializeWebSocketConnection();
-					this.loadTawkTo();
+					// this.pushMessageService.initializeWebSocketConnection();
+					// this.loadTawkTo();
 				} else {
 					this.isAuthenticated = false;
-					this.pushMessageService.disconnectWebSocket();
-					this.unloadTawkTo();
+					// this.pushMessageService.disconnectWebSocket();
+					// this.unloadTawkTo();
 				}
 				this.authFailed = !this.isAuthenticated;
 			});

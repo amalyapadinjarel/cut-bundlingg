@@ -5,9 +5,9 @@ import { Observable ,  BehaviorSubject ,  ReplaySubject ,  Subject } from "rxjs"
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 
-import { ApiServiceV4 } from './api-v4.service';
 import { JwtService } from "./jwt.service";
 import { User } from "../models";
+import { ApiService } from './api.service';
 
 @Injectable()
 export class UserService {
@@ -24,7 +24,7 @@ export class UserService {
 	changeEmitted$ = this.emitChangeSource.asObservable();
 
 	constructor(
-		private apiService: ApiServiceV4,
+		private apiService: ApiService,
 		private router: Router,
 		private jwtService: JwtService
 	) { }

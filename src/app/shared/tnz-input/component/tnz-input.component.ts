@@ -220,13 +220,19 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		let newValue = value;
 		this.displayValue = value;
 		if (this.isEdit) {
-			if (this.type == 'select' && this.selectOptions && this.setters && this.lovSetters) {
-				let data = this.selectOptions.filter(option => {
-					return option[this.returnKey] == value[this.returnKey];
-				});
-				this.setters.forEach((element, idx) => {
-					this._service.updateInput(this.getFullPathToKey(element), (data.length == 1 ? data[0][this.lovSetters[idx]] : undefined));
-				});
+
+			if (this.type == 'select' && this.selectOptions) {
+				if (this.setters && this.lovSetters) {
+					let data = this.selectOptions.filter(option => {
+						return option[this.returnKey] == value[this.returnKey];
+					});
+					this.setters.forEach((element, idx) => {
+						this._service.updateInput(this.getFullPathToKey(element), (data.length == 1 ? data[0][this.lovSetters[idx]] : undefined));
+					});
+				}
+				if(this.selectOptions.length == 1){
+					newValue = value = this.selectOptions[0][this.returnKey];
+				}
 			}
 			if (value) {
 				if (this.type == 'date') {
@@ -324,7 +330,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			if (this.sharedData) {
 				value = JSONUtils.getJSONPath(this.sharedData, this.path);
 				if (this.type == 'date') {
-					value = this.isValidDate(new Date(value)) ? new Date(value): '';
+					value = this.isValidDate(new Date(value)) ? new Date(value) : '';
 				}
 				this.value = value;
 			}

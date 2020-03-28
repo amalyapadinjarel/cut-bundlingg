@@ -1,8 +1,8 @@
 import { map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { Injectable, ElementRef, OnDestroy } from '@angular/core';
-import { ApiServiceV4 } from './api-v4.service';
 import { EventService } from './event.service';
+import { ApiService } from './api.service';
 
 @Injectable()
 export class NavigationService implements OnDestroy {
@@ -14,7 +14,7 @@ export class NavigationService implements OnDestroy {
     showQuickMenu = false;
 
     private ngUnsubscribe: Subject<any> = new Subject<any>();
-    constructor(private apiService: ApiServiceV4
+    constructor(private apiService: ApiService
         , private eventService: EventService) {
     }
 

@@ -1,7 +1,7 @@
 import { Directive, HostBinding, Input, OnChanges, HostListener } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ApiService } from '../services/api.service';
 
-import { ApiServiceV4 } from '../services/api-v4.service';
 
 
 @Directive({
@@ -14,7 +14,7 @@ export class ImageDirective implements OnChanges {
 	@Input() imageUrl: string;
 	@Input() module: string;
 	constructor(private sanitizer: DomSanitizer
-		, private apiService: ApiServiceV4) {
+		, private apiService: ApiService) {
 
 	}
 
@@ -31,7 +31,7 @@ export class ImageDirective implements OnChanges {
 			this.apiService.getImage(this.imageUrl)
 				.subscribe(
 					data => {
-						if (data.text()) {
+						if (data && data.text()) {
 							this.src = this.sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + data.text());
 						}
 
