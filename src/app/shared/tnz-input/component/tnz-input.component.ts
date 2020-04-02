@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, ɵSWITCH_CHANGE_DETECTOR_REF_FACTORY__POST_R3__ } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { LocalCacheService } from 'app/shared/services';
@@ -85,6 +85,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	@Input() autoCompleteEnabled = true;
 	@Input() precision;
 	@Input() selectOptions: any = [];
+	@Input() defaultValue: any;
 
 	@Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
 	@Output() valueChangedFromUI: EventEmitter<any> = new EventEmitter<any>();
@@ -186,6 +187,14 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 				this.loadSelectOptions();
 			}
 			if (this.isEdit) {
+				if (this.defaultValue) {
+					if (this.type == 'date') {
+						this.setValue(DateUtilities.formatDate(this.defaultValue), true);
+					} else {
+						this.setValue(this.defaultValue, true)
+					}
+
+				}
 				if (!this._service.getSharedData(this.rootPath)) {
 					this._service.setSharedData(this.rootPath, this.sharedData);
 				}
@@ -230,8 +239,9 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 						this._service.updateInput(this.getFullPathToKey(element), (data.length == 1 ? data[0][this.lovSetters[idx]] : undefined));
 					});
 				}
-				if(this.selectOptions.length == 1){
+				if (this.selectOptions.length == 1) {
 					newValue = value = this.selectOptions[0][this.returnKey];
+					valueChange = true;
 				}
 			}
 			if (value) {
@@ -266,35 +276,10 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 				inValid = true;
 			}
 		}
-		if (!inValid) {
-			if (this.validators) {
-				this.validators.forEach(validator => {
-					if (validator == 'required') {
-						if (typeof newValue == 'undefined' || newValue === '') {
-							status = 'warning';
-							alert = this.title + ' cannot be left blank.';
-						}
-					}
-					if (validator.startsWith('min:')) {
-						let min = Number(validator.split(':')[1]);
-						if (!Number.isNaN(min) && newValue < min) {
-							status = 'error';
-							alert = this.title + ' should not go below ' + min + '.';
-						}
-					}
-					if (validator.startsWith('max:')) {
-						let max = Number(validator.split(':')[1]);
-						if (!Number.isNaN(max) && newValue > max) {
-							status = 'error';
-							alert = this.title + ' should not go beyond ' + max + '.';
-						}
-					}
-				});
-			}
-		}
-
+		
 		this.status = status;
 		this.alert = alert;
+		this.validateInput(inValid, newValue)
 		if (this._value != value) {
 			this._value = newValue;
 			if (valueChange) {
@@ -311,6 +296,40 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			}
 			this.valueChanged.emit({ key: this._key, value: this._cache.getCachedValue(this.getFullPathToKey(this._key)), displayValue: this.displayValue, path: this.fullPath });
 		}
+	}
+
+	validateInput(inValid, newValue) {
+		if (!inValid) {
+			if (this.validators) {
+				this.validators.forEach(validator => {
+					if(this.type == 'lov' && newValue && typeof newValue != 'object'){
+						this.status = 'warning';
+						this.alert =  'Choose from the given list of options.';
+					}
+					if (validator == 'required') {
+						if (typeof newValue == 'undefined' || newValue === '') {
+							this.status = 'warning';
+							this.alert = this.title + ' cannot be left blank.';
+						}
+					}
+					if (validator.startsWith('min:')) {
+						let min = Number(validator.split(':')[1]);
+						if (!Number.isNaN(min) && newValue < min) {
+							this.status = 'error';
+							this.alert = this.title + ' should not go below ' + min + '.';
+						}
+					}
+					if (validator.startsWith('max:')) {
+						let max = Number(validator.split(':')[1]);
+						if (!Number.isNaN(max) && newValue > max) {
+							this.status = 'error';
+							this.alert = this.title + ' should not go beyond ' + max + '.';
+						}
+					}
+				});
+			}
+		}
+		return alert;
 	}
 
 	setNativeElement() {
@@ -367,8 +386,11 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		if (this.autoCompleteTimeout) {
 			clearTimeout(this.autoCompleteTimeout);
 		}
-		if (event instanceof KeyboardEvent && (event.key == 'Enter')) {
-			this.initLOV(event);
+		this.validateInput(false, event.target.value)
+		if (event instanceof KeyboardEvent ){
+			if (event.key == 'Enter') {
+				this.initLOV(event);
+			}
 		}
 		else if (this.autoCompleteEnabled) {
 			if (this.lovConfig) {

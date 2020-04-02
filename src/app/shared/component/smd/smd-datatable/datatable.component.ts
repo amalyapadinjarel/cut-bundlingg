@@ -934,7 +934,7 @@ export class SmdDataTable
 				if (this.apiMethod == "GET") {
 					if (this.apiLevel == 4) {
 						this.apiClass
-							.get(this.dataUrl, this.apiLevel == 4 ? this.params : queryParams , this.token)
+							.get('/' + this.dataUrl, this.apiLevel == 4 ? this.params : queryParams , this.token)
 							.subscribe(
 								data => {
 									this.processGetReponse(data, page, offset, limit).then(resolve, reject);
@@ -948,7 +948,7 @@ export class SmdDataTable
 					}
 					else {
 						this.apiClass
-							.get(this.dataUrl + (this.dataUrl.indexOf('?') == -1 ? '?' : '&') + queryParams, this.token)
+							.get('/' + this.dataUrl + (this.dataUrl.indexOf('?') == -1 ? '?' : '&') + queryParams, this.token)
 							.subscribe(
 								data => {
 									this.processGetReponse(data, page, offset, limit).then(resolve, reject);
@@ -962,7 +962,7 @@ export class SmdDataTable
 					}
 				} else if (this.apiMethod == "POST") {
 					this.apiClass
-						.post(this.dataUrl, this.postBody, this.token)
+						.post('/' + this.dataUrl, this.postBody, this.token)
 						.subscribe(
 							data => {
 								if (data.status && typeof data.status === "number") {
@@ -1023,8 +1023,8 @@ export class SmdDataTable
 							}
 						});
 					}
-					this._updateRowsFromList(this.filteredModels);
 					this.rowCount = this.filteredModels.length;
+					this._updateRowsFromList(this.filteredModels);
 
 					this.dataChange.emit({ rowCount: this.rowCount });
 					this.loading = false;

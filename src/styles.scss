@@ -815,6 +815,7 @@ tnz-input {
                                         >span {
                                             color: gray;
                                             font-weight: 400;
+                                            margin-left: 5px;
                                         }
 
                                         .mat-stroked-button {
@@ -897,7 +898,7 @@ tnz-input {
                         }
 
                         .group {
-                            margin-top: 12px;
+                            margin-top: 5px;
                             background: inherit;
                             // border: 1px solid rgba(95, 81, 117, 0.64);
                             // border-right: 0;
@@ -931,13 +932,12 @@ tnz-input {
 
                             smd-datatable {
                                 display: block;
-                                margin: 8px 8px 8px 0px;
+                                margin: 2px 8px 0px 0px;
                                 border: 1px solid #90859e;
                                 border-radius: 2px;
 
                                 .smd-data-table {
                                     // background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
-                                    background: #fff;
                                     background-size: cover;
                                 }
 
@@ -978,7 +978,7 @@ tnz-input {
     height: 16px;
     padding: 0 4px;
     line-height: 16px;
-    text-align: center;
+    text-align: right;
     border-radius: 3px;
     font-weight: 500;
     border-style: solid;

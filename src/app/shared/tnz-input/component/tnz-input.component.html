@@ -17,7 +17,7 @@
             [matTooltip]="alert" [ngClass]="status" />
         <mat-icon (click)="openLOV()" class="suffix">search</mat-icon>
         <mat-autocomplete #autoComplete="matAutocomplete" [displayWith]="autoCompleteDisplayFn.bind(this)"
-            (optionSelected)='setLovValue($event.option.value)'>
+            (optionSelected)='setLovValue($event.option.value)' >
             <mat-option *ngFor="let option of autoCompleteOptions" [value]="option">
                 {{ option[displayKey] }}
             </mat-option>
