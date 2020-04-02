@@ -5,6 +5,7 @@ import { CutRegisterSharedService } from '../../_service/cut-register-shared.ser
 import { CutRegisterService } from '../../_service/cut-register.service';
 import { Subscription } from 'rxjs';
 import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLovConfig } from '../../models/lov-config';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
 	selector: 'cut-register-card',
@@ -13,15 +14,17 @@ import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLo
 })
 export class PdmCostingCardComponent implements OnInit, OnDestroy {
 
+	oddBundlePerEdit: boolean = false;
 	loading = true;
 	approvalLoading = true;
 	costApproval: any[] = [];
+	today = new Date();
 
 	private refreshSub: Subscription;
 	cutFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	sewingFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	markerNameMethodLov = JSON.parse(JSON.stringify(FacilityLovConfig));
-	oddBundleLovConfig = JSON.parse(JSON.stringify(OddBundleLovConfig)); 
+	oddBundleLovConfig = JSON.parse(JSON.stringify(OddBundleLovConfig));
 	attributeSetLovConfig = JSON.parse(JSON.stringify(AttributeSetLovConfig));
 	cutTypeLovConfig = JSON.parse(JSON.stringify(CutTypeLovConfig));
 	markerNameOptions = [
@@ -37,12 +40,12 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 
 	groupingCriteriaOptions = [
 		{
-			label: 'Multiple PO',
-			value: 'Y'
-		},
-		{
 			label: 'None',
 			value: 'N'
+		},
+		{
+			label: 'Multiple PO',
+			value: 'Y'
 		},
 		{
 			label: 'Multiple SO',
@@ -50,11 +53,22 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		}
 	];
 
+	cutTypeDefaultValue = {
+		label: 'Body',
+		value: 'B'
+	}
+
+	attributeSetDefaultValue = {
+		label: "Size",
+		value: "SIZE"
+	}
+
 	constructor(
 		private _service: CutRegisterService,
 		public _shared: CutRegisterSharedService,
 		public dateUtils: DateUtilities,
-		private alertUtils: AlertUtilities
+		private alertUtils: AlertUtilities,
+		private _inputService: TnzInputService
 	) {
 	}
 
@@ -92,23 +106,35 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		// });
 	}
 
-	setLoading(flag:boolean){
+	setLoading(flag: boolean) {
 		this.loading = flag;
 		this._shared.headerLoading = flag;
 		this._shared.loading = flag;
 	}
 
-	valueChanged(change) {
-		// if (this._shared.editMode) {
-		// 	if (change.key == 'ProductId' || change.key == 'Season') {
-		// 		this.setCostingProduct(change.key == 'ProductId' ? change.value : null);
-		// 	} else if (change.key == 'ExchangeRateType' || change.key == 'ConversionDate' || change.key == 'CurrencyId') {
-		// 		this.updateExchangeRate(change.key);
-		// 	}
-		// }
+	valueChanged(change, key?) {
+		switch (key) {
+			case 'oddBundleAcc':
+				if (change.value == 'NEW_OR_LAST')
+					this.oddBundlePerEdit = true;
+				else{
+					this.oddBundlePerEdit = false;
+					this._inputService.updateInput(this._shared.getHeaderAttrPath('oddBundlePer'), '');
+				}
+				break;
+			case 'cutFacility':
+				console.log(change, 'cutFacility')
+				if (change.value && typeof change.value == 'object')
+					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), change.value);
+				else
+					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), '');
+				break;
+			default:
+				break;
+		}
 	}
 
-	valueChangedFromUI(event){
+	valueChangedFromUI(event) {
 
 	}
 

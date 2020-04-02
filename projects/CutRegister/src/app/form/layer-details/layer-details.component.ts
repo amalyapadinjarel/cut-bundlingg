@@ -40,7 +40,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 		this.fabricLovConfig = {
 			title: 'Select Fabric',
-			url: '/lovs/fabric--and-attributes?cutRegisterId=' + this._shared.id,
+			url: 'lovs/fabric--and-attributes?cutRegisterId=' + this._shared.id,
 			dataHeader: 'data',
 			returnKey: 'productId',
 			displayKey: 'productTitleNum',
@@ -79,7 +79,6 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 	valueChanged(change, index) {
 		// if (this._shared.editMode) {
-			console.log("Changed")
 			let lovValue = change.value;
 			let changeFields = [
 				{
@@ -102,7 +101,22 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 	valueChangedFromUI(change, index) {
 		if (this._shared.editMode) {
-			
+			switch(change.key){
+				case 'layerCount':
+					if(change.value){
+						let totalPlyCount = this._service.calclateTotalPlyCount();
+						this._shared.formData.markerDetails.forEach( (line,index) => {
+							let value = this.inputService.getInputValue(this._shared.getMarkerDetailsPath(index, 'markerRatio'))
+							if(typeof value!= undefined && !isNaN(value) ){
+								value = Number(value)*totalPlyCount;
+								this.inputService.updateInput(this._shared.getMarkerDetailsPath(index,'currcutqtysql'),value);
+							}
+						})
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
 

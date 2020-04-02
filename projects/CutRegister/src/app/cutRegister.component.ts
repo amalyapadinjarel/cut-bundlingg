@@ -70,4 +70,8 @@ export class CutRegisterComponent {
       this.alertutils.showAlerts(err)
     })
   }
+
+  ifApproved(){
+    return this._shared.getHeaderAttributeValue('docStatus') == 'APPROVED';
+  }
 }

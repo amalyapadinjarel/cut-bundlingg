@@ -12,7 +12,7 @@
 			<a>Assign</a>
 			<a>Revise</a>
 			<a>Print</a>
-			<a (click)="generateNextCut()">Generate Next Cut</a>
+			<a *ngIf="ifApproved()" (click)="generateNextCut()">Generate Next Cut</a>
 		</div>
 		<div class="group" *ngIf="_shared.editMode">
 			<a (click)="save()">Save</a>

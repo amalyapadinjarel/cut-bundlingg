@@ -5,6 +5,7 @@ import { AlertUtilities } from 'app/shared/utils';
 import { Subscription } from 'rxjs';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { Product, OrderDetails } from '../../models/cut-register.model';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
 	selector: 'order-details',
@@ -21,7 +22,8 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	constructor(
 		private _service: CutRegisterService,
 		public _shared: CutRegisterSharedService,
-		private alertUtils: AlertUtilities
+		private alertUtils: AlertUtilities,
+		private _inputService: TnzInputService
 	) {
 	}
 
@@ -30,7 +32,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 			this._service.loadData(this.key);
 		});
 		this.refreshOrderDetails = this._shared.refreshOrderDetails.subscribe(change => {
-				this.refreshTable();
+			this.refreshTable();
 		});
 	}
 
@@ -41,44 +43,45 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 			this.refreshSub.unsubscribe();
 	}
 
-	valueChanged(change, index) {
-		if (this._shared.editMode) {
-			if (change.key == 'LineAmount')
-				this.calculateProfit(index);
-		}
-	}
-
 	valueChangedFromUI(change, index) {
 		if (this._shared.editMode) {
-			if (change.key == 'SellingPrice')
-				this.calculateProfit(index);
+			let value, allwdQty, orderQty, otherValue
+			value = change.value;
+			allwdQty = ''
+			if (typeof value != 'undefined' && value !== '') {
+				switch (change.key) {
+					case 'cutAllowancePercent':
+						orderQty = this._shared.formData.orderDetails[index]['lineQty'];
+						allwdQty = this._service.calculateAllowedQty(orderQty, value)
+						otherValue = this._inputService.getInputValue(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'))
+						if (otherValue) {
+							this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '')
+							this.alertUtils.showAlerts("Setting Cut Allowance Qty as blank since Cut Allowance Percent has changed")
+						}
+						break;
+					case 'cutAllowanceQty':
+						orderQty = this._shared.formData.orderDetails[index]['lineQty'];
+						allwdQty = Number(orderQty) + Number(value);
+						otherValue = this._inputService.getInputValue(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'))
+						if (otherValue) {
+							this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), '')
+							this.alertUtils.showAlerts("Setting Cut Allowance Percent as blank since Cut Allowance Qty has changed")
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allwdQty)
 		}
 	}
 
-	calculateProfit(index) {
-		let fob = this._shared.getProdAttributeValue(index, 'SellingPrice');
-		let profit = Math.round(((fob - this._shared.getProdAttributeValue(index, 'LineAmount')) + Number.EPSILON) * 10 ** 12) / 10 ** 12;
-		this._service.inputService.updateInput(this._shared.getProductAttrPath(index, 'ProfitAmount'), profit);
-		this._service.inputService.updateInput(this._shared.getProductAttrPath(index, 'ProfitPercent'), Math.round(((profit * 100 / fob) + Number.EPSILON) * 100) / 100);
-	}
-
-
-	private getCombinationKey(combo, color) {
-		if (combo && color) {
-			return 'cmbclr:' + combo + ':' + color;
-		}
-		else if (combo) {
-			return 'cmb:' + combo;
-		}
-		else if (color) {
-			return 'clr:' + color;
-		}
-		else {
-			return 'general';
+	valueChanged(change, index) {
+		if (this._shared.editMode) {
 		}
 	}
 
-	refreshTable(){
+	refreshTable() {
 		this.dataTable.refresh(this._shared.formData[this.key]);
 	}
 
@@ -86,7 +89,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 
-	deleteLine(index, model){
-		this._shared.deleteDetailsLine(this.key,index,model);
+	deleteLine(index, model) {
+		this._shared.deleteDetailsLine(this.key, index, model);
 	}
 }

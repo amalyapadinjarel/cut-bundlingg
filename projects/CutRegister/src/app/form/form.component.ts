@@ -3,12 +3,13 @@ import { ActivatedRoute, Router, NavigationEnd, ResolveEnd } from '@angular/rout
 import { Subscription } from 'rxjs';
 import { CutRegisterSharedService } from '../_service/cut-register-shared.service';
 import { CutRegisterService } from '../_service/cut-register.service';
-import { OrderDetails, LayerDetails, MarkerDetails } from '../models/cut-register.model';
+import { OrderDetails, LayerDetails, MarkerDetails, CutPanelDetails } from '../models/cut-register.model';
 import { MatDialog } from '@angular/material/dialog';
 import { TnzInputLOVComponent } from 'app/shared/tnz-input/input-lov/input-lov.component';
 import { CopyFromSOLovConfig } from '../models/lov-config';
 import { MarkerDetailsComponent } from './marker-details/marker-details.component';
 import { AlertUtilities } from 'app/shared/utils';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
 	selector: 'cut-register-form',
@@ -19,19 +20,21 @@ export class PdmCostingFormComponent {
 
 	private routerSubs: Subscription;
 	public clicked = false;
-	public copyFromOptions = [{
-		label: "Copy From SO",
-		value: "S"
-	},
-	{
-		label: "Copy From MO",
-		value: "M"
-	},
+	public copyFromOptions = [
+		{
+			label: "Copy From SO",
+			value: "S"
+		},
+		{
+			label: "Copy From MO",
+			value: "M"
+		},
 	]
 
 	constructor(
 		public _shared: CutRegisterSharedService,
 		private _service: CutRegisterService,
+		private _inputService: TnzInputService,
 		private route: ActivatedRoute,
 		private router: Router,
 		private dialog: MatDialog,
@@ -88,7 +91,7 @@ export class PdmCostingFormComponent {
 
 	deleteLine(key) {
 		this._shared.deleteLines(key)
-	 }
+	}
 
 	print() {
 		console.log((this._shared.formData));
@@ -102,18 +105,29 @@ export class PdmCostingFormComponent {
 		const dialogRef = this.dialog.open(TnzInputLOVComponent);
 		dialogRef.componentInstance.lovConfig = lovConfig;
 		dialogRef.afterClosed().subscribe(resArray => {
+			let routingIds = [];
 			if (resArray && resArray.length) {
-				resArray.forEach( res => {
+				resArray.forEach(res => {
+					routingIds.push(res.routingId);
 					res = this.mapResToOrderDetails(res);
-					this._shared.addLine('orderDetails',res);
+					this._shared.addLine('orderDetails', res);
 					let markerDetails = this._shared.formData.markerDetails;
 					let index = markerDetails.findIndex(data => {
 						return data.productId == res.refProductId;
-					})
-					if(index == -1){
+					});
+					if (index == -1) {
 						res = this.mapFromOrderToMarkerDetails(res);
-						this._shared.addLine('markerDetails',res);
+						this._shared.addLine('markerDetails', res);
 					}
+				});
+				console.log(routingIds);
+				this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
+					console.log(cutPanels)
+					cutPanels.forEach(line => {
+						let cutPanelLine = this.mapToCutPanelLine(line);
+						console.log(cutPanelLine) 
+						this._shared.addLine('cutPanelDetails', cutPanelLine)
+					})
 				})
 			}
 		})
@@ -136,7 +150,7 @@ export class PdmCostingFormComponent {
 		model.refDocNo = res.documentNo ? res.documentNo : "";
 		model.refDocDate = res.orderDate ? res.orderDate : "";
 		model.refDoc = res.docType ? res.docType : "";
-		model.refProduct = res.productTitle ? res.productTitle : "";
+		model.refProduct = res.productNum ? res.productNum : "";
 		model.refProductId = res.productId ? res.productId : "";
 		model.refProdAttr = res.prdAttribute ? res.prdAttribute : "";
 
@@ -169,7 +183,7 @@ export class PdmCostingFormComponent {
 		return model;
 	}
 
-	mapFromOrderToMarkerDetails(res:OrderDetails){
+	mapFromOrderToMarkerDetails(res: OrderDetails) {
 		let model = new MarkerDetails();
 		// layMarkerId
 		// displayOrder
@@ -194,20 +208,40 @@ export class PdmCostingFormComponent {
 		return model;
 	}
 
-	generateBundleLines(){
-		this._service.generateBundleLines(this._shared.id).then( data => {
+	mapToCutPanelLine(line){
+		let cutPanel = new CutPanelDetails();
+		cutPanel.layRegstrId = this._shared.id.toString();
+		cutPanel.panelName = line.panelCode;
+		cutPanel.panelNameTr = line.panelName;
+		return cutPanel;
+	}
+
+	generateBundleLines() {
+		this._service.generateBundleLines(this._shared.id).then(data => {
 			this._service.loadData('cutBundle');
 		}).catch(err => {
 			this.alertUtils.showAlerts(err);
 		})
 	}
 
-	deleteBundleLines(){
+	deleteBundleLines() {
 		this._service.deleteBundleLines(this._shared.id).then(data => {
 			this._service.loadData('cutBundle');
 		}).catch(err => {
 			this.alertUtils.showAlerts(err);
 		})
+	}
+
+	compute() {
+		let cutAllowance = this._shared.getHeaderAttributeValue('cutAllowance');
+		if (typeof cutAllowance != 'undefined' && cutAllowance !== '') {
+			this._shared.formData.orderDetails.forEach((data, index) => {
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), cutAllowance)
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '')
+				let allowQty = this._service.calculateAllowedQty(data.lineQty, cutAllowance);
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty)
+			});
+		}
 	}
 }
 

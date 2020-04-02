@@ -1,19 +1,20 @@
-<perfect-scrollbar>
-    <div class="details">
-
-        <div>
+<div class="details">
+    <div>
+        <perfect-scrollbar>
             <cut-register-header></cut-register-header>
             <cut-register-card collapsibleComponent></cut-register-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
+            on {{_shared.formData.header?.lastUpdateDate}}
         </div>
-        <div class="line-details">
-            <div class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified
-                by {{_shared.formData.header?.lastUpdateByName}} on {{_shared.formData.header?.lastUpdateDate}}
-            </div>
-            <!-- <button mat-button matTooltip="print line">
+        <!-- <button mat-button matTooltip="print line">
                 <mat-icon class="mat-color-danger" (click)="print()">print</mat-icon>
             </button> -->
-            <mat-tab-group>
-                <mat-tab label="Lines">
+        <mat-tab-group>
+            <perfect-scrollbar>
+                <mat-tab label="Details">
                     <div class="group">
                         <div class="group-header">
                             <h3>Order Details</h3>
@@ -22,8 +23,8 @@
                                 <button mat-button matTooltip="delete line">
                                     <mat-icon class="mat-color-danger" (click)="deleteLine('orderDetails')">delete</mat-icon>
                                 </button>
-                                <button mat-button matTooltip="add line">
-                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('orderDetails')">add_box</mat-icon>
+                                <button mat-button matTooltip="compute">
+                                    <mat-icon class="mat-color-info" (click)="compute()">developer_board</mat-icon>
                                 </button>
                                 <button mat-button [matMenuTriggerFor]="menu" matTooltip="add line">
                                     <mat-icon class="mat-color-success">library_add</mat-icon>
@@ -53,13 +54,13 @@
                             <div class="group-header">
                                 <h3>Cut Panels</h3>
                                 <span class="flex-filler"></span>
-                                <div style="display:flex" *ngIf="_shared.getLayerDetailsEditable()">
+                                <div style="display:flex" *ngIf="_shared.getCutPanelDetailsEditable()">
                                     <button mat-button matTooltip="delete line">
                                         <mat-icon class="mat-color-danger" (click)="deleteLine('cutPanelDetails')">delete</mat-icon>
                                     </button>
-                                    <button mat-button matTooltip="add line">
+                                    <!-- <button mat-button matTooltip="add line">
                                         <mat-icon class="mat-color-info" (click)="_shared.addLine('cutPanelDetails')">add_box</mat-icon>
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
                             <cut-register-products></cut-register-products>
@@ -81,28 +82,28 @@
                         <layer-details></layer-details>
                     </div>
                 </mat-tab>
-                <mat-tab label="Bundle Generation">
-                    <perfect-scrollbar>
-                        <div class="group">
-                            <div class="group-header">
-                                <h3>Bundle Lines</h3>
-                                <span class="flex-filler"></span>
-                                <div style="display:flex" *ngIf="_shared.getCutBundleEditable()">
-                                    <button mat-button matTooltip="delete lines">
-                                        <mat-icon class="mat-color-danger" (click)="deleteBundleLines()">delete_sweep</mat-icon>
-                                    </button>
-                                    <button mat-button matTooltip="generate lines">
-                                        <mat-icon class="mat-color-success" (click)="generateBundleLines()">autorenew</mat-icon>
-                                    </button>
-                                </div>
+            </perfect-scrollbar>
+            <mat-tab label="Bundle Generation">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Bundle Lines</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getCutBundleEditable()">
+                                <button mat-button matTooltip="delete lines">
+                                    <mat-icon class="mat-color-danger" (click)="deleteBundleLines()">delete_sweep</mat-icon>
+                                </button>
+                                <button mat-button matTooltip="generate lines">
+                                    <mat-icon class="mat-color-success" (click)="generateBundleLines()">autorenew</mat-icon>
+                                </button>
                             </div>
-                            <cut-bundle></cut-bundle>
                         </div>
-                    </perfect-scrollbar>
-                </mat-tab>
-            </mat-tab-group>
-        </div>
+                        <cut-bundle></cut-bundle>
+                    </div>
+                </perfect-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
     </div>
-</perfect-scrollbar>
+</div>
 
 <!-- <layer-details></layer-details> -->

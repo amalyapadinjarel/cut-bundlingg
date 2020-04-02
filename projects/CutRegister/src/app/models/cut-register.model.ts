@@ -3,17 +3,17 @@ import { ChoiceList } from 'app/shared/models';
 
 export class CutRegister {
     registerId: number;
-    documentNo: string ;
-    cutFacility: Facility ;
-    sewingFacility: Facility ;
+    documentNo: string;
+    cutFacility: Facility;
+    sewingFacility: Facility;
     bundleSize: number = 14;
     cutType: string;
     markerNameMethod: string;
     groupingCriteria: string;
     oddBundleAcc: string;
     oddBundlePer: string;
-    cutNo: number ;
-    cutDate: Date ;
+    cutNo: number;
+    cutDate: Date;
     cutAllowance: string;
     cutExtra: string = 'Y';
     attributeSet: string;
@@ -151,7 +151,7 @@ export class OrderDetails {
     bpartnerId: string;
     facility: string;
 
-    constructor(model = null){
+    constructor(model = null) {
         this.layOrderRefId = model ? model.layOrderRefId : "0";
         this.bpartName = model ? model.bpartName : "";
         this.lastUpdateDate = model ? model.lastUpdateDate : "";
@@ -204,40 +204,40 @@ export class OrderDetails {
     }
 }
 
-export class LayerDetails{
-    registerLineId: string ;
-    createdByName: string ;
-    colorName: string ;
-    color: string ;
-    colorFilter: string ;
-    productInstanceId: string ;
-    viewAttr: string ;
-    attrValueFilter: string ;
-    rollNo: string ;
-    slNo: string ;
-    division: string ;
-    attributeId: string ;
-    lineNo: string ;
-    lotNo: string ;
-    registerId: string ;
-    prodName: string ;
-    layNo: string ;
-    lastUpdatedBy: string ;
-    layerCount: string ;
-    productId: string ;
-    shade: string ;
-    active: string ;
-    creationDate: string ;
-    createdBy: string ;
-    grade: string ;
-    attrValue: string ;
-    prodAttr: string ;
-    facility: string ;
-    shrinkage: string ;
-    lastUpdateBy: string ;
-    lastUpdatedByName: string ;
-    
-    constructor(model=null){
+export class LayerDetails {
+    registerLineId: string;
+    createdByName: string;
+    colorName: string;
+    color: string;
+    colorFilter: string;
+    productInstanceId: string;
+    viewAttr: string;
+    attrValueFilter: string;
+    rollNo: string;
+    slNo: string;
+    division: string;
+    attributeId: string;
+    lineNo: string;
+    lotNo: string;
+    registerId: string;
+    prodName: string;
+    layNo: string;
+    lastUpdatedBy: string;
+    layerCount: string;
+    productId: string;
+    shade: string;
+    active: string;
+    creationDate: string;
+    createdBy: string;
+    grade: string;
+    attrValue: string;
+    prodAttr: string;
+    facility: string;
+    shrinkage: string;
+    lastUpdateBy: string;
+    lastUpdatedByName: string;
+
+    constructor(model = null) {
         this.registerLineId = model ? model.registerLineId : "0";
         this.createdByName = model ? model.createdByName : "";
         this.colorName = model ? model.colorName : "";
@@ -272,36 +272,36 @@ export class LayerDetails{
     }
 }
 
-export class MarkerDetails{
-    layMarkerId : string ;
-    crtdByName : string;
-    lastUpdateDate : string;
-    displayOrder : string;
-    luByName : string;
-    division : string;
-    prodName : string;
-    attribute : string;
-    lastUpdatedBy : string;
-    currcutqtysql : string;
-    productId : string;
-    active : string;
-    markerRatio : string;
-    creationDate : string;
-    created_by : string;
-    attribute9 : string;
-    attribute8 : string;
-    attribute5 : string;
-    attribute4 : string;
-    attribute7 : string;
-    layRegstrId : string;
-    attribute6 : string;
-    attribute1 : string;
-    attribute3 : string;
-    attribute2 : string;
-    prodAttr : string;
-    attribute10 : string;
-    facility : string;
-    constructor(model = null){
+export class MarkerDetails {
+    layMarkerId: string;
+    crtdByName: string;
+    lastUpdateDate: string;
+    displayOrder: string;
+    luByName: string;
+    division: string;
+    prodName: string;
+    attribute: string;
+    lastUpdatedBy: string;
+    currcutqtysql: string;
+    productId: string;
+    active: string;
+    markerRatio: string;
+    creationDate: string;
+    created_by: string;
+    attribute9: string;
+    attribute8: string;
+    attribute5: string;
+    attribute4: string;
+    attribute7: string;
+    layRegstrId: string;
+    attribute6: string;
+    attribute1: string;
+    attribute3: string;
+    attribute2: string;
+    prodAttr: string;
+    attribute10: string;
+    facility: string;
+    constructor(model = null) {
         this.layMarkerId = model ? model.layMarkerId : "0";
         this.crtdByName = model ? model.crtdByName : "";
         this.lastUpdateDate = model ? model.lastUpdateDate : "";
@@ -330,5 +330,35 @@ export class MarkerDetails{
         this.prodAttr = model ? model.prodAttr : "";
         this.attribute10 = model ? model.attribute10 : "";
         this.facility = model ? model.facility : "";
+    }
+}
+
+export class CutPanelDetails {
+    active: string;
+    createdBy: string;
+    creationDate: string;
+    displayOrder: string;
+    division: string;
+    facility: string;
+    lastUpdatedBy: string;
+    lastUpdateDate: string;
+    layRegstrId: string;
+    mcpId: string;
+    panelName: string;
+    panelNameTr: string;
+
+    constructor(model = null) {
+        this.active = model ? model.active : "";
+        this.createdBy = model ? model.createdBy : "";
+        this.creationDate = model ? model.creationDate : "";
+        this.displayOrder = model ? model.displayOrder : "";
+        this.division = model ? model.division : "";
+        this.facility = model ? model.facility : "";
+        this.lastUpdatedBy = model ? model.lastUpdatedBy : "";
+        this.lastUpdateDate = model ? model.lastUpdateDate : "";
+        this.layRegstrId = model ? model.layRegstrId : "";
+        this.mcpId = model ? model.mcpId : "";
+        this.panelName = model ? model.panelName : "";
+        this.panelNameTr = model ? model.panelNameTr : "";
     }
 }

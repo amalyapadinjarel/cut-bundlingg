@@ -1,6 +1,6 @@
 export const FacilityLovConfig: any = {
     title: 'Select Facility',
-    url: '/lovs/facility',
+    url: 'lovs/facility',
     dataHeader: 'data',
     returnKey: 'value',
     displayKey: 'label',
@@ -47,7 +47,7 @@ export const AttributeSetLovConfig: any = {
 
 export const CopyFromSOLovConfig: any = {
     title: 'Select SO',
-    url: '/cut-register/copy-from-so',
+    url: 'cut-register/copy-from-so',
     dataHeader: 'orders',
     filterAttributes: [
         'productTitle'
@@ -82,6 +82,18 @@ export const CopyFromSOLovConfig: any = {
             key: 'documentNo'
         },
         {
+            title: 'Customer',
+            key: 'customer'
+        },
+        {
+            title: 'Order Date',
+            key: 'orderDate'
+        },
+        {
+            title: 'Promised Date',
+            key: 'promisedDate'
+        },
+        {
             title: 'OlDescription',
             key: 'olDescription'
         },
@@ -101,6 +113,7 @@ export const CopyFromSOLovConfig: any = {
             title: 'Combo',
             key: 'comboTitle'
         },
+       
     ],
     allowMultiple: true
 };

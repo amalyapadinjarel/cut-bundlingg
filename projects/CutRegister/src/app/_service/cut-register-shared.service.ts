@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LocalCacheService } from 'app/shared/services';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
-import { Product, OrderDetails, LayerDetails, MarkerDetails } from '../models/cut-register.model';
+import { Product, OrderDetails, LayerDetails, MarkerDetails, CutPanelDetails } from '../models/cut-register.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from 'app/shared/component';
 
 @Injectable()
 export class CutRegisterSharedService {
 
     appKey = 'cutRegister';
-    apiBase = '/cut-register';
+    apiBase = 'cut-register';
     editMode = false;
     id: number;
     formData: any = {};
@@ -36,13 +38,13 @@ export class CutRegisterSharedService {
     markerDetailsPrimaryKey = 'layMarkerId';
     orderDetailsPrimaryKey = 'layOrderRefId';
     cutBundlePrimaryKey = 'bundleId';
-    cutPanelDetailsPrimaryKey = '';
+    cutPanelDetailsPrimaryKey = 'mcpId';
 
     prodAttributes = Object.keys(new Product());
     orderDetailsAttributes = Object.keys(new OrderDetails());
     layerDetailsAttributes = Object.keys(new LayerDetails());
     markerDetailsAttributes = Object.keys(new MarkerDetails());
-    cutPanelDetailsAttributes = [];
+    cutPanelDetailsAttributes = Object.keys(new CutPanelDetails());
     cutBundleAttributes = [];
 
     _orderDetailsSeq = 1;
@@ -70,8 +72,8 @@ export class CutRegisterSharedService {
 
     constructor(
         private _cache: LocalCacheService,
-        private inputService: TnzInputService
-
+        private inputService: TnzInputService,
+        private _dialog: MatDialog
     ) { }
 
     init() {
@@ -224,6 +226,10 @@ export class CutRegisterSharedService {
         return this.cutPanelDetailsPath + '[' + line + '].' + attr;
     }
 
+    getOrderDetailsPath(line, attr) {
+        return this.orderDetailsPath + '[' + line + '].' + attr;
+    }
+
     getMarkerDetailsPath(line, attr) {
         return this.markerDetailsPath + '[' + line + '].' + attr;
     }
@@ -253,7 +259,7 @@ export class CutRegisterSharedService {
         return editable;
     }
 
-    getOrderDetailsEditable(attr = null, primaryKey = this.id) {
+    getOrderDetailsEditable(attr = null) {
         let editable = this.editMode;
         return editable;
     }
@@ -343,16 +349,26 @@ export class CutRegisterSharedService {
         if (cache && cache.length > index)
             cache.splice(index, 1);
         this._cache.setLocalCache(path, cache);
-        let removedPath = this[key + 'RemovedKeysPath'];
         let model = data[index];
         data.splice(index, 1);
-        cache = this._cache.getCachedValue(removedPath)
-        if (!cache) {
-            cache = [];
+        if (model[linePrimaryKey]) {
+            let removedPath = this[key + 'RemovedKeysPath'];
+            cache = this._cache.getCachedValue(removedPath)
+            if (!cache) {
+                cache = [];
+            }
+            cache.push(model[linePrimaryKey])
+            this._cache.setLocalCache(removedPath, cache);
         }
-        cache.push(model[linePrimaryKey])
-        this._cache.setLocalCache(removedPath, cache);
+        if (data.length == 0) {
+            this.resetSeq(key)
+        }
         this.refreshLines(key);
+    }
+
+    resetSeq(key) {
+        console.log('_' + key + 'Seq')
+        this['_' + key + 'Seq'] = 1;
     }
 
     resetLines() {
@@ -411,6 +427,7 @@ export class CutRegisterSharedService {
                 newLine = model ? new MarkerDetails(model) : new MarkerDetails();
                 break;
             case 'cutPanelDetails':
+                newLine = model ? new CutPanelDetails(model) : new CutPanelDetails();
                 break;
             default:
                 break;
@@ -472,19 +489,27 @@ export class CutRegisterSharedService {
     }
 
     deleteLines(key) {
-        let primaryKey = this[key + 'PrimaryKey'];
-        if (this.selectedLines[key])
-            this.selectedLines[key].forEach(line => {
-                let index = this.formData[key].findIndex(data => {
-                    return data[primaryKey] == line[primaryKey]
-                });
-                this.deleteDetailsLine(key, index, line);
-            });
-        this.setSelectedLines(key, [])
-    }
+        if (this.selectedLines[key] && this.selectedLines[key].length){
+            let primaryKey = this[key + 'PrimaryKey'];
+            let dialogRef = this._dialog.open(ConfirmPopupComponent);
+            dialogRef.componentInstance.dialogTitle = 'Delete selected record(s)';
+            dialogRef.componentInstance.message = 'Are you sure you want to delete the selected ' + this.selectedLines[key].length +' record(s)'
+            dialogRef.afterClosed().subscribe(flag => {
+                if(flag){
+                    this.selectedLines[key].forEach(line => {
+                        let index = this.formData[key].findIndex(data => {
+                            return data[primaryKey] == line[primaryKey]
+                        });
+                        this.deleteDetailsLine(key, index, line);
+                    });
+                    this.setSelectedLines(key, [])
+                }
+            })
+        }
+    }        
 
     deleteDetailsLine(key, index, model) {
-        let productId, orderDetails,orders;
+        let productId, orderDetails, orders;
         switch (key) {
             case 'markerDetails':
                 productId = model['productId'];
@@ -498,13 +523,15 @@ export class CutRegisterSharedService {
                 break;
             case 'orderDetails':
                 productId = model['refProductId'];
-                this.deleteLine(key,index);
+                this.deleteLine(key, index);
                 orderDetails = this.formData.orderDetails
                 orders = orderDetails.filter(data => { return data.refProductId == productId });
-                if(!orders || !orders.length ){
+                if (!orders || !orders.length) {
                     let markerDetails = this.formData.markerDetails;
-                    let i = markerDetails.findIndex(data=> { return data.productId == productId});
-                    this.deleteLine('markerDetails', i);
+                    let i = markerDetails.findIndex(data => { return data.productId == productId });
+                    if (i > -1) {
+                        this.deleteLine('markerDetails', i);
+                    }
                 }
                 break;
             default:

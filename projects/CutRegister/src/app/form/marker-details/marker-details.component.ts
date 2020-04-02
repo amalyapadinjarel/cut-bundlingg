@@ -5,6 +5,7 @@ import { AlertUtilities } from 'app/shared/utils';
 import { Subscription } from 'rxjs';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { Product } from '../../models/cut-register.model';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
 	selector: 'marker-details',
@@ -21,7 +22,8 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 	constructor(
 		private _service: CutRegisterService,
 		public _shared: CutRegisterSharedService,
-		private alertUtils: AlertUtilities
+		private alertUtils: AlertUtilities,
+		private inputService: TnzInputService
 	) {
 	}
 
@@ -30,7 +32,7 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 			this._service.loadData(this.key);
 		});
 		this.refreshMarkerDetails = this._shared.refreshMarkerDetails.subscribe(change => {
-				this.refreshTable();
+			this.refreshTable();
 		});
 	}
 
@@ -48,6 +50,22 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 
 	valueChangedFromUI(change, index) {
 		if (this._shared.editMode) {
+			switch (change.key) {
+				case 'markerRatio':
+					if (change.value) {
+						let totalPlyCount = this._service.calclateTotalPlyCount();
+						let value = change.value
+						if (typeof value != undefined && !isNaN(value)) {
+							value = Number(value) * totalPlyCount;
+							this.inputService.updateInput(this._shared.getMarkerDetailsPath(index, 'currcutqtysql'), value);
+						}
+					} else {
+						this.inputService.updateInput(this._shared.getMarkerDetailsPath(index, 'currcutqtysql'), 0);						
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
 
@@ -56,11 +74,10 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	onRowSelected() {
-		console.log(this.dataTable.selectedModels())
 		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 
-	deleteLine(index,model){
-		this._shared.deleteDetailsLine(this.key,index,model)
+	deleteLine(index, model) {
+		this._shared.deleteDetailsLine(this.key, index, model)
 	}
 }

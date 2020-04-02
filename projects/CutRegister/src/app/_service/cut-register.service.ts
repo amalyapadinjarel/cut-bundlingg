@@ -10,6 +10,7 @@ import { HttpParams } from '@angular/common/http';
 @Injectable()
 export class CutRegisterService {
 
+	
     constructor(private apiService: ApiService,
         private _shared: CutRegisterSharedService,
         public inputService: TnzInputService,
@@ -21,7 +22,7 @@ export class CutRegisterService {
 
     fetchListData() {
         return new Promise((resolve, reject) => {
-            this.apiService.get(this._shared.apiBase)
+            this.apiService.get('/' + this._shared.apiBase)
                 .subscribe(data => {
                     if (data.count > 0)
                         resolve(data.registers);
@@ -35,10 +36,10 @@ export class CutRegisterService {
     fetchFormData(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + '/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/' + this._shared.id)
                     .subscribe(data => {
                         if (data.register)
-                            resolve( new CutRegister(data.register) );
+                            resolve(new CutRegister(data.register));
                         else
                             reject();
                     }, err => reject(err));
@@ -52,7 +53,7 @@ export class CutRegisterService {
     fetchCostingApprovals(costingId?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + 'costinglinestatus?limit=20&q=CostingId=' + (costingId ? costingId : this._shared.id))
+                this.apiService.get('/' + this._shared.apiBase + 'costinglinestatus?limit=20&q=CostingId=' + (costingId ? costingId : this._shared.id))
                     .subscribe(data => {
                         if (data.count > 0)
                             resolve(data.items);
@@ -69,11 +70,11 @@ export class CutRegisterService {
     fetchLayerDetails(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + '/layer-details/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/layer-details/' + this._shared.id)
                     .subscribe(data => {
                         if (data.register) {
                             resolve(data.register);
-                            if(data.maxDisplayOrder){
+                            if (data.maxDisplayOrder) {
                                 this._shared.layerDetailsSeq = data.maxDisplayOrder
                             }
                         }
@@ -90,9 +91,9 @@ export class CutRegisterService {
     fetchMarkerDetails(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + '/marker-details/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/marker-details/' + this._shared.id)
                     .subscribe(data => {
-                        if (data.register){
+                        if (data.register) {
                             resolve(data.register);
                             if (data.maxDisplayOrder) {
                                 this._shared.markerDetailsSeq = data.maxDisplayOrder
@@ -111,9 +112,9 @@ export class CutRegisterService {
     fetchOrderDetails(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + '/order-details/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/order-details/' + this._shared.id)
                     .subscribe(data => {
-                        if (data.register){
+                        if (data.register) {
                             resolve(data.register);
                             console.log(data.maxDisplayOrder)
                             if (data.maxDisplayOrder) {
@@ -132,29 +133,29 @@ export class CutRegisterService {
 
     fetchCutPanelDetails(id?: number) {
         return new Promise((resolve, reject) => {
-            // if (this._shared.id > 0) {
-            //     this.apiService.get(this._shared.apiBase + '/cut-panel-details/' + this._shared.id)
-            //         .subscribe(data => {
-            //             if (data.register) {
-            //                 resolve(data.register);
-            //                 if (data.maxDisplayOrder) {
-            //                     this._shared.cutPanelDetailsSeq = data.maxDisplayOrder
-            //                 }
-            //             }
-            //             else
-            //                 reject();
-            //         }, err => reject(err));
-            // }
-            // else {
-            resolve([]);
-            // }
+            if (this._shared.id > 0) {
+                this.apiService.get('/' + this._shared.apiBase + '/cut-panels/' + this._shared.id)
+                    .subscribe(data => {
+                        if (data.register) {
+                            resolve(data.register);
+                            if (data.maxDisplayOrder) {
+                                this._shared.cutPanelDetailsSeq = data.maxDisplayOrder
+                            }
+                        }
+                        else
+                            reject();
+                    }, err => reject(err));
+            }
+            else {
+                resolve([]);
+            }
         });
     }
 
     fetchCutBundle(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                this.apiService.get(this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
                     .subscribe(data => {
                         if (data.data)
                             resolve(data.data);
@@ -170,10 +171,10 @@ export class CutRegisterService {
 
     generateNextCut() {
         let defaultMsg = "Unknown Error. Failed to generate next cut.";
-        let params:HttpParams = new HttpParams();
+        let params: HttpParams = new HttpParams();
         params = params.set('docNum', this._shared.getHeaderAttributeValue('documentNo'))
         return new Promise((resolve, reject) => {
-            this.apiService.get(this._shared.apiBase + '/generate-next-cut',params)
+            this.apiService.get('/' + this._shared.apiBase + '/generate-next-cut', params)
                 .subscribe(ret => {
                     if (ret.data) {
                         if (ret.data.returnCode && ret.data.returnCode == 1)
@@ -189,7 +190,7 @@ export class CutRegisterService {
     generateBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to generate bundle.";
         return new Promise((resolve, reject) => {
-            this.apiService.get(this._shared.apiBase + '/generate-bundle/' + this._shared.id)
+            this.apiService.get('/' + this._shared.apiBase + '/generate-bundle/' + this._shared.id)
                 .subscribe(ret => {
                     if (ret.data) {
                         if (ret.data.returnCode && ret.data.returnCode == 1)
@@ -200,12 +201,12 @@ export class CutRegisterService {
                     reject(defaultMsg);
                 }, err => reject(defaultMsg));
         });
-    } 
+    }
 
     deleteBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to delete bundle.";
         return new Promise((resolve, reject) => {
-            this.apiService.delete(this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
+            this.apiService.delete('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
                 .subscribe(ret => {
                     if (ret.data) {
                         if (ret.data.returnCode && ret.data.returnCode == 1)
@@ -221,7 +222,7 @@ export class CutRegisterService {
     fetchProducts(id?: number) {
         return new Promise((resolve, reject) => {
             if (this._shared.id > 0) {
-                // this.apiService.get(this._shared.apiBase + 'costingproductinfo?limit=100&q=CostingId=' + (costingId ? costingId : this._shared.costingId))
+                // this.apiService.get('/' + this._shared.apiBase + 'costingproductinfo?limit=100&q=CostingId=' + (costingId ? costingId : this._shared.costingId))
                 //     .subscribe(data => {
                 //         if (data.count > 0) {
                 //             resolve(data.items);
@@ -248,7 +249,7 @@ export class CutRegisterService {
 
     fetchCostingLines(costingId?: number) {
         return new Promise((resolve, reject) => {
-            this.apiService.get(this._shared.apiBase + 'costlinegroups?limit=1000&expand=Lines&finder=list;pCostingId=' + (costingId ? costingId : this._shared.id))
+            this.apiService.get('/' + this._shared.apiBase + 'costlinegroups?limit=1000&expand=Lines&finder=list;pCostingId=' + (costingId ? costingId : this._shared.id))
                 .subscribe(data => {
                     if (data.count > 0)
                         resolve(data.items);
@@ -404,6 +405,45 @@ export class CutRegisterService {
                     this.alertUtils.showAlerts(err.message, true)
             });
         }
+    }
+
+    calculateAllowedQty(orderQty, cutAllowance) {
+        let qty = 0;
+        if (orderQty && !isNaN(orderQty)) {
+            qty = Number(orderQty);
+            if (cutAllowance && !isNaN(cutAllowance))
+                qty += qty * Number(cutAllowance) / 100;
+        }
+        return Math.round(qty);
+    }
+
+    getCutPanelsFromRoutingIds(routingIds:Array<any>){
+        return new Promise((resolve,reject)=> {
+            let errorMsg = 'Error while fetching cut panels from orders.';
+            let params = new HttpParams();
+            params = params.set('idList',routingIds.toString());
+            this.apiService.get('/' + this._shared.apiBase +'/cut-panels-from-order',params)
+            .catch( err => {
+                reject(errorMsg);
+                return err;
+            })
+            .subscribe( data => {
+                if(data && data.cutPanels)
+                    resolve(data.cutPanels);
+                else
+                    reject(errorMsg);
+            })
+        })
+    }
+
+    calclateTotalPlyCount() {
+        let count = 0;
+        this._shared.formData.layerDetails.forEach((line, index) => {
+            let value = this.inputService.getInputValue(this._shared.getLayerDetailsPath(index, 'layerCount'))
+            if (value && !isNaN(value))
+                count += Number(value);
+        })
+        return count;
     }
 
 }

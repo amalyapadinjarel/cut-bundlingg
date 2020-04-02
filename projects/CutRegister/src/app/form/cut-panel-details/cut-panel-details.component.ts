@@ -51,8 +51,7 @@ export class CutPanelDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	deleteLine(index){
-		this._shared.formData.cutPanelDetails.splice(index,1);
-		this._shared.refreshCutPanelDetails.next(true);
+		this._shared.deleteLine(this.key, index)
 	}
 
 	refreshTable() {
