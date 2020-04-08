@@ -187,14 +187,6 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 				this.loadSelectOptions();
 			}
 			if (this.isEdit) {
-				if (this.defaultValue) {
-					if (this.type == 'date') {
-						this.setValue(DateUtilities.formatDate(this.defaultValue), true);
-					} else {
-						this.setValue(this.defaultValue, true)
-					}
-
-				}
 				if (!this._service.getSharedData(this.rootPath)) {
 					this._service.setSharedData(this.rootPath, this.sharedData);
 				}
@@ -302,10 +294,11 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		if (!inValid) {
 			if (this.validators) {
 				this.validators.forEach(validator => {
-					if(this.type == 'lov' && newValue && typeof newValue != 'object'){
-						this.status = 'warning';
-						this.alert =  'Choose from the given list of options.';
-					}
+					// console.log(newValue)
+					// if(this.type == 'lov' && newValue && typeof newValue != 'object'){
+					// 	this.status = 'warning';
+					// 	this.alert =  'Choose from the given list of options.';
+					// }
 					if (validator == 'required') {
 						if (typeof newValue == 'undefined' || newValue === '') {
 							this.status = 'warning';
@@ -373,6 +366,13 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			}
 			if (cache && cache != value) {
 				value = cache;
+			}
+		}
+		if (this.defaultValue && (typeof value == 'undefined' || value == '')) {
+			if (this.type == 'date') {
+				value = DateUtilities.formatDate(this.defaultValue);
+			} else {
+				value = this.defaultValue
 			}
 		}
 		this.setValue(value);

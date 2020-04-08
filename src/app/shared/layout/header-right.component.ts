@@ -3,7 +3,7 @@ import {interval as observableInterval,  Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { User } from '../models';
-import { ApiServiceV4, EventService, UserService, TrendzMessageService } from '../services';
+import { ApiServiceV4, EventService, UserService, TrendzMessageService, ApiService } from 'app/shared/services';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertUtilities } from '../utils/alert.utility';
 
@@ -30,7 +30,7 @@ export class HeaderRightComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private userService: UserService,
-		private apiService: ApiServiceV4,
+		private apiService: ApiService,
 		private eventService: EventService,
 		private trendzMessageService: TrendzMessageService,
 		private alertUtils: AlertUtilities,

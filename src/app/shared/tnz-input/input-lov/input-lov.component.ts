@@ -13,21 +13,25 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 
 	lovConfig: any = {};
 	returnData: any;
+	preFetchPages = 1;
+	primaryKey = [];
 
 	@ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
 
 	constructor(
 		public dialogRef: MatDialogRef<TnzInputLOVComponent>,
 		private alertUtils: AlertUtilities,
-	) { }
-
-	ngOnInit() {
-		console.log("here")
-
-		console.log('lov',this.lovConfig)
+	) {
 	}
 
-	ngOnChanges(){
+	ngOnInit() {
+		console.log(this.lovConfig)
+		if (this.lovConfig) {
+			if (this.lovConfig.preFetchPages)
+				this.preFetchPages = this.lovConfig.preFetchPages;
+			if (this.lovConfig.primaryKey)
+				this.primaryKey = this.lovConfig.primaryKey;
+		}
 	}
 
 	ngOnDestroy() {

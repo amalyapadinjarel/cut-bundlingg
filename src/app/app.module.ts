@@ -22,7 +22,8 @@ import {
 	TrendzMessageService,
 	LocalConfigService,
 	NavigationService,
-	DocumentService
+	DocumentService,
+	ApiService
 } from './shared/services';
 import { AlertUtilities, AutoCompleteUtilities, DateUtilities } from './shared/utils';
 import { UserNotificationsComponent } from './gadgets/user-notifications/user-notifications.component';
@@ -115,6 +116,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		DocumentService,
 		NavigationService,
 		EventService,
+		ApiService,
 		ApiServiceV4,
 		AuthGuard,
 		JwtService,

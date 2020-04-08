@@ -37,6 +37,7 @@ export class SchedulerUtils {
         this.userService.currentUser.subscribe(user => {
             SchedulerUtils.authentication = user.trendzBIAuthentication;
         });
+        
     }
 
     private setHeaders(authentication: string): HttpHeaders {
@@ -53,9 +54,11 @@ export class SchedulerUtils {
     }
 
     private get(path: string, params: HttpParams = new HttpParams(), token = Math.random()): Observable<any> {
+        console.log('${SchedulerUtils.url}${path}')
         return this.http.get(`${SchedulerUtils.url}${path}`, { headers: this.setHeaders(SchedulerUtils.authentication), params: params }).pipe(
             catchError(this.formatErrors),
             map((res: any) => {
+                console.log(res)
                 res.token = token;
                 return res;
             }));
@@ -97,6 +100,7 @@ export class SchedulerUtils {
 
     getTaskflowReports(taskflowKey, module): Promise<any> {
         return new Promise((resolve, reject) => {
+            console.log('Here')
             this.get('/programs/reports/' + taskflowKey + "/" + module)
                 .subscribe(response => {
                     resolve(response);

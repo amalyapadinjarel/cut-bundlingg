@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { EventService, UserService, ApiService } from './shared/services';
+import { EventService, UserService, ApiService } from 'app/shared/services';
 import { NavigationService } from 'app/shared/services';
 import { MatDialog } from '@angular/material/dialog';
 import { PushMessageService } from 'app/shared/websocket/push-message.service';
@@ -97,14 +97,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
 		this.userSubs = this.userService.isAuthenticated.subscribe(
 			(isAuthenticated) => {
-				console.log(isAuthenticated)
 				if (isAuthenticated) {
 					this.isAuthenticated = true;
-					// this.pushMessageService.initializeWebSocketConnection();
+					this.pushMessageService.initializeWebSocketConnection();
 					// this.loadTawkTo();
 				} else {
 					this.isAuthenticated = false;
-					// this.pushMessageService.disconnectWebSocket();
+					this.pushMessageService.disconnectWebSocket();
 					// this.unloadTawkTo();
 				}
 				this.authFailed = !this.isAuthenticated;
@@ -120,40 +119,43 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 			}
 		});
 
-		this.gadgetSubs = this.eventService.showGadget.subscribe(gadget => {
-			if (gadget) {
-				if (gadget.key == 'notifications') {
-					this.setGadgetPosition(gadget.position);
-					this.showNotifications();
-				}
-				else if (gadget.key == 'downloads') {
-					this.setGadgetPosition(gadget.position);
-					this.showDownloads();
-				}
-				else if (gadget.key == 'usermenu') {
-					this.setGadgetPosition(gadget.position);
-					this.showUserMenu();
-				}
-				else if (gadget.key == 'application-reports') {
-					this.setGadgetPosition(gadget.position);
-					this.showApplicationReports(gadget.data);
-				}
-				else if (gadget.key == 'application-programs') {
-					this.setGadgetPosition(gadget.position);
-					this.showApplicationPrograms(gadget.data);
-				}
-				else if (gadget.key == 'usersettings') {
-					this.setGadgetPosition(gadget.position);
-					this.showUserSettings();
+		this.eventService.showGadget
+			.subscribe(gadget => {
+				if (gadget) {
+					if (gadget.key == 'notifications') {
+						this.setGadgetPosition(gadget.position);
+						this.showNotifications();
+					}
+					else if (gadget.key == 'downloads') {
+						this.setGadgetPosition(gadget.position);
+						this.showDownloads();
+					}
+					else if (gadget.key == 'usermenu') {
+						this.setGadgetPosition(gadget.position);
+						this.showUserMenu();
+					}
+					else if (gadget.key == 'application-reports') {
+						this.setGadgetPosition(gadget.position);
+						this.showApplicationReports(gadget.data);
+					}
+					else if (gadget.key == 'application-programs') {
+						this.setGadgetPosition(gadget.position);
+						this.showApplicationPrograms(gadget.data);
+					}
+					else if (gadget.key == 'usersettings') {
+						this.setGadgetPosition(gadget.position);
+						this.showUserSettings();
+					}
+					else {
+						this.currentGadget = "";
+					}
 				}
 				else {
 					this.currentGadget = "";
 				}
-			}
-			else {
-				this.currentGadget = "";
-			}
-		});
+			});
+
+		
 	}
 
 	ngAfterViewInit() {

@@ -1007,6 +1007,7 @@ export class SmdDataTable
 									let value = this.columnFilterInputs[column.id].value;
 									value = value.toLowerCase();
 									let field = column.field;
+									console.log(column.field)
 									this.filteredModels.forEach((model) => {
 										if (model.hasOwnProperty("unfiltered") && model.unfiltered == true) {
 											tempModels.push(model);
@@ -1046,7 +1047,6 @@ export class SmdDataTable
 			if (data.status != "S") {
 				reject();
 			}
-			console.log(data)
 			if (this.token == data.token) {
 				this.lastQueryExecutedPage = page;
 				this.models = data[this.dataHeader];

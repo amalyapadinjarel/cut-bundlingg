@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { User } from 'app/shared/models';
-import { ApiServiceV4, UserService, EventService } from 'app/shared/services';
+import { ApiServiceV4, UserService, EventService, ApiService } from 'app/shared/services';
 
 @Component({
     selector: 'user-profile-menu',
@@ -20,7 +20,7 @@ export class UserProfileMenuComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private apiService: ApiServiceV4,
+        private apiService: ApiService,
         private userService: UserService,
         private eventService: EventService,
     ) {
@@ -33,7 +33,7 @@ export class UserProfileMenuComponent implements OnInit, OnDestroy {
             }
         );
 
-        const sub = this.apiService.get('/common/division-user')
+        const sub = this.apiService.get('/users/division-user')
             .subscribe(data => {
                 if (data.divisions) {
                     data.divisions.forEach(div => {

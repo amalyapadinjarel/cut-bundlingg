@@ -405,7 +405,7 @@ smd-datatable {
 					line-height: 0;
 					border-bottom: 1px solid #e0e0e0;
 					th {
-						padding: 0;
+						padding: 0 !important;
 						.mat-icon {
 							vertical-align: middle;
 						}
