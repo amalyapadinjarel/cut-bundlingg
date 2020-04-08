@@ -40,13 +40,6 @@ const MATERIAL_MODULE = [
   MatTooltipModule
 ];
 const PROVIDERS = [
-  UserService,
-  ApiService,
-  JwtService,
-  EventService,
-  NavigationService,
-  AlertUtilities,
-  AuthService,
   CutRegisterService,
   CutRegisterSharedService,
   LocalCacheService

@@ -78,6 +78,6 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	deleteLine(index, model) {
-		this._shared.deleteDetailsLine(this.key, index, model)
+		this._service.deleteDetailsLine(this.key, index, model)
 	}
 }

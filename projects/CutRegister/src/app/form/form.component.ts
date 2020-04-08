@@ -90,7 +90,7 @@ export class PdmCostingFormComponent {
 	}
 
 	deleteLine(key) {
-		this._shared.deleteLines(key)
+		this._service.deleteLines(key)
 	}
 
 	print() {
@@ -110,6 +110,7 @@ export class PdmCostingFormComponent {
 				resArray.forEach(res => {
 					routingIds.push(res.routingId);
 					res = this.mapResToOrderDetails(res);
+					console.log(res)
 					this._shared.addLine('orderDetails', res);
 					let markerDetails = this._shared.formData.markerDetails;
 					let index = markerDetails.findIndex(data => {
@@ -120,13 +121,17 @@ export class PdmCostingFormComponent {
 						this._shared.addLine('markerDetails', res);
 					}
 				});
-				console.log(routingIds);
 				this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
-					console.log(cutPanels)
+					let cutPanelDetails = this._shared.formData.cutPanelDetails;
+					console.log(cutPanelDetails)
 					cutPanels.forEach(line => {
-						let cutPanelLine = this.mapToCutPanelLine(line);
-						console.log(cutPanelLine) 
-						this._shared.addLine('cutPanelDetails', cutPanelLine)
+						let index = cutPanelDetails.findIndex(data => {
+							return data.panelName == line.panelCode;
+						});
+						if (index == -1) {
+							let cutPanelLine = this.mapToCutPanelLine(line);
+							this._shared.addLine('cutPanelDetails', cutPanelLine)
+						}
 					})
 				})
 			}
@@ -137,12 +142,14 @@ export class PdmCostingFormComponent {
 		let model = new OrderDetails();
 		model.layRegstrId = this._shared.id ? this._shared.id.toString() : "0";
 		model.bpartName = res.customer ? res.customer : "";
-		model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
+		model.bpartnerDocNo = res.bpartnerDocNo ? res.bpartnerDocNo : "";
+		model.bpartnerId = res.bpartnerId ? res.bpartnerId : "";
 		model.ordQtyUom = res.qtyUom ? res.qtyUom : "";
 		model.lineQty = res.orderQty ? res.orderQty : "";
 		model.kit = res.kit ? res.kit : "";
+		model.allwdQty = res.orderQty ? res.orderQty : "";;
 
-		model.refDocId = res.refDocId ? res.refDocId : "";
+		model.refDocId = res.orderId ? res.orderId : "";
 		model.refDocLineId = res.orderLineId ? res.orderLineId : "";
 		model.refDocRevNo = res.revisionNo ? res.revisionNo : "";
 		model.refBaseDoc = res.refBaseDoc ? res.refBaseDoc : "";
@@ -158,11 +165,12 @@ export class PdmCostingFormComponent {
 		model.excQty = res.excQty ? res.excQty : "";
 		model.color = res.color ? res.color : "";
 		model.displayOrder = res.displayOrder ? res.displayOrder : "";
-		model.allwdQty = res.allwdQty ? res.allwdQty : "";
 		model.cutAllowanceQty = res.cutAllowanceQty ? res.cutAllowanceQty : "";
 		model.createdBy = res.createdBy ? res.createdBy : "";
 		model.layOrderRefId = res.layOrderRefId ? res.layOrderRefId : "";
 		model.facility = res.facility ? res.facility : "";
+		model.orderRefNo = res.orderReference ? res.orderReference : "";
+		model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
 
 		model.cutAllowancePercent = res.cutAllowancePercent ? res.cutAllowancePercent : "";
 		model.attribute1 = res.attribute1 ? res.attribute1 : "";
@@ -180,15 +188,12 @@ export class PdmCostingFormComponent {
 		model.prevqty = res.prevqty ? res.prevqty : "";
 		model.comboTr = res.comboTitle ? res.comboTitle : "";
 		model.combo = res.combo ? res.combo : "";
+		model.routingId = res.routingId ? res.routingId : "";
 		return model;
 	}
 
 	mapFromOrderToMarkerDetails(res: OrderDetails) {
 		let model = new MarkerDetails();
-		// layMarkerId
-		// displayOrder
-		// attribute 
-		// currcutqtysql = 
 		model.layRegstrId = res.layRegstrId;
 		model.prodName = res.refProduct;
 		model.productId = res.refProductId;
@@ -208,7 +213,7 @@ export class PdmCostingFormComponent {
 		return model;
 	}
 
-	mapToCutPanelLine(line){
+	mapToCutPanelLine(line) {
 		let cutPanel = new CutPanelDetails();
 		cutPanel.layRegstrId = this._shared.id.toString();
 		cutPanel.panelName = line.panelCode;
@@ -217,29 +222,38 @@ export class PdmCostingFormComponent {
 	}
 
 	generateBundleLines() {
-		this._service.generateBundleLines(this._shared.id).then(data => {
-			this._service.loadData('cutBundle');
-		}).catch(err => {
-			this.alertUtils.showAlerts(err);
-		})
+		if (this._service.checkIfEdited()) {
+			this.alertUtils.showAlerts('Changes detected. Please save the changes before generating bundle lines.')
+		} else {
+			this._service.generateBundleLines(this._shared.id).then(data => {
+				this._service.loadData('cutBundle');
+			}).catch(err => {
+				this.alertUtils.showAlerts(err);
+			})
+		}
 	}
 
 	deleteBundleLines() {
-		this._service.deleteBundleLines(this._shared.id).then(data => {
-			this._service.loadData('cutBundle');
-		}).catch(err => {
-			this.alertUtils.showAlerts(err);
-		})
+		if (this._service.checkIfEdited()) {
+			this.alertUtils.showAlerts('Changes detected. Please save the changes before deleting bundle lines.')
+		} else {
+			this._service.deleteBundleLines(this._shared.id).then(data => {
+				this._service.loadData('cutBundle');
+			}).catch(err => {
+				this.alertUtils.showAlerts(err);
+			})
+		}
 	}
 
 	compute() {
 		let cutAllowance = this._shared.getHeaderAttributeValue('cutAllowance');
+		let primaryKey = this._shared.orderDetailsPrimaryKey;
 		if (typeof cutAllowance != 'undefined' && cutAllowance !== '') {
 			this._shared.formData.orderDetails.forEach((data, index) => {
-				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), cutAllowance)
-				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '')
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), cutAllowance, primaryKey)
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '', primaryKey)
 				let allowQty = this._service.calculateAllowedQty(data.lineQty, cutAllowance);
-				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty)
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty, primaryKey)
 			});
 		}
 	}

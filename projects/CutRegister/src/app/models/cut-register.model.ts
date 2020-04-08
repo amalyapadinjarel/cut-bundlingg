@@ -101,6 +101,7 @@ export class Product {
 }
 
 export class OrderDetails {
+	routingId: string;
     layOrderRefId: string;
     bpartName: string;
     lastUpdateDate: string;
@@ -150,6 +151,7 @@ export class OrderDetails {
     createdBy: string;
     bpartnerId: string;
     facility: string;
+    orderRefNo: string;
 
     constructor(model = null) {
         this.layOrderRefId = model ? model.layOrderRefId : "0";
@@ -201,6 +203,8 @@ export class OrderDetails {
         this.createdBy = model ? model.createdBy : "";
         this.bpartnerId = model ? model.bpartnerId : "";
         this.facility = model ? model.facility : "";
+        this.orderRefNo = model ? model.orderRefNo : "";
+        this.routingId = model ? model.routingId : "";        
     }
 }
 

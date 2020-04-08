@@ -54,8 +54,8 @@ export const CopyFromSOLovConfig: any = {
     ],
     displayFields: [
         {
-            title: 'PO#',
-            key: 'poNum'
+            title: 'Order Ref#',
+            key: 'orderReference'
         },
         {
             title: 'Old Order Ref',
@@ -115,7 +115,9 @@ export const CopyFromSOLovConfig: any = {
         },
        
     ],
-    allowMultiple: true
+    allowMultiple: true,
+    preFetchPages: 10,
+    primaryKey: ['orderLineId']
 };
 
 export const CutTypeLovConfig: any = {

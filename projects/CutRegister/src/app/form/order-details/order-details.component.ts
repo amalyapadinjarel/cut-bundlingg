@@ -82,6 +82,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	refreshTable() {
+		console.log(this._shared.formData[this.key])
 		this.dataTable.refresh(this._shared.formData[this.key]);
 	}
 
@@ -90,6 +91,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	deleteLine(index, model) {
-		this._shared.deleteDetailsLine(this.key, index, model);
+		this._service.deleteDetailsLine(this.key, index, model);
 	}
 }

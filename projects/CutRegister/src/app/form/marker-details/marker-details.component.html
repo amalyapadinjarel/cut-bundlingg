@@ -7,9 +7,12 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
-		<ng-template let-model="data">
-			{{model.displayOrder}}
+	<smd-datatable-column title="#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}">
+		<ng-template let-model="data" let-index="index">
+			<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'displayOrder')" [primaryKey]="_shared.markerDetailsPrimaryKey"
+			 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="_shared.getMarkerDetailsEditable('displayOrder')" [loading]="_shared.markerDetailsLoading || _shared.loading"
+			 (valueChangedFromUI)="valueChangedFromUI($event,index)">
+			</tnz-input>
 		</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Style" field="prodName" sortable="true" [filterable]="true">

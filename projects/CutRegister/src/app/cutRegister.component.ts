@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CutRegisterSharedService } from './_service/cut-register-shared.service';
 import { CutRegisterService } from './_service/cut-register.service';
 import { AlertUtilities } from 'app/shared/utils';
+import { NavigationService, UserService, EventService } from 'app/shared/services';
 
 @Component({
   selector: 'app-cutRegister',
@@ -12,16 +13,27 @@ import { AlertUtilities } from 'app/shared/utils';
 })
 export class CutRegisterComponent {
   title = 'CutRegister';
+  reportData: any = {};
 
-  constructor(private router: Router,
+  @ViewChild("reportsBtn") reportsBtn: ElementRef;
+
+  constructor(
+    private router: Router,
     private location: Location,
     public _shared: CutRegisterSharedService,
     public _service: CutRegisterService,
-    private alertutils: AlertUtilities) {
-      this._shared.init();
+    private alertutils: AlertUtilities,
+    private navService: NavigationService,
+    private userService: UserService,
+    private eventService: EventService
+  ) {
+    this._shared.init();
   }
 
-  ngOnDestroy(){
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
     this._shared.clear();
   }
 
@@ -56,22 +68,41 @@ export class CutRegisterComponent {
   }
 
   save(exit = false) {
-    this._service.save().then(() => {
-      if (exit) {
+    this._service.save().then((flag) => {
+      if (flag && exit) {
         this.cancelEdit();
       }
     })
   }
 
-  generateNextCut(){
-    this._service.generateNextCut().then( data => {
+  generateNextCut() {
+    this._service.generateNextCut().then(data => {
       console.log(data);
-    }).catch( err => {
+    }).catch(err => {
       this.alertutils.showAlerts(err)
     })
   }
 
-  ifApproved(){
+  ifApproved() {
     return this._shared.getHeaderAttributeValue('docStatus') == 'APPROVED';
+  }
+
+  showReports() {
+    this.reportData["userId"] = this.userService.getCurrentUser().userId;
+    this.navService.showApplicationReports(
+      "CUTREGISTER",
+      "CUT",
+      this.reportData,
+      this.reportsBtn
+    );
+  }
+
+  approve() {
+    this._service.approve().then(data => {
+      this._shared.refreshData.next(true);
+    }).catch(err => {
+      this.alertutils.showAlerts(err);
+      this._shared.refreshData.next(true);           
+    })
   }
 }

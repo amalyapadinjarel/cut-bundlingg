@@ -1,17 +1,21 @@
-<smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false">
-    <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
-    </smd-datatable-column>
-    <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
-        <ng-template let-model="data">
-            {{model.cutFacility?.shortCode}}
-        </ng-template>
-    </smd-datatable-column>
-    <smd-datatable-column title="Cut#" field="cutNo" sortable="true" [filterable]="true">
-    </smd-datatable-column>
-    <smd-datatable-column title="Cut Date" field="cutDate" sortable="true" [filterable]="true">
-    </smd-datatable-column>
-    <smd-datatable-column title="Status" field="docStatusName" sortable="true" [filterable]="true">
-    </smd-datatable-column>
-    <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
-    </smd-datatable-column>
-</smd-datatable>
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false">
+            <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutFacility?.shortCode}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut#" field="cutNo" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut Date" field="cutDate" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Status" field="docStatusName" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

@@ -14,7 +14,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 })
 export class PdmCostingCardComponent implements OnInit, OnDestroy {
 
-	oddBundlePerEdit: boolean = false;
+	disabled: any = {};
 	loading = true;
 	approvalLoading = true;
 	costApproval: any[] = [];
@@ -88,22 +88,12 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		this._service.fetchFormData(this._shared.id).then((data: any) => {
 			this._shared.setFormHeader(data);
 			this.setLoading(false);
+			this.setOddBundlePer(data.oddBundleAcc)			
 		}, err => {
 			this.setLoading(false);
 			if (err)
 				this.alertUtils.showAlerts(err, true)
 		});
-
-		// this.approvalLoading = true;
-		// this.costApproval = [];
-		// this._service.fetchCostingApprovals().then((data: any) => {
-		// 	this.costApproval = data;
-		// 	this.approvalLoading = false;
-		// }, err => {
-		// 	this.approvalLoading = false;
-		// 	if (err)
-		// 		this.alertUtils.showAlerts(err, true)
-		// });
 	}
 
 	setLoading(flag: boolean) {
@@ -112,18 +102,21 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		this._shared.loading = flag;
 	}
 
-	valueChanged(change, key?) {
-		switch (key) {
+	setOddBundlePer(value){
+		if (value == 'NEW_OR_LAST')
+			this.enableInput('oddBundlePer')
+		else {
+			this.disableInput('oddBundlePer');
+			this._inputService.updateInput(this._shared.getHeaderAttrPath('oddBundlePer'), '');
+		}
+	}
+
+	valueChanged(change) {
+		switch (change.key) {
 			case 'oddBundleAcc':
-				if (change.value == 'NEW_OR_LAST')
-					this.oddBundlePerEdit = true;
-				else{
-					this.oddBundlePerEdit = false;
-					this._inputService.updateInput(this._shared.getHeaderAttrPath('oddBundlePer'), '');
-				}
+				this.setOddBundlePer(change.value)
 				break;
 			case 'cutFacility':
-				console.log(change, 'cutFacility')
 				if (change.value && typeof change.value == 'object')
 					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), change.value);
 				else
@@ -136,6 +129,18 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 
 	valueChangedFromUI(event) {
 
+	}
+
+	disableInput(key) {
+		this.disabled[key] = true;
+	}
+
+	enableInput(key) {
+		this.disabled[key] = false;
+	}
+
+	getIfEditable(key) {
+		return !this.disabled[key] && this._shared.getHeaderEditable(key,this._shared.id);
 	}
 
 }

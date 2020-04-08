@@ -6,17 +6,22 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 import { Router } from '@angular/router';
 import { AlertUtilities } from 'app/shared/utils';
 import { HttpParams } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from 'app/shared/component';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class CutRegisterService {
 
-	
+
     constructor(private apiService: ApiService,
         private _shared: CutRegisterSharedService,
         public inputService: TnzInputService,
         private _cache: LocalCacheService,
         private alertUtils: AlertUtilities,
         public router: Router,
+        private _dialog: MatDialog,
+        private location: Location
     ) {
     }
 
@@ -154,8 +159,10 @@ export class CutRegisterService {
 
     fetchCutBundle(id?: number) {
         return new Promise((resolve, reject) => {
+            let params:HttpParams = new HttpParams();
+            params = params.set("direction","ASC")
             if (this._shared.id > 0) {
-                this.apiService.get('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
+                this.apiService.get('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id, params)
                     .subscribe(data => {
                         if (data.data)
                             resolve(data.data);
@@ -187,8 +194,27 @@ export class CutRegisterService {
         });
     }
 
+    approve() {
+        let defaultMsg = "Unknown Error. Failed to approve document.";
+        let params: HttpParams = new HttpParams();
+        params = params.set('cutRegisterId', this._shared.id.toString())
+        return new Promise((resolve, reject) => {
+            this.apiService.get('/' + this._shared.apiBase + '/approve/' + this._shared.id)
+                .subscribe(ret => {
+                    console.log(ret)
+                    if (ret.status && ret.status == 'S') {
+                        if (ret.returnCode && ret.returnCode == 1)
+                            resolve();
+                        else if (ret.message)
+                            reject(ret.message)
+                    }
+                    reject(defaultMsg);
+                }, err => reject(defaultMsg));
+        });
+    }
+
     generateBundleLines(id: number) {
-        let defaultMsg = "Unknown Error. Failed to generate bundle.";
+        let defaultMsg = "Unknown Error. Failed to approve bundle.";
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/generate-bundle/' + this._shared.id)
                 .subscribe(ret => {
@@ -265,22 +291,19 @@ export class CutRegisterService {
         return new Promise((resolve, reject) => {
             this.saveData(id || this._shared.id)
                 .then(res => {
+                    this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
+                    this._shared.loading = false;
                     if (isCreate) {
-                        this.inputService.resetInputService(this._shared.appKey + '.0');
-                        this._shared.loading = false;
-                        this.router.navigateByUrl('cut-register/' + this._shared.id);
-                    } else {
-                        this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
-                        this._shared.loading = false;
-                        this._shared.refreshData.next(true);
+                        this.location.go('cut-register/' + this._shared.id + '/edit');
                     }
-                    resolve();
+                    this._shared.refreshData.next(true);
+                    resolve(true);
                 }, err => {
                     if (err) {
                         this.alertUtils.showAlerts('Failed to ' + (isCreate ? 'save' : 'edit' + ' document. ') + err);
                     }
                     this._shared.loading = false;
-                    resolve();
+                    resolve(false);
                 })
         });
 
@@ -417,23 +440,83 @@ export class CutRegisterService {
         return Math.round(qty);
     }
 
-    getCutPanelsFromRoutingIds(routingIds:Array<any>){
-        return new Promise((resolve,reject)=> {
+    getCutPanelsFromRoutingIds(routingIds: Array<any>) {
+        return new Promise((resolve, reject) => {
             let errorMsg = 'Error while fetching cut panels from orders.';
             let params = new HttpParams();
-            params = params.set('idList',routingIds.toString());
-            this.apiService.get('/' + this._shared.apiBase +'/cut-panels-from-order',params)
-            .catch( err => {
-                reject(errorMsg);
-                return err;
-            })
-            .subscribe( data => {
-                if(data && data.cutPanels)
-                    resolve(data.cutPanels);
-                else
+            params = params.set('idList', routingIds.toString());
+            this.apiService.get('/' + this._shared.apiBase + '/cut-panels-from-order', params)
+                .catch(err => {
                     reject(errorMsg);
-            })
+                    return err;
+                })
+                .subscribe(data => {
+                    if (data && data.cutPanels)
+                        resolve(data.cutPanels);
+                    else
+                        reject(errorMsg);
+                })
         })
+    }
+
+    deleteLines(key) {
+        if (this._shared.selectedLines[key] && this._shared.selectedLines[key].length) {
+            let primaryKey = this[key + 'PrimaryKey'];
+            let dialogRef = this._dialog.open(ConfirmPopupComponent);
+            dialogRef.componentInstance.dialogTitle = 'Delete selected record(s)';
+            dialogRef.componentInstance.message = 'Are you sure you want to delete the selected ' + this._shared.selectedLines[key].length + ' record(s)'
+            dialogRef.afterClosed().subscribe(flag => {
+                if (flag) {
+                    this._shared.selectedLines[key].forEach(line => {
+                        let index = this._shared.formData[key].findIndex(data => {
+                            return data[primaryKey] == line[primaryKey]
+                        });
+                        this.deleteDetailsLine(key, index, line);
+                    });
+                    this._shared.setSelectedLines(key, [])
+                }
+            })
+        }
+    }   
+
+    deleteDetailsLine(key, index, model) {
+        let productId, orderDetails, orders;
+        switch (key) {
+            case 'markerDetails':
+                productId = model['productId'];
+                this._shared.deleteLine(key, index);
+                orderDetails = this._shared.formData.orderDetails
+                orders = orderDetails.filter(data => { return data.refProductId == productId });
+                orders.forEach(order => {
+                    let i = orderDetails.indexOf(order);
+                    this._shared.deleteLine('orderDetails', i);
+                })
+                break;
+            case 'orderDetails':
+                productId = model['refProductId'];
+                this._shared.deleteLine(key, index);
+                orderDetails = this._shared.formData.orderDetails
+                orders = orderDetails.filter(data => { return data.refProductId == productId });
+                if (!orders || !orders.length) {
+                    let markerDetails = this._shared.formData.markerDetails;
+                    let i = markerDetails.findIndex(data => { return data.productId == productId });
+                    if (i > -1) {
+                        this._shared.deleteLine('markerDetails', i);
+                    }
+                }
+                break;
+            case 'layerDetails':
+                if (this._shared.formData.cutBundle && this._shared.formData.cutBundle.length) {
+                    this.alertUtils.showAlerts("Cannot delete layer details as one or more bundle lines exist. Please remove the lines and try again.")
+                } else {
+                    this._shared.deleteLine(key, index);
+                    this.resetCutQty();
+                }
+                break;
+            default:
+                this._shared.deleteLine(key, index);
+                break;
+        }
     }
 
     calclateTotalPlyCount() {
@@ -445,5 +528,22 @@ export class CutRegisterService {
         })
         return count;
     }
+
+    resetCutQty() {
+        let totalPlyCount = this.calclateTotalPlyCount();
+        this._shared.formData.markerDetails.forEach((line, index) => {
+            let value = this.inputService.getInputValue(this._shared.getMarkerDetailsPath(index, 'markerRatio'))
+            if (typeof value != undefined && !isNaN(value)) {
+                value = Number(value) * totalPlyCount;
+                this.inputService.updateInput(this._shared.getMarkerDetailsPath(index, 'currcutqtysql'), value, this._shared.markerDetailsPrimaryKey);
+            }
+        })
+    }
+
+    checkIfEdited(){
+        let saveData = this._cache.getCachedValue(this._shared.appPath);
+        return !!saveData;        
+    }
+
 
 }

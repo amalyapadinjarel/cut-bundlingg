@@ -6,8 +6,8 @@
                 <label>Cut Facility</label>
                 <div class="val">
                     <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('cutFacility')" [primaryKey]="_shared.primaryKey" displayKey="label"
-                        [sharedData]="_shared.formData" [lovConfig]="cutFacilityLov" validators="required" [isEdit]="_shared.getHeaderEditable('cutFacility', _shared.id)"
-                        [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event,'cutFacility')">
+                        [sharedData]="_shared.formData" [lovConfig]="cutFacilityLov" validators="required" [isEdit]="getIfEditable('cutFacility')"
+                        [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
                     </tnz-input>
                 </div>
             </li>
@@ -15,7 +15,7 @@
                 <label>Sewing Facility</label>
                 <div class="val">
                     <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('sewingFacility')" [primaryKey]="_shared.primaryKey" displayKey="label"
-                        [sharedData]="_shared.formData" [lovConfig]="sewingFacilityLov" validators="required" [isEdit]="_shared.getHeaderEditable('sewingFacility', _shared.id)"
+                        [sharedData]="_shared.formData" [lovConfig]="sewingFacilityLov" validators="required" [isEdit]="getIfEditable('sewingFacility')"
                         [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
                 </div>
             </li>
@@ -23,7 +23,7 @@
                 <label>Bundle Size</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('bundleSize')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="required,min:0" [isEdit]="_shared.getHeaderEditable('bundleSize', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="required,min:1" [isEdit]="getIfEditable('bundleSize')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
@@ -31,7 +31,7 @@
                 <label>Cut Type</label>
                 <div class="val">
                     <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('cutType')" [primaryKey]="_shared.primaryKey" displayKey="label"
-                        [sharedData]="_shared.formData" [lovConfig]="cutTypeLovConfig" validators="required" [isEdit]="_shared.getHeaderEditable('cutType', _shared.id)"
+                        [sharedData]="_shared.formData" [lovConfig]="cutTypeLovConfig" validators="required" [isEdit]="getIfEditable('cutType')"
                         [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)" [defaultValue]="cutTypeDefaultValue"></tnz-input>
                 </div>
             </li>
@@ -40,7 +40,7 @@
                 <div class="val">
                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('markerNameMethod')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         returnKey="value" [selectOptions]="markerNameOptions" [sharedData]="_shared.formData" validators="required"
-                        [isEdit]="_shared.getHeaderEditable('markerNameMethod', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
+                        [isEdit]="getIfEditable('markerNameMethod')" [loading]="_shared.headerLoading || _shared.loading"
                         (valueChangedFromUI)="valueChangedFromUI($event)" [defaultValue]="'A'">
                     </tnz-input>
                 </div>
@@ -51,7 +51,7 @@
                 <div class="val">
                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('groupingCriteria')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         returnKey="value" [selectOptions]="groupingCriteriaOptions" [sharedData]="_shared.formData" validators="required"
-                        [isEdit]="_shared.getHeaderEditable('groupingCriteria', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
+                        [isEdit]="getIfEditable('groupingCriteria')" [loading]="_shared.headerLoading || _shared.loading"
                         (valueChangedFromUI)="valueChangedFromUI($event)" [defaultValue]="groupingCriteriaOptions[0].value" >
                     </tnz-input>
                 </div>
@@ -61,15 +61,15 @@
                 <div class="val">
                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('oddBundleAcc')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         returnKey="value" [sharedData]="_shared.formData" [lovConfig]="oddBundleLovConfig" 
-                        [isEdit]="_shared.getHeaderEditable('oddBundleAcc', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
-                        (valueChanged)="valueChanged($event,'oddBundleAcc')"></tnz-input>
+                        [isEdit]="getIfEditable('oddBundleAcc')" [loading]="_shared.headerLoading || _shared.loading"
+                        (valueChanged)="valueChanged($event)"></tnz-input>
                 </div>
             </li>
             <li>
                 <label>Odd Bundle(%)</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('oddBundlePer')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="oddBundlePerEdit" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('oddBundlePer')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
@@ -78,7 +78,7 @@
                 <label>Cut #</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('cutNo')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('cutNo', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('cutNo')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
@@ -86,7 +86,7 @@
                 <label>Cut Date</label>
                 <div class="val">
                     <tnz-input type="date" [path]="_shared.getHeaderAttrPath('cutDate')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="required" [isEdit]="_shared.getHeaderEditable('cutDate', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
+                        validators="required" [isEdit]="getIfEditable('cutDate')" [loading]="_shared.headerLoading || _shared.loading"
                         (valueChanged)="valueChanged($event)" [defaultValue]="today">
                     </tnz-input>
                 </div>
@@ -96,7 +96,7 @@
                 <label>Cut Allowance(%)</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('cutAllowance')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('cutAllowance', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('cutAllowance')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
@@ -104,7 +104,7 @@
                 <label>Cut Extra Pieces</label>
                 <div class="val">
                     <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('cutExtra')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        [isEdit]="_shared.getHeaderEditable('cutExtra', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
+                        [isEdit]="getIfEditable('cutExtra')" [loading]="_shared.headerLoading || _shared.loading"
                         (valueChangedFromUI)="valueChangedFromUI($event)">
                     </tnz-input>
                 </div>
@@ -113,7 +113,7 @@
                 <label>Attribute Set</label>
                 <div class="val">
                     <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('attributeSet')" [primaryKey]="_shared.primaryKey" [lovConfig]="attributeSetLovConfig"
-                        [sharedData]="_shared.formData" [isEdit]="_shared.getHeaderEditable('attributeSet', _shared.id)" [loading]="_shared.headerLoading || _shared.loading"
+                        [sharedData]="_shared.formData" [isEdit]="getIfEditable('attributeSet')" [loading]="_shared.headerLoading || _shared.loading"
                         (valueChanged)="valueChanged($event)" [defaultValue]="attributeSetDefaultValue"></tnz-input>
                 </div>
             </li>
@@ -122,7 +122,7 @@
                 <label>Lay Yardage</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('layYardage')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('layYardage', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('layYardage')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                     <span>yd</span>
                 </div>
@@ -131,25 +131,25 @@
                 <label>Length</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('length')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('length', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('length')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
-                    <span>in</span>
+                    <span style="margin-left:7px">in</span>
                 </div>
             </li>
             <li>
                 <label>Width</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('width')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('width', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('width')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
-                    <span>in</span>
+                    <span style="margin-left:7px">in</span>
                 </div>
             </li>
             <li>
                 <label>Shrinkage</label>
                 <div class="val">
                     <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('shrinkage')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="_shared.getHeaderEditable('shrinkage', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        validators="min:0" [isEdit]="getIfEditable('shrinkage')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
@@ -162,7 +162,7 @@
             <li>
                 <div class="val">
                     <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        [isEdit]="_shared.getHeaderEditable('description', _shared.id)" [loading]="_shared.headerLoading || _shared.loading">
+                        [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>
