@@ -5,7 +5,7 @@ import { AlertUtilities } from 'app/shared/utils';
 import { Subscription } from 'rxjs';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { Product, LayerDetails } from '../../models/cut-register.model';
-import { FabricLovConfig } from '../../models/lov-config';
+import { FabricLovConfig, StickerColorLovConfig } from '../../models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 	disabled: any = {};
 	fabricLovConfig: any;
 	styleColorLovConfig: any;
+	stickerColorLovConfig = JSON.parse(JSON.stringify(StickerColorLovConfig))
 	private refreshSub: Subscription;
 	private refreshLayerDetails: Subscription;
 
@@ -40,36 +41,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 			this.refreshTable();
 		});
 
-		this.fabricLovConfig = {
-			title: 'Select Fabric',
-			url: 'lovs/fabric--and-attributes?cutRegisterId=' + this._shared.id,
-			dataHeader: 'data',
-			returnKey: 'productId',
-			displayKey: 'productTitleNum',
-			filterAttributes: ['productTitleNum'],
-			displayFields: [
-				{
-					key: 'productTitleNum',
-					title: 'Fabric Name'
-				}
-				, {
-					key: 'prdAttribute',
-					title: 'Attribute'
-				}
-				, {
-					key: 'lotNum',
-					title: 'Lot#',
-				}
-				, {
-					key: 'shade',
-					title: 'Shade',
-				}
-				, {
-					key: 'slNum',
-					title: 'Sl#',
-				}
-			]
-		}
+		this.fabricLovConfig = FabricLovConfig(this._shared.id)
 
 		this.styleColorLovConfig = {
 			title: 'Select Fabric',
@@ -80,12 +52,12 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 			filterAttributes: ['value'],
 			displayFields: [
 				{
-					key: 'Color',
-					title: 'value'
+					title: 'Color',
+					key: 'value'
 				}
 				, {
-					key: 'Style',
-					title: 'styleName'
+					title: 'Style',
+					key: 'styleName'
 				}
 			]
 		}
@@ -138,7 +110,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 			case 'color':
 				changeFields = [
 					{
-						fromKey: "prdAttribute",
+						fromKey: "styleId",
 						toKey: "refProdId",
 					}
 					, {

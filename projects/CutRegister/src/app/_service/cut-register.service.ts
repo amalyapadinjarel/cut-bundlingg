@@ -184,8 +184,8 @@ export class CutRegisterService {
             this.apiService.get('/' + this._shared.apiBase + '/generate-next-cut', params)
                 .subscribe(ret => {
                     if (ret.data) {
-                        if (ret.data.returnCode && ret.data.returnCode == 1)
-                            resolve(ret.data);
+                        if (ret.data.returnCode && ret.data.returnCode == 1 && ret.data.message)
+                            resolve(ret.data.message);
                         else if (ret.data.message)
                             reject(ret.data.message)
                     }
@@ -200,6 +200,25 @@ export class CutRegisterService {
         params = params.set('cutRegisterId', this._shared.id.toString())
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/approve/' + this._shared.id)
+                .subscribe(ret => {
+                    console.log(ret)
+                    if (ret.status && ret.status == 'S') {
+                        if (ret.returnCode && ret.returnCode == 1)
+                            resolve();
+                        else if (ret.message)
+                            reject(ret.message)
+                    }
+                    reject(defaultMsg);
+                }, err => reject(defaultMsg));
+        });
+    }
+
+    revise() {
+        let defaultMsg = "Unknown Error. Failed to approve document.";
+        let params: HttpParams = new HttpParams();
+        params = params.set('cutRegisterId', this._shared.id.toString())
+        return new Promise((resolve, reject) => {
+            this.apiService.get('/' + this._shared.apiBase + '/revise/' + this._shared.id)
                 .subscribe(ret => {
                     console.log(ret)
                     if (ret.status && ret.status == 'S') {
@@ -543,6 +562,27 @@ export class CutRegisterService {
     checkIfEdited(){
         let saveData = this._cache.getCachedValue(this._shared.appPath);
         return !!saveData;        
+    }
+
+    getExtraCutValues(facility) {
+        return new Promise((resolve, reject) => {
+            let errorMsg = 'Failed to get extra cut values.';
+            let params = new HttpParams();
+            params = params.set('facility', facility);
+            this.apiService.get('/' + this._shared.apiBase + '/extra-cut', params)
+                .catch(err => {
+                    reject(errorMsg);
+                    return err;
+                })
+                .subscribe(data => {
+                    if (data && data.status && data.status== 'S' && data.extraCut)
+                        resolve(data.extraCut);
+                    else if(data.status == 'F' && data.message)
+                        reject(errorMsg + ' ' +  data.message);
+                    else
+                        reject(errorMsg);
+                })
+        })
     }
 
 

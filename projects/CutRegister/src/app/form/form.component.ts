@@ -10,6 +10,7 @@ import { CopyFromSOLovConfig } from '../models/lov-config';
 import { MarkerDetailsComponent } from './marker-details/marker-details.component';
 import { AlertUtilities } from 'app/shared/utils';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
 	selector: 'cut-register-form',
@@ -98,10 +99,11 @@ export class PdmCostingFormComponent {
 	}
 
 	copyFrom(op) {
-		let lovConfig = {};
+		let lovConfig:any = {};
 		if (op.value == 'S') {
 			lovConfig = JSON.parse(JSON.stringify(CopyFromSOLovConfig));
 		}
+		lovConfig.url +=this._shared.getHeaderAttributeValue('attributeSet');
 		const dialogRef = this.dialog.open(TnzInputLOVComponent);
 		dialogRef.componentInstance.lovConfig = lovConfig;
 		dialogRef.afterClosed().subscribe(resArray => {
@@ -189,6 +191,7 @@ export class PdmCostingFormComponent {
 		model.comboTr = res.comboTitle ? res.comboTitle : "";
 		model.combo = res.combo ? res.combo : "";
 		model.routingId = res.routingId ? res.routingId : "";
+		model.markerAttrVal = res.markerAttrVal ? res.markerAttrVal : "";
 		return model;
 	}
 
@@ -197,7 +200,7 @@ export class PdmCostingFormComponent {
 		model.layRegstrId = res.layRegstrId;
 		model.prodName = res.refProduct;
 		model.productId = res.refProductId;
-		model.prodAttr = res.refProdAttr;
+		model.prodAttr = res.markerAttrVal;
 		model.facility = res.facility;
 
 		model.attribute1 = res.attribute1;
@@ -218,6 +221,9 @@ export class PdmCostingFormComponent {
 		cutPanel.layRegstrId = this._shared.id.toString();
 		cutPanel.panelName = line.panelCode;
 		cutPanel.panelNameTr = line.panelName;
+		cutPanel.mOpId = line.opId;
+		cutPanel.opSeq = line.opSequence;
+		cutPanel.refProdId = line.refProdId;
 		return cutPanel;
 	}
 
@@ -227,6 +233,7 @@ export class PdmCostingFormComponent {
 		} else {
 			this._service.generateBundleLines(this._shared.id).then(data => {
 				this._service.loadData('cutBundle');
+				this._shared.refreshHeaderData.next(true)				
 			}).catch(err => {
 				this.alertUtils.showAlerts(err);
 			})

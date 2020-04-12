@@ -32,7 +32,7 @@
                 <div class="val">
                     <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('cutType')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         [sharedData]="_shared.formData" [lovConfig]="cutTypeLovConfig" validators="required" [isEdit]="getIfEditable('cutType')"
-                        [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)" [defaultValue]="cutTypeDefaultValue"></tnz-input>
+                        [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)" ></tnz-input>
                 </div>
             </li>
             <li>
@@ -41,7 +41,7 @@
                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('markerNameMethod')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         returnKey="value" [selectOptions]="markerNameOptions" [sharedData]="_shared.formData" validators="required"
                         [isEdit]="getIfEditable('markerNameMethod')" [loading]="_shared.headerLoading || _shared.loading"
-                        (valueChangedFromUI)="valueChangedFromUI($event)" [defaultValue]="'A'">
+                        (valueChangedFromUI)="valueChangedFromUI($event)">
                     </tnz-input>
                 </div>
             </li>
@@ -52,7 +52,7 @@
                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('groupingCriteria')" [primaryKey]="_shared.primaryKey" displayKey="label"
                         returnKey="value" [selectOptions]="groupingCriteriaOptions" [sharedData]="_shared.formData" validators="required"
                         [isEdit]="getIfEditable('groupingCriteria')" [loading]="_shared.headerLoading || _shared.loading"
-                        (valueChangedFromUI)="valueChangedFromUI($event)" [defaultValue]="groupingCriteriaOptions[0].value" >
+                        (valueChangedFromUI)="valueChangedFromUI($event)" >
                     </tnz-input>
                 </div>
             </li>
@@ -87,7 +87,7 @@
                 <div class="val">
                     <tnz-input type="date" [path]="_shared.getHeaderAttrPath('cutDate')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
                         validators="required" [isEdit]="getIfEditable('cutDate')" [loading]="_shared.headerLoading || _shared.loading"
-                        (valueChanged)="valueChanged($event)" [defaultValue]="today">
+                        (valueChanged)="valueChanged($event)">
                     </tnz-input>
                 </div>
             </li>
@@ -112,9 +112,9 @@
             <li>
                 <label>Attribute Set</label>
                 <div class="val">
-                    <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('attributeSet')" [primaryKey]="_shared.primaryKey" [lovConfig]="attributeSetLovConfig"
+                    <tnz-input type="select" [path]="_shared.getHeaderAttrPath('attributeSet')" [primaryKey]="_shared.primaryKey" [lovConfig]="attributeSetLovConfig"
                         [sharedData]="_shared.formData" [isEdit]="getIfEditable('attributeSet')" [loading]="_shared.headerLoading || _shared.loading"
-                        (valueChanged)="valueChanged($event)" [defaultValue]="attributeSetDefaultValue"></tnz-input>
+                        (valueChanged)="valueChanged($event)" [nullable]="false"></tnz-input>
                 </div>
             </li>
             <br>

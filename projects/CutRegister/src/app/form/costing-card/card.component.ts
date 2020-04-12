@@ -21,6 +21,7 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 	today = new Date();
 
 	private refreshSub: Subscription;
+	private refreshHeaderSub: Subscription;
 	cutFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	sewingFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	markerNameMethodLov = JSON.parse(JSON.stringify(FacilityLovConfig));
@@ -58,10 +59,7 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		value: 'B'
 	}
 
-	attributeSetDefaultValue = {
-		label: "Size",
-		value: "SIZE"
-	}
+	attributeSetDefaultValue = "SIZE"
 
 	constructor(
 		private _service: CutRegisterService,
@@ -76,11 +74,17 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
 			this.loadData();
 		})
+		this.refreshHeaderSub = this._shared.refreshHeaderData.subscribe(change => {
+			this.loadData();
+		})
+		this.setDefaultValues();
 	}
 
 	ngOnDestroy(): void {
 		if (this.refreshSub)
 			this.refreshSub.unsubscribe();
+		if (this.refreshHeaderSub)
+			this.refreshHeaderSub.unsubscribe();
 	}
 
 	loadData() {
@@ -88,7 +92,7 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		this._service.fetchFormData(this._shared.id).then((data: any) => {
 			this._shared.setFormHeader(data);
 			this.setLoading(false);
-			this.setOddBundlePer(data.oddBundleAcc)			
+			this.setOddBundlePer(data.oddBundleAcc,false)
 		}, err => {
 			this.setLoading(false);
 			if (err)
@@ -102,12 +106,13 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 		this._shared.loading = flag;
 	}
 
-	setOddBundlePer(value){
+	setOddBundlePer(value, update = true) {
 		if (value == 'NEW_OR_LAST')
 			this.enableInput('oddBundlePer')
 		else {
 			this.disableInput('oddBundlePer');
-			this._inputService.updateInput(this._shared.getHeaderAttrPath('oddBundlePer'), '');
+			if (update)
+				this._inputService.updateInput(this._shared.getHeaderAttrPath('oddBundlePer'), '');
 		}
 	}
 
@@ -117,8 +122,10 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 				this.setOddBundlePer(change.value)
 				break;
 			case 'cutFacility':
-				if (change.value && typeof change.value == 'object')
+				if (change.value && typeof change.value == 'object'){
+					this.updateExtraCutValues(change.value.value)
 					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), change.value);
+				}
 				else
 					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), '');
 				break;
@@ -140,7 +147,37 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 	}
 
 	getIfEditable(key) {
-		return !this.disabled[key] && this._shared.getHeaderEditable(key,this._shared.id);
+		return !this.disabled[key] && this._shared.getHeaderEditable(key, this._shared.id);
 	}
 
+	setDefaultValues() {
+		if (this._shared.id == 0) {
+			let defaultValues = {
+				'cutType': this.cutTypeDefaultValue,
+				'markerNameMethod': 'A',
+				'groupingCriteria': this.groupingCriteriaOptions[0].value,
+				'cutDate': DateUtilities.formatDate(new Date()),
+				'attributeSet': this.attributeSetDefaultValue,
+				'cutExtra': 'N'
+			}
+			Object.keys(defaultValues).forEach(attr => {
+				this._inputService.updateInput(this._shared.getHeaderAttrPath(attr), defaultValues[attr])
+			})
+		}
+	}
+
+	updateExtraCutValues(facility){
+		this._service.getExtraCutValues(facility).then( (data:any) => {
+			console.log(data)
+			if(data.value2){
+				this._inputService.updateInput(this._shared.getHeaderAttrPath('extraCutCond'), data.value2);
+			}
+			if (data.value3) {
+				this._inputService.updateInput(this._shared.getHeaderAttrPath('extraCutQty'), data.value3);
+			}
+		})
+		.catch( err=> {
+			this.alertUtils.showAlerts(err)
+		})
+	}
 }

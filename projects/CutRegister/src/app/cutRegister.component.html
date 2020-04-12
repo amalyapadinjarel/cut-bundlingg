@@ -6,11 +6,9 @@
 	<div class="app-menus">
 		<div class="group" *ngIf="!_shared.editMode">
 			<a (click)="newCosting()">Create</a>
-			<a (click)="editCosting()">Edit</a>
-			<a>Copy</a>
-			<a *ngIf="!ifApproved()" (click)="approve()">Approve</a>
-			<a>Assign</a>
-			<a>Revise</a>
+			<a *ngIf="_shared.id" (click)="editCosting()">Edit</a>
+			<a *ngIf="_shared.id" (click)="approve()">Approve</a>
+			<a *ngIf="_shared.id" (click)="revise()">Revise</a>
 			<a (click)="showReports()" #reportsBtn>Print</a>
 			<a *ngIf="ifApproved()" (click)="generateNextCut()">Generate Next Cut</a>
 		</div>

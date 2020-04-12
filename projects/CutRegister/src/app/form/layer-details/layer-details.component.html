@@ -75,6 +75,12 @@
 		</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Sticker Color" field="attrValue" sortable="true" [filterable]="true">
+	<ng-template let-model="data" let-index="index">
+		<tnz-input type="lov" [path]="_shared.getLayerDetailsPath(index,'attributeId')" [primaryKey]="_shared.layerDetailsPrimaryKey" [lovConfig]="stickerColorLovConfig"
+		 (valueChanged)="valueChanged($event,index)" [sharedData]="_shared.formData" validators="" [isEdit]="getIfEditable(index,'attributeId')"
+		 [loading]="_shared.layerDetailsLoading || _shared.loading">
+		</tnz-input>
+	</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Ply Qty" field="layerCount" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
@@ -90,8 +96,11 @@
 		</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">
-		<ng-template let-model="data">
-			{{model.style}}
+		<ng-template let-model="data" let-index="index">
+			<tnz-input [path]="_shared.getLayerDetailsPath(index,'style')" [primaryKey]="_shared.layerDetailsPrimaryKey" 
+			 (valueChanged)="valueChanged($event,index)" [sharedData]="_shared.formData" validators="" [isEdit]="false"
+			 [loading]="_shared.layerDetailsLoading || _shared.loading">
+			</tnz-input>
 		</ng-template>
 	</smd-datatable-column>
 		<smd-datatable-column title="Style Color" field="colorName" sortable="true" [filterable]="true">

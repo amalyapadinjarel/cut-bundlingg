@@ -45,9 +45,9 @@ export const AttributeSetLovConfig: any = {
     }]
 };
 
-export const CopyFromSOLovConfig: any = {
+export var CopyFromSOLovConfig: any = {
     title: 'Select SO',
-    url: 'cut-register/copy-from-so',
+    url: 'cut-register/copy-from-so?attributeSet=',
     dataHeader: 'orders',
     filterAttributes: [
         'productTitle'
@@ -113,7 +113,7 @@ export const CopyFromSOLovConfig: any = {
             title: 'Combo',
             key: 'comboTitle'
         },
-       
+
     ],
     allowMultiple: true,
     preFetchPages: 10,
@@ -133,38 +133,89 @@ export const CutTypeLovConfig: any = {
     }]
 };
 
-export class FabricLovConfig {
-    title: 'Select Fabric';
-    url: 'lovs/fabric--and-attributes?cutRegister=';
-    dataHeader: 'data';
-    returnKey: 'productId';
-    displayKey: 'productTitleNum';
-    filterAttributes: ['productTitleNum'];
+export function FabricLovConfig(id) {
+    let json =
+        {
+            title: 'Select Fabric',
+            url: 'lovs/fabric--and-attributes?cutRegisterId=' + id,
+            dataHeader: 'data',
+            returnKey: 'productId',
+            displayKey: 'productTitleNum',
+            filterAttributes: ['productTitleNum'],
+            displayFields: [
+                {
+                    key: 'productTitleNum',
+                    title: 'Fabric Name'
+                }
+                , {
+                    key: 'prdAttribute',
+                    title: 'Attribute'
+                }
+                , {
+                    key: 'lotNum',
+                    title: 'Lot#',
+                }
+                , {
+                    key: 'shade',
+                    title: 'Shade',
+                }
+                , {
+                    key: 'slNum',
+                    title: 'Sl#',
+                }
+            ]
+        }
+    return json
+}
+
+export function StyleColorLovConfig(id) {
+    let json =
+        {
+            title: 'Select Style Color',
+            url: 'lovs/style-color?cutRegisterId=' + id,
+            dataHeader: 'data',
+            returnKey: 'valueId',
+            displayKey: 'value',
+            filterAttributes: ['value'],
+            displayFields: [
+                {
+                    title: 'Color',
+                    key: 'value'
+                }
+                , {
+                    title: 'Style',
+                    key: 'styleName'
+                }
+            ]
+        }
+    return json
+}
+
+export const StickerColorLovConfig: any = {
+    title: 'Select Sticker Color',
+    url: 'lovs/sticker-color',
+    dataHeader: 'data',
+    returnKey: 'valueId',
+    displayKey: 'attrNameCode',
+    filterAttributes: ['attrNameCode'],
     displayFields: [
         {
-            key: 'productTitleNum',
-            title: 'Fabric Name'
-        }
-        , {
-            key: 'prdAttribute',
+            key: 'attributeCode',
+            title: 'Code'
+        },
+        {
+            key: 'attributeValue',
+            title: 'Value'
+        },
+        {
+            key: 'attrName',
             title: 'Attribute'
-        }
-        , {
-            key: 'Lot#',
-            title: 'lotNum'
-        }
-        , {
-            key: 'Shade',
-            title: 'shade'
-        }
-        , {
-            key: 'Sl#',
-            title: 'slNum'
-        }
-    ];
-    constructor(id) {
-        this.url += id;
-    }
+        },
+        {
+            key: 'description',
+            title: 'Description'
+        },
+    ]
 };
 
 

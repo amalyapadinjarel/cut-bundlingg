@@ -11,6 +11,7 @@ export class CutRegisterSharedService {
 
     appKey = 'cutRegister';
     apiBase = 'cut-register';
+    taskFlowName = 'CUTREGISTER'
     editMode = false;
     id: number;
     formData: any = {};
@@ -68,6 +69,7 @@ export class CutRegisterSharedService {
     refreshLayerDetails: BehaviorSubject<boolean> = new BehaviorSubject(false);
     refreshCutPanelDetails: BehaviorSubject<boolean> = new BehaviorSubject(false);
     refreshCutBundle: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    refreshHeaderData: BehaviorSubject<boolean> = new BehaviorSubject(false);
     refreshData: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     constructor(
@@ -76,6 +78,7 @@ export class CutRegisterSharedService {
     ) { }
 
     init() {
+        this.id = 0;
         this.editMode = false;
         this.refreshOrderDetails = new BehaviorSubject(false);
         this.refreshMarkerDetails = new BehaviorSubject(false);
@@ -99,10 +102,10 @@ export class CutRegisterSharedService {
         this.layerDetailsSeqIncBy = 1;
         this.markerDetailsSeqIncBy = 1;
         this.cutPanelDetailsSeqIncBy = 1;
-        this.initLocalCache();
     }
 
     clear() {
+        this.id = 0;
         this.editMode = false;
         this.refreshOrderDetails.unsubscribe();
         this.refreshMarkerDetails.unsubscribe();

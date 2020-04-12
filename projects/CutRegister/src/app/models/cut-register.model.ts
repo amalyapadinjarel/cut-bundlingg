@@ -152,6 +152,7 @@ export class OrderDetails {
     bpartnerId: string;
     facility: string;
     orderRefNo: string;
+    markerAttrVal: string;
 
     constructor(model = null) {
         this.layOrderRefId = model ? model.layOrderRefId : "0";
@@ -205,7 +206,8 @@ export class OrderDetails {
         this.facility = model ? model.facility : "";
         this.orderRefNo = model ? model.orderRefNo : "";
         this.routingId = model ? model.routingId : "";        
-    }
+        this.markerAttrVal = model ? model.markerAttrVal : "";        
+        }
 }
 
 export class LayerDetails {
@@ -350,7 +352,9 @@ export class CutPanelDetails {
     mcpId: string;
     panelName: string;
     panelNameTr: string;
-
+    mOpId: string;
+    opSeq: string;
+    refProdId: string;
     constructor(model = null) {
         this.active = model ? model.active : "";
         this.createdBy = model ? model.createdBy : "";
@@ -364,5 +368,8 @@ export class CutPanelDetails {
         this.mcpId = model ? model.mcpId : "";
         this.panelName = model ? model.panelName : "";
         this.panelNameTr = model ? model.panelNameTr : "";
+        this.mOpId = model ? model.mOpId : "";
+        this.opSeq = model ? model.opSeq : "";
+        this.refProdId = model ? model.refProdId : "";
     }
 }

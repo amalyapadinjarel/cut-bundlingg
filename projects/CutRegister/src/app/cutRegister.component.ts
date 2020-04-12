@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { CutRegisterSharedService } from './_service/cut-register-shared.service';
 import { CutRegisterService } from './_service/cut-register.service';
 import { AlertUtilities } from 'app/shared/utils';
-import { NavigationService, UserService, EventService } from 'app/shared/services';
+import { NavigationService, UserService, EventService, DocumentService } from 'app/shared/services';
 
 @Component({
   selector: 'app-cutRegister',
@@ -25,7 +25,7 @@ export class CutRegisterComponent {
     private alertutils: AlertUtilities,
     private navService: NavigationService,
     private userService: UserService,
-    private eventService: EventService
+    private docService: DocumentService
   ) {
     this._shared.init();
   }
@@ -38,18 +38,34 @@ export class CutRegisterComponent {
   }
 
   newCosting() {
-    this.router.navigateByUrl('cut-register/create').then(done => {
-      this._shared.editMode = true;
-      this._shared.initLocalCache();
-    });
+    this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
+      .then(() => {
+        this.router.navigateByUrl('cut-register/create').then(done => {
+          this._shared.editMode = true;
+          this._shared.initLocalCache();
+        });
+      }).catch(err => {
+        this.alertutils.showAlerts(err)
+      })
   }
 
   editCosting() {
-    if (this._shared.id > 0) {
-      this.location.go('cut-register/' + this._shared.id + '/edit')
-      this._shared.editMode = true;
-      this._shared.initLocalCache();
-    }
+    this.docService.checkAppPermission(this._shared.taskFlowName, 'edit')
+      .then(() => {
+        this.docService.checkDocPermission(this._shared.getHeaderAttributeValue('docStatus'), this._shared.getHeaderAttributeValue('docType'))
+          .then(data => {
+            this.location.go('cut-register/' + this._shared.id + '/edit')
+            this._shared.editMode = true;
+            this._shared.initLocalCache();
+          })
+          .catch(err => {
+            this.alertutils.showAlerts(err)
+          })
+      })
+      .catch(err => {
+        this.alertutils.showAlerts(err)
+      })
+
   }
 
   cancelEdit() {
@@ -76,8 +92,8 @@ export class CutRegisterComponent {
   }
 
   generateNextCut() {
-    this._service.generateNextCut().then(data => {
-      console.log(data);
+    this._service.generateNextCut().then((data: any) => {
+      this.alertutils.showAlerts(data)
     }).catch(err => {
       this.alertutils.showAlerts(err)
     })
@@ -89,6 +105,9 @@ export class CutRegisterComponent {
 
   showReports() {
     this.reportData["userId"] = this.userService.getCurrentUser().userId;
+    if (this._shared.id) {
+      this.reportData["pCutId"] = this._shared.id;
+    }
     this.navService.showApplicationReports(
       "CUTREGISTER",
       "CUT",
@@ -98,11 +117,48 @@ export class CutRegisterComponent {
   }
 
   approve() {
-    this._service.approve().then(data => {
-      this._shared.refreshData.next(true);
-    }).catch(err => {
-      this.alertutils.showAlerts(err);
-      this._shared.refreshData.next(true);           
-    })
+    if (this.ifApproved())
+      this.alertutils.showAlerts("Cannot approve document in " + this._shared.getHeaderAttributeValue('docStatusName') + " status.")
+    else {
+      this.docService.checkAppPermission(this._shared.taskFlowName, 'edit')
+        .then(() => {
+          this.docService.checkDocPermission(this._shared.getHeaderAttributeValue('docStatus'), this._shared.getHeaderAttributeValue('docType'))
+            .then(data => {
+              this._service.approve().then(data => {
+                this._shared.refreshData.next(true);
+              })
+                .catch(err => {
+                  this.alertutils.showAlerts(err);
+                  this._shared.refreshData.next(true);
+                })
+            })
+            .catch(err => {
+              this.alertutils.showAlerts(err)
+            })
+        })
+        .catch(err => {
+          this.alertutils.showAlerts(err)
+        })
+
+    }
+  }
+
+  revise() {
+    this.docService.checkAppPermission(this._shared.taskFlowName, 'edit')
+      .then(() => {
+        this.docService.checkRevisionPermission(this._shared.getHeaderAttributeValue('docStatus'), this._shared.getHeaderAttributeValue('docType'))
+          .then(() => {
+            this._service.revise().then(data => {
+              this._shared.refreshData.next(true);
+            }).catch(err => {
+              this.alertutils.showAlerts(err);
+              this._shared.refreshData.next(true);
+            })
+          }).catch(err => {
+            this.alertutils.showAlerts(err)
+          })
+      }).catch(err => {
+        this.alertutils.showAlerts(err)
+      })
   }
 }
