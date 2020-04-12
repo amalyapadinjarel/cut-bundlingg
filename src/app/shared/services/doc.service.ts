@@ -3,13 +3,13 @@ import { of as observableOf, Observable } from 'rxjs';
 
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { ApiServiceV4 } from './api-v4.service';
+import { ApiService } from 'app/shared/services/api.service';
 
 @Injectable()
 export class DocumentService {
 
     constructor(
-        private apiService: ApiServiceV4
+        private apiService: ApiService
     ) { }
 
     checkDocSecurity(docStatus, docTypeId): Observable<number> {
@@ -58,7 +58,7 @@ export class DocumentService {
             }));
     }
 
-    checkRevisionPermission(docStatus, docTypeId): Observable<any> {
+    checkRevisionPrivilege(docStatus, docTypeId): Observable<any> {
         return this.apiService.get('/trendz/document-revision?docStatus=' + docStatus + '&docTypeId=' + docTypeId).pipe(
             map(data => {
                 if (data) {
@@ -77,6 +77,45 @@ export class DocumentService {
                 }, err => {
                     resolve({ defaultFacility: {} })
                 });
+        });
+    }
+
+    checkAppPermission(url, type) {
+        return new Promise((resolve, reject) => {
+            this.checkAppSecurity(url)
+                .subscribe(res => {
+                    if (res && res[type] == 4) {
+                        resolve()
+                    } else {
+                        reject("You are not given privilege to " + type + " in this application.")
+                    }
+                })
+        });
+    }
+
+    checkDocPermission(docStatus, docType) {
+        return new Promise((resolve, reject) => {
+            this.checkDocSecurity(docStatus, docType)
+                .subscribe(res => {
+                    if (res) {
+                        resolve()
+                    } else {
+                        reject("The document is not editable in this status.")
+                    }
+                })
+        });
+    }
+
+    checkRevisionPermission(docStatus, docTypeId) {
+        return new Promise((resolve, reject) => {
+            this.checkRevisionPrivilege(docStatus, docTypeId)
+            .subscribe( data => {
+                if (data.documentRevisionKey){
+                    resolve()
+                } else {
+                    reject("You are not given privilege to revise this document in this status.")
+                }
+            })
         });
     }
 }

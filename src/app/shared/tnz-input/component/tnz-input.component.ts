@@ -85,7 +85,6 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	@Input() autoCompleteEnabled = true;
 	@Input() precision;
 	@Input() selectOptions: any = [];
-	@Input() defaultValue: any;
 
 	@Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
 	@Output() valueChangedFromUI: EventEmitter<any> = new EventEmitter<any>();
@@ -366,13 +365,6 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			}
 			if (cache && cache != value) {
 				value = cache;
-			}
-		}
-		if (this.defaultValue && (typeof value == 'undefined' || value == '')) {
-			if (this.type == 'date') {
-				value = DateUtilities.formatDate(this.defaultValue);
-			} else {
-				value = this.defaultValue
 			}
 		}
 		this.setValue(value);

@@ -10,7 +10,8 @@ import { DateUtilities } from 'app/shared/utils';
 
 @Component({
 	selector: 'lov-component',
-	templateUrl: './lov-component.html'
+	templateUrl: './lov-component.html',
+	styleUrls: ['lov-component.scss']
 })
 export class LOVComponent implements OnInit, OnDestroy {
 	selectedRows: any;

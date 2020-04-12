@@ -14,6 +14,7 @@ import { AutoCompleteUtilities } from 'app/shared/utils/auto-complete.utility';
 import { UserService } from 'app/shared/services';
 import { CommonUtilities } from 'app/shared/utils/common.utility';
 import { LOVComponent } from 'app/shared/component/lov-component/lov-component';
+import { TnzInputLOVComponent } from 'app/shared/tnz-input/input-lov/input-lov.component';
 
 @Component({
 	selector: 'program-form',
@@ -195,6 +196,32 @@ export class ProgramFormComponent implements OnInit, OnDestroy {
 			event.stopPropagation();
 		let postBody: any = {};
 		postBody.formFields = this.getProgramInputs();
+		let listAttrs = this.getListAttr(field.selectFieldName);
+		let listAttrTitles = this.getListAttrNames(listAttrs);
+		
+		// let lovConfig = {
+		// 	title: 'Choose ' + field.fieldTitle,
+		// 	apiClass: this.schedulerUtils,
+		// 	apiMethod: 'POST',
+		// 	postBody: postBody,
+		// 	url: '/programs/' + this.pgmId + '/params/' + field.fieldID + '/lov',
+		// 	dataHeader: 'rows',
+		// 	returnKey: 'RETURN_FIELD',
+		// 	displayKey: 'DISPLAY_FIELD',
+		// 	filterAttributes: listAttrs,
+		// 	displayFields: []
+		// }
+		// listAttrs.forEach((listAttr,index) => {
+		// 	let displayField = {
+		// 		key: listAttr,
+		// 		title: listAttrTitles[index]
+		// 	}
+		// 	lovConfig.displayFields.push(displayField)
+		// })
+		
+		// const dialogRef = this.dialog.open(TnzInputLOVComponent);
+		// dialogRef.componentInstance.lovConfig = lovConfig;
+		
 		const dialogRef = this.dialog.open(LOVComponent);
 		dialogRef.componentInstance.title = 'Choose ' + field.fieldTitle;
 		dialogRef.componentInstance.apiClass = this.schedulerUtils;
@@ -466,7 +493,7 @@ export class ProgramFormComponent implements OnInit, OnDestroy {
 				postBody['filter'] = filter;
 				postBody['filters'] = filters;
 				return service.post(('/programs/' + this.pgmId + '/params/' + field.fieldID + '/lov'), postBody)
-					.map(res => res['data']).map(data => {
+					.map(data => {
 						if (data) data = data.rows;
 						if (data && data.length > 0) {
 							data.forEach(row => {

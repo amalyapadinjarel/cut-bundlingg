@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SmdModule } from '../smd/smd.module';
+import { MatButtonModule } from '@angular/material/button';
 
 
 const COMPONENTS = [
@@ -18,7 +19,8 @@ const MATERIAL_MODULE = [
     MatIconModule,
     MatDialogModule,
     MatTooltipModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
 ];
 
 @NgModule({

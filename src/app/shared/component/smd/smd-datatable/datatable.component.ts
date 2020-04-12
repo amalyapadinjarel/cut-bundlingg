@@ -972,7 +972,8 @@ export class SmdDataTable
 										reject();
 									}
 								}
-								if (this.token == data.token) {
+								console.log(data)
+								if (!data.token || this.token == data.token) {
 									this.lastQueryExecutedPage = page;
 									this.models = data[this.dataHeader];
 									this.rowCount = data.count;

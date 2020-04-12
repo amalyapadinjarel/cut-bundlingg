@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 import { AlertUtilities } from 'app/shared/utils/alert.utility';
 import { SmdDataTable } from 'app/shared/component';
+import { ApiService } from '../../services';
 
 @Component({
 	selector: 'tnz-input-lov-component',
@@ -21,6 +22,7 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 	constructor(
 		public dialogRef: MatDialogRef<TnzInputLOVComponent>,
 		private alertUtils: AlertUtilities,
+		private apiService: ApiService
 	) {
 	}
 
@@ -31,6 +33,10 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 				this.preFetchPages = this.lovConfig.preFetchPages;
 			if (this.lovConfig.primaryKey)
 				this.primaryKey = this.lovConfig.primaryKey;
+			if(!this.lovConfig.apiClass)
+				this.lovConfig.apiClass = this.apiService
+			if(!this.lovConfig.apiMethod)
+				this.lovConfig.apiMethod = 'GET'
 		}
 	}
 
