@@ -23,12 +23,13 @@ export class JobLogComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		console.log("here")
 		if (!this.jobData.log) {
 			this.loading = true;
 			this.schedulerUtils.getJobLog(this.jobData.tnzJobInstncId).then(
 				(data) => {
 					if (data.status == 'S') {
-						this.jobData.log = data.log;
+						this.jobData.log = data.jobLog;
 						this.loading = false;
 						this.dataTable.refresh(this.jobData.log);
 						this.dataTable.rowCount = this.jobData.log.length;

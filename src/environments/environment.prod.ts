@@ -9,4 +9,4 @@ export const environment = {
   ws_url: 'http://192.168.70.207:8080/trendz-websocket/socket',
 };
 
-export const appVersion = 'alpha 0.1.10';
+export const appVersion = 'alpha 0.1.11';

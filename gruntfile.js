@@ -13,7 +13,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'dist',
+                        cwd: 'dist/trendz-v5',
                         src: ['**'],
                         dest: ''
                     }
