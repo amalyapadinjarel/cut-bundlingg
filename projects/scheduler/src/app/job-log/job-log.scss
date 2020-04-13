@@ -1,0 +1,23 @@
+.title-bar {
+    display: flex;
+    align-items: center;
+    margin: 12px 12px 20px;
+    .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .submitted-info {
+        font-weight: 400;
+        font-size: 13px;
+        color: rgba(0, 0, 0, .72);
+    }
+    img {
+        height: 64px;
+        margin-right: 8px;
+    }
+}
+
+.input-card {
+    box-shadow: none;
+}

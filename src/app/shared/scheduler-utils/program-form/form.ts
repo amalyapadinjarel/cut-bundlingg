@@ -361,7 +361,8 @@ export class ProgramFormComponent implements OnInit, OnDestroy {
 		if (valid) {
 			let form: any = {};
 			form.taskId = this.pgmId
-			form.division = this.userService.getCurrentUser().division;
+			//TODO Change This
+			form.division = this.userService.getCurrentUser().division?this.userService.getCurrentUser().division:2;
 			form.cronExpression = this.cronExpression;
 			form.logEnabled = this.logEnabled ? 'Y' : 'N';
 			form.sendMail = this.sendMail ? 'Y' : 'N';
