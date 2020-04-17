@@ -7,7 +7,7 @@
 	</div>
 </mat-toolbar>
 <mat-tab-group [selectedIndex]="selectedMenuTab" (selectChange)="menuTabChanged($event)">
-	<!-- <mat-tab label="menu">
+	<mat-tab label="menu">
 		<ng-template matTabLabel>
 			<mat-icon matTooltip="application menu"> list </mat-icon>
 		</ng-template>
@@ -40,8 +40,8 @@
 				<peoplez-nav *ngIf="app != 'apps'" [menu]="menuItem" (menuSelected)="menuItemClicked()"></peoplez-nav>
 			</div>
 		</perfect-scrollbar>
-	</mat-tab> -->
-	<!-- <mat-tab label="Bookmarks">
+	</mat-tab>
+	<mat-tab label="Bookmarks">
 		<ng-template matTabLabel>
 			<mat-icon matTooltip="bookmarks"> star </mat-icon>
 		</ng-template>
@@ -58,7 +58,7 @@
 				</nav>
 			</div>
 		</perfect-scrollbar>
-	</mat-tab> -->
+	</mat-tab>
 </mat-tab-group>
 
 <span class="flex-filler"></span>

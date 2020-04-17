@@ -82,6 +82,8 @@
     top: 8px;
     z-index: 2;
     color: #abadb2;
+    width: 40px;
+    height: 40px;
 }
 
 #app-sidenav app-sidenav perfect-scrollbar {
@@ -113,7 +115,7 @@
     padding-left: 24px;
     font-size: .9rem;
     color: rgba(255, 255, 255, .92);
-    border-left: 3px solid transparent;
+    border-left: 3px solid transparen
 }
 
 #app-sidenav p-app-nav-menu p-app-nav-menu .mat-menu-item {
@@ -134,6 +136,7 @@
     z-index: 1;
     padding-top: 12px;
     padding-left: 42px;
+    -webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 1);
     box-shadow: 0 0 12px rgba(0, 0, 0, 1);
 }
 

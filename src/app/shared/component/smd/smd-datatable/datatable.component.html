@@ -14,7 +14,7 @@
                             <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
                             </mat-checkbox>
                         </th>
-                        <th *ngFor="let column of columns" [class.smd-datatable-column-sortable]="column.sortable"
+                        <th *ngFor="let column of columns" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
                             [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
                             <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
                                 [class.smd-sorted-asc]="column.sortDir == 'ASC'"
@@ -52,7 +52,7 @@
                             <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
                             </mat-checkbox>
                         </th>
-                        <th *ngFor="let column of columns" [class.smd-datatable-column-sortable]="column.sortable"
+                        <th *ngFor="let column of columns" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
                             [class.smd-numeric-column]="column.numeric">
                             <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
                                 [class.smd-sorted-asc]="column.sortDir == 'ASC'"

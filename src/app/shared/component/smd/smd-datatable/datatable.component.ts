@@ -282,6 +282,7 @@ export class SmdDataTable
 	@Input() primaryListing: boolean = false;
 	@Input() selectedPage = 1;
 	@Input() filterEnabled: boolean = true;
+	@Input() sortEnabled: boolean = true;
 	@Input() showTableFilter: boolean = false;
 	@Input() showColumnFilter: boolean = true;
 	@Input() isModel = false;
@@ -657,8 +658,8 @@ export class SmdDataTable
 
 	_sortColumn(column: SmdDataTableColumnComponent) {
 
-		if (this.dataHeader && this.dataUrl) {
-			if (column.sortable) {
+		if (column.sortable && this.sortEnabled) {
+			if (this.dataHeader && this.dataUrl) {
 				this.columns
 					.filter(col => col.id != column.id)
 					.forEach(col => (col.sortDir = null));
@@ -670,28 +671,30 @@ export class SmdDataTable
 				this.sortDirection = column.sortDir;
 				this.sortField = column.field;
 				this._queryTableData().then(() => { }, () => { });
-			}
-		} else {
-			let itrateModel = [];
-			if (!this.filteredModels) {
-				itrateModel = this.models;
 			} else {
-				itrateModel = this.filteredModels;
+				let itrateModel = [];
+				console.log(this.filteredModels)
+				if (!this.filteredModels) {
+					itrateModel = this.models;
+				} else {
+					itrateModel = this.filteredModels;
+				}
+				let sortedModel = [];
+				sortedModel = CommonUtilities.sortByKey(itrateModel, column.field);
+				if (!column.sortDir) {
+					column.sortDir = "ASC";
+					this._updateRowsFromList(sortedModel);
+				} else if (column.sortDir == "ASC") {
+					column.sortDir = "DESC"
+					this._updateRowsFromList(sortedModel.reverse());
+				} else {
+					column.sortDir = null;
+					this._updateRowsFromList(sortedModel);
+				}
+				if(this.filteredModels){
+					this.filteredModels = sortedModel
+				}
 			}
-			let sortedModel = [];
-			sortedModel = CommonUtilities.sortByKey(itrateModel, column.field);
-			if (!column.sortDir) {
-				column.sortDir = "ASC";
-				this._updateRowsFromList(sortedModel);
-			} else if (column.sortDir == "ASC") {
-				column.sortDir = "DESC"
-				this._updateRowsFromList(sortedModel.reverse());
-			} else {
-				column.sortDir = null;
-				this._updateRowsFromList(sortedModel);
-			}
-
-
 		}
 	}
 
@@ -883,10 +886,10 @@ export class SmdDataTable
 						this.params = this.params.set("filters", JSON.stringify(filters));
 						this.params = this.params.set("andFilters", JSON.stringify(andFilters));
 
-						this.params = this.params.set("offset",  offset.toString());
+						this.params = this.params.set("offset", offset.toString());
 						this.params = this.params.set("limit", limit.toString());
 						if (this.sortDirection != null) {
-							this.params = this.params.set("sort",  this.sortField);
+							this.params = this.params.set("sort", this.sortField);
 							this.params = this.params.set("direction", this.sortDirection);
 						} else {
 							this.params = this.params.delete("sort");
@@ -934,7 +937,7 @@ export class SmdDataTable
 				if (this.apiMethod == "GET") {
 					if (this.apiLevel == 4) {
 						this.apiClass
-							.get('/' + this.dataUrl, this.apiLevel == 4 ? this.params : queryParams , this.token)
+							.get('/' + this.dataUrl, this.apiLevel == 4 ? this.params : queryParams, this.token)
 							.subscribe(
 								data => {
 									this.processGetReponse(data, page, offset, limit).then(resolve, reject);
@@ -1008,7 +1011,6 @@ export class SmdDataTable
 									let value = this.columnFilterInputs[column.id].value;
 									value = value.toLowerCase();
 									let field = column.field;
-									console.log(column.field)
 									this.filteredModels.forEach((model) => {
 										if (model.hasOwnProperty("unfiltered") && model.unfiltered == true) {
 											tempModels.push(model);
@@ -1026,6 +1028,7 @@ export class SmdDataTable
 						});
 					}
 					this.rowCount = this.filteredModels.length;
+					console.log(this.rowCount)
 					this._updateRowsFromList(this.filteredModels);
 
 					this.dataChange.emit({ rowCount: this.rowCount });

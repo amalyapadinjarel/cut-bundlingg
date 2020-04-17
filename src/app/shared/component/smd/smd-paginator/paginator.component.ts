@@ -108,7 +108,10 @@ export class SmdPaginatorComponent implements OnInit {
     }
 
     get pageEnd(): number {
-        return (this.count < this.selectedRange) ? ((this.selectedPage - 1) * this.selectedRange) + this.count : (this.selectedPage * this.selectedRange);
+        let pageEnd = (this.count < this.selectedRange) ? ((this.selectedPage - 1) * this.selectedRange) + this.count : (this.selectedPage * this.selectedRange);
+        if(pageEnd > this.count)
+            pageEnd = this.count
+        return pageEnd;
     }
 
     get totalCount(): number {
