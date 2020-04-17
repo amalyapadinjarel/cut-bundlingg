@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService, LocalCacheService } from 'app/shared/services/';
 import { CutRegisterSharedService } from './cut-register-shared.service';
-import { CutRegister, Product } from '../models/cut-register.model';
+import { CutRegister, Product, CutPanelDetails } from '../models/cut-register.model';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Router } from '@angular/router';
 import { AlertUtilities } from 'app/shared/utils';
@@ -159,8 +159,8 @@ export class CutRegisterService {
 
     fetchCutBundle(id?: number) {
         return new Promise((resolve, reject) => {
-            let params:HttpParams = new HttpParams();
-            params = params.set("direction","ASC")
+            let params: HttpParams = new HttpParams();
+            params = params.set("direction", "ASC")
             if (this._shared.id > 0) {
                 this.apiService.get('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id, params)
                     .subscribe(data => {
@@ -496,7 +496,35 @@ export class CutRegisterService {
                 }
             })
         }
-    }   
+    }
+
+    deleteAll(key) {
+        while (this._shared.formData[key].length)
+            this._shared.deleteLine(key, 0);
+    }
+
+    deleteByProductId(productId,key){
+        let productKey = 'refProdId';
+        switch(key){
+            case 'orderDetails':
+                productKey = 'refProductId';
+                break;
+            case 'markerDetails':
+                productKey = 'productId';
+                break;
+            case 'cutPanelDetails':
+                productKey = 'refProductId';
+                break;
+            default:
+                break;            
+        }
+        let lineDetails = this._shared.formData[key]
+        let lines = lineDetails.filter(data => { return data[productKey] == productId });
+        lines.forEach(line => {
+            let i = lineDetails.indexOf(line);
+            this._shared.deleteLine(key, i);
+        })
+    }
 
     deleteDetailsLine(key, index, model) {
         let productId, orderDetails, orders;
@@ -504,12 +532,13 @@ export class CutRegisterService {
             case 'markerDetails':
                 productId = model['productId'];
                 this._shared.deleteLine(key, index);
-                orderDetails = this._shared.formData.orderDetails
-                orders = orderDetails.filter(data => { return data.refProductId == productId });
-                orders.forEach(order => {
-                    let i = orderDetails.indexOf(order);
-                    this._shared.deleteLine('orderDetails', i);
-                })
+                this.deleteByProductId(productId, 'orderDetails')
+                console.log(productId)
+                this.deleteByProductId(productId,'cutPanelDetails')
+                if (!this._shared.formData.orderDetails.length) {
+                    this.deleteAll('layerDetails');
+                }
+               
                 break;
             case 'orderDetails':
                 productId = model['refProductId'];
@@ -517,11 +546,10 @@ export class CutRegisterService {
                 orderDetails = this._shared.formData.orderDetails
                 orders = orderDetails.filter(data => { return data.refProductId == productId });
                 if (!orders || !orders.length) {
-                    let markerDetails = this._shared.formData.markerDetails;
-                    let i = markerDetails.findIndex(data => { return data.productId == productId });
-                    if (i > -1) {
-                        this._shared.deleteLine('markerDetails', i);
-                    }
+                    this.deleteByProductId(productId, 'markerDetails')
+                }
+                if (!this._shared.formData.orderDetails.length) {
+                    this.deleteAll('layerDetails');
                 }
                 break;
             case 'layerDetails':
@@ -559,9 +587,9 @@ export class CutRegisterService {
         })
     }
 
-    checkIfEdited(){
+    checkIfEdited() {
         let saveData = this._cache.getCachedValue(this._shared.appPath);
-        return !!saveData;        
+        return !!saveData;
     }
 
     getExtraCutValues(facility) {
@@ -575,10 +603,10 @@ export class CutRegisterService {
                     return err;
                 })
                 .subscribe(data => {
-                    if (data && data.status && data.status== 'S' && data.extraCut)
+                    if (data && data.status && data.status == 'S' && data.extraCut)
                         resolve(data.extraCut);
-                    else if(data.status == 'F' && data.message)
-                        reject(errorMsg + ' ' +  data.message);
+                    else if (data.status == 'F' && data.message)
+                        reject(errorMsg + ' ' + data.message);
                     else
                         reject(errorMsg);
                 })

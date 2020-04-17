@@ -135,6 +135,7 @@ export class PdmCostingFormComponent {
 							this._shared.addLine('cutPanelDetails', cutPanelLine)
 						}
 					})
+					console.log(this._shared.formData.cutPanelDetails)
 				})
 			}
 		})
