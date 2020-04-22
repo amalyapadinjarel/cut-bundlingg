@@ -119,7 +119,53 @@
 }
 
 #app-sidenav p-app-nav-menu p-app-nav-menu .mat-menu-item {
-    border: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 48px;
+    height: 48px;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    position: relative;
+}
+
+#app-sidenav app-sidenav nav .mat-menu-item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 48px;
+    height: 48px;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    position: relative;
+}
+
+#app-sidenav app-sidenav nav .mat-menu-item .mat-icon {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, .7);
+    font-size: 16px;
+    opacity: .72;
 }
 
 #app-sidenav app-sidenav nav .mat-menu-item.title {

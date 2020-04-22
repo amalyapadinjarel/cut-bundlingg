@@ -673,7 +673,6 @@ export class SmdDataTable
 				this._queryTableData().then(() => { }, () => { });
 			} else {
 				let itrateModel = [];
-				console.log(this.filteredModels)
 				if (!this.filteredModels) {
 					itrateModel = this.models;
 				} else {
@@ -784,7 +783,7 @@ export class SmdDataTable
 	public refresh(model: any[] = null) {
 		if (model) {
 			this.models = model;
-			if (this.dataHeader && this.dataUrl || !this.filterEnabled || !this.showColumnFilter) {
+			if (this.dataHeader && this.dataUrl) {
 				this.setTotalRow();
 				this._updateRows();
 			}
@@ -819,7 +818,6 @@ export class SmdDataTable
 					);
 			let offset = (page - 1) * size;
 			let limit: number = this.preFetchPages * size;
-
 			if (this.dataHeader && this.dataUrl) {
 				this.token = Math.random();
 				let filterconditions = [];
@@ -975,7 +973,6 @@ export class SmdDataTable
 										reject();
 									}
 								}
-								console.log(data)
 								if (!data.token || this.token == data.token) {
 									this.lastQueryExecutedPage = page;
 									this.models = data[this.dataHeader];
@@ -1028,7 +1025,6 @@ export class SmdDataTable
 						});
 					}
 					this.rowCount = this.filteredModels.length;
-					console.log(this.rowCount)
 					this._updateRowsFromList(this.filteredModels);
 
 					this.dataChange.emit({ rowCount: this.rowCount });

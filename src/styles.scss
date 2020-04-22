@@ -83,7 +83,9 @@ button {
     &.mat-menu-item {
         line-height: 32px;
         height: 32px;
+        width: 100%;
     }
+
 
     &.mat-raised-button {
         line-height: 24px;
@@ -1383,4 +1385,9 @@ mat-card.input-card .date-tracks {
     line-height: 14px;
     text-align: center;
     cursor: pointer;
+}
+
+.mat-menu-item .mat-icon {
+    margin-right: 16px;
+    vertical-align: middle;
 }

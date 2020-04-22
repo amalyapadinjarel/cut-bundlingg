@@ -1,5 +1,5 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getMarkerDetailsEditable()" [loading]="_shared.markerDetailsLoading"
- class="tnz-input-table" [filterEnabled]="!_shared.getMarkerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()">
+ class="tnz-input-table" [filterEnabled]="!_shared.getMarkerDetailsEditable()" [sortEnabled]="!_shared.getMarkerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getMarkerDetailsEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
@@ -18,11 +18,11 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Style" field="prodName" sortable="true" [filterable]="true">
+	<!-- <smd-datatable-column title="Style" field="prodName" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
 			{{model.prodName}}
 		</ng-template>
-	</smd-datatable-column>
+	</smd-datatable-column> -->
 	<smd-datatable-column title="Attribute" field="prodAttr" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
 			{{model.prodAttr}}

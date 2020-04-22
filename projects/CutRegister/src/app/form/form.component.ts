@@ -222,7 +222,7 @@ export class PdmCostingFormComponent {
 		cutPanel.layRegstrId = this._shared.id.toString();
 		cutPanel.panelName = line.panelCode;
 		cutPanel.panelNameTr = line.panelName;
-		cutPanel.mOpId = line.opId;
+		cutPanel.mOpId = line.opGroupId;
 		cutPanel.opSeq = line.opSequence;
 		cutPanel.refProdId = line.refProdId;
 		return cutPanel;
