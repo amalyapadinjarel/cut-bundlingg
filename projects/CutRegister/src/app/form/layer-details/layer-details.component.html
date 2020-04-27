@@ -127,7 +127,7 @@
 			{{model.layYardage}}
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">
+	<!-- <smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('style')">{{model.style}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('style')">
@@ -136,7 +136,7 @@
 				</tnz-input>
 			</div>
 		</ng-template>
-	</smd-datatable-column>
+	</smd-datatable-column> -->
 	<smd-datatable-column title="Style Color" field="colorName" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('colorName')">{{model.colorName}}</span>

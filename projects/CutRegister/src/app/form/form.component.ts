@@ -112,10 +112,8 @@ export class PdmCostingFormComponent {
 				resArray.forEach(res => {
 					routingIds.push(res.routingId);
 					res = this.mapResToOrderDetails(res);
-					console.log(res)
 					this._shared.addLine('orderDetails', res);
-					let markerDetails = this._shared.formData.markerDetails;
-					let index = markerDetails.findIndex(data => {
+					let index = this._shared.formData.markerDetails.findIndex(data => {
 						return data.productId == res.refProductId;
 					});
 					if (index == -1) {
@@ -124,10 +122,8 @@ export class PdmCostingFormComponent {
 					}
 				});
 				this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
-					let cutPanelDetails = this._shared.formData.cutPanelDetails;
-					console.log(cutPanelDetails)
 					cutPanels.forEach(line => {
-						let index = cutPanelDetails.findIndex(data => {
+						let index = this._shared.formData.cutPanelDetails.findIndex(data => {
 							return data.panelName == line.panelCode;
 						});
 						if (index == -1) {
@@ -135,7 +131,6 @@ export class PdmCostingFormComponent {
 							this._shared.addLine('cutPanelDetails', cutPanelLine)
 						}
 					})
-					console.log(this._shared.formData.cutPanelDetails)
 				})
 			}
 		})
@@ -175,7 +170,7 @@ export class PdmCostingFormComponent {
 		model.orderRefNo = res.orderReference ? res.orderReference : "";
 		model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
 
-		model.cutAllowancePercent = res.cutAllowancePercent ? res.cutAllowancePercent : "";
+		model.cutAllowancePercent = this._shared.getHeaderAttributeValue('cutAllowance');
 		model.attribute1 = res.attribute1 ? res.attribute1 : "";
 		model.attribute2 = res.attribute2 ? res.attribute2 : "";
 		model.attribute3 = res.attribute3 ? res.attribute3 : "";

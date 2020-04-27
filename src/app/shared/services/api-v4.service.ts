@@ -26,6 +26,7 @@ export class ApiServiceV4 {
 		if (this.jwtService.getToken()) {
 			headersConfig['Authorization'] = `${this.jwtService.getToken()}`;
 		}
+		
 		return new HttpHeaders(headersConfig);
 	}
 

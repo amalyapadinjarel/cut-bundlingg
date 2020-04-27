@@ -182,10 +182,10 @@ export function StyleColorLovConfig(id) {
                     title: 'Color',
                     key: 'value'
                 }
-                , {
-                    title: 'Style',
-                    key: 'styleName'
-                }
+                // , {
+                // 	title: 'Style',
+                // 	key: 'styleName'
+                // }
             ]
         }
     return json

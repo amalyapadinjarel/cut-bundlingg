@@ -148,8 +148,8 @@
             <li>
                 <label>Shrinkage</label>
                 <div class="val">
-                    <tnz-input dataType="number" [path]="_shared.getHeaderAttrPath('shrinkage')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                        validators="min:0" [isEdit]="getIfEditable('shrinkage')" [loading]="_shared.headerLoading || _shared.loading">
+                    <tnz-input [path]="_shared.getHeaderAttrPath('shrinkage')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                     [isEdit]="getIfEditable('shrinkage')" [loading]="_shared.headerLoading || _shared.loading">
                     </tnz-input>
                 </div>
             </li>

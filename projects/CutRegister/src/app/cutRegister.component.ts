@@ -105,8 +105,9 @@ export class CutRegisterComponent {
 
   showReports() {
     this.reportData["userId"] = this.userService.getCurrentUser().userId;
-    if (this._shared.id) {
+    if (this._shared.id) {  
       this.reportData["pCutId"] = this._shared.id;
+      this.reportData["pDocumentNum"] = this._shared.getHeaderAttributeValue('documentNo');
     }
     this.navService.showApplicationReports(
       "CUTREGISTER",

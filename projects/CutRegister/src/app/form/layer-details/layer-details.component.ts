@@ -5,7 +5,7 @@ import { AlertUtilities } from 'app/shared/utils';
 import { Subscription } from 'rxjs';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { Product, LayerDetails } from '../../models/cut-register.model';
-import { FabricLovConfig, StickerColorLovConfig } from '../../models/lov-config';
+import { FabricLovConfig, StickerColorLovConfig, StyleColorLovConfig } from '../../models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
@@ -43,24 +43,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 		this.fabricLovConfig = FabricLovConfig(this._shared.id)
 
-		this.styleColorLovConfig = {
-			title: 'Select Fabric',
-			url: 'lovs/style-color?cutRegisterId=' + this._shared.id,
-			dataHeader: 'data',
-			returnKey: 'valueId',
-			displayKey: 'value',
-			filterAttributes: ['value'],
-			displayFields: [
-				{
-					title: 'Color',
-					key: 'value'
-				}
-				, {
-					title: 'Style',
-					key: 'styleName'
-				}
-			]
-		}
+		this.styleColorLovConfig = StyleColorLovConfig(this._shared.id)
 	}
 
 	ngOnDestroy(): void {

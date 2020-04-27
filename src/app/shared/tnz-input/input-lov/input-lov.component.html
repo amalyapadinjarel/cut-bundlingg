@@ -2,7 +2,8 @@
 <mat-dialog-content style="background-color: white;">
 	<smd-datatable [dataUrl]="lovConfig.url" [preFilters]="lovConfig.filter" [dataHeader]="lovConfig.dataHeader" (onRowSelected)="rowSelected($event)"
 		[primaryListing]="true" [selectMultiple]="!!lovConfig.allowMultiple" [preFetchPages]="preFetchPages" [primaryKey]="primaryKey"
-		[apiClass]= "lovConfig.apiClass" [apiMethod]="lovConfig.apiMethod" [postBody]="lovConfig.postBody">
+		[apiClass]= "lovConfig.apiClass" [apiMethod]="lovConfig.apiMethod" [postBody]="lovConfig.postBody"
+		(checkedPksNew)=checkedPksNew($event)>
 		<smd-datatable-column [field]="field.key" *ngFor="let field of lovConfig.displayFields" [title]="field.title"
 			[filterable]="true" [sortable]="true">
 			<ng-template let-model="data">

@@ -153,6 +153,7 @@ export class OrderDetails {
     facility: string;
     orderRefNo: string;
     markerAttrVal: string;
+    styleId: string;
 
     constructor(model = null) {
         this.layOrderRefId = model ? model.layOrderRefId : "0";
@@ -207,6 +208,7 @@ export class OrderDetails {
         this.orderRefNo = model ? model.orderRefNo : "";
         this.routingId = model ? model.routingId : "";        
         this.markerAttrVal = model ? model.markerAttrVal : "";        
+        this.styleId = model ? model.styleId : "";        
         }
 }
 

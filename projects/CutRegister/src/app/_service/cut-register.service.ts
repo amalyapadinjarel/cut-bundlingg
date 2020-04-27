@@ -121,7 +121,6 @@ export class CutRegisterService {
                     .subscribe(data => {
                         if (data.register) {
                             resolve(data.register);
-                            console.log(data.maxDisplayOrder)
                             if (data.maxDisplayOrder) {
                                 this._shared.orderDetailsSeq = data.maxDisplayOrder
                             }
@@ -201,7 +200,6 @@ export class CutRegisterService {
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/approve/' + this._shared.id)
                 .subscribe(ret => {
-                    console.log(ret)
                     if (ret.status && ret.status == 'S') {
                         if (ret.returnCode && ret.returnCode == 1)
                             resolve();
@@ -513,7 +511,7 @@ export class CutRegisterService {
                 productKey = 'productId';
                 break;
             case 'cutPanelDetails':
-                productKey = 'refProductId';
+                productKey = 'refProdId';
                 break;
             default:
                 break;            
@@ -524,16 +522,24 @@ export class CutRegisterService {
             let i = lineDetails.indexOf(line);
             this._shared.deleteLine(key, i);
         })
+        return lines
     }
 
     deleteDetailsLine(key, index, model) {
-        let productId, orderDetails, orders;
+        let productId, orderDetails, orders, styleId;
         switch (key) {
             case 'markerDetails':
                 productId = model['productId'];
                 this._shared.deleteLine(key, index);
-                this.deleteByProductId(productId, 'orderDetails')
-                console.log(productId)
+                let lines = this.deleteByProductId(productId, 'orderDetails')
+                lines.forEach( data => {
+                    let styleId = data['styleId']
+                    orderDetails = this._shared.formData.orderDetails
+                    orders = orderDetails.filter(data => { return data.styleId == styleId });
+                    if (!orders || !orders.length) {
+                        this.deleteByProductId(styleId, 'cutPanelDetails')
+                    }
+                })
                 this.deleteByProductId(productId,'cutPanelDetails')
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');
@@ -542,15 +548,21 @@ export class CutRegisterService {
                 break;
             case 'orderDetails':
                 productId = model['refProductId'];
+                let styleId = model['styleId']
                 this._shared.deleteLine(key, index);
                 orderDetails = this._shared.formData.orderDetails
                 orders = orderDetails.filter(data => { return data.refProductId == productId });
                 if (!orders || !orders.length) {
                     this.deleteByProductId(productId, 'markerDetails')
                 }
+                orders = orderDetails.filter(data => { return data.styleId == styleId });
+                if (!orders || !orders.length) {
+                    this.deleteByProductId(styleId, 'cutPanelDetails')                
+                }
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');
                 }
+
                 break;
             case 'layerDetails':
                 if (this._shared.formData.cutBundle && this._shared.formData.cutBundle.length) {

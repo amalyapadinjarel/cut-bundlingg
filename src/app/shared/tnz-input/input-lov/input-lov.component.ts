@@ -12,6 +12,7 @@ import { ApiService } from '../../services';
 })
 export class TnzInputLOVComponent implements OnInit, OnDestroy {
 
+	selectedRecords: any;
 	lovConfig: any = {};
 	returnData: any;
 	preFetchPages = 1;
@@ -27,7 +28,6 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		console.log(this.lovConfig)
 		if (this.lovConfig) {
 			if (this.lovConfig.preFetchPages)
 				this.preFetchPages = this.lovConfig.preFetchPages;
@@ -51,8 +51,12 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	checkedPksNew(output){
+		this.selectedRecords = output.checkedArr.checkedList
+	}
+
 	selectRecord() {
-		let models = this.dataTable.selectedModels();
+		let models = this.selectedRecords ? this.selectedRecords : this.dataTable.selectedModels();
 		if (this.lovConfig.allowMultiple && models.length > 0) {
 			this.dialogRef.close(models);
 		}
