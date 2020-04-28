@@ -101,6 +101,8 @@ export class Product {
 }
 
 export class OrderDetails {
+    attrValId: any;
+	totalOrderQty: any;
 	routingId: string;
     layOrderRefId: string;
     bpartName: string;
@@ -208,7 +210,9 @@ export class OrderDetails {
         this.orderRefNo = model ? model.orderRefNo : "";
         this.routingId = model ? model.routingId : "";        
         this.markerAttrVal = model ? model.markerAttrVal : "";        
-        this.styleId = model ? model.styleId : "";        
+        this.styleId = model ? model.styleId : "";     
+        this.totalOrderQty = model ? model.totalOrderQty : "";        
+        this.attrValId = model ? model.attrValId : "";        
         }
 }
 
@@ -281,6 +285,7 @@ export class LayerDetails {
 }
 
 export class MarkerDetails {
+	attrValId: any;
     layMarkerId: string;
     crtdByName: string;
     lastUpdateDate: string;
@@ -338,6 +343,7 @@ export class MarkerDetails {
         this.prodAttr = model ? model.prodAttr : "";
         this.attribute10 = model ? model.attribute10 : "";
         this.facility = model ? model.facility : "";
+        this.attrValId = model ? model.attrValId : "";
     }
 }
 

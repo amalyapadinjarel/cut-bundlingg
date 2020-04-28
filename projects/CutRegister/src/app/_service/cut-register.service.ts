@@ -501,14 +501,14 @@ export class CutRegisterService {
             this._shared.deleteLine(key, 0);
     }
 
-    deleteByProductId(productId,key){
-        let productKey = 'refProdId';
+    deleteById(productId,key){
+        let productKey = 'attrValId';
         switch(key){
             case 'orderDetails':
-                productKey = 'refProductId';
+                productKey = 'attrValId';
                 break;
             case 'markerDetails':
-                productKey = 'productId';
+                productKey = 'attrValId';
                 break;
             case 'cutPanelDetails':
                 productKey = 'refProdId';
@@ -526,38 +526,37 @@ export class CutRegisterService {
     }
 
     deleteDetailsLine(key, index, model) {
-        let productId, orderDetails, orders, styleId;
+        let attrValId, orderDetails, orders, styleId;
         switch (key) {
             case 'markerDetails':
-                productId = model['productId'];
+                attrValId = model['attrValId'];
                 this._shared.deleteLine(key, index);
-                let lines = this.deleteByProductId(productId, 'orderDetails')
+                let lines = this.deleteById(attrValId, 'orderDetails')
                 lines.forEach( data => {
                     let styleId = data['styleId']
                     orderDetails = this._shared.formData.orderDetails
                     orders = orderDetails.filter(data => { return data.styleId == styleId });
                     if (!orders || !orders.length) {
-                        this.deleteByProductId(styleId, 'cutPanelDetails')
+                        this.deleteById(styleId, 'cutPanelDetails')
                     }
                 })
-                this.deleteByProductId(productId,'cutPanelDetails')
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');
                 }
                
                 break;
             case 'orderDetails':
-                productId = model['refProductId'];
+                attrValId = model['attrValId'];
                 let styleId = model['styleId']
                 this._shared.deleteLine(key, index);
                 orderDetails = this._shared.formData.orderDetails
-                orders = orderDetails.filter(data => { return data.refProductId == productId });
+                orders = orderDetails.filter(data => { return data.attrValId == attrValId });
                 if (!orders || !orders.length) {
-                    this.deleteByProductId(productId, 'markerDetails')
+                    this.deleteById(attrValId, 'markerDetails')
                 }
                 orders = orderDetails.filter(data => { return data.styleId == styleId });
                 if (!orders || !orders.length) {
-                    this.deleteByProductId(styleId, 'cutPanelDetails')                
+                    this.deleteById(styleId, 'cutPanelDetails')                
                 }
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');

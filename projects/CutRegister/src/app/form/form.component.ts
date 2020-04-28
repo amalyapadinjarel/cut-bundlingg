@@ -114,7 +114,7 @@ export class PdmCostingFormComponent {
 					res = this.mapResToOrderDetails(res);
 					this._shared.addLine('orderDetails', res);
 					let index = this._shared.formData.markerDetails.findIndex(data => {
-						return data.productId == res.refProductId;
+						return data.attrValId == res.attrValId;
 					});
 					if (index == -1) {
 						res = this.mapFromOrderToMarkerDetails(res);
@@ -145,7 +145,7 @@ export class PdmCostingFormComponent {
 		model.ordQtyUom = res.qtyUom ? res.qtyUom : "";
 		model.lineQty = res.orderQty ? res.orderQty : "";
 		model.kit = res.kit ? res.kit : "";
-		model.allwdQty = res.orderQty ? res.orderQty : "";;
+		model.allwdQty = res.maxAllowQty ? res.maxAllowQty : "";;
 
 		model.refDocId = res.orderId ? res.orderId : "";
 		model.refDocLineId = res.orderLineId ? res.orderLineId : "";
@@ -171,6 +171,7 @@ export class PdmCostingFormComponent {
 		model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
 
 		model.cutAllowancePercent = this._shared.getHeaderAttributeValue('cutAllowance');
+		model.totalOrderQty = this._service.calculateAllowedQty(res.orderQty,model.cutAllowancePercent);
 		model.attribute1 = res.attribute1 ? res.attribute1 : "";
 		model.attribute2 = res.attribute2 ? res.attribute2 : "";
 		model.attribute3 = res.attribute3 ? res.attribute3 : "";
@@ -188,6 +189,7 @@ export class PdmCostingFormComponent {
 		model.combo = res.combo ? res.combo : "";
 		model.routingId = res.routingId ? res.routingId : "";
 		model.markerAttrVal = res.markerAttrVal ? res.markerAttrVal : "";
+		model.attrValId = res.attrValId ? res.attrValId : "";
 		return model;
 	}
 
@@ -198,6 +200,7 @@ export class PdmCostingFormComponent {
 		model.productId = res.refProductId;
 		model.prodAttr = res.markerAttrVal;
 		model.facility = res.facility;
+		model.attrValId = res.attrValId;
 
 		model.attribute1 = res.attribute1;
 		model.attribute2 = res.attribute2;

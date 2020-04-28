@@ -60,14 +60,19 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Order Qty. + Allow" field="allwdQty" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Order Qty. + Allow" field="totalOrderQty" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getOrderDetailsEditable('allwdQty')">{{model.allwdQty}}</span>
-			<div *ngIf="_shared.getOrderDetailsEditable('allwdQty')">
-				<tnz-input dataType="number" [path]="_shared.getOrderDetailsPath(index,'allwdQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
+			<span *ngIf="!_shared.getOrderDetailsEditable('totalOrderQty')">{{model.totalOrderQty}}</span>
+			<div *ngIf="_shared.getOrderDetailsEditable('totalOrderQty')">
+				<tnz-input dataType="number" [path]="_shared.getOrderDetailsPath(index,'totalOrderQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="false" [loading]="_shared.orderDetailsLoading || _shared.loading">
 				</tnz-input>
 			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Max Allow Qty." field="allwdQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.allwdQty}}
 		</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Prev Cut Qty." field="prevqty" sortable="true" [filterable]="true">

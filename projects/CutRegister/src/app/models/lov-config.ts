@@ -74,6 +74,10 @@ export var CopyFromSOLovConfig: any = {
             key: 'orderQty'
         },
         {
+            title: 'Max Allow Qty.',
+            key: 'maxAllowQty'
+        },
+        {
             title: 'UOM',
             key: 'uomCode'
         },

@@ -45,14 +45,14 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
 	valueChangedFromUI(change, index) {
 		if (this._shared.editMode) {
-			let value, allwdQty, orderQty, otherValue
+			let value, totalOrderQty, orderQty, otherValue
 			value = change.value;
-			allwdQty = ''
+			totalOrderQty = ''
 			if (typeof value != 'undefined' && value !== '') {
 				switch (change.key) {
 					case 'cutAllowancePercent':
 						orderQty = this._shared.formData.orderDetails[index]['lineQty'];
-						allwdQty = this._service.calculateAllowedQty(orderQty, value)
+						totalOrderQty = this._service.calculateAllowedQty(orderQty, value)
 						otherValue = this._inputService.getInputValue(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'))
 						if (otherValue) {
 							this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '')
@@ -61,7 +61,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 						break;
 					case 'cutAllowanceQty':
 						orderQty = this._shared.formData.orderDetails[index]['lineQty'];
-						allwdQty = Number(orderQty) + Number(value);
+						totalOrderQty = Number(orderQty) + Number(value);
 						otherValue = this._inputService.getInputValue(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'))
 						if (otherValue) {
 							this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), '')
@@ -72,7 +72,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 						break;
 				}
 			}
-			this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allwdQty)
+			this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'totalOrderQty'), totalOrderQty)
 		}
 	}
 
