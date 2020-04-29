@@ -32,6 +32,7 @@ import {ProgramMoreInfoComponent} from "./program-more-info/more-info";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {SchedulerJobStatePipe} from "./_services/jobStatePipe";
 import {SchedulerJobStatusPipe} from "./_services/jobStatusPipe";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
 
 // const MATERIAL_MODULE = [
 // 	  MatIconModule
@@ -102,7 +103,7 @@ const schedulerRouting: ModuleWithProviders = RouterModule.forChild([
 		, MatMenuModule
 		, MatDialogModule
 		, MatSnackBarModule
-		, MatButtonModule, MatCheckboxModule
+		, MatButtonModule, MatCheckboxModule, SharedModule
 	],
 	declarations: [
 		SchedulerComponent,
