@@ -23,6 +23,7 @@ export class JwtService {
 
 
   destroyToken() {
+    localStorage.removeItem('trendzBIAuthentication');
     window.localStorage.removeItem('jwtToken');
     window.localStorage.removeItem('resetToken');
   }

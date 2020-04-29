@@ -23,7 +23,6 @@ export class JobLogComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		console.log("here")
 		if (!this.jobData.log) {
 			this.loading = true;
 			this.schedulerUtils.getJobLog(this.jobData.tnzJobInstncId).then(

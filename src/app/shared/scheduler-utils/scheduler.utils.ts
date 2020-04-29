@@ -33,13 +33,7 @@ export class SchedulerUtils {
         private userService: UserService,
     ) {
         SchedulerUtils.url = environment.bi_url;
-        SchedulerUtils.authentication = userService.getCurrentUser().trendzBIAuthentication;
-        console.log("user")
-        this.userService.currentUser.subscribe(user => {
-            if(user.trendzBIAuthentication){
-            SchedulerUtils.authentication = user.trendzBIAuthentication;
-            }
-        });
+        SchedulerUtils.authentication = localStorage.getItem('trendzBIAuthentication')
         
     }
 
@@ -57,9 +51,6 @@ export class SchedulerUtils {
     }
 
     private get(path: string, params: HttpParams = new HttpParams(), token = Math.random()): Observable<any> {
-        console.log(`${SchedulerUtils.url}${path}`);
-        console.log(SchedulerUtils.authentication)
-        SchedulerUtils.authentication =' eyJUcmVuZHpVc2VyIjoiVFJFTkRaIiwiY29tcGFueUlkIjoiLTEiLCJwZXJzb25JZCI6IiIsImRpdmlzaW9uSWQiOiIyIiwidXNlcklkIjotMSwiYXV0aGVudGljYXRpb24iOiJ0cmVuZHotYmktYXBpLWtleSJ9'
         return this.http.get(`${SchedulerUtils.url}${path}`, { headers: this.setHeaders(SchedulerUtils.authentication), params: params }).pipe(
             catchError(this.formatErrors),
             map((res: any) => {
