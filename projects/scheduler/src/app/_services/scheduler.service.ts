@@ -171,7 +171,6 @@ export class SchedulerService {
     }
 
     showJobLog(jobData) {
-        console.log(jobData)
         const dialogRef = this.dialog.open(JobLogComponent, {
             width: '80%',
         });
