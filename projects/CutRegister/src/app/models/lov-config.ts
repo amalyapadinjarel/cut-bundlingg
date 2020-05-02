@@ -54,36 +54,32 @@ export var CopyFromSOLovConfig: any = {
     ],
     displayFields: [
         {
-            title: 'Order Ref#',
-            key: 'orderReference'
+            title: 'SO#',
+            key: 'documentNo'
         },
         {
-            title: 'Old Order Ref',
-            key: 'oldOrderRef'
+            title: 'Style',
+            key: 'productNum'
         },
         {
-            title: 'Product Title',
-            key: 'productTitle'
-        },
-        {
-            title: 'Attributes',
+            title: 'Style Attributes',
             key: 'prdAttribute'
+        },
+        {
+            title: 'Order Ref.',
+            key: 'orderReference'
         },
         {
             title: 'Order Qty.',
             key: 'orderQty'
         },
         {
-            title: 'Max Allow Qty.',
+            title: 'Max Cut Qty.',
             key: 'maxAllowQty'
         },
         {
             title: 'UOM',
             key: 'uomCode'
-        },
-        {
-            title: 'SO#',
-            key: 'documentNo'
         },
         {
             title: 'Customer',
@@ -94,20 +90,12 @@ export var CopyFromSOLovConfig: any = {
             key: 'orderDate'
         },
         {
-            title: 'Promised Date',
+            title: 'Delivery Date',
             key: 'promisedDate'
-        },
-        {
-            title: 'OlDescription',
-            key: 'olDescription'
         },
         {
             title: 'Season',
             key: 'season'
-        },
-        {
-            title: 'Label',
-            key: 'label'
         },
         {
             title: 'Kit',
@@ -116,6 +104,14 @@ export var CopyFromSOLovConfig: any = {
         {
             title: 'Combo',
             key: 'comboTitle'
+        },
+        {
+            title: 'Style Name',
+            key: 'productTitle'
+        },
+        {
+            title: 'SO Description',
+            key: 'olDescription'
         },
 
     ],

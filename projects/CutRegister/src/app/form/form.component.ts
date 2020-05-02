@@ -11,6 +11,7 @@ import { MarkerDetailsComponent } from './marker-details/marker-details.componen
 import { AlertUtilities } from 'app/shared/utils';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { HttpParams } from '@angular/common/http';
+import { ConfirmPopupComponent } from 'app/shared/component';
 
 @Component({
 	selector: 'cut-register-form',
@@ -73,6 +74,7 @@ export class PdmCostingFormComponent {
 	}
 
 	setCosting() {
+		console.log(this._shared.id)
 		if (this.router.url.endsWith('/create')) {
 			this._shared.id = 0;
 			this._shared.editMode = true;
@@ -99,11 +101,11 @@ export class PdmCostingFormComponent {
 	}
 
 	copyFrom(op) {
-		let lovConfig:any = {};
+		let lovConfig: any = {};
 		if (op.value == 'S') {
 			lovConfig = JSON.parse(JSON.stringify(CopyFromSOLovConfig));
 		}
-		lovConfig.url +=this._shared.getHeaderAttributeValue('attributeSet');
+		lovConfig.url += this._shared.getHeaderAttributeValue('attributeSet');
 		const dialogRef = this.dialog.open(TnzInputLOVComponent);
 		dialogRef.componentInstance.lovConfig = lovConfig;
 		dialogRef.afterClosed().subscribe(resArray => {
@@ -171,7 +173,7 @@ export class PdmCostingFormComponent {
 		model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
 
 		model.cutAllowancePercent = this._shared.getHeaderAttributeValue('cutAllowance');
-		model.totalOrderQty = this._service.calculateAllowedQty(res.orderQty,model.cutAllowancePercent);
+		model.totalOrderQty = this._service.calculateAllowedQty(res.orderQty, model.cutAllowancePercent);
 		model.attribute1 = res.attribute1 ? res.attribute1 : "";
 		model.attribute2 = res.attribute2 ? res.attribute2 : "";
 		model.attribute3 = res.attribute3 ? res.attribute3 : "";
@@ -190,6 +192,7 @@ export class PdmCostingFormComponent {
 		model.routingId = res.routingId ? res.routingId : "";
 		model.markerAttrVal = res.markerAttrVal ? res.markerAttrVal : "";
 		model.attrValId = res.attrValId ? res.attrValId : "";
+		model.styleId = res.parProdId ? res.parProdId : "";
 		return model;
 	}
 
@@ -220,7 +223,7 @@ export class PdmCostingFormComponent {
 		cutPanel.layRegstrId = this._shared.id.toString();
 		cutPanel.panelName = line.panelCode;
 		cutPanel.panelNameTr = line.panelName;
-		cutPanel.mOpId = line.opGroupId;
+		cutPanel.mOpId = line.opId;
 		cutPanel.opSeq = line.opSequence;
 		cutPanel.refProdId = line.refProdId;
 		return cutPanel;
@@ -232,7 +235,7 @@ export class PdmCostingFormComponent {
 		} else {
 			this._service.generateBundleLines(this._shared.id).then(data => {
 				this._service.loadData('cutBundle');
-				this._shared.refreshHeaderData.next(true)				
+				this._shared.refreshHeaderData.next(true)
 			}).catch(err => {
 				this.alertUtils.showAlerts(err);
 			})
@@ -240,14 +243,24 @@ export class PdmCostingFormComponent {
 	}
 
 	deleteBundleLines() {
-		if (this._service.checkIfEdited()) {
-			this.alertUtils.showAlerts('Changes detected. Please save the changes before deleting bundle lines.')
-		} else {
-			this._service.deleteBundleLines(this._shared.id).then(data => {
-				this._service.loadData('cutBundle');
-			}).catch(err => {
-				this.alertUtils.showAlerts(err);
-			})
+		if (this._shared.formData.cutBundle && this._shared.formData.cutBundle.length) {
+			if (this._service.checkIfEdited()) {
+				this.alertUtils.showAlerts('Changes detected. Please save the changes before deleting bundle lines.')
+			} else {
+				let dialogRef = this.dialog.open(ConfirmPopupComponent);
+				dialogRef.componentInstance.dialogTitle = 'Delete Bundle Line(s)';
+				dialogRef.componentInstance.message = 'Are you sure you want to delete all the bundle lines '
+				dialogRef.afterClosed().subscribe(flag => {
+					if (flag) {
+						this._service.deleteBundleLines(this._shared.id).then(data => {
+							this._service.loadData('cutBundle');
+						}).catch(err => {
+							this.alertUtils.showAlerts(err);
+						})
+					}
+				})
+			}
+
 		}
 	}
 

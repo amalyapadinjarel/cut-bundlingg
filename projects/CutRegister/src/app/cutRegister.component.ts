@@ -37,10 +37,11 @@ export class CutRegisterComponent {
     this._shared.clear();
   }
 
-  newCosting() {
+  newCosting() { 
     this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
       .then(() => {
-        this.router.navigateByUrl('cut-register/create').then(done => {
+        console.log('create')
+        this.router.navigateByUrl('/cut-register/create').then(done => {
           this._shared.editMode = true;
           this._shared.initLocalCache();
         });
@@ -70,13 +71,13 @@ export class CutRegisterComponent {
 
   cancelEdit() {
     if (this._shared.id > 0) {
-      this.location.go('cut-register/' + this._shared.id);
+      this.location.go('/cut-register/' + this._shared.id);
       this._shared.editMode = false;
       this._shared.initLocalCache();
       this._shared.resetLines();
     }
     else {
-      this.router.navigateByUrl('cut-register/list').then(done => {
+      this.router.navigateByUrl('/cut-register/list').then(done => {
         this._shared.editMode = false;
         this._shared.initLocalCache();
       });

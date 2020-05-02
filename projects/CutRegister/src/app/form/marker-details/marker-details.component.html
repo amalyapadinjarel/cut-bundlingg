@@ -1,5 +1,6 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getMarkerDetailsEditable()" [loading]="_shared.markerDetailsLoading"
- class="tnz-input-table" [filterEnabled]="!_shared.getMarkerDetailsEditable()" [sortEnabled]="!_shared.getMarkerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()">
+ class="tnz-input-table" [filterEnabled]="!_shared.getMarkerDetailsEditable()" [sortEnabled]="!_shared.getMarkerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
+ [showCheckBox]="_shared.getMarkerDetailsEditable()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getMarkerDetailsEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
@@ -41,7 +42,7 @@
 	</smd-datatable-column>
 	<smd-datatable-column title="Cut Qty." field="currcutqtysql" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getMarkerDetailsEditable('currcutqtysql')">{{model.markerRatio}}</span>
+			<span *ngIf="!_shared.getMarkerDetailsEditable('currcutqtysql')">{{model.currcutqtysql}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('currcutqtysql')">
 				<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'currcutqtysql')" [primaryKey]="_shared.markerDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" [isEdit]="false" [loading]="_shared.markerDetailsLoading || _shared.loading">

@@ -251,6 +251,20 @@ export class CutRegisterSharedService {
 
     getHeaderEditable(attr, primaryKey) {
         let editable = this.editMode;
+        let nonEditableAttrs = ['docType', 'cutFacility', 'sewingFacility'];// attributes that cannot be edited after creation
+        if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
+            editable = false
+        }
+        let editableBundleAttrs = ['markerNameMethod', 'cutDate', 'layYardage', 'length', 'width', 'shrinkage'];// attributes that can be edited even when cut bundles exist
+        if (this.formData.cutBundle && this.formData.cutBundle.length && editableBundleAttrs.indexOf(attr) == -1) {
+            editable = false
+        }
+        if (editable)
+            switch (attr) {
+                case 'attributeSet':
+                    editable = !this.formData.orderDetails.length;
+                    break;
+            }
         return editable;
     }
 
@@ -264,16 +278,22 @@ export class CutRegisterSharedService {
 
     getOrderDetailsEditable(attr = null) {
         let editable = this.editMode;
+        if (this.formData.cutBundle && this.formData.cutBundle.length)
+            editable = false;
         return editable;
     }
 
     getMarkerDetailsEditable(attr = null) {
         let editable = this.editMode;
+        if (this.formData.cutBundle && this.formData.cutBundle.length)
+            editable = false;
         return editable;
     }
 
     getLayerDetailsEditable(attr = null) {
         let editable = this.editMode && this.id !== 0;
+        if (this.formData.cutBundle && this.formData.cutBundle.length)
+            editable = false;
         return editable;
     }
 
@@ -322,7 +342,7 @@ export class CutRegisterSharedService {
         let path = this[key + 'Path'];
         let primaryKey = this[key + 'PrimaryKey'];
         let newIndex = data.length;
-        if(newIndex == 0){
+        if (newIndex == 0) {
             this.resetSeq(key);
         }
         let seq = this[key + 'Seq'];
@@ -494,6 +514,6 @@ export class CutRegisterSharedService {
         this.selectedLines[key] = models;
     }
 
-        
+
 
 }

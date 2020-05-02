@@ -162,13 +162,22 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 			}
 			Object.keys(defaultValues).forEach(attr => {
 				this._inputService.updateInput(this._shared.getHeaderAttrPath(attr), defaultValues[attr])
+			});
+			this._service.getDefaultFacility().then( (res:any) => {
+				let json = {
+					label: res.name,
+					value: res.value,
+					shortCode: res.label
+				}
+				this._inputService.updateInput(this._shared.getHeaderAttrPath('cutFacility'), json)				
+				this.disableInput('cutFacility');
+				this.disableInput('sewingFacility');
 			})
 		}
 	}
 
 	updateExtraCutValues(facility){
 		this._service.getExtraCutValues(facility).then( (data:any) => {
-			console.log(data)
 			if(data.value2){
 				this._inputService.updateInput(this._shared.getHeaderAttrPath('extraCutCond'), data.value2);
 			}

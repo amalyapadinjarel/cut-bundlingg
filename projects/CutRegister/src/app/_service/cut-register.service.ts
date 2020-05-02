@@ -218,7 +218,6 @@ export class CutRegisterService {
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/revise/' + this._shared.id)
                 .subscribe(ret => {
-                    console.log(ret)
                     if (ret.status && ret.status == 'S') {
                         if (ret.returnCode && ret.returnCode == 1)
                             resolve();
@@ -311,7 +310,7 @@ export class CutRegisterService {
                     this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
                     this._shared.loading = false;
                     if (isCreate) {
-                        this.location.go('cut-register/' + this._shared.id + '/edit');
+                        this.location.go('/cut-register/' + this._shared.id + '/edit');
                     }
                     this._shared.refreshData.next(true);
                     resolve(true);
@@ -501,9 +500,9 @@ export class CutRegisterService {
             this._shared.deleteLine(key, 0);
     }
 
-    deleteById(productId,key){
+    deleteById(productId, key) {
         let productKey = 'attrValId';
-        switch(key){
+        switch (key) {
             case 'orderDetails':
                 productKey = 'attrValId';
                 break;
@@ -514,7 +513,7 @@ export class CutRegisterService {
                 productKey = 'refProdId';
                 break;
             default:
-                break;            
+                break;
         }
         let lineDetails = this._shared.formData[key]
         let lines = lineDetails.filter(data => { return data[productKey] == productId });
@@ -532,7 +531,7 @@ export class CutRegisterService {
                 attrValId = model['attrValId'];
                 this._shared.deleteLine(key, index);
                 let lines = this.deleteById(attrValId, 'orderDetails')
-                lines.forEach( data => {
+                lines.forEach(data => {
                     let styleId = data['styleId']
                     orderDetails = this._shared.formData.orderDetails
                     orders = orderDetails.filter(data => { return data.styleId == styleId });
@@ -543,7 +542,7 @@ export class CutRegisterService {
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');
                 }
-               
+
                 break;
             case 'orderDetails':
                 attrValId = model['attrValId'];
@@ -556,7 +555,7 @@ export class CutRegisterService {
                 }
                 orders = orderDetails.filter(data => { return data.styleId == styleId });
                 if (!orders || !orders.length) {
-                    this.deleteById(styleId, 'cutPanelDetails')                
+                    this.deleteById(styleId, 'cutPanelDetails')
                 }
                 if (!this._shared.formData.orderDetails.length) {
                     this.deleteAll('layerDetails');
@@ -624,5 +623,21 @@ export class CutRegisterService {
         })
     }
 
-
+    getDefaultFacility() {
+        return new Promise((resolve, reject) => {
+            let errorMsg = 'Failed to fetch default facility for the user.';
+            this.apiService.get('/users/default-facility')
+                .catch(err => {
+                    reject(errorMsg);
+                    return err;
+                })
+                .subscribe(data => {
+                    console.log(data)
+                    if (data && data.defaultFacility && data.defaultFacility.length)
+                        resolve(data.defaultFacility[0]);
+                    else
+                        reject(errorMsg);
+                })
+        })
+    }
 }

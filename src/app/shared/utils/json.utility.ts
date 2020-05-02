@@ -22,7 +22,7 @@ export class JSONUtils {
         if (keys.length && ((matchIndex && obj[key] && obj[key][index]) || (!matchIndex && obj[key]))) {
             return this.getJSONKeys(matchIndex ? obj[key][index] : obj[key], keys, print);
         }
-        else if (!keys.length && obj[key]) {
+        else if (!keys.length && typeof obj[key] != 'undefined') {
             return obj[key];
         }
     }

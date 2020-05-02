@@ -1,6 +1,6 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getCutPanelDetailsEditable()" [loading]="_shared.cutPanelDetailsLoading"
  class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [filterEnabled]="!_shared.getCutPanelDetailsEditable()"
- [sortEnabled]="!_shared.getMarkerDetailsEditable()">
+ [sortEnabled]="!_shared.getMarkerDetailsEditable()" [showCheckBox]="_shared.getCutPanelDetailsEditable()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">

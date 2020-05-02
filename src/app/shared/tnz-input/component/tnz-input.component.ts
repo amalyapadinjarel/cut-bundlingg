@@ -157,7 +157,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		if (this.type == 'date' && this.isValidDate(this._displayValue)) {
 			return DateUtilities.formatDate(this._displayValue);
 		}
-		else if (this.dataType == 'number' && this.precision) {
+		else if (typeof this._displayValue == 'number' && this.precision) {
 			return Number(this._displayValue).toFixed(this.precision);
 		}
 		else if (this.displayKey && typeof this._displayValue == 'object') {
@@ -363,7 +363,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			} else {
 				cache = this._cache.getCachedValue(this.fullPath);
 			}
-			if (cache && cache != value) {
+			if (typeof cache != 'undefined' && cache != value) {
 				value = cache;
 			}
 		}
