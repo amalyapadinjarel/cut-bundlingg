@@ -83,6 +83,7 @@ export class CutRegister {
         this.createdByName = model.createdByName;
         this.lastUpdateByName = model.lastUpdateByName;
     }
+
 }
 
 export class Product {
@@ -102,8 +103,8 @@ export class Product {
 
 export class OrderDetails {
     attrValId: any;
-	totalOrderQty: any;
-	routingId: string;
+    totalOrderQty: any;
+    routingId: string;
     layOrderRefId: string;
     bpartName: string;
     lastUpdateDate: string;
@@ -208,12 +209,21 @@ export class OrderDetails {
         this.bpartnerId = model ? model.bpartnerId : "";
         this.facility = model ? model.facility : "";
         this.orderRefNo = model ? model.orderRefNo : "";
-        this.routingId = model ? model.routingId : "";        
-        this.markerAttrVal = model ? model.markerAttrVal : "";        
-        this.styleId = model ? model.styleId : "";     
-        this.totalOrderQty = model ? model.totalOrderQty : "";        
-        this.attrValId = model ? model.attrValId : "";        
-        }
+        this.routingId = model ? model.routingId : "";
+        this.markerAttrVal = model ? model.markerAttrVal : "";
+        this.styleId = model ? model.styleId : "";
+        this.totalOrderQty = model ? model.totalOrderQty : "";
+        this.attrValId = model ? model.attrValId : "";
+    }
+
+    equals(model:any){
+        let flag = true
+        Object.keys(new OrderDetails()).forEach(key => {
+            if(this[key]!=model[key])
+                flag = false;
+        })
+        return flag;
+    }
 }
 
 export class LayerDetails {
@@ -282,10 +292,19 @@ export class LayerDetails {
         this.lastUpdateBy = model ? model.lastUpdateBy : "";
         this.lastUpdatedByName = model ? model.lastUpdatedByName : "";
     }
+
+    equals(model: any) {
+        let flag = true
+        Object.keys(new LayerDetails()).forEach(key => {
+            if (this[key] != model[key])
+                flag = false;
+        })
+        return flag;
+    }
 }
 
 export class MarkerDetails {
-	attrValId: any;
+    attrValId: any;
     layMarkerId: string;
     crtdByName: string;
     lastUpdateDate: string;
@@ -345,6 +364,15 @@ export class MarkerDetails {
         this.facility = model ? model.facility : "";
         this.attrValId = model ? model.attrValId : "";
     }
+
+    equals(model: any) {
+        let flag = true
+        Object.keys(new MarkerDetails()).forEach(key => {
+            if (this[key] != model[key])
+                flag = false;
+        })
+        return flag;
+    }
 }
 
 export class CutPanelDetails {
@@ -379,5 +407,14 @@ export class CutPanelDetails {
         this.mOpId = model ? model.mOpId : "";
         this.opSeq = model ? model.opSeq : "";
         this.refProdId = model ? model.refProdId : "";
+    }
+
+    equals(model: any) {
+        let flag = true
+        Object.keys(new CutPanelDetails()).forEach(key => {
+            if (this[key] != model[key])
+                flag = false;
+        })
+        return flag;
     }
 }

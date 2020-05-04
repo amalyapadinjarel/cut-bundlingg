@@ -170,8 +170,8 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 					shortCode: res.label
 				}
 				this._inputService.updateInput(this._shared.getHeaderAttrPath('cutFacility'), json)				
-				this.disableInput('cutFacility');
-				this.disableInput('sewingFacility');
+				// this.disableInput('cutFacility');
+				// this.disableInput('sewingFacility');
 			})
 		}
 	}

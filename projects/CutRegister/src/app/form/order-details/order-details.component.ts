@@ -82,7 +82,6 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	refreshTable() {
-		console.log(this._shared.formData[this.key])
 		this.dataTable.refresh(this._shared.formData[this.key]);
 	}
 

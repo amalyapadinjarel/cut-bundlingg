@@ -18,7 +18,8 @@
                             [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
                             <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
                                 [class.smd-sorted-asc]="column.sortDir == 'ASC'"
-                                [class.smd-sorted-desc]="column.sortDir == 'DESC'">
+                                [class.smd-sorted-desc]="column.sortDir == 'DESC'"
+                                [ngStyle]="{'white-space': column.numeric ? 'normal' : 'nowrap'}">
                                 {{column.title}}
                             </span>
                         </th>

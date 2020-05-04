@@ -1,6 +1,7 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getOrderDetailsEditable()" [loading]="_shared.orderDetailsLoading"
  class="tnz-input-table" [filterEnabled]="!_shared.getOrderDetailsEditable()" [sortEnabled]="!_shared.getOrderDetailsEditable()"
- (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="_shared.getOrderDetailsEditable()">
+ (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
+ [showCheckBox]="_shared.getOrderDetailsEditable()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getOrderDetailsEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
@@ -60,7 +61,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Order Qty.+Allow" field="allwdQty" sortable="true" [filterable]="true" [numeric]="true">
+	<smd-datatable-column title="Order Qty.+Allow" field="totalOrderQty" sortable="true" [filterable]="true" [numeric]="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getOrderDetailsEditable('totalOrderQty')">{{model.totalOrderQty}}</span>
 			<div *ngIf="_shared.getOrderDetailsEditable('totalOrderQty')">
@@ -70,7 +71,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Max Allow Qty." field="allwdQty" sortable="true" [filterable]="true" [numeric]="true">
+	<smd-datatable-column title="Max Allow Qty." field="allwdQty" sortable="true" [filterable]="true" [numeric]="true" [colStyle]="{'min-width': '60px'}">
 		<ng-template let-model="data">
 			{{model.allwdQty}}
 		</ng-template>

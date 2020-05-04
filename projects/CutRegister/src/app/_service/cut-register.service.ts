@@ -485,8 +485,10 @@ export class CutRegisterService {
                 if (flag) {
                     this._shared.selectedLines[key].forEach(line => {
                         let index = this._shared.formData[key].findIndex(data => {
-                            return data[primaryKey] == line[primaryKey]
+                            let model = this._shared.getLineModel(key,data)
+                            return model.equals(line)
                         });
+                        console.log(index)
                         this.deleteDetailsLine(key, index, line);
                     });
                     this._shared.setSelectedLines(key, [])
@@ -632,7 +634,6 @@ export class CutRegisterService {
                     return err;
                 })
                 .subscribe(data => {
-                    console.log(data)
                     if (data && data.defaultFacility && data.defaultFacility.length)
                         resolve(data.defaultFacility[0]);
                     else

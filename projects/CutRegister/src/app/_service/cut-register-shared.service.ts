@@ -393,7 +393,6 @@ export class CutRegisterSharedService {
     }
 
     resetSeq(key) {
-        console.log('_' + key + 'Seq')
         this['_' + key + 'Seq'] = 1;
     }
 
