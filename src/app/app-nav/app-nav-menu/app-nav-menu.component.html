@@ -5,7 +5,7 @@
       <mat-icon *ngIf="!menuItem.parentItem" (click)="selectedFn"> {{menuItem.iconName?menuItem.iconName:'palette'}} </mat-icon>{{menuItem.menuItemName}}
       <mat-icon> arrow_drop_down </mat-icon>
     </button>
-    <a *ngIf="menuItem.url " mat-menu-item [routerLink]="menuItem.url" routerLinkActive="active" (click)="menuSelected(menuItem.menuItemId)"
+    <a *ngIf="menuItem.url " mat-menu-item routerLinkActive="active" (click)="menuSelected(menuItem)"
       (mouseenter)="hoveringFn(true,i)" (mouseleave)="hoveringFn(false,i)" [class.selected]="curMenu === menuItem.menuItemId">
       <mat-icon *ngIf="!menuItem.parentItem"> {{menuItem.iconName?menuItem.iconName:'palette'}} </mat-icon>{{menuItem.menuItemName}}
       <mat-icon class="bookmark-star-selected" *ngIf="navService.bookmarkedTaskFlows.indexOf(menuItem.taskFlowId) > -1" (click)="removePin($event, menuItem)"> star </mat-icon>
@@ -16,7 +16,7 @@
   </div>
   <div *ngIf="menuFilterd">
      <!-- curMenu= menuItem.menuItemId -->
-    <a *ngIf="menuItem.url " mat-menu-item [routerLink]="menuItem.url" routerLinkActive="active" (click)="filterdItemClicked($event, menuItem.menuItemId)"
+    <a *ngIf="menuItem.url " mat-menu-item routerLinkActive="active" (click)="filterdItemClicked($event, menuItem)"
       [class.selected]="curMenu === menuItem.menuItemId" class="quick-menu-filter-result sub-menu-button"> 
       <mat-icon *ngIf="!menuItem.parentItem"> {{menuItem.iconName?menuItem.iconName:'palette'}} </mat-icon>{{menuItem.menuItemName}}  
        <mat-icon class="bookmark-star-selected" *ngIf="navService.bookmarkedTaskFlows.indexOf(menuItem.taskFlowId) > -1" (click)="removePin($event, menuItem)"> star </mat-icon>

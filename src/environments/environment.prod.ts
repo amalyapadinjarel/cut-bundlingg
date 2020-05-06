@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  base_url: 'http://192.168.10.83:8080/',
   api_url: 'http://192.168.10.83:8080/cbp',
   api_action_url: 'http://192.168.10.83:7007/',
   api_url_v4: 'http://192.168.10.83:8080/hcm-web',
@@ -10,4 +11,4 @@ export const environment = {
 };
 
 
-export const appVersion = 'alpha 1.1.0';
+export const appVersion = 'alpha 1.0.1';

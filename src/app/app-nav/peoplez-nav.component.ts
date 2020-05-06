@@ -41,7 +41,7 @@ export class PeoplezNavComponent implements OnInit, OnChanges, OnDestroy {
 	}
 	ngOnInit() {
 		if (!this.menu) {
-			//this.fetchMenuData();
+			this.fetchMenuData();
 		}
 	}
 	ngOnChanges() {

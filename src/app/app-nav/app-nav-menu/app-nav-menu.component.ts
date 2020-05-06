@@ -2,6 +2,8 @@
 import {catchError} from 'rxjs/operators';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NavigationService } from "app/shared/services";
+import { Router } from '@angular/router';
+import { environment } from 'environments/environment';
 
 @Component({
 	selector: 'p-app-nav-menu',
@@ -19,7 +21,8 @@ export class AppNavMenuComponent {
 	loadedOnce = false;
 	menuItemId;
 	constructor(
-		public navService: NavigationService) {
+		public navService: NavigationService,
+		public router: Router) {
 	}
 
 	ngOnInit() {
@@ -84,17 +87,34 @@ export class AppNavMenuComponent {
 		}
 	}
 
-	menuSelected(menuItemId) {
-		this.curMenu = menuItemId;
-		this.menuClicked.emit({ clicked: true });
+	menuSelected(menuItem) {
+		let menuItemId = menuItem.menuItemId
+		let url = menuItem.url
+		if (menuItem.hasBaseUrl == 'Y'){
+			url = environment.base_url + url;
+			window.open(url) 
+		} else{
+			this.router.navigateByUrl(url)
+			this.curMenu = menuItemId;
+			this.menuClicked.emit({ clicked: true });
+		}
 	}
 
 	hoveringFn(bool, i) {
 		this.hovered[i] = bool;
 	}
-	filterdItemClicked(menuItemId) {
-		this.curMenu = menuItemId;
-		this.menuClicked.emit({ clicked: true });
+	filterdItemClicked(event,menuItem) {
+		let menuItemId = menuItem.menuItemId
+		let url = menuItem.url
+		if (menuItem.hasBaseUrl == 'Y') {
+			url = environment.base_url + url;
+			window.open(url)
+		} else {
+			this.router.navigateByUrl(url)
+			this.curMenu = menuItemId;
+			this.menuClicked.emit({ clicked: true });
+		}
+
 	}
 	childMenuClicked() {
 		this.menuClicked.emit({ clicked: true });

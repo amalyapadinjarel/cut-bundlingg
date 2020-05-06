@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  base_url: 'http://192.168.70.207:8080/',
   api_url: 'http://192.168.70.203:8080/hcm-web',
   bpm_url: 'http://192.168.70.203:8080/activiti-rest/service/',
   bi_url: 'http://192.168.70.203:8080/trendz-bi',
