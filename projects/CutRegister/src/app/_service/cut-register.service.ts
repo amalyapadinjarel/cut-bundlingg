@@ -183,8 +183,8 @@ export class CutRegisterService {
             this.apiService.get('/' + this._shared.apiBase + '/generate-next-cut', params)
                 .subscribe(ret => {
                     if (ret.data) {
-                        if (ret.data.returnCode && ret.data.returnCode == 1 && ret.data.message)
-                            resolve(ret.data.message);
+                        if (ret.data.returnCode && ret.data.returnCode == 1)
+                            resolve(ret.data);
                         else if (ret.data.message)
                             reject(ret.data.message)
                     }
@@ -311,12 +311,13 @@ export class CutRegisterService {
                     this._shared.loading = false;
                     if (isCreate) {
                         this.location.go('/cut-register/' + this._shared.id + '/edit');
+                        this.location.replaceState('/cut-register/' + this._shared.id + '/edit');
                     }
                     this._shared.refreshData.next(true);
                     resolve(true);
                 }, err => {
                     if (err) {
-                        this.alertUtils.showAlerts('Failed to ' + (isCreate ? 'save' : 'edit' + ' document. ') + err);
+                        this.alertUtils.showAlerts('Failed to ' + ((isCreate ? 'save' : 'edit') + ' document. ') + err);
                     }
                     this._shared.loading = false;
                     resolve(false);
@@ -488,7 +489,6 @@ export class CutRegisterService {
                             let model = this._shared.getLineModel(key,data)
                             return model.equals(line)
                         });
-                        console.log(index)
                         this.deleteDetailsLine(key, index, line);
                     });
                     this._shared.setSelectedLines(key, [])

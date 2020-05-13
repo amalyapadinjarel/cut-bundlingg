@@ -12,7 +12,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getCutPanelDetailsEditable('displayOrder')">{{model.displayOrder}}</span>
 			<div *ngIf="_shared.getCutPanelDetailsEditable('displayOrder')">
-				<tnz-input dataType="number" [path]="_shared.getCutPanelDetailsPath(index,'displayOrder')" [primaryKey]="_shared.cutPanelDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getCutPanelDetailsPath(index,'displayOrder')" [primaryKey]="_shared.cutPanelDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="_shared.getCutPanelDetailsEditable('displayOrder')"
 				 [loading]="_shared.cutPanelDetailsLoading || _shared.loading">
 				</tnz-input>

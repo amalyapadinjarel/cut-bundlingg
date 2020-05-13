@@ -14,7 +14,25 @@
             </smd-datatable-column>
             <smd-datatable-column title="Status" field="docStatusName" sortable="true" [filterable]="true">
             </smd-datatable-column>
+            <smd-datatable-column title="Cut Type" field="cutType" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutType?.label}}
+                </ng-template>
+            </smd-datatable-column>
             <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Sew Facility" field="sewingFacility" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.sewingFacility?.shortCode}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="lastUpdateByName" sortable="true" [filterable]="true">
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true">
             </smd-datatable-column>
         </smd-datatable>
     </perfect-scrollbar>

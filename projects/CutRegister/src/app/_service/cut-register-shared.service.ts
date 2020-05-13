@@ -255,7 +255,7 @@ export class CutRegisterSharedService {
         if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
             editable = false
         }
-        let editableBundleAttrs = ['markerNameMethod', 'cutDate', 'layYardage', 'length', 'width', 'shrinkage'];// attributes that can be edited even when cut bundles exist
+        let editableBundleAttrs = ['markerNameMethod', 'cutDate', 'layYardage', 'length', 'width', 'shrinkage','description'];// attributes that can be edited even when cut bundles exist
         if (this.formData.cutBundle && this.formData.cutBundle.length && editableBundleAttrs.indexOf(attr) == -1) {
             editable = false
         }
@@ -292,6 +292,8 @@ export class CutRegisterSharedService {
 
     getLayerDetailsEditable(attr = null) {
         let editable = this.editMode && this.id !== 0;
+        if (!this.formData.orderDetails || !this.formData.orderDetails.length)
+            editable = false;
         if (this.formData.cutBundle && this.formData.cutBundle.length)
             editable = false;
         return editable;

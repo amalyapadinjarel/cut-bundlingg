@@ -19,10 +19,6 @@ export class ListComponent implements OnInit {
   private router: Router) { }
 
   ngOnInit(): void {
-    // this.service.fetchListData().then(data=>{
-    //   this.listData = data;
-    //   this.dataTable.refresh(this.listData);
-    // })
   }
 
   rowSelected(event) {

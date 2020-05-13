@@ -18,8 +18,7 @@
                             [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
                             <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
                                 [class.smd-sorted-asc]="column.sortDir == 'ASC'"
-                                [class.smd-sorted-desc]="column.sortDir == 'DESC'"
-                                [ngStyle]="{'white-space': column.numeric ? 'normal' : 'nowrap'}">
+                                [class.smd-sorted-desc]="column.sortDir == 'DESC'">
                                 {{column.title}}
                             </span>
                         </th>
@@ -49,16 +48,37 @@
             <table class="smd-data-table full-width">
                 <thead *ngIf="isTitleNeeded">
                     <tr>
-                        <th *ngIf="_shouldRenderCheckbox()">
+                        <th *ngIf="_shouldRenderCheckbox()" [attr.rowSpan]="hasSubheader ? '2' : ''">
                             <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
                             </mat-checkbox>
                         </th>
-                        <th *ngFor="let column of columns" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
-                            [class.smd-numeric-column]="column.numeric">
-                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
+                        <th *ngFor="let column of (hasSubheader ?  headerColumns : columns)" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
+                            [class.smd-numeric-column]="column.numeric" 
+                            [attr.rowSpan]="column.SubColumns.length == 0 ? hasSubheader ? '2' : '' : ''"
+                            [attr.colSpan]="column.SubColumns.length" 
+                            [ngStyle]="{'text-align': column.SubColumns.length == 0 ? 'left' :'center'}">
+                            <div *ngIf="column.SubColumns.length == 0;then heading else subHeading"></div>
+                            <ng-template #heading>
+                                <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
                                 [class.smd-sorted-asc]="column.sortDir == 'ASC'"
                                 [class.smd-sorted-desc]="column.sortDir == 'DESC'" class="column-title"
                                 [ngStyle]="{'white-space': column.numeric ? 'normal' : 'nowrap'}">
+                                {{column.title}}
+                                </span>
+                            </ng-template> 
+                            <ng-template #subHeading>
+                                <span>{{column.title}}</span>
+                            </ng-template>
+                        </th>
+                           
+                        
+                    </tr>
+                    <tr *ngIf="hasSubheader" class="sub-header">
+                            <th *ngFor="let column of subHeaderColums" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
+                            [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
+                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
+                                [class.smd-sorted-asc]="column.sortDir == 'ASC'"
+                                [class.smd-sorted-desc]="column.sortDir == 'DESC'">
                                 {{column.title}}
                             </span>
                         </th>
@@ -67,7 +87,7 @@
                         <th *ngIf="_shouldRenderCheckbox()">
                             <mat-icon (click)="filterTable()">filter_list</mat-icon>
                         </th>
-                        <th *ngFor="let column of columns">
+                        <th *ngFor="let column of (hasSubheader ?  tempColumns : columns)">
                             <input [formControl]="columnFilterInputs[column.id]"
                                 *ngIf="column.filterable && columnFilterInputs[column.id]"
                                 [ngStyle]="{'text-align':column.numeric?'right':'left'}" class="filter-input" />

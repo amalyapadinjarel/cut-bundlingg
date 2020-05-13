@@ -80,6 +80,7 @@ export class PdmCostingFormComponent {
 			this._shared.editMode = true;
 		}
 		else {
+			this._shared.id = Number(this.route.snapshot.params.costingId);
 			if (this.router.url.endsWith('/edit')) {
 				this._shared.editMode = true;
 			}
@@ -87,7 +88,6 @@ export class PdmCostingFormComponent {
 				this._shared.editMode = false;
 				this._shared.refreshData.next(true);
 			}
-			this._shared.id = Number(this.route.snapshot.params.costingId);
 		}
 		this._shared.setFormData({});
 	}
@@ -110,19 +110,30 @@ export class PdmCostingFormComponent {
 		dialogRef.componentInstance.lovConfig = lovConfig;
 		dialogRef.afterClosed().subscribe(resArray => {
 			let routingIds = [];
+			let unAddedOrderLines = [];
 			if (resArray && resArray.length) {
 				resArray.forEach(res => {
 					routingIds.push(res.routingId);
 					res = this.mapResToOrderDetails(res);
-					this._shared.addLine('orderDetails', res);
-					let index = this._shared.formData.markerDetails.findIndex(data => {
-						return data.attrValId == res.attrValId;
-					});
-					if (index == -1) {
-						res = this.mapFromOrderToMarkerDetails(res);
-						this._shared.addLine('markerDetails', res);
+					let orderLineIndex = this._shared.formData.orderDetails.findIndex(data => {
+						return res.refDocLineId == data.refDocLineId
+					})
+					if (orderLineIndex == -1) {
+						this._shared.addLine('orderDetails', res);
+						let index = this._shared.formData.markerDetails.findIndex(data => {
+							return data.attrValId == res.attrValId;
+						});
+						if (index == -1) {
+							res = this.mapFromOrderToMarkerDetails(res);
+							this._shared.addLine('markerDetails', res);
+						}
+					} else {
+						unAddedOrderLines.push(res)
 					}
 				});
+				if (unAddedOrderLines.length) {
+					this.alertUtils.showAlerts(unAddedOrderLines.length + " line(s) are not coppied as they already exist.")
+				}
 				this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
 					cutPanels.forEach(line => {
 						let index = this._shared.formData.cutPanelDetails.findIndex(data => {

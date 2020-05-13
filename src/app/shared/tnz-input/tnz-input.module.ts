@@ -14,6 +14,8 @@ import { TnzInputService } from './_service/tnz-input.service';
 import { TnzInputComponent } from './component/tnz-input.component';
 import { TnzInputLOVComponent } from './input-lov/input-lov.component';
 import { SmdModule } from '../component/smd/smd.module';
+import { InputDirectiveModule } from '../directives/modules/input-directive.module';
+import { NumericDirective } from '../directives/numeric.directive';
 
 const PROVIDERS = [
   LocalConfigService,
@@ -23,7 +25,8 @@ const PROVIDERS = [
 @NgModule({
   declarations: [
     TnzInputComponent,
-    TnzInputLOVComponent
+    TnzInputLOVComponent,
+    NumericDirective
   ],
   imports: [
     CommonModule,
@@ -35,7 +38,7 @@ const PROVIDERS = [
     MatIconModule,
     MatButtonModule,
     MatAutocompleteModule,
-    SmdModule
+    SmdModule,
   ],
   providers: [
     PROVIDERS

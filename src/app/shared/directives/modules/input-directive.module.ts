@@ -9,7 +9,7 @@ const DIRECTIVES = [
     InputDateFilterDirective,
     TimeFormatDirective,
     AutosizeTextareaDirective,
-    FocusDirective
+    FocusDirective,
 ];
 
 @NgModule({

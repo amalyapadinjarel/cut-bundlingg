@@ -12,7 +12,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('displayOrder')">{{model.displayOrder}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('displayOrder')">
-				<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'displayOrder')" [primaryKey]="_shared.markerDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getMarkerDetailsPath(index,'displayOrder')" [primaryKey]="_shared.markerDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="_shared.getMarkerDetailsEditable('displayOrder')"
 				 [loading]="_shared.markerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event,index)">
 				</tnz-input>
@@ -33,7 +33,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('markerRatio')">{{model.markerRatio}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('markerRatio')">
-				<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'markerRatio')" [primaryKey]="_shared.markerDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getMarkerDetailsPath(index,'markerRatio')" [primaryKey]="_shared.markerDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="required,min:0" [isEdit]="_shared.getMarkerDetailsEditable('markerRatio')"
 				 [loading]="_shared.markerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event,index)">
 				</tnz-input>
@@ -44,7 +44,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('currcutqtysql')">{{model.currcutqtysql}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('currcutqtysql')">
-				<tnz-input dataType="number" [path]="_shared.getMarkerDetailsPath(index,'currcutqtysql')" [primaryKey]="_shared.markerDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getMarkerDetailsPath(index,'currcutqtysql')" [primaryKey]="_shared.markerDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" [isEdit]="false" [loading]="_shared.markerDetailsLoading || _shared.loading">
 				</tnz-input>
 			</div>

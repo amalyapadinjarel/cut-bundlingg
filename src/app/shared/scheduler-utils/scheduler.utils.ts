@@ -12,7 +12,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class SchedulerUtils {
 
     private static url: string;
-    private static authentication: string = "";
 
     outputMimeTypes = {
         'PDF': 'application/pdf',
@@ -33,8 +32,11 @@ export class SchedulerUtils {
         private userService: UserService,
     ) {
         SchedulerUtils.url = environment.bi_url;
-        SchedulerUtils.authentication = localStorage.getItem('trendzBIAuthentication')
-        
+
+    }
+
+    private static get authentication() {
+        return localStorage.getItem('trendzBIAuthentication');
     }
 
     private setHeaders(authentication: string): HttpHeaders {

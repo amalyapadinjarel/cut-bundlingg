@@ -8,7 +8,7 @@
     <input #Element *ngIf="type == 'text'" [value]="value" [type]="dataType" (change)="onValueChange($event)"
         [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
     
-    <input #Element *ngIf="type == 'number'" [value]="value" [type]="dataType" (change)="onValueChange($event)"
+    <input #Element *ngIf="type == 'number'" [value]="value" numeric type="text" (change)="onValueChange($event)"
         [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
 
     <ng-container *ngIf="type == 'lov'">

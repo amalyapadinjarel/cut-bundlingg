@@ -37,10 +37,9 @@ export class CutRegisterComponent {
     this._shared.clear();
   }
 
-  newCosting() { 
+  newCosting() {
     this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
       .then(() => {
-        console.log('create')
         this.router.navigateByUrl('/cut-register/create').then(done => {
           this._shared.editMode = true;
           this._shared.initLocalCache();
@@ -94,7 +93,9 @@ export class CutRegisterComponent {
 
   generateNextCut() {
     this._service.generateNextCut().then((data: any) => {
-      this.alertutils.showAlerts(data)
+      if (data.additionalData && data.additionalData.targetId){
+        this.router.navigateByUrl('/cut-register/' + data.additionalData.targetId + '/edit' )
+      }
     }).catch(err => {
       this.alertutils.showAlerts(err)
     })
@@ -105,8 +106,9 @@ export class CutRegisterComponent {
   }
 
   showReports() {
+    this.reportData = {}
     this.reportData["userId"] = this.userService.getCurrentUser().userId;
-    if (this._shared.id) {  
+    if (this._shared.id) {
       this.reportData["pCutId"] = this._shared.id;
       this.reportData["pDocumentNum"] = this._shared.getHeaderAttributeValue('documentNo');
     }

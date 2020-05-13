@@ -16,7 +16,6 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 	disabled: any = {};
 	fabricLovConfig: any;
-	styleColorLovConfig: any;
 	stickerColorLovConfig = JSON.parse(JSON.stringify(StickerColorLovConfig))
 	private refreshSub: Subscription;
 	private refreshLayerDetails: Subscription;
@@ -32,6 +31,9 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 	) {
 
 	}
+	get styleColorLovConfig(){
+		return StyleColorLovConfig(this._shared.id)
+	}
 
 	ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
@@ -43,7 +45,7 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 
 		this.fabricLovConfig = FabricLovConfig(this._shared.id)
 
-		this.styleColorLovConfig = StyleColorLovConfig(this._shared.id)
+		// this.styleColorLovConfig = StyleColorLovConfig(this._shared.id)
 	}
 
 	ngOnDestroy(): void {

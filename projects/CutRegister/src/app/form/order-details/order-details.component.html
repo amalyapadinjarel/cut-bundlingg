@@ -43,7 +43,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getOrderDetailsEditable('cutAllowancePercent')">{{model.cutAllowancePercent}}</span>
 			<div *ngIf="_shared.getOrderDetailsEditable('cutAllowancePercent')">
-				<tnz-input dataType="number" [path]="_shared.getOrderDetailsPath(index,'cutAllowancePercent')" [primaryKey]="_shared.orderDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getOrderDetailsPath(index,'cutAllowancePercent')" [primaryKey]="_shared.orderDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="_shared.getOrderDetailsEditable('cutAllowancePercent')"
 				 [loading]="_shared.orderDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
 				</tnz-input>
@@ -54,7 +54,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getOrderDetailsEditable('cutAllowanceQty')">{{model.cutAllowanceQty}}</span>
 			<div *ngIf="_shared.getOrderDetailsEditable('cutAllowanceQty')">
-				<tnz-input dataType="number" [path]="_shared.getOrderDetailsPath(index,'cutAllowanceQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getOrderDetailsPath(index,'cutAllowanceQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="_shared.getOrderDetailsEditable('cutAllowanceQty')" [loading]="_shared.orderDetailsLoading || _shared.loading"
 				 (valueChangedFromUI)="valueChangedFromUI($event, index)">
 				</tnz-input>
@@ -65,7 +65,7 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getOrderDetailsEditable('totalOrderQty')">{{model.totalOrderQty}}</span>
 			<div *ngIf="_shared.getOrderDetailsEditable('totalOrderQty')">
-				<tnz-input dataType="number" [path]="_shared.getOrderDetailsPath(index,'totalOrderQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
+				<tnz-input type="number" [path]="_shared.getOrderDetailsPath(index,'totalOrderQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="false" [loading]="_shared.orderDetailsLoading || _shared.loading">
 				</tnz-input>
 			</div>

@@ -95,8 +95,22 @@ export class SmdDataTableRowComponent {
 	@Input() renderCheckbox: boolean;
 	@Input() isTitleNeeded = true;
 	@Input() columns: SmdDataTableColumnComponent[];
-
+	tempColumns: any = [];
 	constructor(@Inject(forwardRef(() => SmdDataTable)) public _parent: SmdDataTable) {
+		
+	}
+	ngOnInit(): void {
+		this.columns.forEach(column=>{
+			if(column.SubColumns.length == 0)
+				this.tempColumns.push(column);
+			else{
+				column.SubColumns.forEach(subColumns=>{
+					this.tempColumns.push(subColumns);
+				})
+			}
+		});
+		if(this._parent.hasSubheader)
+			this.columns = this.tempColumns;
 	}
 }
 
@@ -134,7 +148,7 @@ export class SmdDataTableColumnComponent implements OnInit {
 
 	@ContentChild(TemplateRef, { static: true }) _customTemplate: TemplateRef<Object>;
 	@ViewChild('internalTemplate', { read: TemplateRef }) _internalTemplate: TemplateRef<Object>;
-
+	@ContentChildren(SmdDataTableColumnComponent) SubColumns: QueryList<SmdDataTableColumnComponent>;
 	@Output() onFieldChange: EventEmitter<any> = new EventEmitter<any>();
 
 	get template() {
@@ -326,6 +340,11 @@ export class SmdDataTable
 	@Output() range: EventEmitter<any> = new EventEmitter<any>();
 	selectedRowCount: number = 0;
 	@Input() showTotal: boolean = false;
+	headerColumns: any;
+	subHeaderColums: any = [];
+	tempColumns: any = [];
+	hasSubheader: Boolean = false;
+	columnValueChanges: Boolean = false;
 
 	private operators = ['>', '<', '>=', '<='];
 
@@ -395,7 +414,44 @@ export class SmdDataTable
 				}
 				this._queryTableData().then(() => { }, () => { });
 			});
+		
+		this.columns.changes.subscribe(data=>{
+			let temp: any = [];
+			this.columnValueChanges = true;
+			data.forEach(column=>{
+				if(column.SubColumns && column.SubColumns.length > 0 ){
+					column.SubColumns.forEach(subColumn=>{
+						temp.push(subColumn);
+						this.hasSubheader = true;
+					})
+				}else{
+					temp.push(column);
+				}
+			});
+			if(this.hasSubheader){
+				this.tempColumns = temp;
+				this.columns = this.tempColumns;
+			}
+		});
+		if(!this.columnValueChanges){
+			console.log(1);
 
+			this.columns.forEach(column=>{
+				if(column.SubColumns && column.SubColumns.length > 0 ){
+					column.SubColumns.forEach(subColumn=>{
+						this.tempColumns.push(subColumn);
+						this.setSubHeaderColumns(subColumn);
+						this.hasSubheader = true;
+					})
+				}else{
+					this.tempColumns.push(column);
+				}
+			});
+			if(this.hasSubheader){
+				this.headerColumns = this.columns;
+				this.columns = this.tempColumns
+			}
+		}
 		this.columns.forEach(column => {
 			if (column.filterable) {
 				this.columnFilterInputs[column.id] = new FormControl(
@@ -409,6 +465,7 @@ export class SmdDataTable
 					debounceTime(400),
 					distinctUntilChanged())
 					.subscribe(() => {
+						
 						if (this.paginatorComponent) {
 							this.paginatorComponent.reset();
 						}
@@ -818,6 +875,9 @@ export class SmdDataTable
 					);
 			let offset = (page - 1) * size;
 			let limit: number = this.preFetchPages * size;
+			if(this.tempColumns && this.hasSubheader && this.columnValueChanges){
+				this.columns = this.tempColumns;
+			}
 			if (this.dataHeader && this.dataUrl) {
 				this.token = Math.random();
 				let filterconditions = [];
@@ -1300,5 +1360,11 @@ export class SmdDataTable
 	setTotal(field, value) {
 		let i = this.findIndexFromField(field)
 		this.totalRow[i] = value;
+	}
+
+	setSubHeaderColumns(column: any){
+		if(column){
+			this.subHeaderColums.push(column);
+		}
 	}
 }
