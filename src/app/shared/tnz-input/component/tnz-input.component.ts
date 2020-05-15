@@ -9,6 +9,7 @@ import { TnzInputService } from '../_service/tnz-input.service';
 import { Observable } from 'rxjs';
 import { URLSearchParams } from '@angular/http';
 import { HttpParams } from '@angular/common/http';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -94,6 +95,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
 	autoCompleteOptions: Observable<any[]>;
 	autoCompleteTimeout;
+	@ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
 	constructor(
 		private _cache: LocalCacheService,
@@ -381,6 +383,9 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		this.validateInput(false, event.target.value)
 		if (event instanceof KeyboardEvent ){
 			if (event.key == 'Enter') {
+				this.autocomplete.closePanel();
+				this.handleKeyboadEnter(event)
+			} else {
 				this.initLOV(event);
 			}
 		}
@@ -567,7 +572,28 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	}
 
 	handleKeyboadEnter(event) {
-		console.log(event);
+		let newPath = this.getNewPath(this.path, event.shiftKey)
+		let element = document.getElementById(newPath)
+		if(element){
+			setTimeout(() => element.focus(), 0);
+		}
+	}
+
+	getNewPath(path, prev){
+		let newPath = path
+		let arr = path.split('[')
+		let beforeBracket = arr[0]
+		let afterBracket = path.split(']')[1] 
+		let indexString = arr[1].split(']')[0]
+		if(!isNaN(indexString)){
+			let index = Number(indexString);
+			if(prev)
+				index -= 1;
+			else
+				index += 1;
+			newPath = beforeBracket + '[' + index + ']' + afterBracket;
+		}
+		return newPath
 	}
 
 	setAutoComplete(value) {

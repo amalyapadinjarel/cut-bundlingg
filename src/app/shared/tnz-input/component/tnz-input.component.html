@@ -5,16 +5,15 @@
 </ng-container>
 <ng-container *ngIf="!loading && isEdit">
 
-    <input #Element *ngIf="type == 'text'" [value]="value" [type]="dataType" (change)="onValueChange($event)"
-        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
-    
-    <input #Element *ngIf="type == 'number'" [value]="value" numeric type="text" (change)="onValueChange($event)"
-        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)"/>
+    <input #Element [id]="path" *ngIf="type == 'text'" [value]="value" [type]="dataType" (change)="onValueChange($event)" [matTooltip]="alert"
+        [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" />
+
+    <input #Element [id]="path" *ngIf="type == 'number'" [value]="value" numeric type="text" (change)="onValueChange($event)" [matTooltip]="alert"
+        [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" />
 
     <ng-container *ngIf="type == 'lov'">
-        <input #Element [value]="displayValue" [type]="dataType" [matAutocomplete]="autoComplete"
-            (focus)="resetAutoComplete($event)" (click)="resetAutoComplete($event)" (keyup)="resetAutoComplete($event)"
-            [matTooltip]="alert" [ngClass]="status" />
+        <input #Element [id]="path" [value]="displayValue" [type]="dataType" [matAutocomplete]="autoComplete" (focus)="resetAutoComplete($event)"
+            (click)="resetAutoComplete($event)" (keyup)="resetAutoComplete($event)" [matTooltip]="alert" [ngClass]="status" />
         <mat-icon (click)="openLOV()" class="suffix">search</mat-icon>
         <mat-autocomplete #autoComplete="matAutocomplete" [displayWith]="autoCompleteDisplayFn.bind(this)"
             (optionSelected)='setLovValue($event.option.value)' >
@@ -44,6 +43,6 @@
 
     <button mat-stroked-button #Element *ngIf="type == 'lov-button'" (click)="openLOV()">{{title}}</button>
 
-    <textarea #Element *ngIf="type == 'textarea'" [value]="value" (change)="onValueChange($event)"
-        [matTooltip]="alert" [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)">{{value}}</textarea> 
+    <textarea #Element *ngIf="type == 'textarea'" [value]="value" (change)="onValueChange($event)" [matTooltip]="alert" [ngClass]="status"
+        (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)">{{value}}</textarea>
 </ng-container>
