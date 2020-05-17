@@ -24,9 +24,11 @@
 			{{model.refProduct}}
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Style Attributes" field="refProdAttr" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Style Attributes" field="refProdAttr" sortable="true" [filterable]="true" [stretch]="true">
 		<ng-template let-model="data">
-			{{model.refProdAttr}}
+			<span [matTooltip]="model.refProdAttr">
+				{{model.refProdAttr}}
+			</span>
 		</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Order Ref." field="bpartnerDocNo" sortable="true" [filterable]="true">

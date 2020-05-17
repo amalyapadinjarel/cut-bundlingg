@@ -454,7 +454,7 @@ export class CutRegisterService {
             if (cutAllowance && !isNaN(cutAllowance))
                 qty += qty * Number(cutAllowance) / 100;
         }
-        return Math.round(qty);
+        return Math.ceil(qty);
     }
 
     getCutPanelsFromRoutingIds(routingIds: Array<any>) {
