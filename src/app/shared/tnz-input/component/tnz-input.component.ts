@@ -9,6 +9,7 @@ import { TnzInputService } from '../_service/tnz-input.service';
 import { Observable } from 'rxjs';
 import { URLSearchParams } from '@angular/http';
 import { HttpParams } from '@angular/common/http';
+import { CustomValidators } from '../../directives/validators';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 
@@ -81,11 +82,13 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 			this._validators = validators.split(',');
 		}
 	};
+	@Input() customValidator:Function = null
 	@Input() status: string = 'ok';
 	@Input() alert: string;
 	@Input() autoCompleteEnabled = true;
 	@Input() precision;
 	@Input() selectOptions: any = [];
+	@Input() addNewLovOption: Boolean = false;
 
 	@Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
 	@Output() valueChangedFromUI: EventEmitter<any> = new EventEmitter<any>();
@@ -223,7 +226,8 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		this.displayValue = value;
 		if (this.isEdit) {
 
-			if (this.type == 'select' && this.selectOptions) {
+
+			if ((this.type == 'select' || this.type == 'radio') && this.selectOptions) {
 				if (this.setters && this.lovSetters) {
 					let data = this.selectOptions.filter(option => {
 						return option[this.returnKey] == value[this.returnKey];
@@ -246,7 +250,8 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 				}
 			}
 		}
-		if (this.type == 'select') {
+
+		if (this.type == 'select' || this.type == 'radio') {
 			this.displayValue = this.getLabelFromSelectOptions(value);
 		}
 		else if (this.type == 'checkbox') {
@@ -320,6 +325,13 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 							this.alert = this.title + ' should not go beyond ' + max + '.';
 						}
 					}
+					if(this.customValidator){
+						let errorJson = this.customValidator(newValue)
+						if(errorJson.error){
+							this.status = 'error';
+							this.alert = errorJson.alert ? errorJson.alert : 'Invalid value.';
+						}
+					}
 				});
 			}
 		}
@@ -328,7 +340,8 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
 	setNativeElement() {
 		if (!this.nativeElem) {
-			if (this.type == 'checkbox') {
+
+			if (this.type == 'checkbox' || this.type == 'radio') {
 				this.nativeElem = this._element;
 			}
 			else {
@@ -413,6 +426,9 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		let value;
 		if (this.type == 'checkbox') {
 			value = event.checked;
+		}
+		else if(this.type == 'radio'){
+			value = event.value;
 		}
 		else {
 			value = event.target.value;
@@ -597,7 +613,13 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	}
 
 	setAutoComplete(value) {
-		return this.autoCompleteUtil.populateAutoCompleteFromDBWithNgModel(value, this.lovConfig.url, this.getFilterAttributes(), this.lovConfig.dataHeader);
+		let newOption = {};
+		newOption[this.displayKey]="ADD NEW";
+		newOption[this.returnKey]=-1
+		if(this.addNewLovOption)
+			return this.autoCompleteUtil.populateAutoCompleteFromDBWithNgModelAndNewOptions(value, this.lovConfig.url, this.getFilterAttributes(), this.lovConfig.dataHeader,newOption);
+		else
+			return this.autoCompleteUtil.populateAutoCompleteFromDBWithNgModel(value, this.lovConfig.url, this.getFilterAttributes(), this.lovConfig.dataHeader);
 	}
 
 	getFilterAttributes() {
@@ -625,4 +647,9 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	isValidDate(d) {
 		return d && d instanceof Date && !isNaN(d.getTime());
 	}
+
+	setErrors(alert = 'Invalid input'){
+		this.status = 'error';
+		this.alert = alert;
+}
 }

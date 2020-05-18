@@ -97,19 +97,19 @@ export class SmdDataTableRowComponent {
 	@Input() columns: SmdDataTableColumnComponent[];
 	tempColumns: any = [];
 	constructor(@Inject(forwardRef(() => SmdDataTable)) public _parent: SmdDataTable) {
-		
+
 	}
 	ngOnInit(): void {
-		this.columns.forEach(column=>{
-			if(column.SubColumns.length == 0)
+		this.columns.forEach(column => {
+			if (column.SubColumns.length == 0)
 				this.tempColumns.push(column);
-			else{
-				column.SubColumns.forEach(subColumns=>{
+			else {
+				column.SubColumns.forEach(subColumns => {
 					this.tempColumns.push(subColumns);
 				})
 			}
 		});
-		if(this._parent.hasSubheader)
+		if (this._parent.hasSubheader)
 			this.columns = this.tempColumns;
 	}
 }
@@ -414,40 +414,38 @@ export class SmdDataTable
 				}
 				this._queryTableData().then(() => { }, () => { });
 			});
-		
-		this.columns.changes.subscribe(data=>{
+
+		this.columns.changes.subscribe(data => {
 			let temp: any = [];
 			this.columnValueChanges = true;
-			data.forEach(column=>{
-				if(column.SubColumns && column.SubColumns.length > 0 ){
-					column.SubColumns.forEach(subColumn=>{
+			data.forEach(column => {
+				if (column.SubColumns && column.SubColumns.length > 0) {
+					column.SubColumns.forEach(subColumn => {
 						temp.push(subColumn);
 						this.hasSubheader = true;
 					})
-				}else{
+				} else {
 					temp.push(column);
 				}
 			});
-			if(this.hasSubheader){
+			if (this.hasSubheader) {
 				this.tempColumns = temp;
 				this.columns = this.tempColumns;
 			}
 		});
-		if(!this.columnValueChanges){
-			console.log(1);
-
-			this.columns.forEach(column=>{
-				if(column.SubColumns && column.SubColumns.length > 0 ){
-					column.SubColumns.forEach(subColumn=>{
+		if (!this.columnValueChanges) {
+			this.columns.forEach(column => {
+				if (column.SubColumns && column.SubColumns.length > 0) {
+					column.SubColumns.forEach(subColumn => {
 						this.tempColumns.push(subColumn);
 						this.setSubHeaderColumns(subColumn);
 						this.hasSubheader = true;
 					})
-				}else{
+				} else {
 					this.tempColumns.push(column);
 				}
 			});
-			if(this.hasSubheader){
+			if (this.hasSubheader) {
 				this.headerColumns = this.columns;
 				this.columns = this.tempColumns
 			}
@@ -465,7 +463,7 @@ export class SmdDataTable
 					debounceTime(400),
 					distinctUntilChanged())
 					.subscribe(() => {
-						
+
 						if (this.paginatorComponent) {
 							this.paginatorComponent.reset();
 						}
@@ -747,7 +745,7 @@ export class SmdDataTable
 					column.sortDir = null;
 					this._updateRowsFromList(sortedModel);
 				}
-				if(this.filteredModels){
+				if (this.filteredModels) {
 					this.filteredModels = sortedModel
 				}
 			}
@@ -875,7 +873,7 @@ export class SmdDataTable
 					);
 			let offset = (page - 1) * size;
 			let limit: number = this.preFetchPages * size;
-			if(this.tempColumns && this.hasSubheader && this.columnValueChanges){
+			if (this.tempColumns && this.hasSubheader && this.columnValueChanges) {
 				this.columns = this.tempColumns;
 			}
 			if (this.dataHeader && this.dataUrl) {
@@ -1116,7 +1114,12 @@ export class SmdDataTable
 				} else if (data[this.dataHeader]) {
 					this.dummyRowCount =
 						data[this.dataHeader].length - 1 + "+";
-					this.rowCount = data[this.dataHeader].length - 1;
+					this.rowCount = data[this.dataHeader].length;
+					if(limit){
+						this.paginatorComponent.hasMore = data.hasMore && this.rowCount == limit;						
+					}
+					if(offset)
+						this.rowCount += offset - 1
 					if (this.countUrl) {
 						// count
 						this.apiClass
@@ -1362,8 +1365,8 @@ export class SmdDataTable
 		this.totalRow[i] = value;
 	}
 
-	setSubHeaderColumns(column: any){
-		if(column){
+	setSubHeaderColumns(column: any) {
+		if (column) {
 			this.subHeaderColums.push(column);
 		}
 	}

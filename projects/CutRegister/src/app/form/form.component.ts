@@ -74,7 +74,6 @@ export class PdmCostingFormComponent {
 	}
 
 	setCosting() {
-		console.log(this._shared.id)
 		if (this.router.url.endsWith('/create')) {
 			this._shared.id = 0;
 			this._shared.editMode = true;
@@ -113,12 +112,13 @@ export class PdmCostingFormComponent {
 			let unAddedOrderLines = [];
 			if (resArray && resArray.length) {
 				resArray.forEach(res => {
-					routingIds.push(res.routingId);
+					let routingId = res.routingId
 					res = this.mapResToOrderDetails(res);
 					let orderLineIndex = this._shared.formData.orderDetails.findIndex(data => {
 						return res.refDocLineId == data.refDocLineId
 					})
 					if (orderLineIndex == -1) {
+						routingIds.push(routingId);
 						this._shared.addLine('orderDetails', res);
 						let index = this._shared.formData.markerDetails.findIndex(data => {
 							return data.attrValId == res.attrValId;
@@ -134,17 +134,18 @@ export class PdmCostingFormComponent {
 				if (unAddedOrderLines.length) {
 					this.alertUtils.showAlerts(unAddedOrderLines.length + " line(s) are not coppied as they already exist.")
 				}
-				this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
-					cutPanels.forEach(line => {
-						let index = this._shared.formData.cutPanelDetails.findIndex(data => {
-							return data.panelName == line.panelCode;
-						});
-						if (index == -1) {
-							let cutPanelLine = this.mapToCutPanelLine(line);
-							this._shared.addLine('cutPanelDetails', cutPanelLine)
-						}
+				if (routingIds.length)
+					this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
+						cutPanels.forEach(line => {
+							let index = this._shared.formData.cutPanelDetails.findIndex(data => {
+								return data.panelName == line.panelCode;
+							});
+							if (index == -1) {
+								let cutPanelLine = this.mapToCutPanelLine(line);
+								this._shared.addLine('cutPanelDetails', cutPanelLine)
+							}
+						})
 					})
-				})
 			}
 		})
 	}
@@ -288,4 +289,5 @@ export class PdmCostingFormComponent {
 		}
 	}
 }
+
 

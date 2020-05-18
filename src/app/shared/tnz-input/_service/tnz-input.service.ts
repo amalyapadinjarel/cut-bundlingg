@@ -214,4 +214,13 @@ export class TnzInputService {
 		return this.apiService.get(url).pipe(shareReplay(1));
 	}
 
+	setError(path, alert?) {
+		let input = JSONUtils.getJSONPath(this.registeredInputs, path);
+		if (input) {
+
+			input.setErrors(alert);
+
+ 		}
+	}
+
 }

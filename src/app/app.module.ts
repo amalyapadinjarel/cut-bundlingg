@@ -79,6 +79,11 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/scheduler/src/app/scheduler.module').then(m => m.SchedulerModule)
 	},
 	{
+		path: 'routing-cut-panels',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/Routing/src/app/routing.module').then(m => m.RoutingModule)
+	},
+	{
 		path: '**',
 		redirectTo: 'not-found'
 	},

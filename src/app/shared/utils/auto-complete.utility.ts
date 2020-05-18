@@ -194,6 +194,57 @@ export class AutoCompleteUtilities {
         }
     }
 
+    populateAutoCompleteFromDBWithNgModelAndNewOptions(
+        data: any, url: string, filterAttributes: string[] = [], jsonKey: string = 'data', newOption: any,
+        params: HttpParams = new HttpParams(), resultFilter = null, application = 'CBP', addLimit = true, filterType = 'new', filter: string = null): Observable<any> {
+        let service: ApiService = this.apiService;
+        if (filter == null) {
+            if (application == 'HCM')
+                filter = 'filters'
+            else
+                filter = 'filter'
+        }
+        if ((data && typeof data === 'object' ? data = data.label : data) || data == '') {
+            data = data.replace('+', '');
+            let json;
+            if (data) {
+                if (filterType == 'new') {
+                    json = [];
+                    filterAttributes.forEach(field => {
+                        json.push({
+                            "type": "item",
+                            "con": "or",
+                            "attr": field,
+                            "operator": "startsWith",
+                            "value": data
+                        });
+                    });
+                } else {
+                    json = {};
+                    filterAttributes.forEach(field => {
+                        json[field] = data;
+                    });
+                }
+            }
+            if (addLimit) {
+                params = params.set('limit', '30');
+                params = params.set('offset', '1');
+            }
+            if(json){
+                params = params.set(filter, JSON.stringify(json));
+            }
+            return service.get(('/' + url), params)
+                .map(res => {
+                    if(newOption != null)
+                        res[jsonKey].push(newOption)
+                    if (resultFilter)
+                        return resultFilter(res[jsonKey]);
+                    else
+                        return res[jsonKey];
+                });
+        }
+    }
+
 
     config = {
         URL: '',
