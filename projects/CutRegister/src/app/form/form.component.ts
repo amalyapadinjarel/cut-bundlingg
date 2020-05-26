@@ -20,6 +20,8 @@ import { ConfirmPopupComponent } from 'app/shared/component';
 })
 export class PdmCostingFormComponent {
 
+	hasNextRecord: boolean = false;
+	hasPreviousRecord: boolean = false;
 	private routerSubs: Subscription;
 	public clicked = false;
 	public copyFromOptions = [
@@ -48,6 +50,10 @@ export class PdmCostingFormComponent {
 		this.setCosting();
 		this.routerSubs = this.router.events.subscribe(change => {
 			this.routerChanged(change);
+		})
+		this._service.fetchListData().then(data => {
+			this._shared.setListIdArray(data)
+			this.setNavigationLinks()
 		})
 	}
 
@@ -288,6 +294,26 @@ export class PdmCostingFormComponent {
 			});
 		}
 	}
-}
 
+	navigateRecord(next = false) {
+		let idx = this._shared.idlist.indexOf(this._shared.id);
+		if (next) {
+			if (idx < this._shared.idlist.length - 1) {
+				this._shared.id = this._shared.idlist[++idx];
+			}
+		} else {
+			if (idx > 0) {
+				this._shared.id = this._shared.idlist[--idx];
+			}
+		}
+		this.setNavigationLinks();
+		this.router.navigateByUrl("/cut-register/" + this._shared.id);
+	}
+
+	setNavigationLinks() {
+		const idx = this._shared.idlist.indexOf(this._shared.id);
+		this.hasPreviousRecord = idx > 0;
+		this.hasNextRecord = idx < this._shared.idlist.length - 1;
+	}
+}
 

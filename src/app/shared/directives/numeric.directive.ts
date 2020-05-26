@@ -38,7 +38,6 @@ export class NumericDirective {
 
     @HostListener("keydown", ["$event"])
     onKeyDown(event: KeyboardEvent) {
-        console.log("here")
         this.run(this.el.nativeElement.value);
     }
 

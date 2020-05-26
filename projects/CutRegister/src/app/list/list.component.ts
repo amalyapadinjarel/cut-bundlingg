@@ -28,4 +28,13 @@ export class ListComponent implements OnInit {
     }
   }
 
+  _onDataChange(dataChange: any) {
+    if (dataChange.data && dataChange.data.registers)
+      this._shared.setListIdArray(dataChange.data.registers);
+    // this._shared.lRequestListConfig.config.offset = dataChange.offset;
+    // this._shared.lRequestListConfig.config.limit = dataChange.limit;
+    // this._shared.columnFilterValues = dataChange.columnFilterValues;
+
+  }
+
 }

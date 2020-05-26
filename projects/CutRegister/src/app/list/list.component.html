@@ -1,6 +1,7 @@
 <div>
     <perfect-scrollbar>
-        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false">
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+         (dataChange)="_onDataChange($event)">
             <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
             </smd-datatable-column>
             <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">

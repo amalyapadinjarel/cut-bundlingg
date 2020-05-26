@@ -9,6 +9,7 @@ import { ConfirmPopupComponent } from 'app/shared/component';
 @Injectable()
 export class CutRegisterSharedService {
 
+    idlist: any[] = [];
     appKey = 'cutRegister';
     apiBase = 'cut-register';
     taskFlowName = 'CUTREGISTER'
@@ -251,7 +252,7 @@ export class CutRegisterSharedService {
 
     getHeaderEditable(attr, primaryKey) {
         let editable = this.editMode;
-        let nonEditableAttrs = ['docType', 'cutFacility', 'sewingFacility'];// attributes that cannot be edited after creation
+        let nonEditableAttrs = ['docType'];// attributes that cannot be edited after creation
         if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
             editable = false
         }
@@ -259,12 +260,16 @@ export class CutRegisterSharedService {
         if (this.formData.cutBundle && this.formData.cutBundle.length && editableBundleAttrs.indexOf(attr) == -1) {
             editable = false
         }
-        if (editable)
-            switch (attr) {
-                case 'attributeSet':
-                    editable = !this.formData.orderDetails.length;
-                    break;
-            }
+        nonEditableAttrs = ['attributeSet'];// attributes that cannot be edited if order lines exist
+        if (this.formData.orderDetails && this.formData.orderDetails.length && nonEditableAttrs.indexOf(attr) > -1) {
+            editable = false
+        }
+        // if (editable)
+        //     switch (attr) {
+        //         case 'attributeSet':
+        //             editable = !this.formData.orderDetails.length;
+        //             break;
+        //     }
         return editable;
     }
 
@@ -513,6 +518,13 @@ export class CutRegisterSharedService {
 
     setSelectedLines(key, models) {
         this.selectedLines[key] = models;
+    }
+
+    setListIdArray(data) {
+        this.idlist = [];
+        data.forEach( line => {
+            this.idlist.push(Number(line[this.primaryKey]));
+        })
     }
 
 

@@ -6,8 +6,22 @@
         </perfect-scrollbar>
     </div>
     <div class="line-details">
-        <div class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
-            on {{_shared.formData.header?.lastUpdateDate}}
+        <div style="display: flex">
+            <!-- <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified
+                by {{_shared.formData.header?.lastUpdateByName}} on {{_shared.formData.header?.lastUpdateDate}}</span> -->
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
+                    on {{_shared.formData.header?.lastUpdateDate}}</span>
+                <ng-container >
+                    <button *ngIf="hasPreviousRecord" mat-button matTooltip="previous">
+                        <mat-icon class="mat-color-disabled" (click)="navigateRecord()">navigate_before</mat-icon>
+                    </button>
+                    <button *ngIf="hasNextRecord" mat-button matTooltip="next">
+                        <mat-icon class="mat-color-disabled" (click)="navigateRecord(true)">navigate_next</mat-icon>
+                    </button>
+                </ng-container>
+            </div>
         </div>
         <!-- <button mat-button matTooltip="print line">
                 <mat-icon class="mat-color-danger" (click)="print()">print</mat-icon>
@@ -19,20 +33,22 @@
                         <div class="group-header">
                             <h3>Order Details</h3>
                             <span class="flex-filler"></span>
-                            <div style="display:flex" *ngIf="_shared.getOrderDetailsEditable()">
-                                <button mat-button matTooltip="delete line">
-                                    <mat-icon class="mat-color-danger" (click)="deleteLine('orderDetails')">delete</mat-icon>
-                                </button>
-                                <button mat-button matTooltip="compute">
-                                    <mat-icon class="mat-color-info" (click)="compute()">developer_board</mat-icon>
-                                </button>
-                                <button mat-button [matMenuTriggerFor]="menu" matTooltip="add line">
-                                    <mat-icon class="mat-color-success">library_add</mat-icon>
-                                    <mat-icon class="mat-color-disabled">expand_more</mat-icon>
-                                </button>
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item *ngFor="let op of copyFromOptions" (click)="copyFrom(op)">{{op.label}}</button>
-                                </mat-menu>
+                            <div style="display:flex">
+                                <ng-container *ngIf="_shared.getOrderDetailsEditable()">
+                                    <button mat-button matTooltip="delete line">
+                                        <mat-icon class="mat-color-danger" (click)="deleteLine('orderDetails')">delete</mat-icon>
+                                    </button>
+                                    <button mat-button matTooltip="compute">
+                                        <mat-icon class="mat-color-info" (click)="compute()">developer_board</mat-icon>
+                                    </button>
+                                    <button mat-button [matMenuTriggerFor]="menu" matTooltip="add line">
+                                        <mat-icon class="mat-color-success">library_add</mat-icon>
+                                        <mat-icon class="mat-color-disabled">expand_more</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item *ngFor="let op of copyFromOptions" (click)="copyFrom(op)">{{op.label}}</button>
+                                    </mat-menu>
+                                </ng-container>
                             </div>
                         </div>
                         <order-details></order-details>

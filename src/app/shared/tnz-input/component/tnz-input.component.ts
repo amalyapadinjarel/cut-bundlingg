@@ -300,7 +300,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		if (!inValid) {
 			if (this.validators) {
 				this.validators.forEach(validator => {
-					// console.log(newValue)
+
 					// if(this.type == 'lov' && newValue && typeof newValue != 'object'){
 					// 	this.status = 'warning';
 					// 	this.alert =  'Choose from the given list of options.';
@@ -427,6 +427,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 		if (this.type == 'checkbox') {
 			value = event.checked;
 		}
+
 		else if(this.type == 'radio'){
 			value = event.value;
 		}
@@ -588,6 +589,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 	}
 
 	handleKeyboadEnter(event) {
+
 		let newPath = this.getNewPath(this.path, event.shiftKey)
 		let element = document.getElementById(newPath)
 		if(element){

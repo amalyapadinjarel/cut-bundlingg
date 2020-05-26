@@ -1119,7 +1119,7 @@ export class SmdDataTable
 						this.paginatorComponent.hasMore = data.hasMore && this.rowCount == limit;						
 					}
 					if(offset)
-						this.rowCount += offset - 1
+						this.rowCount += offset
 					if (this.countUrl) {
 						// count
 						this.apiClass

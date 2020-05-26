@@ -28,7 +28,6 @@ export class PdmCostingHeaderComponent implements OnInit, OnDestroy {
 	}
 
 	valueChanged(change) {
-		console.log('Status set')
 		switch(change.key){
 			case 'docType':
 				this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatus'),'DRAFT')
