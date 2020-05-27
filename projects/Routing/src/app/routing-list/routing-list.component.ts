@@ -25,4 +25,10 @@ export class RoutingListComponent implements OnInit {
       this.router.navigateByUrl('/routing-cut-panels/' + this._shared.id);
     }
   }
+
+  _onDataChange(dataChange: any) {
+    if (dataChange.data && dataChange.data.routing)
+      this._shared.setListIdArray(dataChange.data.routing);
+
+  }
 }

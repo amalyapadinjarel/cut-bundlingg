@@ -13,7 +13,9 @@ import { Subscription } from 'rxjs';
   host: { 'class': 'form-view' }
 })
 export class RoutingFormComponent implements OnInit {
-	private routerSubs: Subscription;
+  private routerSubs: Subscription;
+  hasNextRecord: boolean = false;
+	hasPreviousRecord: boolean = false;
 
   constructor(public _shared: RoutingSharedService,
 		private _service: RoutingService,
@@ -27,7 +29,8 @@ export class RoutingFormComponent implements OnInit {
       this.setRouting();
       this.routerSubs = this.router.events.subscribe(change => {
         this.routerChanged(change);
-      })
+      });
+      this.setNavigationLinks();
     }
   
     ngOnDestroy(): void {
@@ -68,5 +71,25 @@ export class RoutingFormComponent implements OnInit {
       this._service.deleteLines(key);
     }
 
+    navigateRecord(next = false) {
+      let idx = this._shared.idlist.indexOf(this._shared.id);
+      if (next) {
+        if (idx < this._shared.idlist.length - 1) {
+          this._shared.id = this._shared.idlist[++idx];
+        }
+      } else {
+        if (idx > 0) {
+          this._shared.id = this._shared.idlist[--idx];
+        }
+      }
+      this.setNavigationLinks();
+      this.router.navigateByUrl("/routing-cut-panels/" + this._shared.id);
+    }
+  
+    setNavigationLinks() {
+      const idx = this._shared.idlist.indexOf(this._shared.id);
+      this.hasPreviousRecord = idx > 0;
+      this.hasNextRecord = idx < this._shared.idlist.length - 1;
+    }
 
 }

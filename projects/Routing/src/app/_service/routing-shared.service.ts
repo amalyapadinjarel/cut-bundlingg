@@ -16,13 +16,14 @@ export class RoutingSharedService {
   id: number;
   formData: any = {};
   stepId: number;
+  idlist: any[] = [];
 
   loading = true;
   headerLoading = true;
   linesLoading = false;
   cutPanelDetailsLoading = true;
 
-  primaryKey = 'registerId';
+  primaryKey = 'routingId';
   cutPanelDetailsPrimaryKey = 'inOutId';
   lineKeys = ['cutPanelDetails'];
   selectedLines = {};
@@ -266,6 +267,13 @@ addLine(key, model = null) {
   });
   data.push(newLine);
  this.refreshCutPanelDetails.next(true);
+}
+
+setListIdArray(data) {
+  this.idlist = [];
+  data.forEach( line => {
+      this.idlist.push(Number(line[this.primaryKey]));
+  })
 }
 
 }

@@ -6,8 +6,20 @@
         </perfect-scrollbar>
     </div>
     <div class="line-details">
-        <div class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
-            on {{_shared.formData.header?.lastUpdateDate}}
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
+                    on {{_shared.formData.header?.lastUpdateDate}}</span>
+                <ng-container >
+                    <button *ngIf="hasPreviousRecord" mat-button matTooltip="previous">
+                        <mat-icon class="mat-color-disabled" (click)="navigateRecord()">navigate_before</mat-icon>
+                    </button>
+                    <button *ngIf="hasNextRecord" mat-button matTooltip="next">
+                        <mat-icon class="mat-color-disabled" (click)="navigateRecord(true)">navigate_next</mat-icon>
+                    </button>
+                </ng-container>
+            </div>
         </div>
         <mat-tab-group>
             <mat-tab label="Cut Panels">
