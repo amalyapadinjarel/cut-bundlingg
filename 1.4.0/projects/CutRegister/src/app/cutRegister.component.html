@@ -1,0 +1,28 @@
+<div class="app-content-header">
+	<div class="app-title" routerLink="./list">
+		<span class="primary">Cut </span>
+		<span class="accent"> Register</span>
+	</div>
+	<div class="app-menus">
+		<div class="group">
+			<ng-container *ngIf="!_shared.editMode">
+				<a (click)="newCosting()">Create</a>
+				<a *ngIf="_shared.id" (click)="editCosting()">Edit</a>
+				<a *ngIf="_shared.id" (click)="approve()">Approve</a>
+				<a *ngIf="_shared.id" (click)="revise()">Revise</a>
+				<a (click)="showReports()" #reportsBtn>Print</a>
+				<a *ngIf="ifApproved()" (click)="generateNextCut()">Generate Next Cut</a>
+			</ng-container>
+			<ng-container class="group" *ngIf="_shared.editMode">
+				<a (click)="save()">Save</a>
+				<a (click)="save(true)">Save & exit</a>
+				<a (click)="cancelEdit()">Cancel</a>
+			</ng-container>
+		</div>
+	</div>
+</div>
+<div class="app-content-container">
+	<div class="app-content-wrapper">
+		<router-outlet></router-outlet>
+	</div>
+</div>

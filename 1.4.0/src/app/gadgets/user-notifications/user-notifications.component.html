@@ -1,0 +1,55 @@
+<mat-card class="input-card no-padding no-margin">
+    <mat-toolbar>
+        <span class="title">Notifications</span>
+        <span class="flex-filler"></span>
+        <button mat-icon-button matTooltip="mark all read" class="mat-color-disabled" (click)="readAllNotification()">
+            <mat-icon>chat_bubble_outline</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="refresh" class="mat-color-disabled" (click)="reload()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+    </mat-toolbar>
+    <smd-datatable apiLevel="4" [apiClass]="apiServiceV4" dataUrl="trendz-messages/user-notifications" dataHeader="notifications"
+        [paginated]="true" [isTitleNeeded]='false' [defaultRange]='7' [paginatorRanges]='[7]'>
+        <smd-datatable-column title=" " field="notifyType">
+            <ng-template let-model="data">
+                <mat-icon *ngIf="model.notifyType == 2" class='mat-color-info'>info</mat-icon>
+                <mat-icon *ngIf="model.notifyType == 3" class='mat-color-warning'>info</mat-icon>
+                <mat-icon *ngIf="model.notifyType == 4" class='mat-color-warning'>warning</mat-icon>
+                <mat-icon *ngIf="model.notifyType == 5" class='mat-color-danger'>warning</mat-icon>
+                <mat-icon *ngIf="model.notifyType == 7" class='mat-color-info'>event</mat-icon>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Notification" field="notification" [filterable]="true" [stretch]="true">
+            <ng-template let-model="data">
+                <span class="notification">
+                    <span class="info">
+                        <div class="title" [innerHtml]="model.notification"></div>
+                        <span class="timespan">{{model.notifyTime| date:dateUtils.dateTimeFormat}}</span>
+                    </span>
+                </span>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title=" " field=" " titleTooltip="edit" [colStyle]="{'min-width':'50px'}">
+            <ng-template let-model="data">
+                <div class="row-operations">
+                    <!-- <button mat-icon-button matTooltip="more" color="accent" class="small" (click)="showMoreInfo(model)">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button> -->
+                    <button mat-icon-button matTooltip="mark read" color="primary" class="small"
+                        *ngIf="model.isRead == 0" (click)="readNotification(model.subscriptionId)">
+                        <mat-icon>chat</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="mark unread" class="small mat-color-disabled"
+                        *ngIf="model.isRead == 1" (click)="unreadNotification(model.subscriptionId)">
+                        <mat-icon>chat_bubble_outline</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="open url" color="primary" class="small"
+                        *ngIf="model.destinationUrl" [routerLink]="model.destinationUrl">
+                        <mat-icon>link</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+    </smd-datatable>
+</mat-card>

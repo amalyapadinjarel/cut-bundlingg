@@ -1,0 +1,208 @@
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getLayerDetailsEditable()" [loading]="_shared.layerDetailsLoading"
+ class="tnz-input-table" [filterEnabled]="!_shared.getLayerDetailsEditable()" [sortEnabled]="!_shared.getLayerDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
+ [showCheckBox]="_shared.getLayerDetailsEditable()">
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.getLayerDetailsEditable()" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data" let-index="index">
+			<div class="row-operations">
+				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="_service.deleteDetailsLine('layerDetails',index,model)">delete</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="#" field="lineNo" sortable="true" [filterable]="true" [colStyle]="{'min-width':'45px'}">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!getIfEditable(index,'lineNo')">{{model.lineNo}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('lineNo')">
+				<tnz-input type="number" [path]="_shared.getLayerDetailsPath(index,'lineNo')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="getIfEditable(index,'lineNo')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Fabric" field="prodName" sortable="true" [filterable]="true" stretch="true">
+		<ng-template let-model="data" let-index="index">
+			<div [matTooltip]="model.viewAttr">
+				<span *ngIf="!getIfEditable(index,'prodName')">{{model.product?.productTitleNum}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('prodName')">
+					<tnz-input type="lov" [path]="_shared.getLayerDetailsPath(index,'product')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+					 [lovConfig]="fabricLovConfig" (valueChanged)="valueChanged($event,index)" [sharedData]="_shared.formData" validators="required"
+					 [isEdit]="getIfEditable(index,'prodName')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Fabric Attributes" field="prodAttr" sortable="true" [filterable]="true" stretch="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('prodAttr')">{{model.prodAttr}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('prodAttr')">
+				<tnz-input [path]="_shared.getLayerDetailsPath(index,'prodAttr')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+				 validators="min:0" [isEdit]="false" [loading]="_shared.layerDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Instance Details" field="instanceDetails">
+		<smd-datatable-column title="Lot#" field="lotNo" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('lotNo')">{{model.lotNo}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('lotNo')">
+					<tnz-input [path]="_shared.getLayerDetailsPath(index,'lotNo')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+					 validators="min:0" [isEdit]="getIfEditable(index,'lotNo')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Sl#" field="slNo" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('slNo')">{{model.slNo}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('slNo')">
+					<tnz-input [path]="_shared.getLayerDetailsPath(index,'slNo')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+					 validators="min:0" [isEdit]="getIfEditable(index,'slNo')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Grade" field="grade" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('grade')">{{model.grade}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('grade')">
+					<tnz-input [path]="_shared.getLayerDetailsPath(index,'grade')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+					 [isEdit]="getIfEditable(index,'grade')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Shade" field="shade" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('shade')">{{model.shade}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('shade')">
+					<tnz-input [path]="_shared.getLayerDetailsPath(index,'shade')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+					 [isEdit]="getIfEditable(index,'shade')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Shrinkage" field="shrinkage" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('shrinkage')">{{model.shrinkage}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('shrinkage')">
+					<tnz-input [path]="_shared.getLayerDetailsPath(index,'shrinkage')" [primaryKey]="_shared.layerDetailsPrimaryKey" [sharedData]="_shared.formData"
+					 [isEdit]="getIfEditable(index,'shrinkage')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Rcpt Date" field="rcptDate" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getLayerDetailsEditable('rcptDate')">{{model.rcptDate}}</span>
+				<div *ngIf="_shared.getLayerDetailsEditable('rcptDate')">
+					<tnz-input type="date" [path]="_shared.getLayerDetailsPath(index,'rcptDate')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+					 [sharedData]="_shared.formData" [isEdit]="getIfEditable(index,'rcptDate')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		
+	</smd-datatable-column>
+	<smd-datatable-column title="Sticker Color" field="attributeId" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('attributeId')">{{model.attributeId}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('attributeId')">
+				<tnz-input [path]="_shared.getLayerDetailsPath(index,'attributeId')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+				 (valueChanged)="valueChanged($event,index)" [sharedData]="_shared.formData" validators=""
+				 [isEdit]="getIfEditable(index,'attributeId')" [loading]="_shared.layerDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Ply Qty" field="layerCount" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('layerCount')">{{model.layerCount}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('layerCount')">
+				<tnz-input type="number" [path]="_shared.getLayerDetailsPath(index,'layerCount')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+				 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="getIfEditable(index,'layerCount')" [loading]="_shared.layerDetailsLoading || _shared.loading"
+				 (valueChangedFromUI)="valueChangedFromUI($event,index)">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Lay Yardage" field="layYardage" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.layYardage}}
+		</ng-template>
+	</smd-datatable-column>
+	<!-- <smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('style')">{{model.style}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('style')">
+				<tnz-input [path]="_shared.getLayerDetailsPath(index,'style')" [primaryKey]="_shared.layerDetailsPrimaryKey" (valueChanged)="valueChanged($event,index)"
+				 [sharedData]="_shared.formData" validators="" [isEdit]="false" [loading]="_shared.layerDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column> -->
+	<smd-datatable-column title="Style Color" field="colorName" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('colorName')">{{model.colorName}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('colorName')">
+				<tnz-input type="lov" [path]="_shared.getLayerDetailsPath(index,'color')" [primaryKey]="_shared.layerDetailsPrimaryKey" [lovConfig]="styleColorLovConfig"
+				 (valueChanged)="valueChanged($event,index)" [sharedData]="_shared.formData" validators="" [isEdit]="getIfEditable(index,'color')"
+				 [loading]="_shared.layerDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<!-- <smd-datatable-column title="Product#" field="productNum" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			<tnz-input [path]="_shared.getProductAttrPath(index, 'productNum')" [primaryKey]="_shared.productPrimaryKey" [sharedData]="_shared.formData"
+			 validators="required,min:0" [isEdit]="_shared.getProductEditable('productNum', _shared.getProdAttributeValue(index, _shared.productPrimaryKey))"
+			 [loading]="_shared.layerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
+			</tnz-input>
+		</ng-template>
+	</smd-datatable-column> -->
+
+	<!-- <smd-datatable-column title="Combo" field="comboProdTit" sortable="true" [filterable]="true" [colStyle]="{'min-width':'140px'}">
+		<ng-template let-model="data" let-index="index">
+			{{_shared.getProdAttributeValue(index, 'ComboProdTit') || '--'}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Color" field="color" sortable="true" [filterable]="true" [colStyle]="{'min-width':'140px'}">
+		<ng-template let-model="data" let-index="index">
+			{{_shared.getProdAttributeValue(index, 'AttrValue1') || '--'}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="FOB" field="sellingPrice" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			<tnz-input type="number" [path]="_shared.getProductAttrPath(index,sellingPrice 'sellingPrice')" [primaryKey]="_shared.productPrimaryKey"
+			 [sharedData]="_shared.formData" validators="required,min:0" [isEdit]="_shared.sellingPrice('sellingPrice', _shared.getProdAttributeValue(index, _shared.productPrimaryKey))"
+			 [precision]="_shared.getHeaderAttributeValue('CurrencyMcTr')" [loading]="_shared.layerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
+			</tnz-input>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cost" field="lineAmount" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			<tnz-input type="number" [path]="_shared.getProductAttrPath(index,lineAmount 'lineAmount')" [primaryKey]="_shared.productPrimaryKey"
+			 [sharedData]="_shared.costingData" [precision]="_shared.getHeaderAttributeValue('CurrencyMcTr')" [loading]="lineAmount.layerDetailsLoading || _shared.loading"
+			 (valueChanged)="valueChanged($event, index)">
+			</tnz-input>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Profit%" field="profitPercent" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			<strong [class.mat-color-danger]="_shared.getProdAttributeValue(index, 'profitPercent') < 7" [class.mat-color-warning]="_shared.getProdAttributeValue(index, 'profitPercent') >= 7 && _shared.getProdAttributeValue(index, 'profitPercent') < 10"
+			 [class.mat-color-success]="_shared.getProdAttributeValue(index, 'profitPercent') >= 10">
+				{{_shared.toFixedPrecision(_shared.getProdAttributeValue(index, 'profitPercent') || 0, 2)}}
+			</strong>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Profit" field="ProfitAmount" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
+		<ng-template let-model="data" let-index="index">
+			{{_shared.getCurencyRoundedValue(_shared.getProdAttributeValue(index, 'ProfitAmount') || 0)}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Currency" field=" " [colStyle]="{'min-width':'50px'}">
+		<ng-template let-model="data" let-index="index">
+			{{_shared.getHeaderAttributeValue('CurrencyTr') || '--'}}
+		</ng-template>
+	</smd-datatable-column> -->
+</smd-datatable>

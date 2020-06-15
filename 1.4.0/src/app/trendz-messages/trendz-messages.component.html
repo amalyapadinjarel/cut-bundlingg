@@ -1,0 +1,26 @@
+<div>
+    <div class="title xs-hidden">
+        <button mat-icon-button>
+            <mat-icon> mail </mat-icon>
+        </button>
+        <h3>Trendz Messages</h3>
+    </div>
+</div>
+<div class="app-content-container scheduler">
+    <div class="toolbar sm-hidden">
+        <button mat-raised-button matTooltip="add new notification" (click)="createNotification()">
+            <mat-icon> add </mat-icon>
+        </button>
+        <span class="flex-filler"></span>
+    </div>
+    <mat-card class="container-card">
+        <mat-tab-group [selectedIndex]="selectedTab" (selectChange)="tabChanged($event)">
+            <mat-tab label="Notifications">
+                <notifications-listing></notifications-listing>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card>
+    <button mat-fab class="create-fab sm-visible" matTooltip="add new notification" (click)="createNotification()">
+        <mat-icon> add </mat-icon>
+    </button>
+</div>

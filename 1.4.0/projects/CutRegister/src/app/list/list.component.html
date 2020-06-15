@@ -1,0 +1,67 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+            (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+            <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.documentNo}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutFacility?.shortCode}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut#" field="cutNo" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutNo}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut Date" field="cutDate" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutDate}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Status" field="docStatusName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.docStatusName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cut Type" field="cutType" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.cutType?.label}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Sew Facility" field="sewingFacility" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.sewingFacility?.shortCode}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.createdByName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.creationDate}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="lastUpdateByName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.lastUpdateByName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.lastUpdateDate}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

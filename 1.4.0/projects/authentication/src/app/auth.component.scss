@@ -1,0 +1,89 @@
+.auth-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	mat-card {
+		width: 400px;
+		background: #1b3038;
+		background: #2f283a;
+		border-radius: 24px;
+		border: 8px solid rgba(0, 0, 0, 0.15);
+		mat-card-header {
+			position: relative;
+			padding: 24px;
+			margin-bottom: 0;
+			font-size: 32px;
+			color: #fff;
+			box-sizing: border-box;
+			align-items: baseline;
+			border-radius: 2px 2px 0 0;
+			img {
+				margin-right: 16px;
+				align-self: center;
+			}
+			sup {
+				align-self: flex-start;
+				margin-top: -7px;
+				margin-left: 4px;
+			}
+			.lobster {
+				margin-left: 8px;
+			}
+		}
+		mat-card-content {
+			padding: 16px;
+			border-radius: 12px;
+			background: #fff;
+		}
+	}
+	form {
+		mat-form-field {
+			width: 100%;
+			margin-bottom: 16px;
+			mat-icon.prefix {
+				margin-right: 8px;
+				margin-bottom: 4px;
+				vertical-align: middle;
+			}
+		}
+		> button {
+			display: block;
+			margin: 0 auto;
+			min-width: 180px;
+		}
+		.show-hide-password {
+			position: relative;
+			height: 1.5em;
+			width: 1.5em;
+			border-radius: 50%;
+			font: inherit;
+			vertical-align: baseline;
+			text-align: center;
+			cursor: pointer;
+			.mat-icon {
+				height: 1.125em;
+				line-height: 1.125;
+				font-size: inherit;
+				vertical-align: middle;
+			}
+		}
+	}
+	.version {
+		position: absolute;
+		bottom: 8px;
+		left: 0;
+		right: 0;
+		color: #87989e;
+		text-align: center;
+		font-size: 11px;
+	}
+}
+
+@media (max-width: 599px) {
+	mat-card-header.mat-card-image {
+		width: calc(100% + 32px);
+		margin: -24px -16px 16px;
+	}
+}

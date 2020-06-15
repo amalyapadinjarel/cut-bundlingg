@@ -1,0 +1,52 @@
+.title-bar {
+    display: flex;
+    align-items: center;
+    margin: -12px -12px 20px;
+    .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    img {
+        height: 64px;
+        margin-right: 8px;
+    }
+}
+
+.description {
+    margin-bottom: 16px;
+}
+
+.input-card {
+    box-shadow: none;
+}
+
+.mat-dialog-actions {
+    padding: 0;
+    justify-content: center;
+}
+
+.config-options {
+    >div {
+        display: flex;
+        margin: 16px 0;
+        flex-direction: column;
+    }
+    .mat-checkbox {
+        margin-bottom: 8px;
+    }
+}
+
+.cron{
+    .cron-desc{
+        color: #1faff5;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.contain{
+    width: 400px
+}

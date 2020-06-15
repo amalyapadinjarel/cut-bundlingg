@@ -1,0 +1,42 @@
+<mat-card class="input-card no-padding full-width">
+	<div mat-dialog-title class="title-bar">
+		<img [src]="'./assets/images/drive/doc/' + (jobData.outputFileType ? (jobData.outputFileType | lowercase) : 'code')  + '.png'">
+		<div class="flex-filler">
+			<span class="title flex-filler">LOG: {{jobData.tnzJobName}}</span>
+			<div class="submitted-info">submitted by
+				<b>{{jobData.submittedBy}}</b> on
+				<b>{{jobData.creationDate | date:dateUtils.dateTimeFormat}}</b>
+			</div>
+		</div>
+		<button mat-icon-button color="accent" mat-dialog-close>
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	<mat-dialog-content [class.component-loading]="loading">
+		<smd-datatable [models]="jobData.log" [rowCount]="jobData.log?.length" noDataDisplayMessage="No logs to display"
+		 noDataDisplayIcon="assignment">
+			<smd-datatable-column title=" " field="type">
+				<ng-template let-model="data">
+					<div [matTooltip]="model.type">
+						<mat-icon [class.mat-color-info]="model.type=='INFO'" [class.mat-color-warning]="model.type=='WARNING'" [class.mat-color-danger]="model.type=='SEVERE'">error</mat-icon>
+					</div>
+				</ng-template>
+			</smd-datatable-column>
+			<smd-datatable-column title="Type" field="type">
+				<ng-template let-model="data">
+					{{model.type}}
+				</ng-template>
+			</smd-datatable-column>
+			<smd-datatable-column title="Message" field="message" [stretch]="true">
+				<ng-template let-model="data">
+					{{model.message}}
+				</ng-template>
+			</smd-datatable-column>
+			<smd-datatable-column title="Time" field="time">
+				<ng-template let-model="data">
+					{{model.time}}
+				</ng-template>
+			</smd-datatable-column>
+		</smd-datatable>
+	</mat-dialog-content>
+</mat-card>

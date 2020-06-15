@@ -1,0 +1,157 @@
+:host {
+  display: block;
+  margin: -24px;
+  .title {
+    display: block;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  mat-dialog-content {
+    margin: 0;
+    padding: 0;
+    smd-datatable {
+      height: 65vh;
+    }
+  }
+  mat-dialog-actions {
+    padding: 12px 0;
+    min-height: 24px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    line-height: 21px;
+
+    li {
+      display: flex;
+      padding: 5px;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      >label {
+        min-width: 120px;
+        max-width: 120px;
+        padding-right: 4px;
+        text-align: right;
+        border-right: 1px solid #ccc;
+        opacity: 0.72;
+      }
+
+      .val {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        tnz-input {
+          display: flex;
+          flex: 1;
+          margin-left: 4px;
+        }
+
+        >span {
+          color: gray;
+          font-weight: 400;
+          margin-left: 5px;
+        }
+
+        .mat-stroked-button {
+          align-self: center;
+          padding: 0 4px;
+          margin: 0 auto;
+          height: 16px;
+          line-height: 15px;
+          min-width: auto;
+          font-size: 11px;
+          font-weight: 600;
+          color: #5f5175;
+          background: rgba(95, 81, 117, 0.12);
+          border-color: rgba(95, 81, 117, 0.32);
+        }
+      }
+    }
+  }
+  .group {
+    margin: 12px 0 0;
+    background: #fff;
+    border-radius: 0 0 4px 0;
+    overflow: hidden;
+    // background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
+    background-size: cover;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    &:first-of-type {
+      margin: 0;
+    }
+
+    h4 {
+      margin: 0;
+      padding: 8px;
+      text-align: center;
+      font-weight: 500;
+      color: #fff;
+      background: #5f5175;
+      font-size: 15px;
+    }
+
+    >ul {
+      list-style: none;
+      margin: 0;
+      padding: 4px;
+      line-height: 21px;
+
+      li {
+        display: flex;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.06);
+        }
+
+        >label {
+          min-width: 120px;
+          max-width: 120px;
+          padding-right: 4px;
+          text-align: right;
+          border-right: 1px solid #ccc;
+          opacity: 0.72;
+        }
+
+        .val {
+          display: flex;
+          flex: 1;
+          align-items: center;
+
+          tnz-input {
+            display: flex;
+            flex: 1;
+            margin-left: 4px;
+          }
+
+          >span {
+            color: gray;
+            font-weight: 400;
+            margin-left: 5px;
+          }
+
+          .mat-stroked-button {
+            align-self: center;
+            padding: 0 4px;
+            margin: 0 auto;
+            height: 16px;
+            line-height: 15px;
+            min-width: auto;
+            font-size: 11px;
+            font-weight: 600;
+            color: #5f5175;
+            background: rgba(95, 81, 117, 0.12);
+            border-color: rgba(95, 81, 117, 0.32);
+          }
+        }
+      }
+    }
+  }
+}

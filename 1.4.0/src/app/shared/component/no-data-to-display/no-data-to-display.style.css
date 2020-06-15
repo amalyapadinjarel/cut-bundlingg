@@ -1,0 +1,15 @@
+.no-data-div {
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  align-items: center;
+  color: #555;
+  padding: 32px 8px;
+}
+.no-data-icon{
+  height: auto;
+  width: auto;
+  font-size: 42px;
+  margin-bottom: 16px;
+  opacity: .3;
+}

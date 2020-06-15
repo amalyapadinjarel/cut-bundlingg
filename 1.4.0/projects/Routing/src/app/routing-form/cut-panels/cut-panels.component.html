@@ -1,0 +1,33 @@
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getCutPanelDetailsEditable()" [loading]="_shared.cutPanelDetailsLoading"
+ class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [filterEnabled]="!_shared.getCutPanelDetailsEditable()"
+ [sortEnabled]="!_shared.getCutPanelDetailsEditable()" [showCheckBox]="_shared.getCutPanelDetailsEditable()">
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+		<ng-template let-model="data" let-index="index">
+			<div class="row-operations">
+				<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getCutPanelDetailsEditable()">{{model.sequence}}</span>
+			<div *ngIf="_shared.getCutPanelDetailsEditable('sequence')">
+				<tnz-input type="number" [path]="_shared.getCutPanelDetailsPath(index,'sequence')" [primaryKey]="_shared.cutPanelDetailsPrimaryKey"
+				 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="_shared.getCutPanelDetailsEditable('sequence')"
+				 [loading]="_shared.cutPanelDetailsLoading || _shared.loading">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cut Panel Name" field="panelName" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getCutPanelDetailsEditable()">{{model.panelName}}</span>
+			<div *ngIf="_shared.getCutPanelDetailsEditable('panelName')">
+				<tnz-input type="lov" [lovConfig]="semiProducts" [path]="_shared.getCutPanelDetailsPath(index,'panelName')" [primaryKey]="_shared.cutPanelDetailsPrimaryKey"
+				[sharedData]="_shared.formData" validators="required" [isEdit]="_shared.getCutPanelDetailsEditable('panelName')" [loading]="_shared.cutPanelDetailsLoading || _shared.loading"
+				(valueChangedFromUI)="valueChangedFromUI($event)" [addNewLovOption]="true">
+				</tnz-input>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+</smd-datatable>

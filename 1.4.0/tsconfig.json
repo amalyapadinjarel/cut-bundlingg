@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "preserveWhitespaces": "off"
+  },
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "hammerjs"
+    ],
+    "lib": [
+      "es2016",
+      "dom"
+    ],
+    "module": "esnext",
+    "paths": {
+      "tnz-components": [
+        "dist/tnz-components"
+      ],
+      "tnz-components/*": [
+        "dist/tnz-components/*"
+      ]
+    }
+  }
+}

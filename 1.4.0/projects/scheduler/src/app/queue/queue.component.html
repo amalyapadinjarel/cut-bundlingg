@@ -1,0 +1,78 @@
+<smd-datatable [apiClass]="schedulerUtils" dataUrl="scheduler/queue" dataHeader="jobQueue"
+	[primaryListing]="true" (onRowSelected)="rowSelected($event)">
+	<smd-datatable-column title="Status" field="tnzJobState" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			<div [matTooltip]="(model.tnzJobState | schedulerJobState) + ' ' + (model.tnzJobStatus | schedulerJobStatus)"
+				class="smd-table-icon-wrap">
+				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'S'" class='mat-color-success'>
+					check_circle</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'W'" class='mat-color-warning'>
+					warning</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'R'" class='mat-color-info spinner'>camera</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'A'" class='mat-color-danger'>error</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'U'" class='mat-color-info'>remove_circle</mat-icon>
+				<mat-icon
+					*ngIf="model.tnzJobState != 'R' && model.tnzJobState != 'C' && model.tnzJobState != 'A' && model.tnzJobState != 'U'"
+					class='mat-color-disabled'>remove_circle</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Job Id" field="tnzJobId" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.tnzJobId}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Job Name" field="tnzJobName" sortable="true" [filterable]="true" stretch="true">
+		<ng-template let-model="data">
+			{{model.tnzJobName}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Cron Expression" field="cronExpression" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.cronExpression}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Run By" field="submittedBy" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.submittedBy}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Last Run Time" field="lastRun" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			{{model.lastRun | date:dateUtils.dateTimeFormat}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Next Run Time" field="nextRun" sortable="true">
+		<ng-template let-model="data">
+			{{model.nextRun | date:dateUtils.dateTimeFormat}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title=" " field=" ">
+		<ng-template let-model="data">
+			<div *ngIf="model.cronExpression" style="float:right;display: flex">
+				<button mat-icon-button matTooltip="re schedule" color="primary" (click)="reSchedule(model)">
+					<mat-icon>schedule</mat-icon>
+				</button>
+				<button *ngIf="model.tnzJobState != 'U' && model.tnzJobState != 'S'" mat-icon-button
+					matTooltip="suspend" color="warn" (click)="suspendSchedule(model.tnzJobId)">
+					<mat-icon>pause_circle_outline</mat-icon>
+				</button>
+				<button *ngIf="model.tnzJobState == 'S'" mat-icon-button matTooltip="resume" class="mat-color-success"
+					(click)="resumeSchedule(model)">
+					<mat-icon>play_circle_outline</mat-icon>
+				</button>
+				<button mat-icon-button matTooltip="remove" class="mat-color-danger" (click)="deleteSchedule(model)">
+					<mat-icon>close</mat-icon>
+				</button>
+				<button mat-icon-button matTooltip="more" color="accent" (click)="showMoreInfo(model)">
+					<mat-icon>more_horiz</mat-icon>
+				</button>
+			</div>
+			<div *ngIf="!model.cronExpression" style="float:right;">
+				<button mat-icon-button matTooltip="more" color="accent" (click)="showMoreInfo(model)">
+					<mat-icon>more_horiz</mat-icon>
+				</button>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
+</smd-datatable>

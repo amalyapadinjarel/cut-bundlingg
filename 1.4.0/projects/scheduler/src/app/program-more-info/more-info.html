@@ -1,0 +1,33 @@
+<div mat-dialog-title class="title-bar">
+	<img [src]="'./assets/images/drive/doc/' + (jobData.outputFileType ? (jobData.outputFileType | lowercase) : 'code')  + '.png'">
+	<div class="flex-filler">
+		<span class="title flex-filler">{{jobData.tnzJobName}}</span>
+		<div class="submitted-info">submitted by <b>{{jobData.submittedBy}}</b> on <b>{{jobData.creationDate | date:dateUtils.dateTimeFormat}}</b></div>
+	</div>
+	<button mat-icon-button color="accent" mat-dialog-close>
+		<mat-icon>close</mat-icon>
+	</button>
+</div>
+<mat-card class="input-card" [class.component-loading]="loading">
+	<mat-dialog-content>
+		<div *ngFor="let param  of jobData.parameterList">
+			<mat-form-field>
+				<input matInput disabled [placeholder]="param.parameter" [value]="param.dateValue ? param.dateValue: param.numValue ? param.numValue: param.charValue ? param.charValue: ''">
+			</mat-form-field>
+		</div>
+		<div class="config-options enabled-checkboxe">
+			<div class="cron">
+				<mat-checkbox [checked]="!jobData.cronExpression" disabled>Run Immediate</mat-checkbox>
+				<mat-form-field *ngIf="jobData.cronExpression">
+					<input matInput placeholder="Cron Expression" [value]="jobData.cronExpression" disabled>
+				</mat-form-field>
+			</div>
+			<div class="mail">
+				<mat-checkbox [checked]="jobData.isSendEmail == 'Y'" disabled>Send Output as Email</mat-checkbox>
+				<mat-checkbox *ngIf="jobData.isSendEmail == 'Y'" [checked]="jobData.isEmailOnlyMe == 'Y'" style="margin-top: 8px;" disabled>EMail
+					only Me</mat-checkbox>
+			</div>
+			<!-- <mat-checkbox [(ngModel)]="logEnabled" class="mdl-cell mdl-cell--12-col-desktop">Enalbe Log</mat-checkbox> -->
+		</div>
+	</mat-dialog-content>
+</mat-card>

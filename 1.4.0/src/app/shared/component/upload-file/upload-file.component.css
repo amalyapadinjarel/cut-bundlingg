@@ -1,0 +1,76 @@
+.uf-inputfile{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+    z-index: -1;
+}
+.uf-image-label{
+    font-weight: 300px;
+    cursor: pointer;
+}
+.uf-default-image{
+    font-size: 272px;
+    width:400px;
+    color: #ececec;
+    margin-top: 70px;
+}
+@media (max-width: 600px){
+    .uf-default-image{
+        font-size: 100px;
+        width:200px;
+        color: #ececec;
+        margin-top: 70px;
+    }
+    
+}
+.uf-dialog-content{
+    text-align: center;
+    padding: 0;
+}
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    cursor: pointer;
+}
+.uf-toolbar{
+    height: 80px;
+}
+.uf-title{
+    margin: 16px 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-weight: 200;
+    font-size: 27px;
+}
+.uf-title strong{
+    font-weight: 400;
+}
+.uf-title mat-icon {
+    vertical-align: middle;
+}
+.uf-default-image{
+    font-size: 180px;
+    width:300px;
+    color: #ececec;
+    margin-top: 70px;
+}
+@media (max-width: 600px){
+    .uf-default-image{
+        font-size: 100px;
+        width:200px;
+        color: #ececec;
+        margin-top: 70px;
+    }
+    .uf-cropper{
+        width:200px !important;
+    }
+    
+}
+.uf-cropper{
+    width:400px;
+    height: 293px;
+}

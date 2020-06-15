@@ -1,0 +1,54 @@
+<div class="doc-title slice">
+    <div>
+        <tnz-input class="doc-num" [value]="_shared.getHeaderAttributeValue('documentNo') || '###'" 
+        [loading]="_shared.loading" [sharedData]="_shared.formData"></tnz-input>
+        <div class="doc-status-button" [ngStyle]="{'color':_shared.getHeaderAttributeValue('docStatusColor'), 'background-color':_shared.getHeaderAttributeValue('docStatusColor') + '2e', 'border-color':_shared.getHeaderAttributeValue('docStatusColor')}">
+            {{_shared.getHeaderAttributeValue('docStatusName') || 'Draft'}}</div>
+    </div>
+    <div>
+        <tnz-input class="doc-name" type="select" [path]="_shared.getHeaderAttrPath('docType')" [primaryKey]="_shared.primaryKey"
+            [sharedData]="_shared.formData" [lovConfig]="docTypeLov" validators="required" [loading]="_shared.loading" [isEdit]="_shared.getHeaderEditable('docType', _shared.id)"
+            (valueChanged)="valueChanged($event)">
+        </tnz-input>
+        <tnz-input [value]="'v' + (_shared.getHeaderAttributeValue('RevisionNo') || 1)" [loading]="_shared.loading">
+        </tnz-input>
+    </div>
+</div>
+<!-- <div class="slices">
+    <div class="flex-filler"></div>
+    <div class="slice">
+        <div>
+            <h4>5</h4><small>order</small>
+        </div>
+        <div>
+            <h4>3538</h4><small>Units</small>
+        </div>
+        <div>
+            <h4>$5,459.00</h4><small>Value</small>
+        </div>
+    </div>
+    <div class="slice">
+        <div>
+            <h4>$2,456.38</h4><small>Fabric</small>
+        </div>
+        <div>
+            <h4>$2,012.58</h4><small>Trims</small>
+        </div>
+        <div>
+            <h4>$605.31</h4><small>Other Exp.</small>
+        </div>
+    </div>
+    <div class="slice mat-color-danger">
+        <div>
+            <h4>$5,074.27</h4><small>Total Exp.</small>
+        </div>
+    </div>
+    <div class="slice mat-color-success">
+        <div>
+            <h4>9.24%</h4><small></small>
+        </div>
+        <div>
+            <h4>$5459..00</h4><small>Actual Profit</small>
+        </div>
+    </div>
+</div> -->

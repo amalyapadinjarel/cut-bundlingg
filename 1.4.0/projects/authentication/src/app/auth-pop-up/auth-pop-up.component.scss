@@ -1,0 +1,75 @@
+.auth-page {
+	margin: -24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+
+	mat-card {
+		mat-card-header {
+			position: relative;
+			padding: 24px;
+			font-size: 32px;
+			color: #fff;
+			background-color: rgb(45, 50, 62);
+			box-sizing: border-box;
+			align-items: center;
+			border-radius: 2px 2px 0 0;
+
+			img {
+				margin-right: 16px;
+			}
+			sup {
+				align-self: flex-start;
+				margin-top: -7px;
+				margin-left: 4px;
+			}
+		}
+
+		mat-card-content {
+			padding: 8px;
+
+			p,
+			h3 {
+				text-align: center;
+			}
+
+			h3 {
+				padding-bottom: 0;
+				margin-bottom: 0;
+			}
+
+			p {
+				padding: 0;
+				font-size: 10px;
+				color: #777;
+			}
+		}
+	}
+
+	.version {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		color: #777;
+		font-size: 11px;
+	}
+}
+
+@media (max-width: 599px) {
+	mat-card-header.mat-card-image {
+		width: calc(100% + 32px);
+		margin: -24px -16px 16px;
+	}
+}
+
+@media (min-width: 368px) {
+	.auth-page {
+		mat-card {
+			width: 320px;
+		}
+	}
+}

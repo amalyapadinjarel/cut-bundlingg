@@ -1,0 +1,50 @@
+<mat-sidenav-container [class]="theme" [hidden]="isLoading">
+	<mat-sidenav id="app-sidenav" #sidenav mode="over" [opened]="false">
+		<app-sidenav (onThemeChange)="onThemeChange($event)" (menuSelected)="sidenav.close()" *ngIf="isAuthenticated">
+		</app-sidenav>
+	</mat-sidenav>
+
+	<mat-toolbar id="app-header" *ngIf="isAuthenticated" color="accent">
+		<button mat-icon-button (click)="sidenav.toggle()" class="sidenav-toogle-btn">
+			<mat-icon> menu </mat-icon>
+		</button>
+		<div>
+			<app-header-left></app-header-left>
+			<span class="flex-filler"></span>
+			<app-header-right></app-header-right>
+
+		</div>
+	</mat-toolbar>
+	<div class="app-content" [class.login]="!isAuthenticated">
+		<router-outlet></router-outlet>
+	</div>
+
+	<user-profile-menu *ngIf="isAuthenticated && currentGadget == 'usermenu'" class="gadget"
+		[class.right]="gadgetPosition.align == 'right'" [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
+		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-profile-menu>
+
+	<user-settings *ngIf="isAuthenticated && currentGadget == 'usersettings'" class="gadget"
+		[class.right]="gadgetPosition.align == 'right'" [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
+		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-settings>
+
+	<app-report-listing *ngIf="isAuthenticated && currentGadget == 'application-reports'"
+		[taskflowKey]="currentGadgetData.taskflowKey" [module]="currentGadgetData.module"
+		[params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
+		[style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
+		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-report-listing>
+
+	<app-program-listing *ngIf="isAuthenticated && currentGadget == 'application-programs'"
+		[taskflowKey]="currentGadgetData.taskflowKey" [module]="currentGadgetData.module"
+		[params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
+		[style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
+		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-program-listing>
+
+	<div class="gadget-overlay" *ngIf="gadgetOverlay" (click)="closeGadget()"></div>
+
+</mat-sidenav-container>
+
+<app-loading *ngIf="isLoading" [show]="isLoading"></app-loading>

@@ -1,0 +1,6 @@
+<div class="no-data-div">
+    <mat-icon class="no-data-icon">{{icon}}</mat-icon>
+    <span class="text">{{message}}</span>
+    <br/>
+    <button *ngIf="showDesc" mat-raised-button color="primary" (click)="linkClicked($event)">{{link}}</button>
+</div>
