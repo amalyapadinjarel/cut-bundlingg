@@ -22,6 +22,7 @@
 
 #app-sidenav app-sidenav .sidenav-header .logo {
     outline: none;
+    text-decoration: none;
 }
 
 #app-sidenav app-sidenav .sidenav-header .logo .logo-image {
@@ -49,7 +50,10 @@
 #app-sidenav app-sidenav mat-tab-group .mat-tab-header {
     margin-top: 16px;
     padding: 0 3px;
-    border-bottom: 1px solid rgba(0, 162, 241, 0.65);
+}
+
+#app-sidenav app-sidenav mat-tab-group .mat-ink-bar {
+    background-color: #a586c3;
 }
 
 #app-sidenav app-sidenav mat-tab-group .mat-tab-body-wrapper {

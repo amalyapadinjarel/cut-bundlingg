@@ -49,7 +49,7 @@
 	</smd-datatable-column>
 	<smd-datatable-column title=" " field=" ">
 		<ng-template let-model="data">
-			<div *ngIf="model.cronExpression" style="float:right;">
+			<div *ngIf="model.cronExpression" style="float:right;display: flex">
 				<button mat-icon-button matTooltip="re schedule" color="primary" (click)="reSchedule(model)">
 					<mat-icon>schedule</mat-icon>
 				</button>

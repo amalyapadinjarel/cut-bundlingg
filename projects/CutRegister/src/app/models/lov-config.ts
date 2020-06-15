@@ -78,6 +78,10 @@ export var CopyFromSOLovConfig: any = {
             key: 'maxAllowQty'
         },
         {
+            title: 'Prev Cut Qty.',
+            key: 'prevCutQty'
+        },
+        {
             title: 'UOM',
             key: 'uomCode'
         },

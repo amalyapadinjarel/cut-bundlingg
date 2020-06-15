@@ -77,7 +77,7 @@ export class ApiServiceV4 {
 
 	postMultipart(path: string, body): Observable<any> {
 		return this.http.post(
-			`${environment.api_url_v4}${path}`, body, { headers: this.getMultipartHeaders() }
+			`${environment.api_url}/${path}`, body, { headers: this.getMultipartHeaders() }
 		).pipe(
 			catchError((err) => { return this.formatErrors(err, path) }),
 			map((res: HttpResponse<JSON>) => res));

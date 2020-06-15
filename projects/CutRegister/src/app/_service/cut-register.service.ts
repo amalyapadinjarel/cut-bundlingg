@@ -30,7 +30,7 @@ export class CutRegisterService {
             this.apiService.get('/' + this._shared.apiBase)
                 .subscribe(data => {
                     if (data.count > 0)
-                        resolve(data.registers);
+                        resolve(data);
                     else
                         reject();
                 }, err => reject(err));

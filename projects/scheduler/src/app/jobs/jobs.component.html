@@ -59,31 +59,33 @@
         </ng-template>
     </smd-datatable-column>
     <smd-datatable-column title="Download" field="outputFileType" sortable="true" [filterable]="true">
-    <ng-template let-model="data">
-        <div style="display: flex">
-            <button mat-raised-button matTooltip="download" color="primary"
-                    (click)="downloadOutput(model.tnzJobInstncId)"
-                    *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType">
-                <mat-icon>file_download</mat-icon>
-                {{model.outputFileType}}
-            </button>
-            <button mat-icon-button matTooltip="send mail" color="primary" (click)="mailOutput(model)"
-                    *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType">
-                <mat-icon>send</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="preview" color="primary" (click)="previewOutput(model)"
-                    *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType == 'PDF'">
-                <mat-icon>remove_red_eye</mat-icon>
-            </button>
-        </div>
+        <ng-template let-model="data">
+            <div style="display: flex;     align-items: baseline;">
+                <button mat-raised-button matTooltip="download" color="primary"
+                        style="height: 20px; padding: 0 7px ;    place-items: center; background: #a299ad"
+                        (click)="downloadOutput(model.tnzJobInstncId)"
+                        *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType">
+                    <mat-icon>file_download</mat-icon>
+                    {{model.outputFileType}}
+                </button>
+                <button mat-icon-button matTooltip="send mail" color="primary"  (click)="mailOutput(model)"
+                        *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType">
+                    <mat-icon style="color: #a299ad">send</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="preview" color="primary"  (click)="previewOutput(model)"
+                        *ngIf="model.tnzJobStatus == 'S' && model.tnzJobState == 'C' && model.outputFileType"
+                [ngStyle]="{'opacity' : model.outputFileType == 'PDF'? 1 : 0}" >
+                    <mat-icon style="color: #a299ad"> remove_red_eye</mat-icon>
+                </button>
+            </div>
 
-    </ng-template>
+        </ng-template>
     </smd-datatable-column>
     <smd-datatable-column title=" " field=" " titleTooltip="edit">
         <ng-template let-model="data">
             <div style="float:right; display: flex">
-                <button mat-icon-button matTooltip="re schedule" color="primary" (click)="reSchedule(model)">
-                    <mat-icon>schedule</mat-icon>
+                <button mat-icon-button matTooltip="re schedule"  (click)="reSchedule(model)">
+                    <mat-icon style="color: #a299ad">schedule</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="more" color="accent" (click)="showMoreInfo(model)">
                     <mat-icon>more_horiz</mat-icon>

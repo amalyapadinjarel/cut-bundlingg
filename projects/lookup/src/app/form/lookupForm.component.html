@@ -1,0 +1,46 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <!-- <lookup-header></lookup-header> -->
+            <lookup-card collapsibleComponent></lookup-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+            <!-- <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified
+                by {{_shared.formData.header?.lastUpdateByName}} on {{_shared.formData.header?.lastUpdateDate}}</span> -->
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByUser}} on {{_shared.formData.header?.creationDate|date:dateUtils.dateFormat}}, Modified by {{_shared.formData.header?.lastUpdatedByUser}}
+                    on {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}</span>
+                    
+                    <form-nav [apiUrl]="'/lookup/navigation/' + _shared.lookupType" navUrl="/lookup" [params]="_shared.params"></form-nav>
+
+            </div>
+        </div>
+        
+        <mat-tab-group>
+            <mat-tab label="Lookup Value">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Lookup Value</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getLookupValueEditable()">
+                                 <!-- <button mat-button matTooltip="Set Active">
+                                    <mat-icon class="mat-color-disabled" (click)="setActive('lookupValue')">{{toggle?'check_box_out':'check_box'}}</mat-icon>
+                                </button> -->
+                                 <button mat-button matTooltip="Add line">
+                                     <mat-icon class="mat-color-info" (click)="_shared.addLine('lookupValue')">add_box</mat-icon> 
+                                </button>
+                             </div>
+                        </div>
+                         <lookup-value></lookup-value> 
+                    </div>
+                   
+                </perfect-scrollbar>
+            </mat-tab>
+            
+        </mat-tab-group> 
+    </div>
+</div>

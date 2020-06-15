@@ -85,7 +85,7 @@ export class DocumentService {
             this.checkAppSecurity(url)
                 .subscribe(res => {
                     if (res && res[type] == 4) {
-                        resolve()
+                        resolve(true)
                     } else {
                         reject("You are not given privilege to " + type + " in this application.")
                     }

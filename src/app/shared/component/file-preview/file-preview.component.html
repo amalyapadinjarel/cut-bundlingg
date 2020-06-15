@@ -14,7 +14,7 @@
     <div *ngIf="scheduler" class="scheduler-loading">
         <mat-icon class='mat-color-info spinner'>camera</mat-icon>
         <strong>Generating Preview</strong>
-        <button mat-raised-button color="primary" (click)="runInBackground()">Run in background</button>
+        <button mat-raised-button color="primary" class="custom-mat-button" (click)="runInBackground()">Run in background</button>
         <mat-checkbox [(ngModel)]="alwaysRunBackground" class="small">Always run in background</mat-checkbox>
     </div>
     <div *ngIf="!scheduler && !previewReady" loadingPlaceholder></div>

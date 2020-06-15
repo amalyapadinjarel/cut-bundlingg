@@ -14,12 +14,14 @@
     font-size: 272px;
     width:400px;
     color: #ececec;
+    margin-top: 70px;
 }
 @media (max-width: 600px){
     .uf-default-image{
         font-size: 100px;
         width:200px;
         color: #ececec;
+        margin-top: 70px;
     }
     
 }
@@ -54,12 +56,14 @@
     font-size: 180px;
     width:300px;
     color: #ececec;
+    margin-top: 70px;
 }
 @media (max-width: 600px){
     .uf-default-image{
         font-size: 100px;
         width:200px;
         color: #ececec;
+        margin-top: 70px;
     }
     .uf-cropper{
         width:200px !important;

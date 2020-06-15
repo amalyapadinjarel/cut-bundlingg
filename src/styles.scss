@@ -1423,3 +1423,9 @@ mat-card.input-card .date-tracks {
         top: calc(50% - 15px);
     }
 }
+
+.custom-mat-button {
+    line-height: 36px !important;
+    padding: 0 16px !important;;
+     min-width: 64px !important;;
+}

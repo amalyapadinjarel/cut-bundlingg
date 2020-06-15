@@ -7,6 +7,7 @@ export class DateUtilities {
     public dateFormat = 'dd-MMM-yyyy';
     public timeFormat = 'HH:mm:ss';
     public dateTimeFormat = 'dd-MMM-yyyy HH:mm:ss';
+    public dateMinFormat = 'dd-MMM-yyyy hh:mm a';
 
     constructor() {
     }

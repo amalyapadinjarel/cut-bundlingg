@@ -1,15 +1,19 @@
 <span *ngIf="loading" [class.dummy-progress]="loading"></span>
-<ng-container *ngIf="!loading && !isEdit">
-    <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="status">{{displayValue}}</span>
-    <mat-checkbox *ngIf="type == 'checkbox'" [ngModel]="checked" disabled></mat-checkbox>
-</ng-container>
-<ng-container *ngIf="!loading && isEdit">
+    <ng-container *ngIf="!loading && !isEdit">
+        <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="status">{{displayValue}}</span>
+        <mat-checkbox *ngIf="type == 'checkbox'" [ngModel]="checked" disabled></mat-checkbox>
+    </ng-container>
+    <ng-container *ngIf="!loading && isEdit">
 
-    <input #Element [id]="path" *ngIf="type == 'text'" [value]="value" [type]="dataType" (change)="onValueChange($event)" [matTooltip]="alert"
-        [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" 
-         (focus)="$event.target.select()"/>
+        <input #Element [id]="path" *ngIf="type == 'text' " [value]="value"  [type]="dataType" (change)="onValueChange($event)" [matTooltip]="alert"
+               [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)"
+               (focus)="$event.target.select()"/>
 
-    <input #Element [id]="path" *ngIf="type == 'number'" [value]="value" numeric type="text" (change)="onValueChange($event)" [matTooltip]="alert"
+        <input #Element [id]="path" *ngIf="type == 'mask'" [value]="value"   [mask]="maskInput"  type="text" (change)="onValueChange($event)" [matTooltip]="alert"
+               [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)"
+               (focus)="$event.target.select()"/>
+
+        <input #Element [id]="path" *ngIf="type == 'number'" [value]="value" [decimals]="decimals" numeric type="text" (change)="onValueChange($event)" [matTooltip]="alert"
         [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" 
          (focus)="$event.target.select()"/>
 
@@ -45,7 +49,7 @@
         <mat-radio-group class ="small-radio" [value]="value" (change)="onValueChange($event)" aria-label="Select an option">
             <mat-radio-button *ngFor="let op of selectOptions" [value]="op[returnKey]">{{op[displayKey]}}</mat-radio-button>
         </mat-radio-group>
-    </ng-container>
+    </ng-container> 
 
     <button mat-stroked-button #Element *ngIf="type == 'lov-button'" (click)="openLOV()">{{title}}</button>
 

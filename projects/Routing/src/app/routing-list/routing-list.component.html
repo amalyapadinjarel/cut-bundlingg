@@ -1,7 +1,11 @@
 <div>
     <perfect-scrollbar>
-        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="routing" (onRowSelected)="rowSelected($event)" [primaryListing]="false" (dataChange)="_onDataChange($event)">
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="routing" (onRowSelected)="rowSelected($event)" [primaryListing]="false" (dataChange)="_onDataChange($event)"
+        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" (pageChange)="_onPageChange($event)">
             <smd-datatable-column title="Routing#" field="documentNo" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.documentNo}}
+                </ng-template>
             </smd-datatable-column>
             <!-- <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
@@ -9,24 +13,53 @@
                 </ng-template>
             </smd-datatable-column> -->
             <smd-datatable-column title="Style" field="productNum" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.productNum}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Facility" field="facilityShortCode" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.facilityShortCode}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Name" field="routingName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.routingName}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Status" field="docStatusTR" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.docStatusTR}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="SMV" field="smv" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.smv}}
+                </ng-template>
             </smd-datatable-column>
-            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true"> <ng-template let-model="data">
+                {{model.description}}
+            </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.createdByName}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.creationDate}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Updated By" field="lastUpdateByName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.lastUpdateByName}}
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.lastUpdateDate}}
+                </ng-template>
             </smd-datatable-column>
         </smd-datatable>
     </perfect-scrollbar>

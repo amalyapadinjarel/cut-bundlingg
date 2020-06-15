@@ -28,6 +28,7 @@ import { AddNewSemiProductComponent } from './routing-form/add-new-semi-product/
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedModule } from 'app/shared/shared.module';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -95,7 +96,8 @@ const PROVIDERS = [
     MATERIAL_MODULE,
     SmdModule,
     TnzInputModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    SharedModule
   ],
   providers: [PROVIDERS],
   bootstrap: [RoutingComponent]

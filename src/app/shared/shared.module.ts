@@ -46,6 +46,7 @@ import { ExpansionPanelsContainerComponent } from './component/expansion-panels-
 import { ExpansionPanelComponent, ExpansionPanelTitle, ExpansionPanelContent, ExpansionPanelDescriptionToggled, ExpansionPanelDescriptionHidden, ExpansionPanelButtons } from './component/expansion-panel';
 import { UploadFileComponent } from './component/upload-file/upload-file.component';
 import { SmdModule } from './component/smd/smd.module';
+import { FormNavComponent } from './component/form-nav/form-nav.component';
 const MATERIAL_MODULE = [
     MatAutocompleteModule
     , MatCheckboxModule
@@ -85,7 +86,8 @@ const COMPONENTS = [
     ExpansionPanelDescriptionHidden,
     ExpansionPanelButtons,
     UploadFileComponent,
-    TrendzFilePreviewComponent
+    TrendzFilePreviewComponent,
+    FormNavComponent
 ];
 
 const IMPORTS = [

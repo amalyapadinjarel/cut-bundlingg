@@ -9,7 +9,6 @@ import { ConfirmPopupComponent } from 'app/shared/component';
 @Injectable()
 export class CutRegisterSharedService {
 
-    idlist: any[] = [];
     appKey = 'cutRegister';
     apiBase = 'cut-register';
     taskFlowName = 'CUTREGISTER'
@@ -73,6 +72,13 @@ export class CutRegisterSharedService {
     refreshHeaderData: BehaviorSubject<boolean> = new BehaviorSubject(false);
     refreshData: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+    //variables for navigation
+    selectedPage: number = 1;
+    columnFilterValues;
+    count;
+    listData;
+    params;
+
     constructor(
         private _cache: LocalCacheService,
         private inputService: TnzInputService,
@@ -103,6 +109,8 @@ export class CutRegisterSharedService {
         this.layerDetailsSeqIncBy = 1;
         this.markerDetailsSeqIncBy = 1;
         this.cutPanelDetailsSeqIncBy = 1;
+
+        this.listData = null;
     }
 
     clear() {
@@ -520,11 +528,18 @@ export class CutRegisterSharedService {
         this.selectedLines[key] = models;
     }
 
-    setListIdArray(data) {
-        this.idlist = [];
-        data.forEach( line => {
-            this.idlist.push(Number(line[this.primaryKey]));
-        })
+    setListData(data) {
+        this.listData = data.registers;
+        this.count = data.count;
+    }
+
+    resetAllInput(){
+        this.inputService.resetSharedData();
+    }
+
+    onNewDocumentCreated(){
+        this.listData = null;
+        this.params = null;
     }
 
 

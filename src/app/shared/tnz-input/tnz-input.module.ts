@@ -16,6 +16,8 @@ import { TnzInputLOVComponent } from './input-lov/input-lov.component';
 import { SmdModule } from '../component/smd/smd.module';
 import { InputDirectiveModule } from '../directives/modules/input-directive.module';
 import { NumericDirective } from '../directives/numeric.directive';
+import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import {NgxMaskModule} from 'ngx-mask';
 
 const PROVIDERS = [
   LocalConfigService,
@@ -38,7 +40,10 @@ const PROVIDERS = [
     MatIconModule,
     MatButtonModule,
     MatAutocompleteModule,
+    MatRadioModule,
     SmdModule,
+    NgxMaskModule.forRoot(),
+
   ],
   providers: [
     PROVIDERS

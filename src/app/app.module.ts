@@ -1,7 +1,7 @@
 import { ErrorHandler, ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import 'HammerJS';
+// import 'HammerJS';
 
 import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
 import { PeoplezNavComponent } from 'app/app-nav';
@@ -74,11 +74,22 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/CutRegister/src/app/cutRegister.module').then(m => m.CutRegisterModule)
 	},
 	{
+		path: 'routing',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/mfg-routing/src/app/mfgRouting.module').then(m => m.MfgRoutingModule)
+	},
+	{
 		path: 'scheduler',
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/scheduler/src/app/scheduler.module').then(m => m.SchedulerModule)
 	},
+    {
+		path: 'lookup',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/lookup/src/app/lookup.module').then(m => m.LookupModule)
+	},
 	{
+
 		path: 'routing-cut-panels',
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/Routing/src/app/routing.module').then(m => m.RoutingModule)
@@ -87,7 +98,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		path: '**',
 		redirectTo: 'not-found'
 	},
-], { useHash: true });
+], { useHash: true , onSameUrlNavigation : 'reload'});
 
 @NgModule({
 	declarations: [

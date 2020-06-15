@@ -11,7 +11,8 @@ import { DateUtilities } from 'app/shared/utils';
 
 @Component({
 	selector: 'jobs-listing',
-	templateUrl: './jobs.component.html'
+	templateUrl: './jobs.component.html',
+	styleUrls:  ['jobs.component.scss']
 })
 export class JobsComponent implements OnInit, OnDestroy {
 
@@ -106,7 +107,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 	}
 
 	previewOutput(job) {
-		if (job) {
+		if (job && job.outputFileType == 'PDF') {
 			let file = {
 				"contentType": this.schedulerUtils.outputMimeTypes[job.outputFileType],
 				"fileType": job.outputFileType.toLowerCase(),

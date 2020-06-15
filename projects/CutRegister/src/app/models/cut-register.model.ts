@@ -26,6 +26,7 @@ export class CutRegister {
     createdByName: string;
     creationDate: Date;
     lastUpdateDate: Date;
+    lastUpdateDateTime: string;
     lastUpdatedBy: string;
     lastUpdateByName: string;
     processInstncId: string;
@@ -82,6 +83,7 @@ export class CutRegister {
         this.layNo = model.layNo;
         this.createdByName = model.createdByName;
         this.lastUpdateByName = model.lastUpdateByName;
+        this.lastUpdateDateTime = model.lastUpdateDateTime;
     }
 
 }

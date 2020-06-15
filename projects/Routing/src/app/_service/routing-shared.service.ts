@@ -35,6 +35,12 @@ export class RoutingSharedService {
   refreshData: BehaviorSubject<boolean> = new BehaviorSubject(false);
   refreshCutPanelDetails: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  selectedPage: number = 1;
+  columnFilterValues;
+  count;
+  listData;
+  params;
+
   constructor(private _cache: LocalCacheService,
     private inputService: TnzInputService) {
 
@@ -269,11 +275,9 @@ addLine(key, model = null) {
  this.refreshCutPanelDetails.next(true);
 }
 
-setListIdArray(data) {
-  this.idlist = [];
-  data.forEach( line => {
-      this.idlist.push(Number(line[this.primaryKey]));
-  })
+setListData(data) {
+  this.listData = data.routing;
+  this.count = data.count;
 }
 
 }

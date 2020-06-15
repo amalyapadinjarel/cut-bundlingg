@@ -78,6 +78,6 @@
 		</div>
 	</mat-dialog-content>
 	<mat-dialog-actions>
-		<button mat-raised-button color="primary" (click)="submitForm()" [disabled]='loading || !isPrivileged'>{{formAction}}</button>
+		<button mat-raised-button color="primary" (click)="submitForm()"  class="custom-mat-button" [disabled]='loading || !isPrivileged'>{{formAction}}</button>
 	</mat-dialog-actions>
 </mat-card>

@@ -5,9 +5,10 @@ import { CutRegisterSharedService } from './_service/cut-register-shared.service
 import { CutRegisterService } from './_service/cut-register.service';
 import { AlertUtilities } from 'app/shared/utils';
 import { NavigationService, UserService, EventService, DocumentService } from 'app/shared/services';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from 'app/shared/component';
 
 @Component({
-  selector: 'app-cutRegister',
   templateUrl: './cutRegister.component.html',
   styleUrls: ['./cutRegister.component.scss']
 })
@@ -25,7 +26,8 @@ export class CutRegisterComponent {
     private alertutils: AlertUtilities,
     private navService: NavigationService,
     private userService: UserService,
-    private docService: DocumentService
+    private docService: DocumentService,
+    private dialog: MatDialog
   ) {
     this._shared.init();
   }
@@ -92,13 +94,23 @@ export class CutRegisterComponent {
   }
 
   generateNextCut() {
-    this._service.generateNextCut().then((data: any) => {
-      if (data.additionalData && data.additionalData.targetId){
-        this.router.navigateByUrl('/cut-register/' + data.additionalData.targetId + '/edit' )
+    let dialogRef = this.dialog.open(ConfirmPopupComponent);
+    dialogRef.componentInstance.confirmText = 'CONFIRM';
+    dialogRef.componentInstance.dialogTitle = 'Generate Next Cut';
+    dialogRef.componentInstance.message = 'Are you sure you want to generate next cut for this document ?'
+    dialogRef.afterClosed().subscribe(flag => {
+      if (flag) {
+        this._service.generateNextCut().then((data: any) => {
+          if (data.additionalData && data.additionalData.targetId) {
+            this.router.navigateByUrl('/cut-register/' + data.additionalData.targetId + '/edit')
+            this._shared.onNewDocumentCreated();
+          }
+        }).catch(err => {
+          this.alertutils.showAlerts(err)
+        })
       }
-    }).catch(err => {
-      this.alertutils.showAlerts(err)
     })
+   
   }
 
   ifApproved() {

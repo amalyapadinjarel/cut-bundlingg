@@ -22,6 +22,7 @@ export class PdmCostingHeaderComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		console.log(this._shared.formData)
 	}
 
 	ngOnDestroy(): void {

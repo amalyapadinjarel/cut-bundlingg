@@ -28,6 +28,7 @@ import { OrderDetailsComponent } from './form/order-details/order-details.compon
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CutBundleComponent } from './form/cut-bundle/cut-bundle.component';
+import { SharedModule } from 'app/shared/shared.module';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -95,7 +96,8 @@ const cutRegisterRouting: ModuleWithProviders = RouterModule.forChild([
     MATERIAL_MODULE,
     SmdModule,
     TnzInputModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    SharedModule
     // TrendzDriveModule
   ],
   providers: [

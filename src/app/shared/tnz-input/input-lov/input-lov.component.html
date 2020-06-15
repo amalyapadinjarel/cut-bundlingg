@@ -1,7 +1,7 @@
 <span class="title">{{lovConfig.title ? lovConfig.title : 'LOV'}}</span>
 <mat-dialog-content style="background-color: white;">
 	<smd-datatable [dataUrl]="lovConfig.url" [preFilters]="lovConfig.filter" [dataHeader]="lovConfig.dataHeader" (onRowSelected)="rowSelected($event)"
-		[primaryListing]="true" [selectMultiple]="!!lovConfig.allowMultiple" [preFetchPages]="preFetchPages" [primaryKey]="primaryKey"
+		[selectMultiple]="!!lovConfig.allowMultiple" [preFetchPages]="preFetchPages" [primaryKey]="primaryKey"
 		[apiClass]= "lovConfig.apiClass" [apiMethod]="lovConfig.apiMethod" [postBody]="lovConfig.postBody"
 		(checkedPksNew)=checkedPksNew($event)>
 		<smd-datatable-column [field]="field.key" *ngFor="let field of lovConfig.displayFields" [title]="field.title"

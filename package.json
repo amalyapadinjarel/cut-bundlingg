@@ -39,6 +39,7 @@
     "jsqr": "1.2.0",
     "material-design-icons": "3.0.1",
     "net": "1.0.2",
+    "ngx-mask": "9.0.0",
     "ngx-perfect-scrollbar": "8.0.0",
     "ngx-webstorage-service": "4.0.1",
     "node-sass": "4.12.0",
@@ -47,6 +48,7 @@
     "socket.io-client": "2.2.0",
     "sockjs-client": "1.3.0",
     "stompjs": "2.3.3",
+    "subsink": "^1.0.1",
     "ts-helpers": "1.1.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -61,7 +61,8 @@ export class SmdDataTableCellComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.childView.destroy();
+		if (this.childView)
+			this.childView.destroy();
 	}
 }
 
@@ -1115,10 +1116,10 @@ export class SmdDataTable
 					this.dummyRowCount =
 						data[this.dataHeader].length - 1 + "+";
 					this.rowCount = data[this.dataHeader].length;
-					if(limit){
-						this.paginatorComponent.hasMore = data.hasMore && this.rowCount == limit;						
+					if (limit) {
+						this.paginatorComponent.hasMore = data.hasMore && this.rowCount == limit;
 					}
-					if(offset)
+					if (offset)
 						this.rowCount += offset
 					if (this.countUrl) {
 						// count

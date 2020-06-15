@@ -2,7 +2,7 @@
 	<div class="sidenav-header">
 		<a class="logo" routerLink="/" (click)="menuItemClicked()">
 			<span class="logo-image"><img src="./assets/images/ctebs-logo.png" /></span>
-			<span class="logo-text">Trendz E <sup>3</sup> <small style="font-size: 10px;">{{version}}</small></span>
+			<span class="logo-text">Trendz V5 <small style="font-size: 10px;">{{version}}</small></span>
 		</a>
 	</div>
 </mat-toolbar>
@@ -22,7 +22,7 @@
 					 placeholder="search (ctrl+g)" />
 					<div *ngIf="!menuFilterd">
 						<button *ngFor="let menu of appMenus" mat-menu-item (click)="app = menu.applicationShortCode; menuItem = menu; ">
-							<mat-icon> {{menu.iconName?menu.iconName:'palette'}} </mat-icon>
+							<mat-icon> {{menu.iconName?menu.iconName:'label'}} </mat-icon>
 							{{menu.applicationName}}
 						</button>
 					</div>
@@ -30,7 +30,7 @@
 						<div *ngFor="let menuItem of filterdMenu">
 							<a *ngIf="menuItem.url && menuFilterd" mat-menu-item class="main-menu-button quick-menu-filter-result" [routerLink]="menuItem.url" routerLinkActive="active"
 							 (click)="menuItemClicked(menuItem.menuItemId)" [class.selected]="curMenu === menuItem.menuItemId">
-								<mat-icon *ngIf="!menuItem.parentItem"> {{menuItem.iconName?menuItem.iconName:'palette'}} </mat-icon>
+								<mat-icon *ngIf="!menuItem.parentItem"> {{menuItem.iconName?menuItem.iconName:'label'}} </mat-icon>
 								{{menuItem.menuItemName}}
 								<span>{{menuItem.info?('in ' + menuItem.info):''}}</span>
 						</a>

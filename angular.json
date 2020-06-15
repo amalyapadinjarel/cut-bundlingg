@@ -448,6 +448,7 @@
           }
         }
       }
+
     },
     "Routing": {
       "projectType": "application",
@@ -456,6 +457,8 @@
           "style": "scss"
         }
       },
+
+
       "root": "projects/Routing",
       "sourceRoot": "projects/Routing/src",
       "prefix": "app",
@@ -569,7 +572,131 @@
           }
         }
       }
+    },
+    "mfg-routing": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+
+
+      "root": "projects/mfg-routing",
+      "sourceRoot": "projects/mfg-routing/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/mfg-routing",
+            "index": "projects/mfg-routing/src/index.html",
+            "main": "projects/mfg-routing/src/main.ts",
+            "polyfills": "projects/mfg-routing/src/polyfills.ts",
+            "tsConfig": "projects/mfg-routing/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/mfg-routing/src/favicon.ico",
+              "projects/mfg-routing/src/assets"
+            ],
+            "styles": [
+              "projects/mfg-routing/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/mfg-routing/src/environments/environment.ts",
+                  "with": "projects/mfg-routing/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "mfg-routing:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "mfg-routing:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "mfg-routing:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/mfg-routing/src/test.ts",
+            "polyfills": "projects/mfg-routing/src/polyfills.ts",
+            "tsConfig": "projects/mfg-routing/tsconfig.spec.json",
+            "karmaConfig": "projects/mfg-routing/karma.conf.js",
+            "assets": [
+              "projects/mfg-routing/src/favicon.ico",
+              "projects/mfg-routing/src/assets"
+            ],
+            "styles": [
+              "projects/mfg-routing/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/mfg-routing/tsconfig.app.json",
+              "projects/mfg-routing/tsconfig.spec.json",
+              "projects/mfg-routing/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/mfg-routing/e2e/protractor.conf.js",
+            "devServerTarget": "mfg-routing:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "mfg-routing:serve:production"
+            }
+          }
+        }
+      }
     }
+
   },
   "defaultProject": "trendz-v5",
   "schematics": {

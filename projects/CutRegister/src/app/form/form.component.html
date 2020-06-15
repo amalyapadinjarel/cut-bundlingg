@@ -10,22 +10,12 @@
             <!-- <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified
                 by {{_shared.formData.header?.lastUpdateByName}} on {{_shared.formData.header?.lastUpdateDate}}</span> -->
             <span class="flex-filler"></span>
-            <div class="form-nav">
-                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateByName}}
-                    on {{_shared.formData.header?.lastUpdateDate}}</span>
-                <ng-container >
-                    <button *ngIf="hasPreviousRecord" mat-button matTooltip="previous">
-                        <mat-icon class="mat-color-disabled" (click)="navigateRecord()">navigate_before</mat-icon>
-                    </button>
-                    <button *ngIf="hasNextRecord" mat-button matTooltip="next">
-                        <mat-icon class="mat-color-disabled" (click)="navigateRecord(true)">navigate_next</mat-icon>
-                    </button>
-                </ng-container>
+            <div *ngIf="!_shared.editMode" class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified
+                    by {{_shared.formData.header?.lastUpdateByName}} on {{_shared.formData.header?.lastUpdateDateTime}}</span>
+                <form-nav [apiUrl]="'/cut-register/navigation/' + _shared.id" navUrl="/cut-register" [params]="_shared.params"></form-nav>
             </div>
         </div>
-        <!-- <button mat-button matTooltip="print line">
-                <mat-icon class="mat-color-danger" (click)="print()">print</mat-icon>
-            </button> -->
         <mat-tab-group>
             <mat-tab label="Details">
                 <perfect-scrollbar>

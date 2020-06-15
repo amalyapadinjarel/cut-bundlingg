@@ -17,6 +17,12 @@ export class RoutingListComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    if (this._shared.listData) {
+      if (this._shared.columnFilterValues) {
+        this.dataTable.setColumnFilterInputValues(this._shared.columnFilterValues);
+      }
+      this.dataTable.refresh(this._shared.listData);
+    }
   }
 
   rowSelected(event) {
@@ -27,8 +33,15 @@ export class RoutingListComponent implements OnInit {
   }
 
   _onDataChange(dataChange: any) {
-    if (dataChange.data && dataChange.data.routing)
-      this._shared.setListIdArray(dataChange.data.routing);
+    if (dataChange.data && dataChange.data.routing){
+      console.log(dataChange.data.routing)
+      this._shared.setListData(dataChange.data);
+      this._shared.columnFilterValues = dataChange.columnFilterValues;
+      this._shared.params = this.dataTable.getParams();
+    }  
+  }
 
+  _onPageChange(pageChangeEvent: any) {
+    // this._shared.selectedPage = pageChangeEvent.page;
   }
 }

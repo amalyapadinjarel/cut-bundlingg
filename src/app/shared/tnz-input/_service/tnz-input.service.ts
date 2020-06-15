@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class TnzInputService {
+    
 
 	private registeredInputs: any = {};
 	private selectOptions: any = {};
@@ -221,4 +222,19 @@ export class TnzInputService {
        }
 	}
 
+	resetError(path){
+		let input= JSONUtils.getJSONPath(this.registeredInputs, path);
+		if(input)
+		input.resetError();
+	}
+
+	getStatus(path){
+		let input= JSONUtils.getJSONPath(this.registeredInputs, path);
+		if(input)
+		return input.getStatus();
+	}
+
+	resetSharedData(){
+		this.sharedData = {};
+	}
 }
