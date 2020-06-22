@@ -1,1 +1,0 @@
-export * from './smd-bottom-nav.component';
