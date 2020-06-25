@@ -1,0 +1,55 @@
+<smd-datatable [tableId]="_shared.appKey + '.carton'" [paginated]="!_shared.getPacksDetailsEditable()" [loading]="_shared.cartonLoading"
+ class="tnz-input-table"  [filterEnabled]="!_shared.getPacksDetailsEditable()"
+ [sortEnabled]="!_shared.getPacksDetailsEditable()" [showCheckBox]="false">
+	<smd-datatable-column title="Pack#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.sequence}}</span>
+		</ng-template>
+	</smd-datatable-column>
+	
+    <smd-datatable-column title="Carton#" field="cartonNo" sortable="true" [filterable]="true" numeric="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.cartonNo}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Initial Qty" field="initialQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.initialQty}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Barcode" field="barcode" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.barcode}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Final Qty" field="finalQty" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.finalQty}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Status" field="status" sortable="true" [filterable]="true" >
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.status}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Packed Time" field="packedTime" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.packedTime}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Hold Reason" field="holdReason" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.holdReason}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Hold Time" field="holdTime" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.holdTime}}</span>
+		</ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Unhold Time" field="unholdTime" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.unholdTime}}</span>
+		</ng-template>
+	</smd-datatable-column>
+</smd-datatable>

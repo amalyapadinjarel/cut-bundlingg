@@ -1,19 +1,19 @@
 <smd-datatable [apiClass]="schedulerUtils" dataUrl="scheduler/queue" dataHeader="jobQueue"
-	[primaryListing]="true" (onRowSelected)="rowSelected($event)">
-	<smd-datatable-column title="Status" field="tnzJobState" sortable="true" [filterable]="true">
+	[primaryListing]="false" (onRowSelected)="rowSelected($event)">
+	<smd-datatable-column title="Status" field="tnzJobState" sortable="true" [filterable]="true" >
 		<ng-template let-model="data">
 			<div [matTooltip]="(model.tnzJobState | schedulerJobState) + ' ' + (model.tnzJobStatus | schedulerJobStatus)"
-				class="smd-table-icon-wrap">
-				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'S'" class='mat-color-success'>
+				class="smd-table-icon-wrap" style="padding: 5px">
+				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'S'" class='mat-color-success mat-icon-medium'>
 					check_circle</mat-icon>
-				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'W'" class='mat-color-warning'>
+				<mat-icon *ngIf="model.tnzJobState == 'C' && model.tnzJobStatus == 'W'" class='mat-color-warning mat-icon-medium'>
 					warning</mat-icon>
-				<mat-icon *ngIf="model.tnzJobState == 'R'" class='mat-color-info spinner'>camera</mat-icon>
-				<mat-icon *ngIf="model.tnzJobState == 'A'" class='mat-color-danger'>error</mat-icon>
-				<mat-icon *ngIf="model.tnzJobState == 'U'" class='mat-color-info'>remove_circle</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'R'" class='mat-color-info spinner mat-icon-medium'>camera</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'A'" class='mat-color-danger mat-icon-medium'>error</mat-icon>
+				<mat-icon *ngIf="model.tnzJobState == 'U'" class='mat-color-info mat-icon-medium'>remove_circle</mat-icon>
 				<mat-icon
 					*ngIf="model.tnzJobState != 'R' && model.tnzJobState != 'C' && model.tnzJobState != 'A' && model.tnzJobState != 'U'"
-					class='mat-color-disabled'>remove_circle</mat-icon>
+					class='mat-color-disabled mat-icon-medium'>remove_circle</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
@@ -49,28 +49,28 @@
 	</smd-datatable-column>
 	<smd-datatable-column title=" " field=" ">
 		<ng-template let-model="data">
-			<div *ngIf="model.cronExpression" style="float:right;display: flex">
+			<div *ngIf="model.cronExpression" style="float:right;display: flex; padding: 5px">
 				<button mat-icon-button matTooltip="re schedule" color="primary" (click)="reSchedule(model)">
-					<mat-icon>schedule</mat-icon>
+					<mat-icon class="mat-icon-medium">schedule</mat-icon>
 				</button>
 				<button *ngIf="model.tnzJobState != 'U' && model.tnzJobState != 'S'" mat-icon-button
 					matTooltip="suspend" color="warn" (click)="suspendSchedule(model.tnzJobId)">
-					<mat-icon>pause_circle_outline</mat-icon>
+					<mat-icon class="mat-icon-medium">pause_circle_outline</mat-icon>
 				</button>
 				<button *ngIf="model.tnzJobState == 'S'" mat-icon-button matTooltip="resume" class="mat-color-success"
 					(click)="resumeSchedule(model)">
-					<mat-icon>play_circle_outline</mat-icon>
+					<mat-icon class="mat-icon-medium">play_circle_outline</mat-icon>
 				</button>
 				<button mat-icon-button matTooltip="remove" class="mat-color-danger" (click)="deleteSchedule(model)">
-					<mat-icon>close</mat-icon>
+					<mat-icon class="mat-icon-medium">close</mat-icon>
 				</button>
 				<button mat-icon-button matTooltip="more" color="accent" (click)="showMoreInfo(model)">
-					<mat-icon>more_horiz</mat-icon>
+					<mat-icon class="mat-icon-medium">more_horiz</mat-icon>
 				</button>
 			</div>
 			<div *ngIf="!model.cronExpression" style="float:right;">
 				<button mat-icon-button matTooltip="more" color="accent" (click)="showMoreInfo(model)">
-					<mat-icon>more_horiz</mat-icon>
+					<mat-icon class="mat-icon-medium">more_horiz</mat-icon>
 				</button>
 			</div>
 		</ng-template>

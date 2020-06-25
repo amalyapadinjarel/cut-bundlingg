@@ -1,0 +1,107 @@
+<div *ngFor="let data of _shared.formData[key].grpKey; let i = index">
+	<app-solid-packs  *ngIf="data.packType == 'SOLID'" [mainIndex]="i" [formData]="_shared.formData[key].grpData[i]"></app-solid-packs>
+	<app-ratio-packs *ngIf="data.packType == 'RATIO'" [mainIndex]="i" [formData]="_shared.formData[key].grpData[i]">j</app-ratio-packs>
+</div>
+
+<div *ngIf="_shared.packsDetailsLoading || _shared.formData[key].length == 0">
+	
+	<smd-datatable [paginated]="true" [loading]="_shared.packsDetailsLoading"
+	 class="tnz-input-table"  [filterEnabled]="true">
+		<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+			<ng-template let-model="data" let-index="index">
+				<div class="row-operations">
+					<mat-icon class="mat-color-danger" matTooltip="delete line">delete</mat-icon>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="No of CTN" field="noOfCartons" sortable="true" [filterable]="true" numeric="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Style Attribute" field="styleVariant" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Quantity" field="orderQty" sortable="true" [filterable]="true" numeric="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Short" field="short" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Excess" field="excess" sortable="true" [filterable]="true" >
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Packed Qty" field="packedQty" sortable="true" [filterable]="true" numeric="true">
+			<ng-template let-model="data" let-index="index">
+				<div>
+					<tnz-input  [loading]="_shared.packsDetailsLoading || _shared.loading"></tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+	</smd-datatable>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

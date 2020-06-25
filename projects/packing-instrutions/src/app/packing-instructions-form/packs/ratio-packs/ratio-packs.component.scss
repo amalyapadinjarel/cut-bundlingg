@@ -1,0 +1,131 @@
+$cell-header-bg-color: #bfbfbf;
+$cell-data-color: #2f74b5;
+
+:host {
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-row-gap: 20px;
+
+  //place-content: center;
+}
+
+.pack-details {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  grid-column-gap: 10px;
+
+  .ratio-details {
+    .style-row {
+      display: grid;
+      grid-template-columns: auto auto;
+
+      .size-wrapper {
+        display: flex;
+      }
+
+      #ratio-header {
+        background: linear-gradient(
+          to top right,
+          #bfbfbf calc(50% - 1px),
+          #000a,
+          #bfbfbf calc(49% + 1px)
+        );
+        display: flex;
+        justify-content: space-between;
+        color: black;
+      }
+
+      .color-cell,
+      .size-cell {
+        display: flex;
+        min-height: 45px;
+        place-content: center;
+        place-items: center;
+        border: 1px solid #999;
+        margin: -1px 0 0 -1px;
+        color: $cell-data-color;
+      }
+
+      .color-cell {
+        min-width: 70px;
+        padding: 0 10px;
+      }
+
+      .size-cell {
+        min-width: 70px;
+      }
+    }
+  }
+
+  .pack-extra-details {
+    display: flex;
+    flex-wrap: wrap;
+
+    .cell-group {
+      max-width: 100px;
+
+      .cell-key {
+        background: $cell-header-bg-color;
+      }
+      .cell-value {
+        color: $cell-data-color;
+      }
+
+      .cell-key,
+      .cell-value {
+        border: 1px solid #999;
+        margin: -1px 0 0 -1px;
+        padding: 0 10px;
+        display: flex;
+        min-height: 45px;
+
+        place-content: center;
+        place-items: center;
+      }
+    }
+  }
+}
+
+.carton-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.diagonal {
+  //width:25%;
+  background: linear-gradient(
+    to top right,
+    #fff calc(50% - 1px),
+    #aaa,
+    #fff calc(50% + 1px)
+  );
+}
+
+.ratio-th{
+    min-width: 90px;
+    height: 35px;
+}
+.ratio-tr{
+    height: 35px;
+    
+}
+.ratio-td{
+    min-width: 90px;
+    height: 35px;
+}
+
+table {
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid #bfbfbf;
+  }
+
+.label-class {
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.87);
+  opacity: 0.72;
+}
+

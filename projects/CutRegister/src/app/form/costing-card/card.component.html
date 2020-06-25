@@ -65,7 +65,7 @@
             <label>Odd Bundle(%)</label>
             <div class="val">
                 <tnz-input type="number" [path]="_shared.getHeaderAttrPath('oddBundlePer')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                    validators="min:0" [isEdit]="getIfEditable('oddBundlePer')" [loading]="_shared.headerLoading || _shared.loading">
+                    validators="required,min:0" [isEdit]="getIfEditable('oddBundlePer')" [loading]="_shared.headerLoading || _shared.loading">
                 </tnz-input>
             </div>
         </li>

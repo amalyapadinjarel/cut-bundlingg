@@ -11,7 +11,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 	selector: 'lookup-card',
 	templateUrl: './card.component.html',
 	styleUrls: ['./card.component.scss'],
-	host: { 'class': 'header-card' }
+	host: { 'class': 'general-card' }
 })
 export class GeneralCardComponent implements OnInit, OnDestroy {
 

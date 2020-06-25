@@ -202,7 +202,7 @@ export class PdmCostingFormComponent {
 		model.attribute10 = res.attribute10 ? res.attribute10 : "";
 		model.totCutQty = res.totCutQty ? res.totCutQty : "";
 
-		model.prevqty = res.prevqty ? res.prevqty : "";
+		model.prevqty = res.prevCutQty ? res.prevCutQty : "";
 		model.comboTr = res.comboTitle ? res.comboTitle : "";
 		model.combo = res.combo ? res.combo : "";
 		model.routingId = res.routingId ? res.routingId : "";

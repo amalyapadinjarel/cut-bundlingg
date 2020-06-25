@@ -88,11 +88,23 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/lookup/src/app/lookup.module').then(m => m.LookupModule)
 	},
+	
+	{
+		path: 'user',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/user/src/app/user.module').then(m => m.UserModule)
+	},
 	{
 
 		path: 'routing-cut-panels',
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/Routing/src/app/routing.module').then(m => m.RoutingModule)
+	},
+	{
+
+		path: 'packing-instructions',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/packing-instrutions/src/app/packing-instructions.module').then(m => m.PackingInstructionsModule)
 	},
 	{
 		path: '**',

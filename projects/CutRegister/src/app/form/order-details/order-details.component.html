@@ -9,7 +9,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="displayOrder" [sortable]="true" [filterable]="true" [colStyle]="{'width':'15px'}">
+	<smd-datatable-column title="#" field="displayOrder" [sortable]="true" [filterable]="true" [colStyle]="{'width':'15px'}" numeric="true">
 		<ng-template let-model="data">
 			{{model.displayOrder}}
 		</ng-template>
@@ -58,7 +58,7 @@
 			<div *ngIf="_shared.getOrderDetailsEditable('cutAllowanceQty')">
 				<tnz-input type="number" [path]="_shared.getOrderDetailsPath(index,'cutAllowanceQty')" [primaryKey]="_shared.orderDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="min:0" [isEdit]="_shared.getOrderDetailsEditable('cutAllowanceQty')" [loading]="_shared.orderDetailsLoading || _shared.loading"
-				 (valueChangedFromUI)="valueChangedFromUI($event, index)">
+				 (valueChangedFromUI)="valueChangedFromUI($event, index)" decimals="0">
 				</tnz-input>
 			</div>
 		</ng-template>

@@ -8,7 +8,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}">
+	<smd-datatable-column title="#" field="displayOrder" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('displayOrder')">{{model.displayOrder}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('displayOrder')">
@@ -29,7 +29,7 @@
 			{{model.prodAttr}}
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Ratio" field="markerRatio" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+	<smd-datatable-column title="Ratio" field="markerRatio" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}" numeric="true" >
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('markerRatio')">{{model.markerRatio}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('markerRatio')">
@@ -40,7 +40,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Cut Qty." field="currcutqtysql" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}">
+	<smd-datatable-column title="Cut Qty." field="currcutqtysql" sortable="true" [filterable]="true" [colStyle]="{'width':'20px'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getMarkerDetailsEditable('currcutqtysql')">{{model.currcutqtysql}}</span>
 			<div *ngIf="_shared.getMarkerDetailsEditable('currcutqtysql')">

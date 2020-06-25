@@ -1,0 +1,209 @@
+<div class="group">
+    <h4>General</h4>
+    <ul>
+        <li>
+            <label>User Name</label>
+            <div class="val">
+                <tnz-input type="text" class="text-upper" [path]="_shared.getHeaderAttrPath('userName')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    [isEdit]="getIfEditable('userName')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="userNameValidation($event)" title="User Name" stretch="true">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+        <li>
+            <label>Start Date</label>
+            <div class="val">
+                <tnz-input type="date" [path]="_shared.getHeaderAttrPath('startDate')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('startDate')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
+                    title="Start Date">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+        <li>
+            <label>End Date</label>
+            <div class="val">
+                <tnz-input type="date" [path]="_shared.getHeaderAttrPath('endDate')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('endDate')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
+                    title="End Date">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+
+            <label>Personnel#</label>
+            <div class="val">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('personnelNum')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [lovConfig]="personnelNumLOV" [isEdit]="getIfEditable('personnelNum')"
+                    [loading]="_shared.headerLoading || _shared.loading" 
+                    (valueChanged)="personnelNumValidation($event)">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>First Name</label>
+            <div class="val">
+
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('firstName')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('firstName')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true"
+                    (valueChanged)="headerLengthCheck($event,'firstName')"
+                    title="First Name">
+                </tnz-input>
+            </div>
+        </li>
+
+        <li>
+            <label>Middle Name</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('middleName')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('middleName')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true" (valueChanged)="headerLengthCheck($event,'middleName')">
+                </tnz-input>
+            </div>
+        </li>
+
+        <li>
+            <label>Last Name</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('lastName')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('lastName')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true"
+                    (valueChanged)="headerLengthCheck($event,'lastName')"
+                    title="Last Name">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Known As</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('knownAs')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('knownAs')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true"
+                    (valueChanged)="headerLengthCheck($event,'knownAs')"
+                    title="Known As">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Email</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('emailAddress')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    (valueChanged)="emailValidation($event)" [isEdit]="getIfEditable('emailAddress')"
+                    [loading]="_shared.headerLoading || _shared.loading" title="Email Address" stretch="true">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Phone</label>
+            <span  *ngIf="!getIfEditable('phoneNumber')">
+                    {{ _shared.getHeaderAttributeValue('countryCode')==null?"":
+                        ' '+ _shared.getHeaderAttributeValue('countryCode')+'-'+_shared.getHeaderAttributeValue('phoneNumber')
+                    }}
+            </span>
+
+            <div class="val" *ngIf="getIfEditable('phoneNumber')">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryCode')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [lovConfig]="countryCodeLOV" validators="required" [isEdit]="getIfEditable('countryCode')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
+                    title="Country Code" class="text-reduce-width" numeric="true" style="max-width:65px">
+                </tnz-input>
+                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('phoneNumber')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    [isEdit]="getIfEditable('phoneNumber')" (valueChanged)="PhoneNumberValidation($event)"
+                    [loading]="_shared.headerLoading || _shared.loading" title="Phone Number" stretch="true">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+<br>
+<div class="group">
+    <h4>Set Password</h4>
+    <ul>
+        <li>
+            <label>Password</label>
+           
+            <div class="val">
+                <tnz-input type="text" dataType="password" [path]="_shared.getHeaderAttrPath('password')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('password')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="passwordValidation($event,'password')"
+                    [validators]="_shared.id==0?'required':''"
+                    title="Password">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Confirm Password</label>
+            <div class="val">
+                <tnz-input type="text" dataType="password" [path]="_shared.getHeaderAttrPath('confirmPassword')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('confirmPassword')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="confirmPasswordValidation($event,'confirmPassword')"
+                    [validators]="_shared.id==0?'required':''"
+                    title="Confirm Password">
+                    
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="group">
+    <h4>Password Policy</h4>
+    <ul>
+        <!-- <li>
+            <label>Password Lifespan</label>
+            <div class="val">
+                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('passwordLifespan')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="min:0"
+                    [isEdit]="getIfEditable('passwordLifespan')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+                <span>Days</span>
+            </div>
+        </li> -->
+        <!-- <li>
+            <label>Max Attempts</label>
+            <div class="val">
+                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('maxAttempts')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    [isEdit]="getIfEditable('maxAttempts')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="maxAttempts($event)">
+                </tnz-input>
+            </div>
+        </li> -->
+        <li>
+            <label>Attempts Left</label>
+            <div class="val">
+
+                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('attemptsLeft')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    [isEdit]="getIfEditable('attemptsLeft')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="maxAttempts($event)">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true" (valueChanged)="headerLengthCheck($event,'description')">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

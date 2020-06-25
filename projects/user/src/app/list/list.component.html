@@ -1,0 +1,72 @@
+<div>
+    <perfect-scrollbar>
+     <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="users" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+     (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+        <smd-datatable-column title="User Name" field="userName" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.userName}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Start Date" field="startDateTr" sortable="true" sortField="startDate" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.startDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="End Date" field="endDateTr" sortable="true" sortField="endDate" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.endDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Last Login Date" field="lastLoginDateTr" sortable="true" sortField="lastLoginDate" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.lastLoginDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Attempts Left" field="attemptsLeft" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.attemptsLeft}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Phone Number" field="phoneNumWithCode" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.phoneNumWithCode}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Email" field="emailAddress" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.emailAddress}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.description}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.active}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.createdByUser}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Created Date" field="creationDateTr" sortField="creationDate" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.creationDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Updated By" field="modifiedByUser" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.modifiedByUser}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Updated Date" field="lastUpdateDateTr" sortField="lastUpdateDate" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.lastUpdateDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+     </smd-datatable>
+    </perfect-scrollbar>
+</div>

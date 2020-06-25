@@ -26,13 +26,16 @@
     </mat-card-content>
 </mat-card>
 <mat-card >
-        <mat-toolbar>All Programs</mat-toolbar>
+        <mat-toolbar style="display: flex;place-content:  space-between">All Programs
+            <button mat-icon-button matTooltip="refresh" color="accent" (click)="reloadPrograms()">
+                <mat-icon  style="color: white" class="mat-icon-medium">refresh</mat-icon>
+            </button>
+        </mat-toolbar>
     <mat-card-content>
         <div class="all-programs">
             <div class="programs-search">
                 <input matInput [formControl]="searchInput" />
                 <mat-icon matPrefix (click)="searchProgram()">search</mat-icon>
-                <button mat-raised-button color="accent" matTooltip="refresh" (click)="reloadPrograms()" class="reload-btn">SYNC</button>
             </div>
             <div class="program-group-wrap" [class.component-loading]="loading">
                 <perfect-scrollbar class="groups">

@@ -1,0 +1,89 @@
+<div style="width:max-content">
+    <div style="display: flex;">
+        <h3>Ratio</h3>
+        <span style="display: flex; margin-bottom: 2px; margin-top: 10px; ">
+            <span style="display: flex; margin-left: 10px; color: rgba(0, 0, 0, 0.87); opacity: 0.72;">#</span> 
+            <span style="width: 40px;">
+                <tnz-input  type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'sequence')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="false"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" >
+                </tnz-input>
+            </span>
+        </span>
+        <span class="flex-filler"></span>
+        <span style="display: flex; margin-bottom: 2px;">
+            <span style="display: flex; margin-left: 10px;" *ngIf = "(excess && excess != '') || _shared.isCartonGenerated">
+                <label class="label-class">Excess: </label>
+                <div class="val" style="margin-top: 10px;  width: 40px;">
+                    <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}} Ctn</span>
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable()"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" ></tnz-input>
+                </div>
+            </span>
+            <span style="display: flex; margin-left: 10px;" *ngIf = "(short && short != '') || _shared.isCartonGenerated">
+                <label class="label-class">Short: </label>
+                <div class="val" style="margin-top: 10px;  width: 40px;">
+                    <span style="padding: 0px 4px; color: red;" *ngIf="!_shared.getPacksDetailsEditable() && (short && short != '')">-{{excess}} Ctn</span>
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'short')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable()"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" ></tnz-input>
+                </div>
+            </span>
+            <span style="display: flex; margin-left: 10px;">
+                <label class="label-class">Qty: </label>
+                <div class="val" style="margin-top: 10px; width: 40px;">
+                    <span>{{formData.orderQty}}</span>
+                </div>
+            </span>
+            <span style="display: flex; margin-left: 10px;">
+                <label class="label-class">Qty/CTN: </label>
+                <div class="val" style="margin-top: 10px; width: 40px;">
+                    <tnz-input type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'qntyPerCtn')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="false"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" ></tnz-input>
+                </div>
+            </span>
+            <span style="display: flex; margin-left: 10px;">
+                <label class="label-class">CTN: </label>
+                <div class="val" style="margin-top: 10px; width: 40px;">
+                    <tnz-input type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'noOfCartons')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable()"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'noOfCartons')"></tnz-input>
+                </div>
+            </span>
+            <span style="display: flex; margin-left: 10px;" *ngIf="_shared.getPacksDetailsEditable()">
+                <button mat-button matTooltip="Delete line" style="margin-top: 10px;">
+                    <mat-icon class="mat-color-danger" (click)="deleteRatioLine(mainIndex)">delete</mat-icon>
+                </button>
+            </span>
+        </span>
+    </div>
+    <mat-dialog-content>
+    
+        <table class="ratio-table">
+            <tr class="ratio-tr">
+                <th style = "background: linear-gradient(
+                    to top right,
+                    #bfbfbf calc(50% - 1px),
+                    #000a,
+                    #bfbfbf calc(49% + 1px)
+                ); width: 200px;" class="ratio-th">
+                    <span style="position: relative;top: 5px; left: -10px">Style/Inseam</span>
+                    <span style="position: relative;bottom: 5px;">Size</span>
+                </th>
+                <th class="ratio-th" *ngFor="let size of sizeArray">
+                    {{size}}
+                </th>
+            </tr>
+            <tr *ngFor="let ratio of formData.color; let i = index" class="ratio-tr">
+                <td *ngIf="ratio.name != 'Color'"  style="text-align: center;">
+                    {{ratio.name}}
+                </td>
+                <td *ngFor="let s of ratio.size" style="text-align: center;">
+                    {{s.value}}
+                </td>
+            </tr>
+        </table>
+    </mat-dialog-content>
+</div>

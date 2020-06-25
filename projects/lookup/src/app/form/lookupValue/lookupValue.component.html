@@ -1,7 +1,7 @@
 <smd-datatable [tableId]="_shared.appKey + '.lookupValue'" [paginated]="!_shared.getLookupValueEditable()" [loading]="_shared.lookupValueLoading"
  class="tnz-input-table" [filterEnabled]="!_shared.getLookupValueEditable()" [sortEnabled]="!_shared.getLookupValueEditable()"
  (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
- [showCheckBox]="_shared.getLookupValueEditable()">
+ [showCheckBox]="false">
 	
  <smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px'}">
 	<ng-template let-index="index">
@@ -144,12 +144,16 @@
 	<!--Checkbox  -->
 	<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [numeric]="true">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getLookupValueEditable('active')">
+			<!-- <span *ngIf="!_shared.getLookupValueEditable('active')">
 				<mat-icon>{{(model.active=='Y')?'done':'clear'}}</mat-icon>
-			</span>
+			</span> -->
+
+			<div class="checkbox-center-align" *ngIf="!_shared.getLookupValueEditable('active')">
+				<mat-checkbox  [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+			</div>
 			<div *ngIf="_shared.getLookupValueEditable('active')">
 				<tnz-input type="checkbox" [path]="_shared.getLookupValuePath(index,'active')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 [isEdit]="getIfEditable(index,'active')" [loading]="_shared.lookupValueLoading || _shared.loading">
+				 [isEdit]="getIfEditable(index,'active')" [loading]="_shared.lookupValueLoading || _shared.loading" class="checkbox-center-align">
 				</tnz-input> 
 			</div>
 		</ng-template>
@@ -164,7 +168,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true" [numeric]="true">
+	<smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true" >
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('creationDate')">{{model.creationDate}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('creationDate')">
@@ -184,7 +188,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" [numeric]="true">
+	<smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" >
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('lastUpdateDate')">{{model.lastUpdateDate}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('lastUpdateDate')">

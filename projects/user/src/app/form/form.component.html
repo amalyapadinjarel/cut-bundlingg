@@ -1,0 +1,63 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <user-general-card collapsibleComponent></user-general-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+
+            <span class="flex-filler"></span>
+            <div *ngIf="_shared.id!=0" class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByUser}} on
+                    {{_shared.formData.header?.creationDate|date:dateUtils.dateFormat}}, Modified
+                    by {{_shared.formData.header?.modifiedByUser}} on
+                    {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}</span>
+
+                <form-nav [apiUrl]="'/user-app/navigation/' + _shared.id" navUrl="/user" [params]="_shared.params">
+                </form-nav>
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Details">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Roles</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex">
+                                <ng-container *ngIf="_shared.getUserRolesEditable()">
+
+                                    <button mat-button matTooltip="Add Roles">
+                                        <mat-icon class="mat-color-info" (click)="copyFromRoles()">add_box</mat-icon>
+                                    </button>
+
+
+
+                                </ng-container>
+                            </div>
+                        </div>
+                        <user-roles></user-roles>
+                    </div>
+                    <!--<div class="group-flex">  -->
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Org access</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getUserOrgAccessEditable()">
+                                <button mat-button matTooltip="Add Division">
+                                    <mat-icon class="mat-color-info" (click)="copyFromDivision()">add_box</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <user-org-access></user-org-access>
+                    </div>
+
+                    <!--   </div>  -->
+
+                </perfect-scrollbar>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+</div>

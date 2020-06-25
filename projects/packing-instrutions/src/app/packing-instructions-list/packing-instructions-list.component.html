@@ -1,0 +1,57 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="packingInstructions" (onRowSelected)="rowSelected($event)" [primaryListing]="false" (dataChange)="_onDataChange($event)"
+        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" (pageChange)="_onPageChange($event)">
+            <smd-datatable-column title="PO" field="po" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.po}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Customer" field="partnerName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.partnerName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="SO" field="so" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.so}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.style}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Delivery" field="delivery" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.delivery}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Order Qty" field="orderQnty" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.orderQnty}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Packed Qty" field="packedQnty" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}"> 
+                <ng-template let-model="data">
+                {{model.packedQnty}}
+            </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Total Packs" field="totalPack" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+                <ng-template let-model="data">
+                    {{getTotalPack(model)}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Cartons" field="cartons" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.cartons}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true" [colStyle]="{'width':'15%'}">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

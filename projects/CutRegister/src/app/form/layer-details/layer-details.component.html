@@ -8,7 +8,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="lineNo" sortable="true" [filterable]="true" [colStyle]="{'min-width':'45px'}">
+	<smd-datatable-column title="#" field="lineNo" sortable="true" [filterable]="true" [colStyle]="{'min-width':'45px'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!getIfEditable(index,'lineNo')">{{model.lineNo}}</span>
 			<div *ngIf="_shared.getLayerDetailsEditable('lineNo')">
@@ -115,7 +115,7 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Ply Qty" field="layerCount" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Ply Qty" field="layerCount" sortable="true" [filterable]="true" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLayerDetailsEditable('layerCount')">{{model.layerCount}}</span>
 			<div *ngIf="_shared.getLayerDetailsEditable('layerCount')">
@@ -152,57 +152,5 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<!-- <smd-datatable-column title="Product#" field="productNum" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
-		<ng-template let-model="data" let-index="index">
-			<tnz-input [path]="_shared.getProductAttrPath(index, 'productNum')" [primaryKey]="_shared.productPrimaryKey" [sharedData]="_shared.formData"
-			 validators="required,min:0" [isEdit]="_shared.getProductEditable('productNum', _shared.getProdAttributeValue(index, _shared.productPrimaryKey))"
-			 [loading]="_shared.layerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
-			</tnz-input>
-		</ng-template>
-	</smd-datatable-column> -->
 
-	<!-- <smd-datatable-column title="Combo" field="comboProdTit" sortable="true" [filterable]="true" [colStyle]="{'min-width':'140px'}">
-		<ng-template let-model="data" let-index="index">
-			{{_shared.getProdAttributeValue(index, 'ComboProdTit') || '--'}}
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="Color" field="color" sortable="true" [filterable]="true" [colStyle]="{'min-width':'140px'}">
-		<ng-template let-model="data" let-index="index">
-			{{_shared.getProdAttributeValue(index, 'AttrValue1') || '--'}}
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="FOB" field="sellingPrice" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
-		<ng-template let-model="data" let-index="index">
-			<tnz-input type="number" [path]="_shared.getProductAttrPath(index,sellingPrice 'sellingPrice')" [primaryKey]="_shared.productPrimaryKey"
-			 [sharedData]="_shared.formData" validators="required,min:0" [isEdit]="_shared.sellingPrice('sellingPrice', _shared.getProdAttributeValue(index, _shared.productPrimaryKey))"
-			 [precision]="_shared.getHeaderAttributeValue('CurrencyMcTr')" [loading]="_shared.layerDetailsLoading || _shared.loading" (valueChangedFromUI)="valueChangedFromUI($event, index)">
-			</tnz-input>
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="Cost" field="lineAmount" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
-		<ng-template let-model="data" let-index="index">
-			<tnz-input type="number" [path]="_shared.getProductAttrPath(index,lineAmount 'lineAmount')" [primaryKey]="_shared.productPrimaryKey"
-			 [sharedData]="_shared.costingData" [precision]="_shared.getHeaderAttributeValue('CurrencyMcTr')" [loading]="lineAmount.layerDetailsLoading || _shared.loading"
-			 (valueChanged)="valueChanged($event, index)">
-			</tnz-input>
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="Profit%" field="profitPercent" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
-		<ng-template let-model="data" let-index="index">
-			<strong [class.mat-color-danger]="_shared.getProdAttributeValue(index, 'profitPercent') < 7" [class.mat-color-warning]="_shared.getProdAttributeValue(index, 'profitPercent') >= 7 && _shared.getProdAttributeValue(index, 'profitPercent') < 10"
-			 [class.mat-color-success]="_shared.getProdAttributeValue(index, 'profitPercent') >= 10">
-				{{_shared.toFixedPrecision(_shared.getProdAttributeValue(index, 'profitPercent') || 0, 2)}}
-			</strong>
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="Profit" field="ProfitAmount" sortable="true" [filterable]="true" contentAlign="right" [colStyle]="{'min-width':'100px'}">
-		<ng-template let-model="data" let-index="index">
-			{{_shared.getCurencyRoundedValue(_shared.getProdAttributeValue(index, 'ProfitAmount') || 0)}}
-		</ng-template>
-	</smd-datatable-column>
-	<smd-datatable-column title="Currency" field=" " [colStyle]="{'min-width':'50px'}">
-		<ng-template let-model="data" let-index="index">
-			{{_shared.getHeaderAttributeValue('CurrencyTr') || '--'}}
-		</ng-template>
-	</smd-datatable-column> -->
 </smd-datatable>

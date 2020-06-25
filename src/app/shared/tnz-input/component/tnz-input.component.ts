@@ -121,7 +121,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     autoCompleteTimeout;
     @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
     maskInput: string = null;
-    @Input() decimals: any;
+    @Input() decimals: any = 10;
 
     @Input() set maskInputSet(maskInput) {
         if (maskInput) {

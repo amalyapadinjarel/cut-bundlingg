@@ -1,6 +1,6 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="true" [loading]="_shared.cutBundleLoading" class="tnz-input-table"
  [showCheckBox]="false">
-	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false">
+	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" numeric="true">
 		<ng-template let-index="index">{{index + 1}}</ng-template>
 	</smd-datatable-column>
 	<smd-datatable-column title="Style" field="parProdTitleNum" sortable="true" [filterable]="true">
@@ -23,14 +23,14 @@
 	</smd-datatable-column>
 	<!-- <smd-datatable-column title="Lay#" field="layNo" sortable="true" [filterable]="true">
 	</smd-datatable-column> -->
-	<smd-datatable-column title="Cut#" field="cutNo" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Cut#" field="cutNo" sortable="true" [filterable]="true" numeric="true">
 	</smd-datatable-column>
-	<smd-datatable-column title="Bundle#" field="bundleNo" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Bundle#" field="bundleNo" sortable="true" [filterable]="true" numeric="true">
 	</smd-datatable-column>
-	<smd-datatable-column title="From Ply." field="fromPly" sortable="true" [filterable]="true">
+	<smd-datatable-column title="From Ply." field="fromPly" sortable="true" [filterable]="true" numeric="true">
 	</smd-datatable-column>
-	<smd-datatable-column title="To Ply." field="toPly" sortable="true" [filterable]="true">
+	<smd-datatable-column title="To Ply." field="toPly" sortable="true" [filterable]="true" numeric="true">
 	</smd-datatable-column>
-	<smd-datatable-column title="Bundle Qty." field="bundleQty" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Bundle Qty." field="bundleQty" sortable="true" [filterable]="true" numeric="true">
 	</smd-datatable-column>
 </smd-datatable>

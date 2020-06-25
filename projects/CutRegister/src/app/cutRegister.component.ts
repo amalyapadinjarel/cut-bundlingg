@@ -42,10 +42,10 @@ export class CutRegisterComponent {
   newCosting() {
     this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
       .then(() => {
-        this.router.navigateByUrl('/cut-register/create').then(done => {
-          this._shared.editMode = true;
-          this._shared.initLocalCache();
-        });
+          this.router.navigateByUrl('/cut-register/create').then(done => {
+            this._shared.editMode = true;
+            this._shared.initLocalCache();
+          });
       }).catch(err => {
         this.alertutils.showAlerts(err)
       })
@@ -86,11 +86,12 @@ export class CutRegisterComponent {
   }
 
   save(exit = false) {
-    this._service.save().then((flag) => {
-      if (flag && exit) {
-        this.cancelEdit();
-      }
-    })
+    this._service.save(exit)
+    // .then((flag) => {
+    //   if (flag && exit) {
+    //     this.cancelEdit();
+    //   }
+    // })
   }
 
   generateNextCut() {
@@ -110,7 +111,7 @@ export class CutRegisterComponent {
         })
       }
     })
-   
+
   }
 
   ifApproved() {

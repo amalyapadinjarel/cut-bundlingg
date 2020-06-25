@@ -1,6 +1,7 @@
 <span *ngIf="loading" [class.dummy-progress]="loading"></span>
     <ng-container *ngIf="!loading && !isEdit">
-        <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="status">{{displayValue}}</span>
+        <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="{status:true, numeric: type=='number'}"
+         >{{displayValue}}</span>
         <mat-checkbox *ngIf="type == 'checkbox'" [ngModel]="checked" disabled></mat-checkbox>
     </ng-container>
     <ng-container *ngIf="!loading && isEdit">
@@ -15,7 +16,7 @@
 
         <input #Element [id]="path" *ngIf="type == 'number'" [value]="value" [decimals]="decimals" numeric type="text" (change)="onValueChange($event)" [matTooltip]="alert"
         [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" 
-         (focus)="$event.target.select()"/>
+         (focus)="$event.target.select()" class="numeric"/>
 
     <ng-container *ngIf="type == 'lov'">
         <input #Element [id]="path" [value]="displayValue" [type]="dataType" [matAutocomplete]="autoComplete" (focus)="resetAutoComplete($event)"

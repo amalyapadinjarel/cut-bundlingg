@@ -301,19 +301,22 @@ export class CutRegisterService {
         });
     }
 
-    save(id?: number): Promise<any> {
+    save(exit): Promise<any> {
         this._shared.loading = true;
         let isCreate = this._shared.id == 0;
         return new Promise((resolve, reject) => {
-            this.saveData(id || this._shared.id)
+            this.saveData(this._shared.id)
                 .then(res => {
                     this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
                     this._shared.loading = false;
                     if (isCreate) {
-                        this.location.go('/cut-register/' + this._shared.id + '/edit');
-                        this.location.replaceState('/cut-register/' + this._shared.id + '/edit');
+                        this.router.navigateByUrl('/cut-register/' + this._shared.id + (exit ? '':'/edit'))
+                    } else {
+                        if(exit)
+                            this.router.navigateByUrl('/cut-register/' + this._shared.id);
+                        else
+                        this._shared.refreshData.next(true);
                     }
-                    this._shared.refreshData.next(true);
                     resolve(true);
                 }, err => {
                     if (err) {
@@ -332,9 +335,10 @@ export class CutRegisterService {
 
             //Checking if inputs are valid in header
             let inputs = this.inputService.getInput(this._shared.headerPath);
+            console.log(inputs)
             if (inputs) {
                 inValid = Object.keys(inputs).some(key => {
-                    if (inputs[key] && inputs[key].status != 'ok' && inputs[key].status != 'changed') {
+                    if (inputs[key] && inputs[key].isEdit && inputs[key].status != 'ok' && inputs[key].status != 'changed') {
                         return true;
                     }
                 });
@@ -486,7 +490,7 @@ export class CutRegisterService {
                 if (flag) {
                     this._shared.selectedLines[key].forEach(line => {
                         let index = this._shared.formData[key].findIndex(data => {
-                            let model = this._shared.getLineModel(key,data)
+                            let model = this._shared.getLineModel(key, data)
                             return model.equals(line)
                         });
                         this.deleteDetailsLine(key, index, line);
