@@ -29,6 +29,10 @@ export class PackingInstructionsListComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    
+  }
+
   rowSelected(event) {
     this._shared.poId = event.model.po;
     this._shared.orderId = event.model.orderId;

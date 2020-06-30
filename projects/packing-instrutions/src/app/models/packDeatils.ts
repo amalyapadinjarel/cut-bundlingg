@@ -34,8 +34,10 @@ export class PacksDetails {
     equals(model: any) {
         let flag = true
         Object.keys(new PacksDetails()).forEach(key => {
-            if (this[key] != model[key])
-                flag = false;
+            if(key != 'sequence'){
+                if (this[key] != model[key])
+                    flag = false;
+            }
         })
         return flag;
     }

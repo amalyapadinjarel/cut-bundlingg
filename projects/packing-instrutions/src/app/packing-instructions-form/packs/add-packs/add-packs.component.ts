@@ -112,7 +112,7 @@ export class AddPacksComponent implements OnInit {
               let cdata = cacheData[index];
               if (cacheData[index]) {
                 element.size.forEach((elem) => {
-                  if (cdata[elem.sizeValue]) {
+                  if (cdata[elem.sizeValue] && cdata[elem.sizeValue] != 0) {
                     elem.value = cdata[elem.sizeValue];
                     qtyPerCarton = qtyPerCarton + Number(elem.value);
                     tempdata.size.push(elem);
@@ -135,7 +135,12 @@ export class AddPacksComponent implements OnInit {
               );
             } else {
               this.resetCache();
-              this.dialogRef.close(data);
+              if(data.orderQty != 0 ){
+                this.dialogRef.close(data);
+              }
+              else{
+                this.dialogRef.close(null);
+              }
             }
           }
         }
@@ -289,17 +294,14 @@ export class AddPacksComponent implements OnInit {
     let flag = false;
     model.color.forEach((elem, index) => {
       elem["size"].forEach((element, index2) => {
-        if (
-          Number(model.noOfCartons) * Number(element.value) >
-          Number(element.orderQty)
-        ) {
-          this.inputService.setError("po.0.ratioPack" + "[" + index + "]." + element.sizeValue,"Specified quantity is greater than order quantity(" + element.orderQty + ")");
+        if ( Number(model.noOfCartons) * Number(element.value) > Number(element.orderQty) ) {
+          this.inputService.setError("po." + this._shared.id + ".ratioPack" + "[" + index + "]." + element.sizeValue,"Specified quantity is greater than order quantity(" + element.orderQty + ")");
           flag = true;
         }
-        if(Number(element.value) == 0){
-          this.inputService.setError("po.0.ratioPack" + "[" + index + "]." + element.sizeValue,"Ratio should be greater than 0 or empty");
-          flag = true;
-        }
+        // if(Number(element.value) == 0){
+        //   this.inputService.setError("po." + this._shared.id + ".ratioPack" + "[" + index + "]." + element.sizeValue,"Ratio should be greater than 0 or empty");
+        //   flag = true;
+        // }
       });
     });
     return flag;

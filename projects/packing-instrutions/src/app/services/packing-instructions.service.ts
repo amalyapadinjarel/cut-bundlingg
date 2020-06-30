@@ -251,10 +251,13 @@ deleteLines(key) {
                       let model = this._shared.getLineModel(key,data)
                       return model.equals(line)
                     });
-                    this._shared.deleteSolidLine(key,index,index1);
+                    if(index != -1){
+                      this._shared.deleteSolidLine(key,index,index1);
+                    }
                   })
                 }
               })
+              this._shared.selectedLines = [];
           }
       })
   }
@@ -345,22 +348,27 @@ groupData(listData:any){
     })
     if(!flag && elem.packType != 'RATIO'){
       grpKeys.push({packType: elem.packType, qntyPerCtn: elem.qntyPerCtn, noOfCartons: elem.noOfCartons, csPackId: elem.csPackId, short: elem.short, excess: elem.excess});
+      grpData.push([]);
+    }
+    if(!flag && elem.packType == 'RATIO'){
+      grpKeys.push(elem);
+      grpData.push(elem);
     }
   });
   grpKeys.forEach((val,index)=>{
-    grpData[index] = [];
+
     listData.forEach(elem=>{
       if(val.packType == elem.packType && val.qntyPerCtn == elem.qntyPerCtn && elem.packType == 'SOLID'){
         grpData[index].push(elem);
       }
     });
   });
-  listData.forEach(elem=>{
-    if(elem.packType == 'RATIO'){
-      grpKeys.push(elem);
-      grpData.push(elem);
-    }
-  })
+  // listData.forEach(elem=>{
+  //   if(elem.packType == 'RATIO'){
+  //     grpKeys.push(elem);
+  //     grpData.push(elem);
+  //   }
+  // })
   let retData = {
     grpKey: grpKeys,
     grpData: grpData,

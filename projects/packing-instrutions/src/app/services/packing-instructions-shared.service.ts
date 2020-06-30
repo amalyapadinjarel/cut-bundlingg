@@ -266,16 +266,16 @@ export class PackingInstructionsSharedService {
 
     deleteSolidLine(key, index, mainIndex) {
       let newLine = false;
-      this.reArrangeSequence(mainIndex,index,newLine);
-      let linePrimaryKey = this[key + 'PrimaryKey'];
       let data = this.formData[key].grpData[mainIndex];
+      let model = data[index];
+      this.reArrangeSequence(mainIndex,index,model.sequence);
+      let linePrimaryKey = this[key + 'PrimaryKey'];
       let path = this.appPath + '.' + mainIndex;
       //  + '[' + index + ']' ; 
       let cache = this._cache.getCachedValue(path)
       if (cache && cache.length > index)
           cache.splice(index, 1);
       this._cache.setLocalCache(path, cache);
-      let model = data[index];
       data.splice(index, 1);
       if (model[linePrimaryKey]) {
           let removedPath = this[key + 'RemovedKeysPath'];
@@ -297,15 +297,15 @@ export class PackingInstructionsSharedService {
     }
 
   deleteRatioLine(key, index, mainIndex) {
-    this.reArrangeSequence(mainIndex,index,false);
-    let linePrimaryKey = this[key + 'PrimaryKey'];
     let data = this.formData[key].grpData;
+    let model = data[index];
+    this.reArrangeSequence(mainIndex,index,model.sequence);
+    let linePrimaryKey = this[key + 'PrimaryKey'];
     let path = this.appPath + '.' + mainIndex;
     let cache = this._cache.getCachedValue(path)
     if (cache && cache.length > index)
         cache.splice(index, 1);
     this._cache.setLocalCache(path, cache);
-    let model = data[index];
     data.splice(index, 1);
     let keyData = this.formData[key].grpKey;
     keyData.splice(index,1)
@@ -549,7 +549,7 @@ validateQuantity(saveData) : any{
           else{
             x.forEach(y=>{
               if(y.csPackId == csPackId){
-                qtyDiff = Number(elem['csPackId'])-Number(x.orderQty);
+                qtyDiff = Number(elem['orderQty'])-Number(y.orderQty);
                 flag = true;
                 pId = y.productId;
                 this.calcQuantity(y.productId,qtyDiff)
@@ -609,7 +609,7 @@ generateNewCopy(model){
   return data;
 }
 
-reArrangeSequence(mainIndex,index,newLine){
+reArrangeSequence(mainIndex,index,delSeq){
   this.formData['packsDetails'].grpKey.forEach((elem,index1)=>{
     if(index1 == mainIndex){
       if(elem && elem.packType == 'SOLID'){
@@ -628,29 +628,34 @@ reArrangeSequence(mainIndex,index,newLine){
     else if(index1 > mainIndex){
       if(elem && elem.packType == 'SOLID'){
         this.formData['packsDetails'].grpData[index1].forEach((element,index2)=>{
-          if(element.csPackId){
-            element.sequence = Number(element.sequence)-1;
-            this._cache.setLocalCache(this.getPacksDetailsBasePath(index1,index2), {'csPackId':element.csPackId,'sequence':element.sequence});
-          }
-          else{
-            
-            let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index1,index2, 'sequence'));
-            this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1);
-            element.sequence = seq-1;
+          if(Number(element.sequence) > Number(delSeq)){
+            if(element.csPackId){
+              element.sequence = Number(element.sequence)-1;
+              this._cache.setLocalCache(this.getPacksDetailsBasePath(index1,index2), {'csPackId':element.csPackId,'sequence':element.sequence});
+            }
+            else{
+              
+              let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index1,index2, 'sequence'));
+              this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1);
+              element.sequence = seq-1;
+            }
           }
         })
       }
       if(elem && elem.packType == 'RATIO'){
-        if(elem.csPackId){
-          elem.sequence = Number(elem.sequence)-1;
-          this._cache.setLocalCache(this.getRatioHeaderBasepath(index1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
-          this.updatePackDetails.next(true);
-        }
-        else{
-          elem.sequence = Number(elem.sequence)-1;
-          let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
-          this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
-          this.updatePackDetails.next(true);
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+
         }
       }
     }

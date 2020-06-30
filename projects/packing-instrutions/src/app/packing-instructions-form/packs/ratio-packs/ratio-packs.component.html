@@ -18,7 +18,7 @@
                 <label class="label-class">Excess: </label>
                 <div class="val" style="margin-top: 10px;  width: 40px;">
                     <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}}Ctn</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()"  [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
                         [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable() && checkShortAndExcessEditable('short')"
                         [loading]="_shared.packsDetailsLoading || _shared.loading" ></tnz-input>
                 </div>
