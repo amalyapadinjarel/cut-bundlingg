@@ -27,8 +27,15 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
 	this.refreshSub = this._shared.refreshData.subscribe(change => {
-		this.loadData();
+		if(change)
+			this.loadData();
 	})
+  }
+
+  ngOnDestroy(){
+	  if(this.refreshSub){
+		  this.refreshSub.unsubscribe();
+	  }
   }
 
   loadData() {
@@ -66,22 +73,8 @@ export class CardComponent implements OnInit {
   }
   
   setTotalQnty(data){
-    if(data.totalPackSolid != 0 && data.totalPackRatio != 0 && data.totalPackSolid && data.totalPackRatio ){
-      data.totalQnty = 'Solid-' + data.totalPackSolid + ', Ratio-' + data.totalPackRatio
-	}
-	else if(data.totalPackSolid == 0 && data.totalPackRatio == 0){
-		data.totalQnty = ''
-	}
-    else if(data.totalPackSolid == 0){
-      data.totalQnty = 'Ratio-' + data.totalPackRatio
-    }
-    else if(data.totalPackRatio == 0){
-      data.totalQnty = 'Solid-' + data.totalPackSolid
-    }
-    else{
-      data.totalQnty = '';
-    }
-    return data;
+	this._shared.totalPacks = Number(data.totalPackSolid) + Number(data.totalPackRatio);
+	return data;
   }
   
 }

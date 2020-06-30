@@ -13,7 +13,7 @@
                     Created by {{_shared.formData.header?.createdBy}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateBy}}
                     on {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}
                 </span>
-                <!-- <form-nav [apiUrl]="'/routing/cut-panels/navigation/' + _shared.id" navUrl="/routing-cut-panels" [params]="_shared.params"></form-nav> -->
+                <!-- <form-nav [apiUrl]="'/packing-instructions/navigation/' + _shared.poId + '/' + _shared.orderId + '/' + _shared.parentProductId" navUrl="/packing-instructions" [params]="_shared.params"></form-nav> -->
             </div>
         </div>
         <mat-tab-group>
@@ -24,7 +24,7 @@
                             <span class="flex-filler"></span>
                             <div style="display:flex" *ngIf="_shared.getPacksDetailsEditable()">
                                 <button mat-button matTooltip="Delete line">
-                                    <mat-icon class="mat-color-danger" (click)="deleteLine('packDetails')">delete</mat-icon>
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('packsDetails')">delete</mat-icon>
                                 </button>
                                 <button mat-button matTooltip="Add solid pack">
                                     <mat-icon class="mat-color-info" (click)="addLine('packDetailsSolid')">add_box</mat-icon>

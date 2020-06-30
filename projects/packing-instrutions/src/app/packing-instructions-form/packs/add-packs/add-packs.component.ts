@@ -27,22 +27,24 @@ export class AddPacksComponent implements OnInit {
     private alertUtils: AlertUtilities,
     public inputService: TnzInputService,
     private _cache: LocalCacheService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.resetCache();
     if (this.addType == 0) this.title = "Add Solid Pack";
     else this.title = "Add Ratio Pack";
     this.fetchData(this.addType);
+    this._shared.addSolidPacksDetailsSeq = 0
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   close(isCancel: boolean) {
     if (isCancel) {
       //Check if valid
       let inValid = false;
       if (this.addType == 0) {
+        this.validateSolidPack();
         if (!inValid) {
           let inputs = this.inputService.getInput(
             this._shared["solidPack" + "Path"]
@@ -51,11 +53,7 @@ export class AddPacksComponent implements OnInit {
             inValid = inputs.some((grp) => {
               if (grp) {
                 return Object.keys(grp).some((key) => {
-                  if (
-                    grp[key] &&
-                    grp[key].status != "ok" &&
-                    grp[key].status != "changed"
-                  ) {
+                  if ( grp[key] && grp[key].status != "ok" &&grp[key].status != "changed" ) {
                     return true;
                   }
                 });
@@ -68,11 +66,7 @@ export class AddPacksComponent implements OnInit {
         } else {
           let modelData = [];
           this.dataTable.models.forEach((elem) => {
-            if (
-              elem.orderQty != "" &&
-              elem.orderQty != null &&
-              elem.orderQty != 0
-            ) {
+            if ( elem.orderQty != "" && elem.orderQty != null &&elem.orderQty != 0 ) {
               elem.packType = this.addType == 0 ? "SOLID" : "RATIO";
               modelData.push(elem);
             }
@@ -92,11 +86,7 @@ export class AddPacksComponent implements OnInit {
             inValid = inputs.some((grp) => {
               if (grp) {
                 return Object.keys(grp).some((key) => {
-                  if (
-                    grp[key] &&
-                    grp[key].status != "ok" &&
-                    grp[key].status != "changed"
-                  ) {
+                  if (grp[key] && grp[key].status != "ok" &&grp[key].status != "changed") {
                     return true;
                   }
                 });
@@ -165,6 +155,7 @@ export class AddPacksComponent implements OnInit {
           this._shared["solidPack" + "Loading"] = false;
           this.TempformData = [];
           this._shared.formData["solidPack"].forEach((val) => {
+            val.sequence = this._shared.addSolidPacksDetailsSeq;
             this.TempformData.push(new PacksDetails(val));
           });
           this.refreshTable();
@@ -201,7 +192,7 @@ export class AddPacksComponent implements OnInit {
     }
   }
 
-  onRowSelected() {}
+  onRowSelected() { }
 
   refreshTable() {
     if (this.addType == 0)
@@ -214,13 +205,13 @@ export class AddPacksComponent implements OnInit {
         this.modifyData(event.value);
     } else if (key == "qntyPerCtn") {
       if (this.addType == 0 && this._shared.formData["solidPack"]) {
-        this._shared.formData["solidPack"][index].qntyPerCtn = Number(
-          event.value
-        );
-        this._shared.formData["solidPack"][index].noOfCartons = Math.ceil(
-          Number(this._shared.formData["solidPack"][index].orderQty) /
-            Number(event.value)
-        );
+        this._shared.formData["solidPack"][index].qntyPerCtn = event.value;
+        if(event.value && event.value != 0){
+          this._shared.formData["solidPack"][index].noOfCartons = Math.ceil( Number(this._shared.formData["solidPack"][index].orderQty) / Number(event.value) );
+        }else{
+          this._shared.formData["solidPack"][index].noOfCartons = "";
+          
+        }
         this.refreshTable();
         setTimeout(() => {
           this.goToNextInput(key, index);
@@ -231,27 +222,25 @@ export class AddPacksComponent implements OnInit {
         if (event.value == "") {
           this._shared.formData["solidPack"][index].noOfCartons = "";
           this._shared.formData["solidPack"][index].orderQty = "";
+          this.refreshTable();
+          setTimeout(() => {
+            this.goToNextInput(key, index);
+          }, 0);
         } else if (Number(event.value) > 0) {
           if (event.value <= this.TempformData[index].orderQty) {
-            this._shared.formData["solidPack"][index].orderQty = Number(
-              event.value
-            );
-            this._shared.formData["solidPack"][index].noOfCartons = Math.ceil(
-              Number(
-                Number(event.value) /
-                  Number(this._shared.formData["solidPack"][index].qntyPerCtn)
-              )
-            );
+            this._shared.formData["solidPack"][index].orderQty = Number(event.value);
+            if(event.value && this._shared.formData["solidPack"][index].qntyPerCtn){
+              this._shared.formData["solidPack"][index].noOfCartons = Math.ceil(Number(Number(event.value) / Number(this._shared.formData["solidPack"][index].qntyPerCtn)) );
+            }
+            else{
+              this._shared.formData["solidPack"][index].noOfCartons = "";
+            }
             this.refreshTable();
-            setTimeout(() => {
-              this.goToNextInput(key, index);
-            }, 0);
+              setTimeout(() => {
+                this.goToNextInput(key, index);
+              }, 0);
           } else {
-            this.inputService.setError(
-              event.path,
-              "Order qnty cannot be greater than " +
-                this.TempformData[index].orderQty
-            );
+            this.inputService.setError(event.path,"Order qnty cannot be greater than " +this.TempformData[index].orderQty );
           }
         } else {
           this.inputService.setError(event.path, "Order qnty cannot be 0");
@@ -259,17 +248,21 @@ export class AddPacksComponent implements OnInit {
       }
     } else if (key == "sequence") {
       if (this.addType == 0 && this._shared.formData["solidPack"]) {
-        this._shared.formData["solidPack"][index].sequence = Number(
-          event.value
-        );
+        this._shared.formData["solidPack"][index].sequence = Number( event.value);
       }
     }
   }
 
   modifyData(val) {
     this._shared.formData["solidPack"].forEach((elem) => {
-      elem.qntyPerCtn = Number(val);
-      elem.noOfCartons = Math.ceil(Number(elem.orderQty) / Number(val));
+      if(val){
+        elem.qntyPerCtn = Number(val);
+        elem.noOfCartons = Math.ceil(Number(elem.orderQty) / Number(val));
+      }
+      else{
+        elem.noOfCartons = "";
+        elem.qntyPerCtn = "";
+      }
     });
     this.refreshTable();
   }
@@ -284,7 +277,7 @@ export class AddPacksComponent implements OnInit {
     }
   }
 
-  ratioValueChanged(event, i, y) {}
+  ratioValueChanged(event, i, y) { }
 
   resetCache() {
     this.servcie.resetInputCacheWithKey(this._shared.solidPackPath);
@@ -300,12 +293,11 @@ export class AddPacksComponent implements OnInit {
           Number(model.noOfCartons) * Number(element.value) >
           Number(element.orderQty)
         ) {
-          this.inputService.setError(
-            "po.0.ratioPack" + "[" + index + "]." + element.sizeValue,
-            "Specified quantity is greater than order quantity(" +
-              element.orderQty +
-              ")"
-          );
+          this.inputService.setError("po.0.ratioPack" + "[" + index + "]." + element.sizeValue,"Specified quantity is greater than order quantity(" + element.orderQty + ")");
+          flag = true;
+        }
+        if(Number(element.value) == 0){
+          this.inputService.setError("po.0.ratioPack" + "[" + index + "]." + element.sizeValue,"Ratio should be greater than 0 or empty");
           flag = true;
         }
       });
@@ -338,10 +330,20 @@ export class AddPacksComponent implements OnInit {
 
   goToNextInput(key, index) {
     let element = document.getElementById(
-      "solidPack[" + (index + 1) + "].qntyPerCtn"
+      "solidPack[" + (index) + "]." + key
     );
     if (element) {
-      setTimeout(() => element.focus(), 0);
+      element.focus();
     }
+  }
+
+  validateSolidPack(){
+    this.dataTable.models.forEach((elem,index)=>{
+      if(elem.orderQty != "" && elem.orderQty != null && elem.orderQty != 0){
+        if(elem.qntyPerCtn == 0 || elem.qntyPerCtn == ""){
+          this.inputService.setError(this._shared.getSolidPackDetailsPath(index,'qntyPerCtn'),"Quantity per carton should be greater than 0")
+        }
+      }
+    })
   }
 }

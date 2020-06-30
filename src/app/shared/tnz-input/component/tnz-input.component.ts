@@ -693,6 +693,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
     resetError() {
         this.status = 'ok';
+        this.alert="";
 
     }
 

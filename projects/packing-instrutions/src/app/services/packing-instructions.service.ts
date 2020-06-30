@@ -183,6 +183,7 @@ saveData(id): Promise<any> {
                   }
               });
               saveData = this.formatSaveData(saveData);
+              // console.log(saveData)
               let saveObservable;
               let validateObservable;
               let isValid = this._shared.validateQuantity(saveData)
@@ -203,7 +204,6 @@ saveData(id): Promise<any> {
                                         })
                                         .subscribe(res => {
                                             if (res && res.success) {
-                                                this._shared.id = res.data && res.data.routingId ? res.data.routingId : this._shared.id;
                                                 resolve(res)
                                             } else {
                                                 reject(res && res.message ? res.message : 'Unknown error');
@@ -231,24 +231,33 @@ deleteDetailsLine(key, index, model) {
 }
 
 deleteLines(key) {
-    if (this._shared.selectedLines[key] && this._shared.selectedLines[key].length) {
-        let primaryKey = this[key + 'PrimaryKey'];
-        let dialogRef = this._dialog.open(ConfirmPopupComponent);
-        dialogRef.componentInstance.dialogTitle = 'Delete selected record(s)';
-        dialogRef.componentInstance.message = 'Are you sure you want to delete the selected ' + this._shared.selectedLines[key].length + ' record(s)'
-        dialogRef.afterClosed().subscribe(flag => {
-            if (flag) {
-                this._shared.selectedLines[key].forEach(line => {
-                    let index = this._shared.formData[key].findIndex(data => {
-                        let model = this._shared.getLineModel(key,data)
-                        return model.equals(line)
+  let length = 0;
+  if (this._shared.selectedLines) {
+    this._shared.selectedLines.forEach(elem=>{
+      length = length + elem.length;
+    })
+  }
+  if (this._shared.selectedLines && length > 0) {
+      let primaryKey = this[key + 'PrimaryKey'];
+      let dialogRef = this._dialog.open(ConfirmPopupComponent);
+      dialogRef.componentInstance.dialogTitle = 'Delete selected record(s)';
+      dialogRef.componentInstance.message = 'Are you sure you want to delete the selected ' + length + ' record(s)'
+      dialogRef.afterClosed().subscribe(flag => {
+          if (flag) {
+              this._shared.selectedLines.forEach((elem,index1)=>{
+                if(elem){
+                  elem.forEach(line=>{
+                    let index = this._shared.formData[key].grpData[index1].findIndex(data=>{
+                      let model = this._shared.getLineModel(key,data)
+                      return model.equals(line)
                     });
-                    this.deleteDetailsLine(key, index, line);
-                });
-                this._shared.setSelectedLines(key, [])
-            }
-        })
-    }
+                    this._shared.deleteSolidLine(key,index,index1);
+                  })
+                }
+              })
+          }
+      })
+  }
 }
 
 getSavedCacheData(){
@@ -367,11 +376,14 @@ formatSaveData(model){
   data.style = Number(this._shared.parentProductId);
   data.po = this._shared.poId;
   data.packsDetails = model.packsDetails;
+  data.description = model.header?.description;
   this._shared.formData['packsDetails'].grpKey.forEach((val,index)=>{
     if(model[index]){
       try{
         model[index].forEach(elem=>{
-          data.packsDetails.push(elem);
+          if(elem){
+            data.packsDetails.push(elem);
+          }
         });
       }
       catch(err){
@@ -380,14 +392,16 @@ formatSaveData(model){
     }
   });
   data.packsDetails.forEach(elem=>{
-    if(elem.packType == 'RATIO'){
-      let size = [];
-      elem.color.forEach(y=>{
-          y.size.forEach(x=>{
-          size.push(x);
-        })
-      });
-      elem.size = size;
+    if(elem){
+      if(elem.packType == 'RATIO'){
+        let size = [];
+        elem.color.forEach(y=>{
+            y.size.forEach(x=>{
+            size.push(x);
+          })
+        });
+        elem.size = size;
+      }
     }
   })
   return data;
@@ -411,10 +425,11 @@ fetchCartonDetails(poId?, orderId?, parentProductId?) {
   });
 }
 
-generateCarton(){
+generateCarton(isRegenerate){
   return new Promise((resolve, reject)=>{
     if (this._shared.id) {
-      this.apiService.get('/' + this._shared.apiBase + '/generate-carton/' + this._shared.id)
+      let regenerate = isRegenerate == 'Y' ? 1 : 0;
+      this.apiService.get('/' + this._shared.apiBase + '/generate-carton/' + this._shared.id + '/' + isRegenerate)
       .subscribe(data => {
           if (data && data.data.returnCode == 1) {
               this.alertUtils.showAlerts(data.data.message);

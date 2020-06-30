@@ -158,35 +158,48 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 
   passwordValidation(event, attr) {
     let val = event.value;
-   // console.log("val=,",val)
+    // console.log("val=,",val)
 
-    this._inputService.resetError(this._shared.getHeaderAttrPath('confirmPassword'));
+    // this._inputService.resetError(this._shared.getHeaderAttrPath('confirmPassword'));
+    // this._inputService.resetError(this._shared.getHeaderAttrPath('password'));
 
     let pass = this._shared.getHeaderAttributeValue('password');
     let conf = this._shared.getHeaderAttributeValue('confirmPassword');
-    if (pass == "")
-    this._inputService.setError(this._shared.getHeaderAttrPath('password'), 'Please enter password.');
-    else if (pass != conf)
-    {
+    if (pass == "") {
+      this._inputService.setError(this._shared.getHeaderAttrPath('password'), 'Please enter password.');
+
+    }
+    else if (pass != conf) {
       this._inputService.setError(this._shared.getHeaderAttrPath(attr), 'Passwords not matching.');
     }
-   
-   }
+    else if(pass==conf){
+      this._inputService.resetError(this._shared.getHeaderAttrPath('confirmPassword'));
+      this._inputService.resetError(this._shared.getHeaderAttrPath('password'));
+    }
+
+  }
 
 
   confirmPasswordValidation(event, attr) {
     let val = event.value;
- 
+
     //console.log("val=,",val)
-    this._inputService.resetError(this._shared.getHeaderAttrPath('password'));
+    
+    // this._inputService.resetError(this._shared.getHeaderAttrPath('confirmPassword'));
+    // this._inputService.resetError(this._shared.getHeaderAttrPath('password'));
 
     let pass = this._shared.getHeaderAttributeValue('password');
     let conf = this._shared.getHeaderAttributeValue('confirmPassword');
-    if (conf == "")
-    this._inputService.setError(this._shared.getHeaderAttrPath('confirmPassword'), 'Please confirm password.');
-    else if (pass != conf)
-    {
+    if (conf == "") {
+      this._inputService.setError(this._shared.getHeaderAttrPath('confirmPassword'), 'Please confirm password.');
+
+    }
+    else if (pass != conf) {
       this._inputService.setError(this._shared.getHeaderAttrPath(attr), 'Passwords not matching.');
+    }
+    else if(pass==conf){
+      this._inputService.resetError(this._shared.getHeaderAttrPath('confirmPassword'));
+      this._inputService.resetError(this._shared.getHeaderAttrPath('password'));
     }
 
 

@@ -1,7 +1,7 @@
 <div>
     <perfect-scrollbar>
         <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
-            (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+            (dataChange)="_onDataChange($event)" (pageChange)="_onPageChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
             <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.documentNo}}

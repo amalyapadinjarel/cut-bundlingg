@@ -21,6 +21,7 @@ export class RatioPacksComponent implements OnInit {
   public excess;
   public short;
   private refreshPackDetails: Subscription;
+  private updatePackDetails: Subscription;
   public sequence;
 
   constructor(private _service: PackingInstructionsService,
@@ -39,9 +40,12 @@ export class RatioPacksComponent implements OnInit {
     this.noOfCartons = this._shared.formData['packsDetails'].grpKey[this.mainIndex].noOfCartons;
     this.excess = this._shared.formData['packsDetails'].grpKey[this.mainIndex].excess;
     this.short = this._shared.formData['packsDetails'].grpKey[this.mainIndex].short;
-    this.sequence = 1;
+    this.sequence = this._shared.formData['packsDetails'].grpKey[this.mainIndex].sequence;
     this.refreshPackDetails = this._shared.refreshpacksDetails.subscribe(change => {
 			if (change){}
+    });
+    this.updatePackDetails = this._shared.updatePackDetails.subscribe(change => {
+			this.sequence = this._shared.formData['packsDetails'].grpKey[this.mainIndex].sequence;
     });
     let sum = 0;
     this.formData['color'].forEach(elem=>{
@@ -116,5 +120,12 @@ export class RatioPacksComponent implements OnInit {
     }
   }
 
+  checkShortAndExcessEditable(key) : Boolean{
+    let value = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,key))
+    if(value && value != ""){
+      return false;
+    }
+    return true;
+  }
   
 }

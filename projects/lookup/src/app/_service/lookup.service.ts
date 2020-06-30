@@ -166,22 +166,32 @@ export class LookupService {
     }
 
     
-    save(id?: number): Promise<any> {
+   // save(id?: number): Promise<any> {
+       save(exit):Promise<any>{
         this._shared.loading = true;
         let isCreate = this._shared.lookupType == '--';
         return new Promise((resolve, reject) => {
-            this.saveData(id || this._shared.lookupType)
-                // this.saveData(this._shared.lookupType)
+           // this.saveData(id || this._shared.lookupType)
+              this.saveData(this._shared.lookupType)
 
                 .then(res => {
                     this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.lookupType);
                     this._shared.loading = false;
                     this._shared.listData=null; //to refresh list
-                    if (this._shared.lookupType != '--') {
-                        this.location.go('/lookup/' + this._shared.lookupType + '/edit');
-                        this.location.replaceState('/lookup/' + this._shared.lookupType + '/edit');
-                    }
-                    this._shared.refreshData.next(true);
+                    // if (this._shared.lookupType != '--') {
+                    //     this.location.go('/lookup/' + this._shared.lookupType + '/edit');
+                    //     this.location.replaceState('/lookup/' + this._shared.lookupType + '/edit');
+                    // }
+
+                    // if(isCreate){
+                    //     this.router.navigateByUrl('/lookup'+this._shared.lookupType + (exit ? '' : '/edit'));
+                    // } 
+                    // else {
+                       // if (exit)  
+                          this.router.navigateByUrl('/lookup/' + this._shared.lookupType+ (exit ? '' : '/edit'));
+                          this._shared.refreshData.next(true);
+                     // }
+                  //  this._shared.refreshData.next(true);
                     resolve(true);
                 }, err => {
                     if (err) {
@@ -197,6 +207,7 @@ export class LookupService {
     }
 
     saveData(id): Promise<any> {
+
         return new Promise((resolve, reject) => {
             let inValid;
 
@@ -246,19 +257,19 @@ export class LookupService {
                         if (!saveData[key]) {
                             saveData[key] = [];
                         }
-                        //recently commented
-                        let removedPath = this._shared[key + 'RemovedKeysPath'];
-                        let linePrimaryKey = this._shared[key + 'PrimaryKey']
+                        // //recently commented
+                        // let removedPath = this._shared[key + 'RemovedKeysPath'];
+                        // let linePrimaryKey = this._shared[key + 'PrimaryKey']
 
-                        let cache = this._cache.getCachedValue(removedPath)
+                        // let cache = this._cache.getCachedValue(removedPath)
 
-                        if (cache && cache.length) {
-                            cache.forEach(removedPrimaryKey => {
-                                let json = { 'active': 'N' };
-                                json[linePrimaryKey] = removedPrimaryKey;
-                                saveData[key].push(json)
-                            });
-                        }
+                        // if (cache && cache.length) {
+                        //     cache.forEach(removedPrimaryKey => {
+                        //         let json = { 'active': 'N' };
+                        //         json[linePrimaryKey] = removedPrimaryKey;
+                        //         saveData[key].push(json)
+                        //     });
+                        // }
 
                     });
                     let observable;
@@ -276,7 +287,9 @@ export class LookupService {
                         })
                         .subscribe(res => {
                             if (res && res.success) {
-                                this._shared.lookupType = res.data && res.data.lookupType ? res.data.lookupType : this._shared.lookupType;
+                               // this._shared.lookupType = res.data && res.data.lookupType ? res.data.lookupType : this._shared.lookupType;
+                                this._shared.lookupType = res.data && res.data.lookupType ? res.data.lookupType : "--";
+
                                 resolve(res)
                             } else {
                                 reject(res && res.message ? res.message : 'Unknown error');

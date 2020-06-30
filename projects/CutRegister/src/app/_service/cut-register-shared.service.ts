@@ -224,6 +224,13 @@ export class CutRegisterSharedService {
 
     setFormHeader(data) {
         this.formData['header'] = data;
+        if (this.listData){
+            let i =  this.listData.findIndex(line => {
+                return line[this.primaryKey] == data[this.primaryKey]
+            });
+            if (i > -1)
+            this.listData.splice(i, 1, data);
+        }
     }
 
     initLocalCache() {
@@ -264,7 +271,7 @@ export class CutRegisterSharedService {
         if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
             editable = false
         }
-        let editableBundleAttrs = ['markerNameMethod', 'cutDate', 'layYardage', 'length', 'width', 'shrinkage','description'];// attributes that can be edited even when cut bundles exist
+        let editableBundleAttrs = ['markerNameMethod', 'cutDate', 'layYardage', 'length', 'width', 'shrinkage', 'description'];// attributes that can be edited even when cut bundles exist
         if (this.formData.cutBundle && this.formData.cutBundle.length && editableBundleAttrs.indexOf(attr) == -1) {
             editable = false
         }
@@ -533,11 +540,11 @@ export class CutRegisterSharedService {
         this.count = data.count;
     }
 
-    resetAllInput(){
+    resetAllInput() {
         this.inputService.resetSharedData();
     }
 
-    onNewDocumentCreated(){
+    onNewDocumentCreated() {
         this.listData = null;
         this.params = null;
     }

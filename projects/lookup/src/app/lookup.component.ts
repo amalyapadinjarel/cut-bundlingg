@@ -80,11 +80,13 @@ export class LookupComponent {
   }
 
   cancelEdit() {
-    if (this._shared.lookupType!=null) {
+    if (this._shared.lookupType!="--") {
       this.location.go('/lookup/' + this._shared.lookupType);
       this._shared.editMode = false;
       this._shared.initLocalCache();
       this._shared.resetLines();
+     // this._shared.formData.header.lookupType = "--";
+
     }
     else {
       this.router.navigateByUrl('/lookup/list').then(done => {
@@ -95,10 +97,12 @@ export class LookupComponent {
   }
 
  
-  save(exit) {
-    this._service.save().then((flag) => {
+  save(exit=false) {
+    this._service.save(exit).then((flag) => {
       if (flag && exit) {
        // this._service.cancelEdit();
+      // this._shared.formData.header.lookupType = "--";
+
         this.cancelEdit();
 
       }

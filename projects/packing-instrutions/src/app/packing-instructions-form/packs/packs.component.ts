@@ -38,7 +38,6 @@ export class PacksComponent implements OnInit {
 		});
 		this.refreshPackDetails = this._shared.refreshpacksDetails.subscribe(change => {
 			if (change){}
-				this.refreshTable();
 		});
 	}
 
@@ -58,14 +57,6 @@ export class PacksComponent implements OnInit {
 
 	deleteLine(index){
 		this._shared.deleteLine(this.key, index)
-	}
-
-	refreshTable() {
-		// this.dataTable.refresh(this._shared.formData[this.key]);
-	}
-
-	onRowSelected() {
-		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 
 }

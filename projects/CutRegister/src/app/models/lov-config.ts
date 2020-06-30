@@ -115,7 +115,7 @@ export var CopyFromSOLovConfig: any = {
         },
         {
             title: 'SO Description',
-            key: 'olDescription'
+            key: 'description'
         },
 
     ],

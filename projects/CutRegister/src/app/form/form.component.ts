@@ -43,7 +43,7 @@ export class PdmCostingFormComponent {
 		private router: Router,
 		private dialog: MatDialog,
 		private alertUtils: AlertUtilities,
-		public dateUtils:DateUtilities
+		public dateUtils: DateUtilities
 	) {
 	}
 
@@ -142,7 +142,7 @@ export class PdmCostingFormComponent {
 					this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
 						cutPanels.forEach(line => {
 							let index = this._shared.formData.cutPanelDetails.findIndex(data => {
-								return data.panelName == line.panelCode;
+								return data.panelName == line.panelCode && data.refProdId == line.refProdId;
 							});
 							if (index == -1) {
 								let cutPanelLine = this.mapToCutPanelLine(line);
@@ -291,6 +291,25 @@ export class PdmCostingFormComponent {
 				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty, primaryKey)
 			});
 		}
+	}
+
+	regenerateCutPanels() {
+		console.log("Ready to regenerate")
+		this._shared.cutPanelDetailsLoading = true;
+		let routingIds = [];
+		this._shared.formData.orderDetails.forEach(line => {
+			if (routingIds.indexOf(line.routingId) == -1)
+				routingIds.push(line.routingId);
+		})
+		if (routingIds.length)
+			this._service.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
+				this._service.deleteAll('cutPanelDetails');
+				cutPanels.forEach(line => {
+						let cutPanelLine = this.mapToCutPanelLine(line);
+						this._shared.addLine('cutPanelDetails', cutPanelLine)
+				})
+				this._shared.cutPanelDetailsLoading = false;				
+			})
 	}
 
 }

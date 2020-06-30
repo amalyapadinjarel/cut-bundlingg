@@ -310,12 +310,13 @@ export class CutRegisterService {
                     this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
                     this._shared.loading = false;
                     if (isCreate) {
+                        this._shared.onNewDocumentCreated();                        
                         this.router.navigateByUrl('/cut-register/' + this._shared.id + (exit ? '':'/edit'))
                     } else {
                         if(exit)
                             this.router.navigateByUrl('/cut-register/' + this._shared.id);
                         else
-                        this._shared.refreshData.next(true);
+                            this._shared.refreshData.next(true);
                     }
                     resolve(true);
                 }, err => {
@@ -335,7 +336,6 @@ export class CutRegisterService {
 
             //Checking if inputs are valid in header
             let inputs = this.inputService.getInput(this._shared.headerPath);
-            console.log(inputs)
             if (inputs) {
                 inValid = Object.keys(inputs).some(key => {
                     if (inputs[key] && inputs[key].isEdit && inputs[key].status != 'ok' && inputs[key].status != 'changed') {

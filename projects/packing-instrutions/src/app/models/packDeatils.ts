@@ -23,7 +23,7 @@ export class PacksDetails {
         this.po = model ? model.po : "";
         this.productId = model ? model.productId : 0;
         this.qntyPerCtn = model ? model.qntyPerCtn : 0;
-        // this.sequence = model ? model.sequence : 0;
+        this.sequence = model ? model.sequence : 0;
         this.styleVariant = model ? model.styleVariant : "";
         this.short = model ? model.short : "";
         this.excess = model ? model.excess : "";
@@ -85,11 +85,11 @@ export class StyleVarient{
     productId: Number;
     productName: String;
     packQnty: Number;
-    orderQnty: Number;
+    orderQty: Number;
     constructor(model = null){
         this.productName = model ? model.productName : "";
         this.productId = model ? model.productId : 0;
         this.packQnty = model ? model.packQnty : 0;
-        this.orderQnty = model ? model.orderQnty : 0;
+        this.orderQty = model ? model.orderQty : 0;
     }
 }

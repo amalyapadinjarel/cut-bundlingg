@@ -36,10 +36,10 @@ export class SolidPacksComponent implements OnInit {
 
   ngOnInit(){
     this.qntyPerCtn = this._shared.formData['packsDetails'].grpKey[this.mainIndex].qntyPerCtn;
-    this.dataTable.refresh(this.formData);
+    this.refreshDataTable();
     this.refreshPackDetails = this._shared.refreshpacksDetails.subscribe(change => {
 			if (change){}
-        this.dataTable.refresh(this.formData);
+        this.refreshDataTable();
 		});
   }
 
@@ -79,4 +79,28 @@ export class SolidPacksComponent implements OnInit {
     })
   }
 
+  onRowSelected() {
+		this._shared.setSelectedLines(this.key,this.mainIndex,this.dataTable.selectedModels())
+	}
+
+  refreshDataTable(){
+    this.dataTable.refresh(this.formData);
+  }
+
+  onValueChanged(event,index,key){ 
+    if(event){
+      if(key == 'orderQty'){
+        let noOfCtn = Math.ceil(Number(event.value)/this.qntyPerCtn);
+        this.inputService.updateInput(this._shared.getPacksDetailsPath(this.mainIndex,index,'noOfCartons'),noOfCtn)
+      }
+    }
+  }
+
+  checkShortAndExcessEditable(index,key) : Boolean{
+    let value = this.inputService.getInputValue(this._shared.getPacksDetailsPath(this.mainIndex,index,key))
+    if(value && value != ""){
+      return false;
+    }
+    return true;
+  }
 }

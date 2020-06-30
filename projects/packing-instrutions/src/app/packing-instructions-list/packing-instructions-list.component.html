@@ -37,9 +37,9 @@
                 {{model.packedQnty}}
             </ng-template>
             </smd-datatable-column>
-            <smd-datatable-column title="Total Packs" field="totalPack" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+            <smd-datatable-column title="Total Packs" field="totalPackQty" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
                 <ng-template let-model="data">
-                    {{getTotalPack(model)}}
+                    {{model.totalPackQty}}
                 </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Cartons" field="cartons" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">

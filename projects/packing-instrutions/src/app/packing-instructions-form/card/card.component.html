@@ -53,10 +53,10 @@
         </li>
         <br>
         <li>
-            <label>Total Pack</label>
+            <label>Total Packs</label>
             <div class="val">
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('totalQnty')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('totalQnty')"
+                <tnz-input [path]="_shared.getHeaderAttrPath('totalPackQty')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('totalPackQty')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>

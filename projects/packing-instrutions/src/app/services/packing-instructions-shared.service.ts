@@ -37,16 +37,20 @@ export class PackingInstructionsSharedService {
   cartonPrimaryKey = 'csPackId';
   solidPackPrimaryKey = 'orderLineId';
   lineKeys = ['packsDetails','carton'];
-  selectedLines = {};
+  selectedLines = [];
   packDetailsAttributes = ['sequence'];
 
   _packsDetailsSeq = 1;
   packsDetailsSeqIncBy = 1;
 
+  _addSolidPacksDetailsSeq = 1;
+  addsolidPacksDetailsSeqIncBy = 1;
+
   refreshData: BehaviorSubject<boolean> = new BehaviorSubject(false);
   refreshCartonData: BehaviorSubject<boolean> = new BehaviorSubject(false);
   refreshpacksDetails: BehaviorSubject<boolean> = new BehaviorSubject(false);
   refreshcarton: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  updatePackDetails: BehaviorSubject<boolean> = new BehaviorSubject(false);
   validationEmitter: EventEmitter<any> = new EventEmitter<any>();
 
   selectedPage: number = 1;
@@ -60,6 +64,8 @@ export class PackingInstructionsSharedService {
 
   styleVarientDetails: any;
   styleVarientDetailsCopy: any;
+
+  totalPacks: any;
   constructor(private _cache: LocalCacheService,
     private inputService: TnzInputService,
     private _dialog: MatDialog,
@@ -75,6 +81,7 @@ export class PackingInstructionsSharedService {
       this.refreshcarton = new BehaviorSubject(false);
       this.formData = {};
       this.isCartonGenerated = false;
+      this.totalPacks = 0;
   }
 
   clear() {
@@ -85,6 +92,7 @@ export class PackingInstructionsSharedService {
       this.refreshcarton.unsubscribe();
       this.formData = {};
       this.isCartonGenerated = false;
+      this.totalPacks = 0;
   }
     get appPath() {
       return this.appKey + '.' + this.id;
@@ -130,6 +138,15 @@ export class PackingInstructionsSharedService {
     
     set packsDetailsSeq(value) {
       this._packsDetailsSeq = value + this.packsDetailsSeqIncBy;
+    }
+
+    get addSolidPacksDetailsSeq() {
+      this._addSolidPacksDetailsSeq += this.addsolidPacksDetailsSeqIncBy;
+      return this._addSolidPacksDetailsSeq - this.addsolidPacksDetailsSeqIncBy;
+    }
+
+    set addSolidPacksDetailsSeq(value) {
+      this._addSolidPacksDetailsSeq = value + this.addsolidPacksDetailsSeqIncBy;
     }
 
     setFormHeader(data) {
@@ -183,7 +200,10 @@ export class PackingInstructionsSharedService {
 
     getPacksDetailsPath(mainIndex,line, attr) {
       return this.appPath + '.' + mainIndex + '[' + line + '].' + attr; 
+    }
 
+    getPacksDetailsBasePath(mainIndex,line) {
+      return this.appPath + '.' + mainIndex + '[' + line + ']'; 
     }
 
     getAddPacksDetailsPath(line,attr) {
@@ -206,9 +226,13 @@ export class PackingInstructionsSharedService {
       return this.appPath + '.' + mainIndex + '.' + attr;
     }
 
+    getRatioHeaderBasepath(mainIndex){
+      return this.appPath + '.' + mainIndex ;
+    }
+
     getHeaderEditable(attr, primaryKey) {
       let editable = this.editMode;
-      let nonEditableAttrs = ['partnerName', 'so', 'style','po','delivery','orderQnty','packedQnty','totalQnty','cartons','description'];// attributes that cannot be edited after creation
+      let nonEditableAttrs = ['partnerName', 'so', 'style','po','delivery','orderQnty','packedQnty','totalPackQty','cartons'];// attributes that cannot be edited after creation
       if (this.poId && this.orderId && this.parentProductId && nonEditableAttrs.indexOf(attr) > -1) {
           editable = false
       }
@@ -241,6 +265,8 @@ export class PackingInstructionsSharedService {
     }
 
     deleteSolidLine(key, index, mainIndex) {
+      let newLine = false;
+      this.reArrangeSequence(mainIndex,index,newLine);
       let linePrimaryKey = this[key + 'PrimaryKey'];
       let data = this.formData[key].grpData[mainIndex];
       let path = this.appPath + '.' + mainIndex;
@@ -260,13 +286,18 @@ export class PackingInstructionsSharedService {
           cache.push(model[linePrimaryKey])
           this._cache.setLocalCache(removedPath, cache);
       }
+      else{
+        newLine = true;
+      }
       if (data.length == 0) {
           this.resetSeq(key)
       }
       this.refreshpacksDetails.next(true);
+      
     }
 
   deleteRatioLine(key, index, mainIndex) {
+    this.reArrangeSequence(mainIndex,index,false);
     let linePrimaryKey = this[key + 'PrimaryKey'];
     let data = this.formData[key].grpData;
     let path = this.appPath + '.' + mainIndex;
@@ -291,15 +322,17 @@ export class PackingInstructionsSharedService {
         this.resetSeq(key)
     }
     this.refreshpacksDetails.next(true);
+    
   }
 
   resetSeq(key) {
     this['_' + key + 'Seq'] = 1;
   }
 
-  setSelectedLines(key, models) {
-    this.selectedLines[key] = models;
+  setSelectedLines(key, mainIndex, models) {
+    this.selectedLines[mainIndex]= models;
   }
+
 
   setLines(key, data) {
     if (!data || !data.length) this.formData[key] = this[key] = [];
@@ -432,6 +465,7 @@ addNewRatioLine(key, model = null,modelData) {
           value = null;
       } else if (attr == seqKey) {
           value = seq.toString();
+          modelData.sequence = value;
       } 
       if(attr == 'csId' && modelData.packType == 'Ratio') {
         value = this.id;
@@ -443,6 +477,9 @@ addNewRatioLine(key, model = null,modelData) {
           this.inputService.updateInput(path + '.' + length + '.' + attr, value);
       }
   });
+  if (!this.formData[key].length) {
+    this.formData[key].length = 1;
+  }
   // data.push(newLine);
 }
 
@@ -487,7 +524,7 @@ validateQuantity(saveData) : any{
       null;
     }
     else{
-      if(elem.csPack && (elem.orderQty || elem.noOfCartons)){
+      if(elem.csPackId && (elem.orderQty || elem.noOfCartons)){
         let csPackId = elem.csPackId;
         let qtyDiff = 0;
         let pId = 0
@@ -520,6 +557,9 @@ validateQuantity(saveData) : any{
             })
           }
         })
+      }
+      else if(elem.csPackId && ((elem.short || elem.short == "") || (elem.excess || elem.excess == "") || elem.sequence)){
+        null;
       }
       else{
         if(elem.packType == 'SOLID'){
@@ -569,5 +609,102 @@ generateNewCopy(model){
   return data;
 }
 
+reArrangeSequence(mainIndex,index,newLine){
+  this.formData['packsDetails'].grpKey.forEach((elem,index1)=>{
+    if(index1 == mainIndex){
+      if(elem && elem.packType == 'SOLID'){
+        this.formData['packsDetails'].grpData[index1].forEach((element,index2)=>{
+          if(index2 >= index && element.csPackId){
+            element.sequence = Number(element.sequence)-1;
+            this._cache.setLocalCache(this.getPacksDetailsBasePath(index1,index2), {'csPackId':element.csPackId,'sequence':element.sequence});
+          }
+          else if(index2 >= index){
+            let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index1,index2, 'sequence'));
+            this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1)
+          }
+        })
+      }
+    }
+    else if(index1 > mainIndex){
+      if(elem && elem.packType == 'SOLID'){
+        this.formData['packsDetails'].grpData[index1].forEach((element,index2)=>{
+          if(element.csPackId){
+            element.sequence = Number(element.sequence)-1;
+            this._cache.setLocalCache(this.getPacksDetailsBasePath(index1,index2), {'csPackId':element.csPackId,'sequence':element.sequence});
+          }
+          else{
+            
+            let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index1,index2, 'sequence'));
+            this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1);
+            element.sequence = seq-1;
+          }
+        })
+      }
+      if(elem && elem.packType == 'RATIO'){
+        if(elem.csPackId){
+          elem.sequence = Number(elem.sequence)-1;
+          this._cache.setLocalCache(this.getRatioHeaderBasepath(index1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+          this.updatePackDetails.next(true);
+        }
+        else{
+          elem.sequence = Number(elem.sequence)-1;
+          let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+          this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+          this.updatePackDetails.next(true);
+        }
+      }
+    }
+  })
+}
+
+findMaxSequence(){
+  let cache = this._cache.getCachedValue(this.packsDetailsRemovedKeysPath)
+  let maxSeq = 0;
+  this.formData['packsDetails'].grpData.forEach((x,index)=>{
+    if(x && x.packType == 'RATIO'){
+      if(x.csPackId){
+        if(cache && cache.findIndex(a=> a = Number(x.csPackId))){
+          if(maxSeq < Number(x.sequence)){
+            maxSeq = Number(x.sequence);
+          }
+        }
+        else{
+          if(maxSeq < Number(x.sequence)){
+            maxSeq = Number(x.sequence);
+          }
+        }
+      }
+      else{
+        let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index, 'sequence'));
+        if(maxSeq < Number(seq)){
+          maxSeq = Number(seq);
+        }
+      }
+    }
+    else{
+      x.forEach((y,index2)=>{
+        if(y.csPackId){
+          if(cache && cache.findIndex(a=> a = Number(y.csPackId))){
+            if(maxSeq < Number(y.sequence)){
+              maxSeq = Number(y.sequence);
+            }
+          }
+          else{
+            if(maxSeq < Number(y.sequence)){
+              maxSeq = Number(y.sequence);
+            }
+          }
+        }
+        else{
+          let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index,index2, 'sequence'));
+          if(maxSeq < Number(seq)){
+            maxSeq = Number(seq);
+          }
+        }
+      })
+    }
+  })
+  this.packsDetailsSeq = maxSeq;
+}
 
 }

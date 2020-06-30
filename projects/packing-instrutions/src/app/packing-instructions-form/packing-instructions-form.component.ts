@@ -73,10 +73,16 @@ export class PackingInstructionsFormComponent implements OnInit {
     }
 
     deleteLine(key) {
-      this._service.deleteLines(key);
+      if(!this._shared.isCartonGenerated){
+        this._service.deleteLines(key);
+      }
+      else{
+        this.alertUtils.showAlerts("Carton already generated");
+      }
     }
 
     addLine(key, model = null) {
+      this._shared.findMaxSequence();
       if(!this._shared.isCartonGenerated){
         let dialogRef = this.dialog.open(AddPacksComponent);
         if(key == 'packDetailsSolid'){
@@ -126,7 +132,17 @@ export class PackingInstructionsFormComponent implements OnInit {
     }
 
     generateCartonLines(){
-      this._service.generateCarton().then(data=>{
-      })
+      if(this._shared.isCartonGenerated){
+        this.alertUtils.showAlerts("Carton already generated ");
+      }
+      else{
+        if(this._shared.totalPacks > 0){
+          this._service.generateCarton('Y').then(data=>{
+          })
+        }
+        else{
+          this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
+        }
+      }
     }
 }

@@ -57,24 +57,4 @@ export class PackingInstructionsListComponent implements OnInit {
     // this._shared.selectedPage = pageChangeEvent.page;
   }
 
-  getTotalPack(data): String {
-    if (
-      data.totalPackSolid != 0 &&
-      data.totalPackRatio != 0 &&
-      data.totalPackSolid &&
-      data.totalPackRatio
-    ) {
-      data.totalQnty =
-        "Solid-" + data.totalPackSolid + ", Ratio-" + data.totalPackRatio;
-    } else if (data.totalPackSolid == 0 && data.totalPackRatio == 0) {
-      data.totalQnty = "";
-    } else if (data.totalPackSolid == 0) {
-      data.totalQnty = "Ratio-" + data.totalPackRatio;
-    } else if (data.totalPackRatio == 0) {
-      data.totalQnty = "Solid-" + data.totalPackSolid;
-    } else {
-      data.totalQnty = "";
-    }
-    return data.totalQnty;
-  }
 }

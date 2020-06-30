@@ -1,20 +1,23 @@
-<smd-datatable [tableId]="_shared.appKey + '.lookupValue'" [paginated]="!_shared.getLookupValueEditable()" [loading]="_shared.lookupValueLoading"
- class="tnz-input-table" [filterEnabled]="!_shared.getLookupValueEditable()" [sortEnabled]="!_shared.getLookupValueEditable()"
- (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
- [showCheckBox]="false">
-	
- <smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px'}">
-	<ng-template let-index="index">
-		{{index+1}}
-	</ng-template>
-</smd-datatable-column> 
+<smd-datatable [tableId]="_shared.appKey + '.lookupValue'" [paginated]="!_shared.getLookupValueEditable()"
+	[loading]="_shared.lookupValueLoading" class="tnz-input-table" [filterEnabled]="!_shared.getLookupValueEditable()"
+	[sortEnabled]="!_shared.getLookupValueEditable()" (onRowSelected)="onRowSelected()"
+	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
+
+	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px'}">
+		<ng-template let-index="index">
+			{{index+1}}
+		</ng-template>
+	</smd-datatable-column>
 	<smd-datatable-column title="Lookup Code" field="lookupCode" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data" let-index="index">
 			{{model.lookupCode}}
 			<div *ngIf="!model.lookupCode">
-				<tnz-input class="text-upper" [path]="_shared.getLookupValuePath(index,'lookupCode')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  validators="min:1,required" [isEdit]="getIfEditable(index,'lookupCode')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="checkDuplicateLookupCode($event,index)">
-				
+				<tnz-input class="text-upper" [path]="_shared.getLookupValuePath(index,'lookupCode')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					validators="min:1,required" [isEdit]="getIfEditable(index,'lookupCode')"
+					[loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="checkDuplicateLookupCode($event,index)">
+
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -23,8 +26,11 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('meaning')">{{model.meaning}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('meaning')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'meaning')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  validators="min:1,required" [isEdit]="getIfEditable(index,'meaning')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'meaning')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'meaning')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					validators="min:1,required" [isEdit]="getIfEditable(index,'meaning')"
+					[loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'meaning')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -33,8 +39,11 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('description')">{{model.description}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('description')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'description')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="getIfEditable(index,'description')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'description')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'description')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="getIfEditable(index,'description')"
+					[loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'description')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -43,18 +52,22 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('header1')">{{model.header1}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('header1')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'header1')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="getIfEditable(index,'header1')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'header1')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'header1')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="getIfEditable(index,'header1')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'header1')">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Value1" field="value1" sortable="true" [filterable]="true"  stretch="true">
+	<smd-datatable-column title="Value1" field="value1" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('value1')">{{model.value1}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('value1')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'value1')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="getIfEditable(index,'value1')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'value1')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'value1')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="getIfEditable(index,'value1')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'value1')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -64,18 +77,22 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('header2')">{{model.header2}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('header2')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'header2')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  [isEdit]="getIfEditable(index,'header2')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'header2')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'header2')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'header2')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'header2')">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Value2" field="value2" sortable="true" [filterable]="true"  stretch="true">
+	<smd-datatable-column title="Value2" field="value2" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('value2')">{{model.value2}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('value2')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'value2')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 [isEdit]="getIfEditable(index,'value2')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'value2')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'value2')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'value2')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'value2')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -84,8 +101,10 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('header3')">{{model.header3}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('header3')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'header3')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  [isEdit]="getIfEditable(index,'header3')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'header3')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'header3')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'header3')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'header3')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -94,8 +113,10 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('value3')">{{model.value3}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('value3')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'value3')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  [isEdit]="getIfEditable(index,'value3')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'value3')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'value3')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'value3')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'value3')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -104,8 +125,10 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('header4')">{{model.header4}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('header4')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'header4')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="getIfEditable(index,'header4')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'header4')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'header4')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="getIfEditable(index,'header4')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'header4')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -114,8 +137,10 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('value4')">{{model.value4}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('value4')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'value4')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  [isEdit]="getIfEditable(index,'value4')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'value4')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'value4')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'value4')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'value4')">
 				</tnz-input>
 			</div>
 		</ng-template>
@@ -124,76 +149,83 @@
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('header5')">{{model.header5}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('header5')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'header5')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				  [isEdit]="getIfEditable(index,'header5')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'header5')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'header5')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'header5')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'header5')">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Value5" field="value5" sortable="true" [filterable]="true" [numeric]="true" stretch="true">
+	<smd-datatable-column title="Value5" field="value5" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('value5')">{{model.value5}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('value5')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'value5')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 [isEdit]="getIfEditable(index,'value5')" [loading]="_shared.lookupValueLoading || _shared.loading" (valueChanged)="lengthCheck($event,index,'value5')">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'value5')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'value5')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					(valueChanged)="lengthCheck($event,index,'value5')">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
 
 	<!--Checkbox  -->
-	<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [numeric]="true">
+	<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
-			<!-- <span *ngIf="!_shared.getLookupValueEditable('active')">
-				<mat-icon>{{(model.active=='Y')?'done':'clear'}}</mat-icon>
-			</span> -->
-
 			<div class="checkbox-center-align" *ngIf="!_shared.getLookupValueEditable('active')">
-				<mat-checkbox  [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+				<mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
 			</div>
 			<div *ngIf="_shared.getLookupValueEditable('active')">
-				<tnz-input type="checkbox" [path]="_shared.getLookupValuePath(index,'active')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 [isEdit]="getIfEditable(index,'active')" [loading]="_shared.lookupValueLoading || _shared.loading" class="checkbox-center-align">
-				</tnz-input> 
+				<tnz-input type="checkbox" [path]="_shared.getLookupValuePath(index,'active')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
+					[isEdit]="getIfEditable(index,'active')" [loading]="_shared.lookupValueLoading || _shared.loading"
+					class="checkbox-center-align">
+				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true"  stretch="true">
+	<smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('createdByUser')">{{model.createdByUser}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('createdByUser')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'createdByUser')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'createdByUser')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true" >
+	<smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('creationDate')">{{model.creationDate}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('creationDate')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'creationDate')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'creationDate')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Updated By" field="lastUpdatedByUser" sortable="true" [filterable]="true"  stretch="true">
+	<smd-datatable-column title="Updated By" field="lastUpdatedByUser" sortable="true" [filterable]="true"
+		stretch="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('lastUpdatedByUser')">{{model.lastUpdatedByUser}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('lastUpdatedByUser')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'lastUpdatedByUser')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'lastUpdatedByUser')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
 				</tnz-input>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" >
+	<smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getLookupValueEditable('lastUpdateDate')">{{model.lastUpdateDate}}</span>
 			<div *ngIf="_shared.getLookupValueEditable('lastUpdateDate')">
-				<tnz-input [path]="_shared.getLookupValuePath(index,'lastUpdateDate')" [primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData"
-				 validators="min:0" [isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
+				<tnz-input [path]="_shared.getLookupValuePath(index,'lastUpdateDate')"
+					[primaryKey]="_shared.lookupValuePrimaryKey" [sharedData]="_shared.formData" validators="min:0"
+					[isEdit]="false" [loading]="_shared.lookupValueLoading || _shared.loading">
 				</tnz-input>
 			</div>
 		</ng-template>

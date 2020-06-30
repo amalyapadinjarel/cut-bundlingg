@@ -64,6 +64,9 @@
                                     <button mat-button matTooltip="delete line">
                                         <mat-icon class="mat-color-danger" (click)="deleteLine('cutPanelDetails')">delete</mat-icon>
                                     </button>
+                                    <button mat-button matTooltip="regenerate cut panels">
+                                        <mat-icon class="mat-color-success" (click)="regenerateCutPanels()">restore_page</mat-icon>
+                                    </button>
                                 </div>
                             </div>
                             <cut-register-products></cut-register-products>

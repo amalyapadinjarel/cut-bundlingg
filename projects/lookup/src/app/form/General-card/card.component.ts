@@ -95,13 +95,14 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 
 
 	valueChangedFromUI(event) {
-	//	console.log("event-",event);
+		//	console.log("event-",event);
 
 		let tmp = event.value.toUpperCase();
-	//	console.log("tmp-",tmp);
+		//console.log("tmp-", tmp);
 		//set lookuptype to header
+	//	console.log("formdata=", this._shared.getHeaderAttributeValue('lookupType'));
 		this._shared.formData.header.lookupType = tmp;
-		
+
 		if (tmp.length > 30) {
 			this._inputService.setError(this._shared.getHeaderAttrPath('lookupType'), 'Length exceeded 30 characters!');
 		}
@@ -144,12 +145,12 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	lengthCheck(event,attr){
-		let val= event.value;
+	lengthCheck(event, attr) {
+		let val = event.value;
 
-		let limit=240;
-		if(val.length>limit){
-			this._inputService.setError(this._shared.getHeaderAttrPath(attr), 'Length exceeded '+ limit+' characters!');
+		let limit = 240;
+		if (val.length > limit) {
+			this._inputService.setError(this._shared.getHeaderAttrPath(attr), 'Length exceeded ' + limit + ' characters!');
 
 		}
 	}

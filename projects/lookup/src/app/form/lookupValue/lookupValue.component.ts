@@ -47,11 +47,6 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 			this.refreshSub.unsubscribe();
 	}
 
-	// valueChanged(change, index) {
-	// 	if (this._shared.editMode) {
-	// 	}
-	// }
-
 	refreshTable() {
 		this.dataTable.refresh(this._shared.formData[this.key])
 
@@ -64,7 +59,6 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 		return i == -1 && this._shared.getLookupValueEditable();
 	}
 	onRowSelected() {
-		//	this._shared.setSelectedLines('lookupValue', this.dataTable.selectedModels())
 		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 	disableInput(index, key) {
@@ -81,7 +75,6 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 
 	//Method not used
 	getDate() {
-		//console.log(Date.now);
 		return Date.now;
 	}
 
@@ -89,7 +82,10 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 	checkDuplicateLookupCode(event, index) {
 
 		let tmp = event.value;
-		if (tmp.length > 30) {
+		if (tmp = "" || tmp == null || tmp == " ") {
+			this._inputService.setError(this._shared.getLookupValuePath(index, 'lookupCode'), 'Please enter lookup code!');
+
+		} else if (tmp.length > 30) {
 			this._inputService.setError(this._shared.getLookupValuePath(index, 'lookupCode'), 'Length exceeded 30 characters!');
 		} else {
 			this._inputService.resetError(this._shared.getLookupValuePath(index, 'lookupCode'));
@@ -111,7 +107,7 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	lengthCheck(event,index,attr) {
+	lengthCheck(event, index, attr) {
 		let val = event.value;
 		let limit;
 		switch (attr) {
@@ -121,18 +117,18 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 			case 'meaning':
 				limit = 80;
 				break;
-			case 'header1': case 'header2': case 'header3':case 'header4':case 'header5':
-				limit=60;
+			case 'header1': case 'header2': case 'header3': case 'header4': case 'header5':
+				limit = 60;
 				break;
 			case 'description':
-				limit=240;
+				limit = 240;
 				break;
 			default:
-				limit=150;
-					break;
+				limit = 150;
+				break;
 		}
 		if (val.length > limit) {
-			this._inputService.setError(this._shared.getLookupValuePath(index,attr), 'Length exceeded ' + limit + ' characters!');
+			this._inputService.setError(this._shared.getLookupValuePath(index, attr), 'Length exceeded ' + limit + ' characters!');
 		}
 	}
 
