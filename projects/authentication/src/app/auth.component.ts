@@ -78,13 +78,6 @@ export class AuthComponent {
 						this.eventService.isLoadingPage.next(true);
 						this.eventService.onLogin.next(true);
 						this.navigateAfterLogin();
-						// this.navService.fetchMenuData().then(() => {
-						// 	this.navigateAfterLogin();
-						// }, () => {
-						// 	this.router.navigateByUrl('/cut-register/list').then(() => {
-						// 		this.eventService.isLoadingPage.next(false);
-						// 	});
-						// });
 					}
 				},
 				errorResponse => {
@@ -182,7 +175,7 @@ export class AuthComponent {
 			});
 		} else {
 			this.alertUtils.allowAlerts();
-			this.router.navigateByUrl('/cut-register/list').then(() => {
+			this.router.navigateByUrl('').then(() => {
 				this.eventService.isLoadingPage.next(false);
 			});
 		}
