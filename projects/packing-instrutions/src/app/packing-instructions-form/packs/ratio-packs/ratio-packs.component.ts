@@ -45,7 +45,7 @@ export class RatioPacksComponent implements OnInit {
 			if (change){}
     });
     this.updatePackDetails = this._shared.updatePackDetails.subscribe(change => {
-			this.sequence = this._shared.formData['packsDetails'].grpKey[this.mainIndex].sequence;
+			this.sequence = this._shared.formData['packsDetails'].grpKey[this.mainIndex]?.sequence;
     });
     let sum = 0;
     this.formData['color'].forEach(elem=>{

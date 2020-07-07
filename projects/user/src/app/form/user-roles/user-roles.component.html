@@ -3,7 +3,7 @@
 	[sortEnabled]="!_shared.getUserRolesEditable()" (onRowSelected)="onRowSelected()"
 	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
 
-	<smd-datatable-column title=" " field=" " *ngIf="_shared.getUserRolesEditable()" >
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.getUserRolesEditable()">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
 				<mat-icon *ngIf="model[_shared.userRolesPrimaryKey] == 0" class="mat-color-danger"
@@ -11,26 +11,26 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}" >
+	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false"
+		[colStyle]="{'width':'15px','text-align':'center'}">
 		<ng-template let-index="index">
 			{{index+1}}
 		</ng-template>
 	</smd-datatable-column>
-	
-	<smd-datatable-column title="Role Short Code" field="roleShortCode" sortable="true" [filterable]="true"
-		>
+
+	<!-- <smd-datatable-column title="Role Short Code" field="roleShortCode" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
 			{{model.roleShortCode}}
 		</ng-template>
-	</smd-datatable-column>
+	</smd-datatable-column> -->
 	<smd-datatable-column title="Role Name" field="roleName" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data">
 			{{model.roleName}}
 		</ng-template>
 	</smd-datatable-column>
-	
+
 	<smd-datatable-column title="Start Date" field="roleStartDateTr" sortField="roleStartDate" sortable="true"
-		[filterable]="true" [colStyle]="{'min-width':'95px'}" >
+		[filterable]="true" [colStyle]="{'min-width':'95px'}">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getUserRolesEditable('roleStartDateTr')">{{model.roleStartDateTr}}</span>
 			<div *ngIf="_shared.getUserRolesEditable('roleStartDateTr')">
@@ -45,8 +45,8 @@
 	<smd-datatable-column title="End Date" field="roleEndDateTr" sortField="roleEndDate" sortable="true"
 		[filterable]="true" [colStyle]="{'min-width':'95px'}">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getUserRolesEditable('roleEndDateTr')"  >{{model.roleEndDateTr}}</span>
-			<div *ngIf="_shared.getUserRolesEditable('roleEndDateTr')" >
+			<span *ngIf="!_shared.getUserRolesEditable('roleEndDateTr')">{{model.roleEndDateTr}}</span>
+			<div *ngIf="_shared.getUserRolesEditable('roleEndDateTr')">
 				<tnz-input type="date" [path]="_shared.getUserRolesPath(index,'roleEndDate')"
 					[primaryKey]="_shared.userRolesPrimaryKey" [sharedData]="_shared.formData"
 					[isEdit]="getIfEditable(index,'roleEndDate')"
@@ -58,7 +58,11 @@
 	<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
 			<div class="checkbox-center-align">
-				<mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+				<!-- <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox> -->
+				<mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+					matTooltip="Active">check_circle</mat-icon>
+				<mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+					matTooltip="Inactive">cancel</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>

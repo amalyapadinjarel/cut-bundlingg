@@ -95,6 +95,11 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/user/src/app/user.module').then(m => m.UserModule)
 	},
 	{
+        path: 'roles',
+        // canActivate: [AuthGuard],
+        loadChildren: () => import('../../projects/roles/src/app/roles.module').then(m => m.RolesModule)
+    },
+	{
 
 		path: 'routing-cut-panels',
 		// canActivate: [AuthGuard],
@@ -107,9 +112,15 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/packing-instrutions/src/app/packing-instructions.module').then(m => m.PackingInstructionsModule)
 	},
 	{
+
+		path: 'division',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/division/src/app/division.module').then(m => m.DivisionModule)
+	},
+	{
 		path: '**',
 		redirectTo: 'not-found'
-	},
+	}
 ], { useHash: true , onSameUrlNavigation : 'reload'});
 
 @NgModule({

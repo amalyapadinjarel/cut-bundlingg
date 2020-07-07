@@ -12,11 +12,11 @@ import { ApiService } from '../../services';
 })
 export class TnzInputLOVComponent implements OnInit, OnDestroy {
 
-	selectedRecords: any;
+	selectedRecords: any = [];
 	lovConfig: any = {};
 	returnData: any;
 	preFetchPages = 1;
-	primaryKey = [];
+	primaryKey ;
 
 	@ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
 
@@ -51,12 +51,8 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	checkedPksNew(output){
-		this.selectedRecords = output.checkedArr.checkedList
-	}
-
 	selectRecord() {
-		let models = this.selectedRecords ? this.selectedRecords : this.dataTable.selectedModels();
+		let models = this.getModels();
 		if (this.lovConfig.allowMultiple && models.length > 0) {
 			this.dialogRef.close(models);
 		}
@@ -68,5 +64,12 @@ export class TnzInputLOVComponent implements OnInit, OnDestroy {
 		} else {
 			this.alertUtils.showAlerts('Selection failed');
 		}
+	}
+
+	_onPageChange(event){			
+	}
+
+	getModels(){
+		return this.dataTable.selectedModels();
 	}
 }

@@ -31,9 +31,10 @@ export class AddPacksComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetCache();
-    if (this.addType == 0) this.title = "Add Solid Pack";
+    if (this.addType == 0) 
+      this.title = "Add Solid Pack";
     else this.title = "Add Ratio Pack";
-    this.fetchData(this.addType);
+      this.fetchData(this.addType);
     this._shared.addSolidPacksDetailsSeq = 0
   }
 
@@ -157,12 +158,12 @@ export class AddPacksComponent implements OnInit {
         if (data) {
           this._shared.setLines("solidPack", data);
           this._shared.formData["solidPack"] = data;
-          this._shared["solidPack" + "Loading"] = false;
           this.TempformData = [];
           this._shared.formData["solidPack"].forEach((val) => {
             val.sequence = this._shared.addSolidPacksDetailsSeq;
             this.TempformData.push(new PacksDetails(val));
           });
+          this._shared["solidPack" + "Loading"] = false;
           this.refreshTable();
         }
         (err) => {

@@ -126,7 +126,7 @@ export class PackingInstructionsFormComponent implements OnInit {
           })
         }
         else{
-          this.alertUtils.showAlerts("One or more carton is not in OPEN status");
+          this.alertUtils.showAlerts("One or more carton is not in OPEN status or has excess or short quantity");
         }
       })
     }

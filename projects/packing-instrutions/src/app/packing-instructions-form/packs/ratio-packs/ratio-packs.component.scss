@@ -103,7 +103,8 @@ $cell-data-color: #2f74b5;
 }
 
 .ratio-th{
-    min-width: 90px;
+    min-width: 65px !important;
+    // max-width: 65px !important;
     height: 35px;
 }
 .ratio-tr{
@@ -111,12 +112,15 @@ $cell-data-color: #2f74b5;
     
 }
 .ratio-td{
-    min-width: 90px;
+    min-width: 65px !important;
+    // max-width: 65px !important;
+    width: 5%;
     height: 35px;
 }
 
 table {
-    border-collapse: collapse;
+  table-layout: fixed;
+  border-collapse: collapse;
   }
   
   table, th, td {
@@ -124,8 +128,76 @@ table {
   }
 
 .label-class {
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.87);
+  margin-top: 12px;
+  color: #6B538B;
+  padding-right: 5px;
+}
+
+.data-value{
+  margin-left: 3px;
+  color: #6B538B;
+}
+
+.top-bar {
+  display: flex; 
+  margin-bottom: 2px;
+  margin-top: 9px;
+}
+
+.label-value{
+  display: flex;
+   margin-left: 10px;
+  color: #6B538B;
+}
+
+.gradient-bottom{
+  position: relative;
+  top: 5px; 
+  left: -10%; 
+  color: rgba(0, 0, 0, 0.87); 
   opacity: 0.72;
+}
+
+.gradient-top{
+  position: relative;
+  bottom: 5px;  
+  color: rgba(0, 0, 0, 0.87); 
+  opacity: 0.72;
+}
+
+.data-box {
+  width: 65px;
+  margin-top: 9px;
+  display: inline-block;
+  border: 1px solid #bfbfbf;
+  text-align: center;
+  margin-left: 5px;
+}
+
+.data-box-edit {
+  width: 65px;
+  margin-top: 9px;
+}
+
+.data-box-bottom {
+  width: 65px;
+  margin-top: 10px;
+  display: inline-block;
+  border: 1px solid #bfbfbf;
+  text-align: center;
+}
+
+.data-box-edit-bottom {
+  width: 65px;
+  margin-top: 10px;
+}
+
+.box {
+  line-height: 18px;
+  box-sizing: border-box;
+  outline-color: #cbc7d2;
+  outline-style: auto;
+  background: #f3f2f4;
+  font-family: inherit;
 }
 

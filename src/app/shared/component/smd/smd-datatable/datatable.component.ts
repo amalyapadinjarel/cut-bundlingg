@@ -323,7 +323,6 @@ export class SmdDataTable
 	@Output() ndAction: EventEmitter<any> = new EventEmitter<any>();
 	@Input() selectPage: boolean = false;
 	@Input() loading: boolean = false;
-	@Output() checkedPksNew: EventEmitter<any> = new EventEmitter<any>();
 	@Output() filterParams: EventEmitter<any> = new EventEmitter<any>();
 
 	@Input() apiClass: any;
@@ -331,12 +330,8 @@ export class SmdDataTable
 	@Input() postBody: any = {};
 	@Input() searchDB = true;
 	@Input() preFilters: any;
-	@Input() primaryKey: any;
 	customFilter: any;
 	customFilters: any;
-	checkedRows: any = [];
-	checkedPKs: any = [];
-	@Input() inputCheckedPKs: any = [];
 	@Input() removeVariable = false;
 	@Output() range: EventEmitter<any> = new EventEmitter<any>();
 	selectedRowCount: number = 0;
@@ -346,6 +341,7 @@ export class SmdDataTable
 	tempColumns: any = [];
 	hasSubheader: Boolean = false;
 	columnValueChanges: Boolean = false;
+	@Input() checkedRows: any = [];
 
 	private operators = ['>', '<', '>=', '<='];
 
@@ -402,7 +398,6 @@ export class SmdDataTable
 		});
 
 		if (this.removeVariable == true) {
-			this.checkedPKs = this.inputCheckedPKs;
 			this._updateVisibleRows();
 		}
 
@@ -543,7 +538,7 @@ export class SmdDataTable
 	}
 
 	selectedModels(): any[] {
-		return this.selectedRows().map(row => row.model);
+		return this.checkedRows;
 	}
 
 	_selectedModels(): Observable<any>[] {
@@ -555,7 +550,7 @@ export class SmdDataTable
 			this.visibleRows.forEach((row: SmdDataRowModel) => {
 				if (row.checked != this.checked) {
 					row.checked = this.checked;
-					this.selectedRowCountFn(row);
+					this.setCheckedRows(row);
 				}
 			});
 		}
@@ -563,7 +558,7 @@ export class SmdDataTable
 			this.rows.forEach((row: SmdDataRowModel) => {
 				if (row.checked != this.checked) {
 					row.checked = this.checked;
-					this.selectedRowCountFn(row);
+					this.setCheckedRows(row);
 				}
 			});
 		}
@@ -574,45 +569,23 @@ export class SmdDataTable
 		});
 	}
 
-	selectedRowCountFn(row) {
-		if (this.primaryKey) {
-			let pK = "";
-			this.primaryKey.forEach((primKey) => {
-				pK = pK + "," + row.model[primKey].toString();
-			});
-			var idx = this.checkedPKs.indexOf(pK);
-			if (idx != -1) {
-				this.selectedRowCount--;
-				this.checkedPKs.splice(idx, 1);
-				this.checkedRows.splice(idx, 1);
-				let checkedArr = {
-					checkedPks: this.checkedPKs,
-					checkedList: this.checkedRows
-				};
-				this.checkedPksNew.emit({ checkedArr: checkedArr });
-			}
-			if (row.checked) {
-				this.selectedRowCount++;
-				this.checkedRows.push(row.model);
-				this.checkedPKs.push(pK);
-				let checkedArr = {
-					checkedPks: this.checkedPKs,
-					checkedList: this.checkedRows
-				};
-				this.checkedPksNew.emit({ checkedArr: checkedArr });
-			}
+	setCheckedRows(row) {
+		var idx = this.findIndex(this.checkedRows,row.model);
+		if (idx != -1) {
+			this.selectedRowCount--;
+			this.checkedRows.splice(idx, 1);
+		}
+		else if (row.checked) {
+			this.selectedRowCount++;
+			this.checkedRows.push(row.model);
 		}
 	}
 
 	_onRowCheckChange(row: SmdDataRowModel) {
 		if (this.selectMultiple) {
 			let isMasterChecked = this.checked;
-			this.selectedRowCountFn(row);
-			let checkedRows = [];
-			this.rows
-				.filter(row => row.checked == true)
-				.forEach(row => checkedRows.push(row.model));
-			this.allCheckedRows.emit(checkedRows);
+			this.setCheckedRows(row);
+			this.allCheckedRows.emit(this.checkedRows);
 			if (row.checked) {
 				if (this.rows.filter(row => row.checked).length == this.rows.length) {
 					this.checked = true;
@@ -638,22 +611,25 @@ export class SmdDataTable
 
 			if (this.checked != isMasterChecked) {
 				this.onAllRowsChecked.emit({
-					model: this.visibleRows,
+					model: this.checkedRows,
 					checked: this.checked
 				});
 			}
 		} else {
-			if (row.checked && this.lastSelected && this.lastSelected.checked) {
-				this.lastSelected.checked = false;
+			if (row.checked) {
+				if (this.lastSelected && !this.equals(this.lastSelected,row)) {
+					this.lastSelected.checked = false;
+					this.setCheckedRows(this.lastSelected)
+				}
 				this.lastSelected = row;
 			}
 			let isMasterChecked = this.checked;
-			this.selectedRowCountFn(row);
-			let checkedRows = [];
-			this.rows
-				.filter(row => row.checked == true)
-				.forEach(row => checkedRows.push(row.model));
-			this.allCheckedRows.emit(checkedRows);
+			this.setCheckedRows(row);
+			// let checkedRows = [];
+			// this.rows
+			// 	.filter(row => row.checked == true)
+			// 	.forEach(row => checkedRows.push(row.model));
+			this.allCheckedRows.emit(this.checkedRows);
 			if (row.checked) {
 				if (this.rows.filter(row => row.checked).length == this.rows.length) {
 					this.checked = true;
@@ -679,7 +655,7 @@ export class SmdDataTable
 
 			if (this.checked != isMasterChecked) {
 				this.onAllRowsChecked.emit({
-					model: this.visibleRows,
+					model: this.checkedRows,
 					checked: this.checked
 				});
 			}
@@ -1150,7 +1126,6 @@ export class SmdDataTable
 					}
 				}
 				this._updateRows();
-				this.checkedPKs = this.inputCheckedPKs;
 				this._updateVisibleRows();
 				this.dataChange.emit({
 					offset: offset,
@@ -1215,16 +1190,11 @@ export class SmdDataTable
 			this.visibleRows = this.rows;
 		}
 		this._setHeaderCheckBox();
-		if (this.primaryKey) {
-			this.visibleRows.forEach(row => {
-				let pK = "";
-				this.primaryKey.forEach((primKey, i) => {
-					pK = pK + "," + row.model[this.primaryKey[i]].toString();
-				});
-				if (this.checkedPKs.indexOf(pK) != -1) { row.checked = true; }
-			});
-		}
-		this.selectedRowCount = this.checkedPKs.length;
+		this.visibleRows.forEach(row => {
+			if (this.checkedRows.length)
+				if (this.checkIfInsideArray(this.checkedRows,row.model)) { row.checked = true; }
+		});
+		this.selectedRowCount = this.checkedRows.length;
 	}
 
 	private _setSelectedRows() {
@@ -1370,5 +1340,17 @@ export class SmdDataTable
 		if (column) {
 			this.subHeaderColums.push(column);
 		}
+	}
+
+	equals(a, b) {
+		return JSON.stringify(a) == JSON.stringify(b)
+	}
+
+	checkIfInsideArray(array,object){
+		return this.findIndex(array,object) != -1
+	}
+
+	findIndex(array,object){
+		return array.findIndex(row => { return this.equals(row, object) })
 	}
 }

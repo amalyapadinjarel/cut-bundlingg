@@ -10,7 +10,7 @@
             [sharedData]="_shared.formData" [lovConfig]="docTypeLov" validators="required" [loading]="_shared.loading" [isEdit]="_shared.getHeaderEditable('docType', _shared.id)"
             (valueChanged)="valueChanged($event)">
         </tnz-input>
-        <tnz-input [value]="'v' + (_shared.getHeaderAttributeValue('RevisionNo') || 1)" [loading]="_shared.loading">
+        <tnz-input [value]="'v' + (_shared.getHeaderAttributeValue('revisionNo') || 1)" [loading]="_shared.loading">
         </tnz-input>
     </div>
 </div>

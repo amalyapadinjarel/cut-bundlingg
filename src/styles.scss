@@ -888,8 +888,8 @@ tnz-input {
                                     }
 
                                     >label {
-                                        min-width: 120px;
-                                        max-width: 120px;
+                                        min-width: 80px;
+                                        max-width: 80px;
                                         padding-right: 4px;
                                         text-align: right;
                                         border-right: 1px solid #ccc;
@@ -1573,5 +1573,23 @@ mat-card.input-card .date-tracks {
       outline-style: none !important;
     //   background: transparent !important;
       
+    }
+}
+
+.tnz-input-center-align{
+    input {
+        text-align: center !important; 
+    }
+}
+
+.tnz-input-red {
+    input {
+        color: red !important;
+    }
+}
+
+.tnz-input-green {
+    input {
+        color: green !important;
     }
 }

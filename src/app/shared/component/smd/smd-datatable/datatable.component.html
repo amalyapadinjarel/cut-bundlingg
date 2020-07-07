@@ -11,7 +11,7 @@
                 <thead>
                 <tr>
                     <th *ngIf="_shouldRenderCheckbox()">
-                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
+                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                         </mat-checkbox>
                     </th>
                     <th *ngFor="let column of columns"
@@ -41,7 +41,7 @@
                 </tr>
                 <tr *ngIf="responsive && _shouldRenderCheckbox()" class="smd-datatable-responsive-header">
                     <th [attr.colspan]="columns.length + (_shouldRenderCheckbox() ? 1 : 0)">
-                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
+                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                         </mat-checkbox>
                     </th>
                 </tr>
@@ -53,7 +53,7 @@
                 <thead *ngIf="isTitleNeeded">
                 <tr>
                     <th *ngIf="_shouldRenderCheckbox()" [attr.rowSpan]="hasSubheader ? '2' : ''">
-                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
+                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                         </mat-checkbox>
                     </th>
                     <th *ngFor="let column of (hasSubheader ?  headerColumns : columns)"
@@ -106,7 +106,7 @@
                 </tr>
                 <tr *ngIf="responsive && _shouldRenderCheckbox()" class="smd-datatable-responsive-header">
                     <th [attr.colspan]="columns.length + (_shouldRenderCheckbox() ? 1 : 0)">
-                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()">
+                        <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                         </mat-checkbox>
                     </th>
                 </tr>

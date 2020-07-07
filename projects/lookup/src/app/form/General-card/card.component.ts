@@ -12,6 +12,8 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 	templateUrl: './card.component.html',
 	styleUrls: ['./card.component.scss'],
 	host: { 'class': 'general-card' }
+	//host: { 'class': 'header-card' }
+
 })
 export class GeneralCardComponent implements OnInit, OnDestroy {
 

@@ -1,8 +1,11 @@
 <span *ngIf="loading" [class.dummy-progress]="loading"></span>
-    <ng-container *ngIf="!loading && !isEdit">
+    <ng-container *ngIf="!loading && !isEdit && !disable">
         <span class="value" *ngIf="type != 'checkbox'" [matTooltip]="alert" [ngClass]="{status:true, numeric: type=='number'}"
          >{{displayValue}}</span>
         <mat-checkbox *ngIf="type == 'checkbox'" [ngModel]="checked" disabled></mat-checkbox>
+    </ng-container>
+    <ng-container *ngIf="!loading && !isEdit && disable">
+         <input [value]="displayValue" [matTooltip]="alert" [disabled]="disable"/>
     </ng-container>
     <ng-container *ngIf="!loading && isEdit">
 

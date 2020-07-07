@@ -105,21 +105,32 @@ $cell-data-color: #2f74b5;
 .ratio-th{
     min-width: 90px;
     height: 35px;
+    &:first-child{
+      min-width: 17vw;
+    }
 }
 .ratio-tr{
     height: 35px;
+    // &:first-child{
+    //   width: max-content;
+    // }
     
 }
 .ratio-td{
     min-width: 90px;
     height: 35px;
+    
 }
 
 table {
+  // table-layout: auto;
+  // width: 100%;
     border-collapse: collapse;
     th, td {
      border: 1px solid #bfbfbf;
-     
+    //  &:first-child{
+    //   width: 200px;
+    // }
    }
   }
 
@@ -130,7 +141,7 @@ table {
     input {
       &:hover input{
         outline-style: auto !important;
-        background: red !important;
+        // background: red !important;
       }
   }
   }

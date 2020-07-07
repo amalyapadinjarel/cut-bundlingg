@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Location } from '@angular/common';
 import { UserAppService } from './_service/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,8 @@ import { UserAppService } from './_service/user.service';
 })
 export class UserComponent {
   title = 'user';
+
+  private refreshSub: Subscription;
 
   constructor(
     private router: Router,
@@ -25,7 +28,9 @@ export class UserComponent {
     private navService: NavigationService,
     private userService: UserService,
     private dialog: MatDialog,
-    private docService: DocumentService
+    private docService: DocumentService,
+    public _inputService:TnzInputService,
+    public alertUtils:AlertUtilities
 
   ) {
 
@@ -35,6 +40,9 @@ export class UserComponent {
 
   ngOnInit() {
 
+   // this.refreshSub=this._shared.refreshData.subscribe(change=>{
+
+  //  })
   }
 
   ngOnDestroy() {
@@ -56,12 +64,12 @@ export class UserComponent {
 
         // }
         // else {
-          
-            this.router.navigateByUrl('/user/create').then(done => {
-            this._shared.editMode = true;
-            this._shared.initLocalCache();
 
-          }).catch((err) => { console.log('Caught Exception on create!', err) });
+        this.router.navigateByUrl('/user/create').then(done => {
+          this._shared.editMode = true;
+          this._shared.initLocalCache();
+
+        }).catch((err) => { console.log('Caught Exception on create!', err) });
         //}
       }).catch(err => {
         this.alertutils.showAlerts(err);
@@ -97,13 +105,22 @@ export class UserComponent {
 
   save(exit = false) {
     this._service.save(exit)
-    .then((flag) => {
-      if (flag && exit) {
-        this.cancelEdit();
-      }
-    })
+      .then((flag) => {
+        if (flag && exit) {
+          this.cancelEdit();
+        }
+      })
   }
 
+  unlock() {
+    // this._inputService.updateInput(this._shared.getHeaderAttrPath('attemptsLeft'),3);
+    this._service.unlock().then(data=>{
+    //display success notification
+    this.alertUtils.showAlerts("User account has been unlocked successfully.")
 
+    }).catch(err=>{
+      console.log("Error",err)
+    });
+  }
 
 }

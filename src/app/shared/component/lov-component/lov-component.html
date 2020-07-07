@@ -8,7 +8,7 @@
 <mat-dialog-content style="background-color: white;">
 	<smd-datatable [models]="models" [dataUrl]="apiUrl" [dataHeader]="dataHeader" [apiClass]="apiClass" [apiMethod]="apiMethod"
 	 (dataChange)="_onDataChange($event)" [searchDB]="searchDB" [postBody]="postBody" [showTableFilter]="showTableFilter" [showColumnFilter]="showColumnFilter"
-	 [primaryKey]="primaryKey" (checkedPksNew)="checkedRows($event)" [paginated]="paginated" [isTitleNeeded]="isTitleNeeded"
+	 [paginated]="paginated" [isTitleNeeded]="isTitleNeeded"
 	 noDataDisplayMessage="No records to display." [rowCount]="rowCount" (onRowSelected)="rowSelected($event)" [showSelectedRow]="true"
 	 [showCheckBox]="selectMultiple">
 		<smd-datatable-column [field]="field.key" *ngFor="let field of fields" [title]="field.title" [filterable]="field.filterable"

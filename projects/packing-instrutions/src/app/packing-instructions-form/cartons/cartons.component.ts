@@ -24,16 +24,7 @@ export class CartonsComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshSub = this._shared.refreshData.subscribe(change => {
-      this._service.loadData(this.key);
-    });
-    this.refreshSubCartons = this._shared.refreshCartonData.subscribe(change => {
-      this._shared.formData[this.key] = [];
-      this.dataTable.refresh([]);
-      this._shared.refreshData.next(true);
-    });
-    this.refreshCartonDetails = this._shared.refreshcarton.subscribe(change => {
-      if (change){}
-        this.refreshTable();
+      this.dataTable.refresh();
     });
   }
 
@@ -46,6 +37,12 @@ export class CartonsComponent implements OnInit {
 			this.refreshSub.unsubscribe();
 		if (this.refreshCartonDetails)
 			this.refreshCartonDetails.unsubscribe();
-	}
+  }
+  
+  _onDataChange(dataChange: any) {
+    if (dataChange.data && dataChange.data.cartonDetails) {
+      this._shared.setCartonListData(dataChange.data,this.key);
+    }
+  }
 
 }

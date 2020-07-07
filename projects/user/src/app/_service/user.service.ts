@@ -15,6 +15,7 @@ import { SubSink } from 'subsink';
   // {  providedIn: 'root'}
 )
 export class UserAppService {
+ 
 
   public apiSubscription: Subscription;
 
@@ -91,7 +92,7 @@ export class UserAppService {
           else {
             if (exit)
               this.router.navigateByUrl('/user/' + this._shared.id);
-              this._shared.refreshData.next(true);
+            this._shared.refreshData.next(true);
           }
           // this._shared.refreshData.next(true);
           resolve(true);
@@ -329,8 +330,30 @@ export class UserAppService {
           if (data.duplicatePerson == true) {
             this.alertUtils.showAlerts('Personnel num -' + val.personnelNum + ' already exists!');
             resolve(true);
-          } 
+          }
           else resolve(false);
+        })
+    })
+  }
+
+  unlock(): Promise<any> {
+    return new Promise((resolve, reject) => {
+    this.apiService.put('/' + this._shared.apiBase + '/unlockPassword/'+this._shared.id)
+        .catch(err => {
+          reject(err);
+          return err;
+
+        })
+        .subscribe(data => {
+          if (data) {
+             this._shared.refreshHeaderData.next(true);
+             this._shared.listData=null;
+             this._shared.params=null;
+             resolve(true);
+          }
+          else{
+            resolve(false);
+          } 
         })
     })
   }

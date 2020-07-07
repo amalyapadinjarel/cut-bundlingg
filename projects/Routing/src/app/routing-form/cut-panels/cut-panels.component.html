@@ -8,13 +8,13 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
+	<smd-datatable-column title="#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px','text-align':'center'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span *ngIf="!_shared.getCutPanelDetailsEditable()">{{model.sequence}}</span>
 			<div *ngIf="_shared.getCutPanelDetailsEditable('sequence')">
 				<tnz-input type="number" [path]="_shared.getCutPanelDetailsPath(index,'sequence')" [primaryKey]="_shared.cutPanelDetailsPrimaryKey"
 				 [sharedData]="_shared.formData" validators="required,min:1" [isEdit]="_shared.getCutPanelDetailsEditable('sequence')"
-				 [loading]="_shared.cutPanelDetailsLoading || _shared.loading">
+				 [loading]="_shared.cutPanelDetailsLoading || _shared.loading" class="tnz-input-center-align">
 				</tnz-input>
 			</div>
 		</ng-template>

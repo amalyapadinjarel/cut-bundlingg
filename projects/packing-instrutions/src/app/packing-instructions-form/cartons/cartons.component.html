@@ -1,6 +1,6 @@
-<smd-datatable [tableId]="_shared.appKey + '.carton'" [paginated]="!_shared.getPacksDetailsEditable()" [loading]="_shared.cartonLoading"
- class="tnz-input-table"  [filterEnabled]="!_shared.getPacksDetailsEditable()"
- [sortEnabled]="!_shared.getPacksDetailsEditable()" [showCheckBox]="false">
+<smd-datatable [dataUrl]="_shared.apiBase + '/carton-list/' + this._shared.poId + '/' + this._shared.orderId + '/' + this._shared.parentProductId" 
+dataHeader="cartonDetails" [rowCount]="_shared.cartonCount" [primaryListing]="false" (dataChange)="_onDataChange($event)"
+[rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
 	<smd-datatable-column title="Pack#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span>{{model.sequence}}</span>
@@ -12,7 +12,7 @@
 			<span>{{model.cartonNo}}</span>
 		</ng-template>
     </smd-datatable-column>
-    <smd-datatable-column title="Initial Qty" field="initialQty" sortable="true" [filterable]="true">
+    <smd-datatable-column title="Initial Qty" field="initialQty" sortable="true" [filterable]="true" [numeric]="true">
 		<ng-template let-model="data" let-index="index">
 			<span>{{model.initialQty}}</span>
 		</ng-template>
@@ -22,7 +22,7 @@
 			<span>{{model.barcode}}</span>
 		</ng-template>
     </smd-datatable-column>
-    <smd-datatable-column title="Final Qty" field="finalQty" sortable="true" [filterable]="true">
+    <smd-datatable-column title="Final Qty" field="finalQty" sortable="true" [filterable]="true" [numeric]="true">
 		<ng-template let-model="data" let-index="index">
 			<span>{{model.finalQty}}</span>
 		</ng-template>

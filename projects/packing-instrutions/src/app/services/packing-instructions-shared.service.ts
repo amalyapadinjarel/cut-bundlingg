@@ -56,6 +56,7 @@ export class PackingInstructionsSharedService {
   selectedPage: number = 1;
   columnFilterValues;
   count;
+  cartonCount;
   listData;
   params;
 
@@ -268,7 +269,7 @@ export class PackingInstructionsSharedService {
       let newLine = false;
       let data = this.formData[key].grpData[mainIndex];
       let model = data[index];
-      this.reArrangeSequence(mainIndex,index,model.sequence);
+      this.reArrangeSequence(mainIndex,index,model.sequence,'SOLID');
       let linePrimaryKey = this[key + 'PrimaryKey'];
       let path = this.appPath + '.' + mainIndex;
       //  + '[' + index + ']' ; 
@@ -299,7 +300,8 @@ export class PackingInstructionsSharedService {
   deleteRatioLine(key, index, mainIndex) {
     let data = this.formData[key].grpData;
     let model = data[index];
-    this.reArrangeSequence(mainIndex,index,model.sequence);
+    this.reArrangeSequence(mainIndex+1,index,model.sequence,'RATIO');
+
     let linePrimaryKey = this[key + 'PrimaryKey'];
     let path = this.appPath + '.' + mainIndex;
     let cache = this._cache.getCachedValue(path)
@@ -537,24 +539,43 @@ validateQuantity(saveData) : any{
             flag = true;
             qtyDiff = Number(elem.noOfCartons) - Number(x.noOfCtn)
             x.color.forEach(y=>{
-              y.forEach(z=>{
-                z.size.forEach(a=>{
+              try{
+                y.forEach(z=>{
+                  z.size.forEach(a=>{
                     if(a.value){
                       this.calcQuantity(a.productId,Number(a.value)*qtyDiff);
                     }
                 })
-              })
+                })
+              }
+              catch(err){
+                y.size.forEach(a=>{
+                    if(a.value){
+                      this.calcQuantity(a.productId,Number(a.value)*qtyDiff);
+                    }
+                })
+              }
             })
           }
           else{
-            x.forEach(y=>{
-              if(y.csPackId == csPackId){
-                qtyDiff = Number(elem['orderQty'])-Number(y.orderQty);
+            try{
+              x.forEach(y=>{
+                if(y.csPackId == csPackId){
+                  qtyDiff = Number(elem['orderQty'])-Number(y.orderQty);
+                  flag = true;
+                  pId = y.productId;
+                  this.calcQuantity(y.productId,qtyDiff)
+                }
+              })
+            }
+            catch(err){
+              if(x.csPackId == csPackId){
+                qtyDiff = Number(elem['orderQty'])-Number(x.orderQty);
                 flag = true;
-                pId = y.productId;
-                this.calcQuantity(y.productId,qtyDiff)
+                pId = x.productId;
+                this.calcQuantity(x.productId,qtyDiff)
               }
-            })
+            }
           }
         })
       }
@@ -609,7 +630,7 @@ generateNewCopy(model){
   return data;
 }
 
-reArrangeSequence(mainIndex,index,delSeq){
+reArrangeSequence(mainIndex,index,delSeq,type){
   this.formData['packsDetails'].grpKey.forEach((elem,index1)=>{
     if(index1 == mainIndex){
       if(elem && elem.packType == 'SOLID'){
@@ -623,6 +644,36 @@ reArrangeSequence(mainIndex,index,delSeq){
             this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1)
           }
         })
+      }
+      if(elem && elem.packType == 'RATIO' && type == 'RATIO'){
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1-1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+        }
+      }
+      if(elem && elem.packType == 'RATIO' && type == 'SOLID'){
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+        }
       }
     }
     else if(index1 > mainIndex){
@@ -642,7 +693,73 @@ reArrangeSequence(mainIndex,index,delSeq){
           }
         })
       }
-      if(elem && elem.packType == 'RATIO'){
+      if(elem && elem.packType == 'RATIO' && type == 'RATIO'){
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1-1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+
+        }
+      }
+      if(elem && elem.packType == 'RATIO' && type == 'SOLID'){
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+
+        }
+      }
+    }
+    else if(index1 < mainIndex){
+      if(elem && elem.packType == 'SOLID'){
+        this.formData['packsDetails'].grpData[index1].forEach((element,index2)=>{
+          if(Number(element.sequence) > Number(delSeq)){
+            if(element.csPackId){
+              element.sequence = Number(element.sequence)-1;
+              this._cache.setLocalCache(this.getPacksDetailsBasePath(index1,index2), {'csPackId':element.csPackId,'sequence':element.sequence});
+            }
+            else{
+              
+              let seq = this.inputService.getInputValue(this.getPacksDetailsPath(index1,index2, 'sequence'));
+              this.inputService.updateInputCache(this.getPacksDetailsPath(index1,index2, 'sequence'),seq-1);
+              element.sequence = seq-1;
+            }
+          }
+        })
+      }
+      if(elem && elem.packType == 'RATIO' && type == 'RATIO'){
+        if(Number(elem.sequence) > Number(delSeq)){
+          if(elem.csPackId){
+            elem.sequence = Number(elem.sequence)-1;
+            this._cache.setLocalCache(this.getRatioHeaderBasepath(index1-1), {'csPackId':elem.csPackId,'sequence':elem.sequence});
+            this.updatePackDetails.next(true);
+          }
+          else{
+            elem.sequence = Number(elem.sequence)-1;
+            let seq = this.inputService.getInputValue(this.getRatioHeaderFromKey(index1, 'sequence'));
+            this.inputService.updateInputCache(this.getRatioHeaderFromKey(index1, 'sequence'),Number(seq)-1);
+            this.updatePackDetails.next(true);
+          }
+
+        }
+      }
+      if(elem && elem.packType == 'RATIO' && type == 'SOLID'){
         if(Number(elem.sequence) > Number(delSeq)){
           if(elem.csPackId){
             elem.sequence = Number(elem.sequence)-1;
@@ -710,6 +827,11 @@ findMaxSequence(){
     }
   })
   this.packsDetailsSeq = maxSeq;
+}
+
+setCartonListData(data,key){
+  this.formData[key] = data.cartonDetails;
+  this.cartonCount = data.count;
 }
 
 }

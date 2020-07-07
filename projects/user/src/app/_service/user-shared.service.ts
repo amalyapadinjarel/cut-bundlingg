@@ -73,6 +73,7 @@ export class UserSharedService {
   columnFilterValues;
   count;
   listData;
+  params: any;
 
   //define constructor
   constructor(
@@ -212,7 +213,7 @@ export class UserSharedService {
   getHeaderEditable(attr, id) {
     let editable = this.editMode;
   //  let nonEditableAttrs = ['userName', 'attemptsLeft','startDate','personnelNum'];// attributes that cannot be edited after creation
-    let nonEditableAttrs = ['userName','startDate'];// attributes that cannot be edited after creation
+    let nonEditableAttrs = ['userName','startDate','attemptsLeft'];// attributes that cannot be edited after creation
 
     if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
       editable = false;

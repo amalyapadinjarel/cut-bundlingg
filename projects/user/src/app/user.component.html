@@ -9,6 +9,7 @@
             <ng-container *ngIf="!_shared.editMode">
                 <a (click)="newUser()">Create</a>
                 <a *ngIf="_shared.id" (click)="editUser()">Edit</a>
+                <a *ngIf="_shared.id && _shared.getHeaderAttributeValue('attemptsLeft')==0" (click)="unlock()">Unlock</a>
             </ng-container>
 
             <ng-container class="group" *ngIf="_shared.editMode">

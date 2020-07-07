@@ -7,11 +7,6 @@
                     {{model.documentNo}}
                 </ng-template>
             </smd-datatable-column>
-            <!-- <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
-                <ng-template let-model="data">
-                    {{model.cutFacility?.shortCode}}
-                </ng-template>
-            </smd-datatable-column> -->
             <smd-datatable-column title="Style" field="productNum" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.productNum}}
@@ -32,7 +27,7 @@
                     {{model.docStatusTR}}
                 </ng-template>
             </smd-datatable-column>
-            <smd-datatable-column title="SMV" field="smv" sortable="true" [filterable]="true">
+            <smd-datatable-column title="SMV" field="smv" sortable="true" [filterable]="true" numeric="true">
                 <ng-template let-model="data">
                     {{model.smv}}
                 </ng-template>

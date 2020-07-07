@@ -12,7 +12,9 @@ import { User } from '../../models/user';
   selector: 'user-general-card',
   templateUrl: './general-card.component.html',
   styleUrls: ['./general-card.component.scss'],
-  host: { 'class': 'general-card' }
+  host: { 'class': 'header-card' }
+
+  //host: { 'class': 'general-card' }
 })
 
 export class GeneralCardComponent implements OnInit, OnDestroy {
@@ -72,18 +74,7 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
   }
 
   getIfEditable(key) {
-    //console.log("edit=",this._shared.getHeaderEditable(key, this._shared.id))
-    if ((key == 'attemptsLeft') && this._shared.getHeaderEditable(key, this._shared.id)) {
-
-      let val = this._inputService.getInputValue(this._shared.getHeaderAttrPath(key));
-      if (val == 0) {
-        return this._shared.getHeaderEditable(key, this._shared.id);
-      }
-      else {
-        return false;
-      }
-    } else
-      return !this.disabled[key] && this._shared.getHeaderEditable(key, this._shared.id);
+        return !this.disabled[key] && this._shared.getHeaderEditable(key, this._shared.id);
   }
 
   valueChanged(event) {
@@ -107,6 +98,8 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
             this._inputService.setError(this._shared.getHeaderAttrPath('userName'), 'Please enter a valid username.');
 
         }
+      }).catch(err=>{
+        console.log("Error")
       });
     }
   }
@@ -273,6 +266,12 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
       });
 
     }
+  }
+
+  resetPassword(){
+
+
+    this._inputService.updateInput(this._shared.getHeaderAttrPath('attemptsLeft'),3);
   }
 
   // lengthCheck(event, index, attr) {

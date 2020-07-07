@@ -33,9 +33,7 @@ export class CardComponent implements OnInit {
   }
 
   ngOnDestroy(){
-	  if(this.refreshSub){
-		  this.refreshSub.unsubscribe();
-	  }
+	this.refreshSub.unsubscribe();
   }
 
   loadData() {
@@ -54,7 +52,7 @@ export class CardComponent implements OnInit {
 		this.loading = flag;
 		this._shared.headerLoading = flag;
 		this._shared.loading = flag;
-  }
+    }
 
 	disableInput(key) {
 		this.disabled[key] = true;

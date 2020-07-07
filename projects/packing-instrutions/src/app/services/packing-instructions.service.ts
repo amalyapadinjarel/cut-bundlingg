@@ -203,7 +203,7 @@ saveData(id): Promise<any> {
                                             // return err;
                                         })
                                         .subscribe(res => {
-                                            if (res && res.success) {
+                                            if (res && res.status == 'S') {
                                                 resolve(res)
                                             } else {
                                                 reject(res && res.message ? res.message : 'Unknown error');
@@ -336,6 +336,9 @@ public resetInputCacheWithKey(key){
 }
 
 groupData(listData:any){
+  listData.sort(function (a, b) {
+    return a.sequence - b.sequence;
+  });
   let grpKeys = [];
   let mainIndex = 0;
   let grpData = [];

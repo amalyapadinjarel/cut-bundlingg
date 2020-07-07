@@ -128,6 +128,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
             this.maskInput = maskInput
         }
     };
+    @Input() disable: Boolean = false;
 
     constructor(
         private _cache: LocalCacheService,

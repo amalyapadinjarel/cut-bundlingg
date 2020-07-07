@@ -1,6 +1,6 @@
 <div class="group">
     <h4>General</h4>
-    <ul>
+    <ul style="margin-left: -20px;">
         <li>
             <label>Style</label>
             <div class="val">
@@ -10,6 +10,7 @@
                 </tnz-input>
             </div>
         </li>
+        <br>
         <li>
             <label>Facility</label>
             <div class="val">
@@ -26,10 +27,11 @@
                 </tnz-input>
             </div>
         </li>
+        <br>
         <li>
             <label>SMV</label>
             <div class="val">
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('smv')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                <tnz-input  [path]="_shared.getHeaderAttrPath('smv')" [primaryKey]="_shared.primaryKey" displayKey="label"
                     [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('smv')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
