@@ -127,46 +127,9 @@ save(id?: number): Promise<any> {
 
 saveData(id): Promise<any> {
   return new Promise((resolve, reject) => {
-      let inValid;
-
-      //Checking if inputs are valid in header
-    //   let inputs = this.inputService.getInput(this._shared.packsDetailsPath);
-    //   if (inputs) {
-    //       inValid = Object.keys(inputs).some(key => {
-    //           let temp = inputs[key];
-    //           Object.keys(temp).some(keys=>{
-    //               if (temp[keys] && temp[keys].status != 'ok' && temp[keys].status != 'changed') {
-    //                   return true;
-    //               }
-    //           })
-    //       });
-    //   }
-      // Checking if inputs are valid in lines
-      if (!inValid) {
-          this._shared.lineKeys.forEach(key => {
-              if (!inValid) {
-                  let inputs = this.inputService.getInput(this._shared[key + 'Path']);
-                  if (inputs) {
-                      inValid = inputs.some(grp => {
-                          if (grp) {
-                              return Object.keys(grp).some(key => {
-                                  if (grp[key] && grp[key].status != 'ok' && grp[key].status != 'changed') {
-                                      return true;
-                                  }
-                              });
-                          }
-                      });
-                  }
-              }
-          });
-      }
-      if (inValid) {
-          reject('Please fill mandatory fields.');
-      } else {
           let saveData = this._cache.getCachedValue(this._shared.appPath);
           // Adding the removedkeys as active - N to remove them
           if (saveData) {
-   
               this._shared.lineKeys.forEach(key => {
                   if (!saveData[key]) {
                       saveData[key] = [];
@@ -187,33 +150,29 @@ saveData(id): Promise<any> {
               let saveObservable;
               let validateObservable;
               let isValid = this._shared.validateQuantity(saveData)
+              let inValid;
               if( isValid == true){
-                validateObservable = this.apiService.post('/packing-instructions/save-packs-validation', saveData);
-                validateObservable
-                              .catch(err => {
-                                  reject(err);
-                                  // return err;
-                              })
-                              .subscribe(res => {
-                                  if (res && res.flag) {
-                                    saveObservable = this.apiService.post('/packing-instructions/save-packs', saveData);
-                                    saveObservable
-                                        .catch(err => {
-                                            reject(err);
-                                            // return err;
-                                        })
-                                        .subscribe(res => {
-                                            if (res && res.status == 'S') {
-                                                resolve(res)
-                                            } else {
-                                                reject(res && res.message ? res.message : 'Unknown error');
-                                            }
-                                        })
-                                  } else {
-                                      reject(res && res.message ? res.message : 'Quantity validation failed');
-                                  }
-                              })
-                
+                  validateObservable = this.apiService.post('/packing-instructions/save-packs-validation', saveData);
+                  validateObservable.catch(err => {reject(err)})
+                  .subscribe(res => {
+                    if (res && res.flag) {
+                      saveObservable = this.apiService.post('/packing-instructions/save-packs', saveData);
+                      saveObservable
+                          .catch(err => {
+                              reject(err);
+                              // return err;
+                          })
+                          .subscribe(res => {
+                              if (res && res.status == 'S') {
+                                  resolve(res)
+                              } else {
+                                  reject(res && res.message ? res.message : 'Unknown error');
+                              }
+                          })
+                    } else {
+                        reject(res && res.message ? res.message : 'Quantity validation failed');
+                    }
+                  })
               }
               else{
                 reject(isValid);
@@ -222,7 +181,6 @@ saveData(id): Promise<any> {
           } else {
               reject('No changes detected');
           }
-      }
   });
 }
 
@@ -398,6 +356,7 @@ formatSaveData(model){
         });
       }
       catch(err){
+        // model[index].packType = val.packType;
         data.packsDetails.push(model[index]);
       }
     }
@@ -504,6 +463,79 @@ loadStyleVarientData(){
   }
   else {
   }
+}
+
+deleteCartonPerPack(csPackId){
+  return new Promise((resolve, reject)=>{
+    if (this._shared.id && this._shared.isCartonGenerated && csPackId) {
+      this.apiService.put('/' + this._shared.apiBase + '/carton-delete-per-pack/' + csPackId)
+      .subscribe(data => {
+          if (data) {
+            resolve(data.message == 1 ? true : false);
+          }
+      }, err => reject(err));
+    }
+    else {
+      this.alertUtils.showAlerts("No carton generated");
+      resolve([]);
+    }
+  });
+}
+
+deleteCartonPerPackValidation(csPackId){
+  return new Promise((resolve, reject)=>{
+    if (this._shared.id && csPackId) {
+      this.apiService.put('/' + this._shared.apiBase + '/carton-delete-repack-validation/' + csPackId)
+      .subscribe(data => {
+          if (data) {
+            if(data.message && data.message.activeCartonCount == 0){
+              this.alertUtils.showAlerts("No active cartons exists for the pack");
+              resolve(false);
+            }
+            else if(data.message && data.message.packOrOnholdCartonCount != 0 ){
+              this.alertUtils.showAlerts("Carton deletion failed. One or more carton is in PACKED or ONHOLD status");
+              resolve(false);
+            }
+            else if(data.message && data.message.activeCartonCount != 0 && data.message.packOrOnholdCartonCount == 0){
+              resolve(true);
+            }
+            resolve(false);
+          }
+      }, err => reject(err));
+    }
+    else {
+      this.alertUtils.showAlerts("No carton generated");
+      resolve([]);
+    }
+  });
+}
+
+rePackCartonValidation(csPackId){
+  return new Promise((resolve, reject)=>{
+    if (this._shared.id && csPackId) {
+      this.apiService.put('/' + this._shared.apiBase + '/carton-delete-repack-validation/' + csPackId)
+      .subscribe(data => {
+          if (data) {
+            if(data.message && data.message.activeCartonCount == 0){
+              this.alertUtils.showAlerts("No active cartons exists for the pack");
+              resolve(false);
+            }
+            else if(data.message && data.message.packOrOnholdCartonCount != 0 ){
+              resolve(true);
+            }
+            else if(data.message && data.message.activeCartonCount != 0 && data.message.packOrOnholdCartonCount == 0){
+              this.alertUtils.showAlerts("Carton repack failed. No carton with PACKED or ONHOLD status");
+              resolve(false);
+            }
+            resolve(false);
+          }
+      }, err => reject(err));
+    }
+    else {
+      this.alertUtils.showAlerts("No carton generated");
+      resolve([]);
+    }
+  });
 }
 
 }

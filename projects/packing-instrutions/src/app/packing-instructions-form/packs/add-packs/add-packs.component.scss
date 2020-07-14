@@ -106,7 +106,7 @@ $cell-data-color: #2f74b5;
     min-width: 90px;
     height: 35px;
     &:first-child{
-      min-width: 17vw;
+      min-width: 28vw;
     }
 }
 .ratio-tr{
@@ -144,4 +144,24 @@ table {
         // background: red !important;
       }
   }
+  }
+
+  .ratio-options {
+    display: flex;
+    div{
+      display: inline-flex;
+      padding-left:30px;
+      h4{
+        padding-right: 5px;
+        width: max-content;
+        color: #6B538B;
+      }
+      tnz-input{
+        width: 80px !important;
+      }
+    }
+    h4{
+      width: max-content;
+      color: #6B538B;
+    }
   }

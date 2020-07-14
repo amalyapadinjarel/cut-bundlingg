@@ -115,7 +115,7 @@
                               [colStyle]="{'width':'15px'}" [numeric]="true">
             <ng-template let-model="data" let-index="index">
                 <!--                <span *ngIf="!_shared.getOperationDetailsEditable()">{{model.requireScanning}}</span>-->
-                <div  *ngIf="!_shared.getOperationDetailsEditable('requireScanning')">
+                <div class="checkbox-center-align" *ngIf="!_shared.getOperationDetailsEditable('requireScanning')">
                     <mat-checkbox [ngModel]="model.requireScanning == 'Y'" disabled></mat-checkbox>
                 </div>
                 <div *ngIf="_shared.getOperationDetailsEditable('requireScanning')">
@@ -124,7 +124,7 @@
                                [sharedData]="_shared.formData"
                                [isEdit]="_shared.getOperationDetailsEditable('requireScanning')"
                                [loading]="_shared.operationDetailsLoading || _shared.loading"
-                               (valueChangedFromUI)="valueChangedFromUI($event)">
+                               (valueChangedFromUI)="valueChangedFromUI($event)" class="checkbox-center-align">
                     </tnz-input>
                 </div>
             </ng-template>

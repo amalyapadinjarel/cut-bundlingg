@@ -9,7 +9,7 @@
             <mat-icon>refresh</mat-icon>
         </button>
     </mat-toolbar>
-    <smd-datatable apiLevel="4" [apiClass]="apiServiceV4" dataUrl="trendz-messages/user-notifications" dataHeader="notifications"
+    <smd-datatable [apiClass]="apiServiceV4" dataUrl="trendz-messages/user-notifications" dataHeader="notifications"
         [paginated]="true" [isTitleNeeded]='false' [defaultRange]='7' [paginatorRanges]='[7]'>
         <smd-datatable-column title=" " field="notifyType">
             <ng-template let-model="data">

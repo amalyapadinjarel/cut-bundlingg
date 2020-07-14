@@ -1,17 +1,39 @@
+<h3>{{title}}</h3>
 <div style="display: flex;">
-    <h3>{{title}}</h3>
     <span class="flex-filler"></span>
-    <div *ngIf = "addType == 0" style="display: flex;">
-        <h4 style="padding-right: 4px;">Qty/CTN: </h4>
-        <tnz-input [path]="_shared.getSolidPackDetailsPath(0,'qntyPerCtnTemp')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.solidPackData"
-        validators="min:1" [isEdit]="true" (valueChanged)="valueChanged($event,'qntyPerCtnTemp')">
-    </tnz-input>
+    <div *ngIf = "addType == 0" class="ratio-options">
+        <div>
+            <h4>Qty/CTN: </h4>
+            <tnz-input [path]="_shared.getSolidPackDetailsPath(0,'qntyPerCtnTemp')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.solidPackData"
+            validators="min:1" [isEdit]="true" (valueChanged)="valueChanged($event,'qntyPerCtnTemp')">
+            </tnz-input>
+        </div>
+        <div>
+            <h4>Packing Method </h4>
+            <tnz-input type="lov" [lovConfig]="packingMethod" [path]="_shared.getRatioPacksHeaderPath(0,'packingMethodTemp')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'packingMethodTemp')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
     </div>
-    <div *ngIf = "addType == 1" style="display: flex;">
-        <h4 style="padding-right: 4px;">No of CTN: </h4>
-        <tnz-input [path]="_shared.getRatioPacksHeaderPath(0,'noOfCartons')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
-        validators="min:1" [isEdit]="true" (valueChanged)="valueChanged($event,'noOfCartons')">
-    </tnz-input>
+    <div *ngIf = "addType == 1" class="ratio-options">
+        <div>
+            <h4>Pack Qty </h4>
+            <tnz-input [path]="_shared.getRatioPacksHeaderPath(0,'packQty')" [primaryKey]="_shared.primaryKey"
+            validators="min:1" [isEdit]="true" (valueChanged)="valueChanged($event,'packQty')" class="tnz-input-center-align">
+            </tnz-input>
+        </div>
+        <div>
+            <h4>Pre Pack </h4>
+            <tnz-input [path]="_shared.getRatioPacksHeaderPath(0,'prePack')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            validators="min:1" [isEdit]="true" (valueChanged)="valueChanged($event,'prePack')" class="tnz-input-center-align">
+            </tnz-input>
+        </div>
+        <div>
+            <h4>Packing Method </h4>
+            <tnz-input type="lov" [lovConfig]="packingMethod" [path]="_shared.getRatioPacksHeaderPath(0,'packingMethod')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'packingMethod')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
     </div>
 </div>
 <mat-dialog-content>
@@ -55,6 +77,17 @@
                 </div>
             </ng-template>
         </smd-datatable-column>
+        <smd-datatable-column title="Packing Method" field="packingMethod" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getPacksDetailsEditable('packingMethod')">{{model.packingMethod?.label}}</span>
+                <div *ngIf="_shared.getPacksDetailsEditable('packingMethod')">
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="packingMethod" [path]="_shared.getSolidPackDetailsPath(index,'packingMethod')" [primaryKey]="_shared.primaryKey" 
+                        [sharedData]="_shared.formData"  [isEdit]="_shared.getPacksDetailsEditable('packingMethod')" [loading]="_shared.solidPackLoading || _shared.loading" 
+                        (valueChanged)="valueChanged($event,'packingMethod',index)">
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
         <smd-datatable-column title="No of Cartons" field="noOfCartons" sortable="true" [filterable]="true">
             <ng-template let-model="data" let-index="index">
                 <span *ngIf="!_shared.getPacksDetailsEditable('noOfCartons')">{{model.noOfCartons}}</span>
@@ -93,20 +126,50 @@
                     {{ratio.colorValue}}
                 </td>
                 <td *ngFor="let s of ratio.size; let y = index">
-                    <tnz-input *ngIf="s.sizeValue" [path]="_shared.getRatioPackDetailsPath(i,s.sizeValue)" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData['ratioPack']"
-                    validators="min:0" [isEdit]="true" (valueChanged)="ratioValueChanged($event,i,y)" class="tnz-input-inside-table"></tnz-input>
+                    <tnz-input *ngIf="s.sizeValue && s.sizeValue != 'Total Units'" [path]="_shared.getRatioPackDetailsPath(i,s.sizeValue)" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData['ratioPack']"
+                    validators="min:0" [isEdit]="true" (valueChanged)="ratioValueChanged($event,i,y,ratio)" class="tnz-input-inside-table"></tnz-input>
+                    <span *ngIf="s.sizeValue == 'Total Units'" style="text-align: center;">
+                        <tnz-input [path]="_shared.getRatioPackDetailsPath(i,'totalUnit')"  [isEdit]="false" class="tnz-input-inside-table"></tnz-input>
+                    </span>
                 </td>
             </tr>
         </table>
+        <div class="ratio-options">
+            <h4>No of CTN: </h4>
+            <tnz-input [path]="_shared.getRatioPacksHeaderPath(0,'noOfCartons')" [isEdit]="false">
+            </tnz-input>
+        </div>
        
+    </span> 
+    <span *ngIf = "addType == 1 && TempformData && TempformData?.length == 0">
+        <table class="ratio-table">
+            <tr class="ratio-tr">
+                <th style = "background: linear-gradient(
+                    to top right,
+                    #ccc7d3 calc(50% - 1px),
+                    #000a,
+                    #ccc7d3 calc(49% + 1px)
+                  );" class="ratio-th">
+                    <span style="position: relative;top: 5px; left: -50px">Color/Inseam</span>
+                    <span style="position: relative;bottom: 5px;">Size</span>
+                </th>
+                <th class="ratio-th" *ngFor="let size of [1,2,3]">
+                    <tnz-input loading = "true"></tnz-input>
+                </th>
+            </tr>
+            <tr *ngFor="let ratio of [1]; let i = index" class="ratio-tr">
+                <td *ngIf="ratio == 1">
+                    <tnz-input loading = "true"></tnz-input>
+                </td>
+                <td *ngFor="let s of [1,2,3]; let y = index">
+                    <tnz-input loading = "true"></tnz-input>
+                </td>
+            </tr>
+        </table>
     </span> 
 </mat-dialog-content>
 <mat-dialog-actions>
   <span class="flex-filler"></span>
-  <button mat-button color="warn" (click)="close(true)">
-    Add
-  </button>
-  <button mat-button color="accent" (click)="close(false)">
-    Cancel
-  </button>
+  <button mat-raised-button color="accent" (click)="close(true)">Add</button>
+  <button mat-button color="accent" (click)="close(false)">Cancel </button>
 </mat-dialog-actions>

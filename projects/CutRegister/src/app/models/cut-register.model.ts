@@ -411,11 +411,13 @@ export class CutPanelDetails {
         this.refProdId = model ? model.refProdId : "";
     }
 
-    equals(model: any) {
+    equals(model: any, attr = null) {
         let flag = true
         Object.keys(new CutPanelDetails()).forEach(key => {
-            if (this[key] != model[key])
+            if (JSON.stringify(this[key]) != JSON.stringify(model[key])){
                 flag = false;
+                return;
+            }
         })
         return flag;
     }

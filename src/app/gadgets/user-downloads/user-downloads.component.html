@@ -6,7 +6,7 @@
             <mat-icon>refresh</mat-icon>
         </button>
     </mat-toolbar>
-    <smd-datatable apiLevel="4" [apiClass]="schedulerUtils" dataUrl="scheduler/jobs" dataHeader="jobs" [preFilters]="preFilters"
+    <smd-datatable [apiClass]="schedulerUtils" dataUrl="scheduler/jobs" dataHeader="jobs" [preFilters]="preFilters"
         [isTitleNeeded]='false' [defaultRange]='7' [paginatorRanges]='[7]'
         (dataChange)="onDataChange($event)">
         <smd-datatable-column title=" " field="outputFileType" [filterable]="true">

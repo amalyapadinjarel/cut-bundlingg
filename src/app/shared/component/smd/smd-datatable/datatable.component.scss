@@ -56,7 +56,7 @@ smd-datatable {
 						}
 						&.smd-numeric-column {
 							text-align: right;
-							padding: 0 8px 0 5px;
+							//padding: 0 8px 0 5px;
 						}
 						&.smd-datatable-header-checkbox {
 							width: 30px;
@@ -471,7 +471,6 @@ smd-datatable {
 	}
 	&.primary-listing {
 		display: block;
-		height: 100%;
 		.smd-datatable-wrap {
 			background: #fff;
 			box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -494,10 +493,10 @@ smd-datatable {
 		.smd-table-header {
 			display: inline-block;
 			position: relative;
-			min-width: 100%;
 			z-index: 3;
-			background: #fff;
-			border-bottom: 1px solid #e0e0e0;
+			&.hide {
+				opacity: 0;
+			}
 			thead {
 				> tr:first-child {
 					text-align: left;
@@ -506,21 +505,20 @@ smd-datatable {
 						line-height: 24px;
 						margin: 0 8px;
 						padding: 0;
+						text-align: left;
 						box-sizing: border-box;
+						white-space: initial;
 					}
 				}
 				> tr.filter-row {
 					text-align: left;
 					> th {
 						display: inline-table;
-						&:first-of-type {
-							margin-right: 8px;
-						}
 					}
 				}
-				tr th:first-of-type {
+				tr th.checkbox {
 					width: 17px;
-					margin-left: 12px;
+					margin: 0 8px 0 12px;
 				}
 			}
 		}

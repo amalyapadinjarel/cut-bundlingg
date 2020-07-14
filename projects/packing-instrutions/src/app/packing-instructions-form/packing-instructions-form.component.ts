@@ -132,17 +132,24 @@ export class PackingInstructionsFormComponent implements OnInit {
     }
 
     generateCartonLines(){
-      if(this._shared.isCartonGenerated){
-        this.alertUtils.showAlerts("Carton already generated ");
+      if(this._shared.totalPacks > 0){
+        this._service.generateCarton('Y').then(data=>{
+        })
       }
       else{
-        if(this._shared.totalPacks > 0){
-          this._service.generateCarton('Y').then(data=>{
-          })
-        }
-        else{
-          this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
-        }
+        this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
       }
+      // if(this._shared.isCartonGenerated){
+      //   this.alertUtils.showAlerts("Carton already generated ");
+      // }
+      // else{
+      //   if(this._shared.totalPacks > 0){
+      //     this._service.generateCarton('Y').then(data=>{
+      //     })
+      //   }
+      //   else{
+      //     this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
+      //   }
+      // }
     }
 }

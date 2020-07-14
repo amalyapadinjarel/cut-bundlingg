@@ -242,6 +242,7 @@ export class PdmCostingFormComponent {
 		cutPanel.mOpId = line.opId;
 		cutPanel.opSeq = line.opSequence;
 		cutPanel.refProdId = line.refProdId;
+		cutPanel.facility = this._shared.getHeaderAttributeValue('cutFacility');
 		return cutPanel;
 	}
 
@@ -294,7 +295,6 @@ export class PdmCostingFormComponent {
 	}
 
 	regenerateCutPanels() {
-		console.log("Ready to regenerate")
 		this._shared.cutPanelDetailsLoading = true;
 		let routingIds = [];
 		this._shared.formData.orderDetails.forEach(line => {

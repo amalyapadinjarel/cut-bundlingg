@@ -7,6 +7,8 @@ import { AlertUtilities } from "app/shared/utils";
 import { TnzInputService } from "app/shared/tnz-input/_service/tnz-input.service";
 import { PacksDetails, ratioDetails } from "../../../models/packDeatils";
 import { LocalCacheService } from "app/shared/services";
+import { packingMethodLovconfig } from '../../../models/lov-config';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: "app-add-packs",
@@ -16,8 +18,11 @@ import { LocalCacheService } from "app/shared/services";
 export class AddPacksComponent implements OnInit {
   addType = 0; //0-> solid 1-> ratio
   title: String = "";
-  TempformData: any;
+  TempformData: any = [];
   sizeArray: any = [];
+  totalRatioSum = 0;
+  packQty = 0;
+  packingMethod = JSON.parse(JSON.stringify(packingMethodLovconfig));
   @ViewChild(SmdDataTable, { static: false }) dataTable: SmdDataTable;
 
   constructor(
@@ -36,6 +41,7 @@ export class AddPacksComponent implements OnInit {
     else this.title = "Add Ratio Pack";
       this.fetchData(this.addType);
     this._shared.addSolidPacksDetailsSeq = 0
+    
   }
 
   ngOnDestroy() { }
@@ -80,9 +86,19 @@ export class AddPacksComponent implements OnInit {
         }
       } else {
         if (!inValid) {
-          let inputs = this.inputService.getInput(
-            this._shared["ratioPack" + "Path"]
-          );
+          let inputs = this.inputService.getInput(this._shared["ratioPackPath"]);
+          if (inputs) {
+            inValid = inputs.some((grp) => {
+              if (grp) {
+                return Object.keys(grp).some((key) => {
+                  if (grp[key] && grp[key].status != "ok" &&grp[key].status != "changed") {
+                    return true;
+                  }
+                });
+              }
+            });
+          }
+          inputs = this.inputService.getInput(this._shared["ratioPackHeaderPath"]);
           if (inputs) {
             inValid = inputs.some((grp) => {
               if (grp) {
@@ -98,12 +114,8 @@ export class AddPacksComponent implements OnInit {
             this.alertUtils.showAlerts("Please enter valid data");
           } else {
             let modelData = [];
-            let cacheData = this._cache.getCachedValue(
-              this._shared.ratioPackPath
-            );
-            let headerData = this._cache.getCachedValue(
-              this._shared.ratioPackHeaderPath
-            )[0];
+            let cacheData = this._cache.getCachedValue(this._shared.ratioPackPath );
+            let headerData = this._cache.getCachedValue(this._shared.ratioPackHeaderPath)[0];
             let qtyPerCarton = 0;
             let uom = 0;
             let color = [];
@@ -125,9 +137,13 @@ export class AddPacksComponent implements OnInit {
             let data = {
               packType: "RATIO",
               noOfCartons: Number(headerData.noOfCartons),
-              qntyPerCtn: qtyPerCarton,
-              orderQty: Number(headerData.noOfCartons) * Number(qtyPerCarton),
+              qntyPerCtn: Number(qtyPerCarton) * Number(headerData.prePack),
+              orderQty: headerData.packQty,
+              packingMethod: headerData.packingMethod,
+              prePack: headerData.prePack,
+              packQty: headerData.packQty,
               color: color,
+              sumOfRatios: Number(qtyPerCarton),
               uom: uom,
             };
             if (this.validateQty(data)) {
@@ -173,8 +189,10 @@ export class AddPacksComponent implements OnInit {
       });
     }
     if (type == 1) {
+      this.inputService.updateInputCache(this._shared.getRatioPacksHeaderPath(0,'prePack'),1);
       this.servcie.fetchRatioPacksDetails().then((data) => {
         if (data) {
+          this.packQty = 0;
           this.sizeArray = [];
           this.TempformData = [];
           this._shared.setLines("ratioPack", data);
@@ -184,8 +202,11 @@ export class AddPacksComponent implements OnInit {
             this.TempformData.push(new ratioDetails(val));
             val.size.forEach((element) => {
               this.checkDuplicateAndPush(element);
+              this.packQty += element.unAddedPcs;
             });
           });
+          this.sizeArray.push({sizeValue:'Total Units'});
+          this.inputService.updateInput(this._shared.getRatioPacksHeaderPath(0,'packQty'),this.packQty);
           this.TempformData = this.formatData(this.TempformData);
           this._shared.formData["ratioPack"] = this.TempformData;
           this.refreshTable();
@@ -257,6 +278,22 @@ export class AddPacksComponent implements OnInit {
         this._shared.formData["solidPack"][index].sequence = Number( event.value);
       }
     }
+    else if( key == 'packQty'){
+      if(this.totalRatioSum != 0){
+        this.calculateNoOfCarton(event.value);
+      }
+    }
+    else if( key == 'prePack'){
+      if(this.totalRatioSum != 0){
+        this.calculateNoOfCarton();
+      }
+    }
+    else if( key == 'packingMethodTemp' && this.addType == 0){
+      this.insertPackingMethodInAllLines(event.value);
+    }
+    else if( key == 'packingMethod' && this.addType == 0){
+      this._shared.formData["solidPack"][index].packingMethod = event.value;
+    }
   }
 
   modifyData(val) {
@@ -273,6 +310,15 @@ export class AddPacksComponent implements OnInit {
     this.refreshTable();
   }
 
+  insertPackingMethodInAllLines(val){
+    this._shared.formData["solidPack"].forEach((elem) => {
+      if(val){
+        elem.packingMethod = val;
+      }
+    });
+    this.refreshTable();
+  }
+
   checkDuplicateAndPush(elem) {
     let flag = false;
     this.sizeArray.forEach((element) => {
@@ -283,7 +329,37 @@ export class AddPacksComponent implements OnInit {
     }
   }
 
-  ratioValueChanged(event, i, y) { }
+  ratioValueChanged(event, i, y,element) {
+    let totalUnit = 0;
+    let cacheData = this._cache.getCachedValue(this._shared.ratioPackPath );
+    let cdata = cacheData[i];
+    if (cacheData[i]) {
+      element.size.forEach((elem) => {
+        if (cdata[elem.sizeValue] && cdata[elem.sizeValue] != 0) {
+          totalUnit = totalUnit + Number(cdata[elem.sizeValue]);
+        }
+      });
+    }
+    this.updateTotalUnit(i,totalUnit);
+    this.calculateTotalRatioSum();
+  }
+
+  updateTotalUnit(i,totalUnit){
+    this.inputService.updateInput(this._shared.getRatioPackDetailsPath(i,'totalUnit'),totalUnit);
+  }
+
+  calculateTotalRatioSum(){
+    this.totalRatioSum = 0;
+    let cacheData = this._cache.getCachedValue(this._shared.ratioPackPath );
+    if(cacheData){
+      cacheData.forEach(ratio=>{
+        if(ratio){
+          this.totalRatioSum += ratio.totalUnit;
+        }
+      })
+    }
+    this.calculateNoOfCarton();
+  }
 
   resetCache() {
     this.servcie.resetInputCacheWithKey(this._shared.solidPackPath);
@@ -320,8 +396,11 @@ export class AddPacksComponent implements OnInit {
             sizeValue.push(z);
           }
         });
-        if (!flag) {
+        if (!flag && y.sizeValue != 'Total Units') {
           sizeValue.push([]);
+        }
+        else if (!flag && y.sizeValue == 'Total Units'){
+          sizeValue.push(y);
         }
       });
       let temp = new ratioDetails(x);
@@ -349,4 +428,27 @@ export class AddPacksComponent implements OnInit {
       }
     })
   }
+
+  calculateNoOfCarton(packQty?,prePack?){
+      try{
+        let headerData = this._cache.getCachedValue(this._shared.ratioPackHeaderPath)[0];
+        packQty = headerData.packQty;
+        prePack = headerData.prePack;
+        let noOfCtn = Math.ceil(Number(packQty)/(Number(prePack)*Number(this.totalRatioSum)));
+        this.inputService.updateInput(this._shared.getRatioPacksHeaderPath(0,'noOfCartons'),noOfCtn ? noOfCtn : '');
+        if(Number(packQty) % this.totalRatioSum != 0 ){
+          this.inputService.setError(this._shared.getRatioPacksHeaderPath(0,'packQty'),"Pack quantity should be a multiple of sum of ratios (" + this.totalRatioSum + ")")
+        }
+        else{
+          this.inputService.resetError(this._shared.getRatioPacksHeaderPath(0,'packQty'));
+        }
+        if(Number(packQty) < (Number(this.totalRatioSum) * Number(prePack))){
+          this.inputService.setError(this._shared.getRatioPacksHeaderPath(0,'packQty'),"Pack quantity should be greater than 'Pre Pack * Total Units' (" + (Number(this.totalRatioSum) * Number(prePack)) + ")");
+        }
+      }
+      catch(err){
+        console.log(err);
+      }
+  }
+    
 }

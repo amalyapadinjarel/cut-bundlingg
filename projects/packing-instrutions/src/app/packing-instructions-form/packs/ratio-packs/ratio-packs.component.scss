@@ -166,7 +166,7 @@ table {
 }
 
 .data-box {
-  width: 65px;
+  width: 80px;
   margin-top: 9px;
   display: inline-block;
   border: 1px solid #bfbfbf;
@@ -175,12 +175,12 @@ table {
 }
 
 .data-box-edit {
-  width: 65px;
+  width: 80px;
   margin-top: 9px;
 }
 
 .data-box-bottom {
-  width: 65px;
+  width: 80px;
   margin-top: 10px;
   display: inline-block;
   border: 1px solid #bfbfbf;
@@ -201,3 +201,13 @@ table {
   font-family: inherit;
 }
 
+.header{
+  display: flex;
+  div{
+    padding-left: 10px;
+    display: inline-block;
+    align-self: flex-end;
+    padding-bottom: 1px;
+    color: #6B538B;
+  }
+}

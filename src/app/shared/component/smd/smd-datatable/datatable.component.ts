@@ -1,4 +1,3 @@
-
 import {
 	AfterContentChecked,
 	AfterContentInit,
@@ -20,15 +19,15 @@ import {
 	ViewChild,
 	ViewContainerRef,
 	ViewEncapsulation,
+	HostListener,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { URLSearchParams } from '@angular/http';
 import { Subscription, Observable } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import { SmdPaginatorComponent } from '../smd-paginator/paginator.component';
 import { CommonUtilities } from 'app/shared/utils/common.utility';
-import { ApiService } from '../../../services';
+import { ApiService, LocalCacheService } from '../../../services';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
 
@@ -246,11 +245,11 @@ export class SmdContextualDatatableButton {
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		"[class.smd-responsive]": "responsive",
-		"[class.primary-listing]": "primaryListing"
+		"[class.primary-listing]": "isPrimaryListing"
 	}
 })
 export class SmdDataTable
-	implements AfterContentInit, AfterContentChecked, OnDestroy {
+	implements AfterContentInit, OnDestroy {
 	totalRow: any;
 	rows: SmdDataRowModel[] = [];
 	private visibleRows: SmdDataRowModel[] = [];
@@ -261,19 +260,18 @@ export class SmdDataTable
 	private selectedRow: any;
 	private params: HttpParams = new HttpParams();
 	tableHeight: number;
+	tableMargin: number;
 	private token;
 	private lastSelected;
 	filteredModels: any[];
 
 	filterInput: FormControl;
 	columnFilterInputs: FormControl[] = [];
-	columnFilterInputsValues;
 
 	@ViewChild(SmdPaginatorComponent, { static: true }) paginatorComponent: SmdPaginatorComponent;
 	@ContentChildren(SmdDataTableColumnComponent) columns: QueryList<SmdDataTableColumnComponent>;
 
 	@Input() tableId: string;
-	@Input() apiLevel: number = 4;
 	@Input() rowCount: number = 0;
 	dummyRowCount: any = 0;
 	dummyRows: any[] = [1, 2, 3];
@@ -332,7 +330,6 @@ export class SmdDataTable
 	@Input() preFilters: any;
 	customFilter: any;
 	customFilters: any;
-	@Input() removeVariable = false;
 	@Output() range: EventEmitter<any> = new EventEmitter<any>();
 	selectedRowCount: number = 0;
 	@Input() showTotal: boolean = false;
@@ -341,16 +338,29 @@ export class SmdDataTable
 	tempColumns: any = [];
 	hasSubheader: Boolean = false;
 	columnValueChanges: Boolean = false;
-	@Input() checkedRows: any = [];
+	private checkedRows: any = [];
+	@Input() scrollType: any = 'page';
+	@Input() fetchAll = false;
+	private originalPreFetchPages = 1;
+	isHeaderReady = false;
 
-	private operators = ['>', '<', '>=', '<='];
+	get isPrimaryListing() {
+		return this.primaryListing || (this.scrollType == 'scroll');
+	}
 
 	constructor(
 		private _viewContainer: ViewContainerRef,
 		public changeDetector: ChangeDetectorRef,
-		private apiService: ApiService) {
+		private apiService: ApiService,
+		private _cache: LocalCacheService
+	) {
 		this.loading = !this.loading && !this.models ? true : this.loading;
-		this.filterInput = new FormControl("");
+		this.filterInput = new FormControl(this._cache.getCachedValue('datatables.' + this.tableId + '.filter' || ""));
+	}
+
+	@HostListener('window:resize')
+	onResize() {
+		this.setTableDimentions();
 	}
 
 	ngOnInit() {
@@ -370,7 +380,10 @@ export class SmdDataTable
 	}
 
 	ngAfterContentInit() {
-		if (!this.preFilters && this.apiLevel != 5) {
+		if (this.scrollType == 'scroll') {
+			this.paginated = false;
+		}
+		if (!this.preFilters) {
 			this.preFilters = {};
 		}
 		if (!this.apiClass) {
@@ -379,10 +392,25 @@ export class SmdDataTable
 		if (!this.dataHeader) {
 			this.dataHeader = "persons";
 		}
+		this.originalPreFetchPages = this.preFetchPages;
+		this.selectedPage = parseInt(this._cache.getCachedValue('datatables.' + this.tableId + '.page')) || 1;
+		this.lastQueryExecutedPage = this.selectedPage;
 
-		if (!this.paginatorComponent.selectedRange) {
-			this.paginatorComponent.selectedRange = this.defaultRange;
+		if (this.paginated) {
+			this.paginatorComponent.selectedPage = this.selectedPage;
+			if (!this.paginatorComponent.selectedRange) {
+				this.paginatorComponent.selectedRange = this.defaultRange;
+			}
 		}
+
+		this.filterInput.valueChanges.pipe(
+			debounceTime(400),
+			distinctUntilChanged())
+			.subscribe((value) => {
+				this._cache.setLocalCache('datatables.' + this.tableId + '.filter', value);
+				this.resetPage();
+				this._queryTableData().then(() => { }, () => { });
+			});
 
 		if (!this.models && this.dataUrl) {
 			this._queryTableData().then(() => { }, () => { });
@@ -396,20 +424,6 @@ export class SmdDataTable
 			this._updateRows();
 			this.changeDetector.markForCheck();
 		});
-
-		if (this.removeVariable == true) {
-			this._updateVisibleRows();
-		}
-
-		this.filterInput.valueChanges.pipe(
-			debounceTime(400),
-			distinctUntilChanged())
-			.subscribe(() => {
-				if (this.paginatorComponent) {
-					this.paginatorComponent.reset();
-				}
-				this._queryTableData().then(() => { }, () => { });
-			});
 
 		this.columns.changes.subscribe(data => {
 			let temp: any = [];
@@ -446,27 +460,21 @@ export class SmdDataTable
 				this.columns = this.tempColumns
 			}
 		}
+		
 		this.columns.forEach(column => {
 			if (column.filterable) {
-				this.columnFilterInputs[column.id] = new FormControl(
-					this.columnFilterInputsValues
-						? this.columnFilterInputsValues[column.field]
-							? this.columnFilterInputsValues[column.field]
-							: ""
-						: ""
-				);
+				this.columnFilterInputs[column.id] = new FormControl(this._cache.getCachedValue('datatables.' + this.tableId + '.' + column.field + '.filter') || "");
 				this.columnFilterInputs[column.id].valueChanges.pipe(
 					debounceTime(400),
 					distinctUntilChanged())
-					.subscribe(() => {
-
-						if (this.paginatorComponent) {
-							this.paginatorComponent.reset();
-						}
+					.subscribe((value) => {
+						this._cache.setLocalCache('datatables.' + this.tableId + '.' + column.field + '.filter', value);
+						this.resetPage();
 						this._queryTableData().then(() => { }, () => { });
 					});
 			}
 		});
+
 	}
 
 	rangeChanged(selectedRange) {
@@ -570,7 +578,7 @@ export class SmdDataTable
 	}
 
 	setCheckedRows(row) {
-		var idx = this.findIndex(this.checkedRows,row.model);
+		var idx = this.findIndex(this.checkedRows, row.model);
 		if (idx != -1) {
 			this.selectedRowCount--;
 			this.checkedRows.splice(idx, 1);
@@ -617,7 +625,7 @@ export class SmdDataTable
 			}
 		} else {
 			if (row.checked) {
-				if (this.lastSelected && !this.equals(this.lastSelected,row)) {
+				if (this.lastSelected && !this.equals(this.lastSelected, row)) {
 					this.lastSelected.checked = false;
 					this.setCheckedRows(this.lastSelected)
 				}
@@ -741,6 +749,7 @@ export class SmdDataTable
 	}
 
 	_onPageChange() {
+		this._cache.setLocalCache('datatables.' + this.tableId + '.page', this.paginatorComponent.currentPage.page);
 		if (
 			this.paginatorComponent.currentPage.page < this.lastQueryExecutedPage ||
 			this.paginatorComponent.currentPage.page >=
@@ -827,175 +836,186 @@ export class SmdDataTable
 		}
 	}
 
-	public filterTable() {
-		if (this.paginatorComponent) {
-			this.paginatorComponent.currentPage.page = 1;
-			this.selectedPage = 1;
+	public resetTable() {
+		this.resetPage();
+		this.clearAllFilters();
+	}
+
+	private resetPage() {
+		if (this.scrollType == 'scroll') {
+			this.preFetchPages = this.originalPreFetchPages;
+			this._viewContainer.element.nativeElement.getElementsByClassName('smd-table-body')[0].scrollTop = 0;
+		}
+		else if (this.paginatorComponent) {
+			this.paginatorComponent.selectedPage = 1;
+			this._cache.setLocalCache('datatables.' + this.tableId + '.page', 1);
+		}
+	}
+
+	private clearAllFilters() {
+		this.filterInput.setValue("", { emitEvent: false });
+		this._cache.setLocalCache('datatables.' + this.tableId + '.filter', null);
+		if (this.columns) {
+			this.columns.forEach(column => {
+				if (
+					this.columnFilterInputs[column.id] &&
+					this.columnFilterInputs[column.id].value
+				) {
+					this.columnFilterInputs[column.id].setValue("", { emitEvent: false });
+					this._cache.setLocalCache('datatables.' + this.tableId + '.' + column.field + '.filter', null);
+				}
+			});
 		}
 		this._queryTableData().then(() => { }, () => { });
+	}
+
+	public setColumnFilterInputValues(columnFilterInputValues) {
+		//TODO To be removed
+	}
+
+	private getColumnFilterInputValues() {
+		let values: any[] = [];
+		if (this.columns) {
+			this.columns.forEach(column => {
+				if (
+					this.columnFilterInputs[column.id] &&
+					this.columnFilterInputs[column.id].value
+				) {
+					values[column.field] = this.columnFilterInputs[column.id].value;
+				}
+			});
+		}
+		return values;
 	}
 
 	private _queryTableData(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.loading = true;
-			const size = this.paginatorComponent.currentPage.size
-				? this.paginatorComponent.currentPage.size
-				: this.defaultRange;
-			let page: number =
-				this.paginatorComponent.currentPage.page - this.preFetchPages / 2 <= 0
-					? 1
-					: Math.round(
-						this.paginatorComponent.currentPage.page -
-						this.preFetchPages / 2
-					);
-			let offset = (page - 1) * size;
-			let limit: number = this.preFetchPages * size;
+			let page: number;
+			let offset: number;
+			let limit: number;
+			if (this.paginated) {
+				const size: number = this.paginatorComponent.currentPage.size
+					? this.paginatorComponent.currentPage.size
+					: this.defaultRange;
+				page =
+					this.paginatorComponent.currentPage.page - this.preFetchPages / 2 <= 0
+						? 1
+						: Math.round(
+							this.paginatorComponent.currentPage.page -
+							this.preFetchPages / 2
+						);
+				offset = (page - 1) * size;
+				limit = this.fetchAll ? -1 : this.preFetchPages * size;
+			}
+			else {
+				page = 1;
+				offset = 0;
+				limit = this.fetchAll ? -1 : (this.preFetchPages * this.defaultRange) + 3;
+			}
 			if (this.tempColumns && this.hasSubheader && this.columnValueChanges) {
 				this.columns = this.tempColumns;
 			}
 			if (this.dataHeader && this.dataUrl) {
 				this.token = Math.random();
-				let filterconditions = [];
-				let queryParams = '';
-				if (this.apiLevel == 4) {
-					let filter = this.customFilter ? [this.customFilter] : [];
-					let andFilters = {};
-					let filters = this.customFilters ? this.customFilters : {};
-					if (this.filterEnabled) {
-						let andGrp = {
-							type: "group",
-							con: "and",
-							items: []
-						};
-						let orGrp = {
-							type: "group",
-							con: "and",
-							items: []
-						};
-						this.columns.forEach(column => {
-							if (column.filterable) {
-								if (
-									this.columnFilterInputs[column.id] &&
-									this.columnFilterInputs[column.id].value
-								) {
-									andGrp.items.push({
-										type: "item",
-										con: "and",
-										operator: "startsWith",
-										attr: column.field,
-										value: this.columnFilterInputs[column.id].value.toLowerCase()
-									});
-									andFilters[column.field] = this.columnFilterInputs[
-										column.id
-									].value.toLowerCase();
-								}
-								if (column.filterable && this.filterInput.value) {
-									orGrp.items.push({
-										type: "item",
-										con: "or",
-										operator: "startsWith",
-										attr: column.field,
-										value: this.filterInput.value.toLowerCase()
-									});
-									filters[column.field] = this.filterInput.value.toLowerCase();
-								}
-							}
-						});
-						if (andGrp.items.length > 0) {
-							filter.push(andGrp);
-						}
-						if (orGrp.items.length > 0) {
-							filter.push(orGrp);
-						}
-						this.filterParams.emit(andFilters);
-					}
-					for (let key of Object.keys(this.preFilters)) {
-						andFilters[key] = this.preFilters[key] + "<?EQ>";
-					}
-
-					if (this.apiMethod == "GET") {
-
-						this.params = this.params.set("filter", JSON.stringify(filter));
-						this.params = this.params.set("filters", JSON.stringify(filters));
-						this.params = this.params.set("andFilters", JSON.stringify(andFilters));
-
-						this.params = this.params.set("offset", offset.toString());
-						this.params = this.params.set("limit", limit.toString());
-						if (this.sortDirection != null) {
-							this.params = this.params.set("sort", this.sortField);
-							this.params = this.params.set("direction", this.sortDirection);
-						} else {
-							this.params = this.params.delete("sort");
-							this.params = this.params.delete("direction");
-						}
-					}
-					else if (this.apiMethod == "POST") {
-						this.postBody.filter = filter;
-						this.postBody.filters = filters;
-						this.postBody.andFilters = andFilters;
-						this.postBody.offset = offset + 1;
-						this.postBody.limit = limit;
-						if (this.sortDirection != null) {
-							this.postBody.sort = this.sortField;
-							this.postBody.direction = this.sortDirection;
-						} else {
-							if (this.postBody.sort) { delete this.postBody.sort; }
-							if (this.postBody.direction) { delete this.postBody.direction; }
-						}
-					}
-				}
-				else {
-					if (this.preFilters)
-						filterconditions = this.preFilters.split(';');
+				let filter = this.customFilter ? [this.customFilter] : [];
+				let andFilters = {};
+				let filters = this.customFilters ? this.customFilters : {};
+				if (this.filterEnabled) {
+					let andGrp = {
+						type: "group",
+						con: "and",
+						items: []
+					};
+					let orGrp = {
+						type: "group",
+						con: "and",
+						items: []
+					};
 					this.columns.forEach(column => {
 						if (column.filterable) {
 							if (
 								this.columnFilterInputs[column.id] &&
 								this.columnFilterInputs[column.id].value
 							) {
-								let containsOp = false;
-								this.operators.forEach(op => {
-									if (this.columnFilterInputs[column.id].value.indexOf(op) == 0) {
-										containsOp = true;
-										return;
-									}
+								andGrp.items.push({
+									type: "item",
+									con: "and",
+									operator: "startsWith",
+									attr: column.field,
+									value: this.columnFilterInputs[column.id].value.toLowerCase()
 								});
-								filterconditions.push(column.field + (!containsOp ? ' LIKE ' : ' ') + this.columnFilterInputs[column.id].value + (!containsOp ? '%' : ''));
+								andFilters[column.field] = this.columnFilterInputs[
+									column.id
+								].value.toLowerCase();
+							}
+							if (column.filterable && this.filterInput.value) {
+								orGrp.items.push({
+									type: "item",
+									con: "or",
+									operator: "startsWith",
+									attr: column.field,
+									value: this.filterInput.value.toLowerCase()
+								});
+								filters[column.field] = this.filterInput.value.toLowerCase();
 							}
 						}
 					});
-					queryParams = 'limit=' + limit + '&offset=' + offset + (filterconditions.length > 0 ? '&q=' + filterconditions.join(';') : '')
-						+ (this.sortDirection != null ? '&orderBy=' + this.sortField + ':' + this.sortDirection.toLowerCase() : '');
+					if (andGrp.items.length > 0) {
+						filter.push(andGrp);
+					}
+					if (orGrp.items.length > 0) {
+						filter.push(orGrp);
+					}
+					this.filterParams.emit(andFilters);
+				}
+				for (let key of Object.keys(this.preFilters)) {
+					andFilters[key] = this.preFilters[key] + "<?EQ>";
+				}
+
+				if (this.apiMethod == "GET") {
+
+					this.params = this.params.set("filter", JSON.stringify(filter));
+					this.params = this.params.set("filters", JSON.stringify(filters));
+					this.params = this.params.set("andFilters", JSON.stringify(andFilters));
+
+					this.params = this.params.set("offset", offset.toString());
+					this.params = this.params.set("limit", limit.toString());
+					if (this.sortDirection != null) {
+						this.params = this.params.set("sort", this.sortField);
+						this.params = this.params.set("direction", this.sortDirection);
+					} else {
+						this.params = this.params.delete("sort");
+						this.params = this.params.delete("direction");
+					}
+				}
+				else if (this.apiMethod == "POST") {
+					this.postBody.filter = filter;
+					this.postBody.filters = filters;
+					this.postBody.andFilters = andFilters;
+					this.postBody.offset = offset + 1;
+					this.postBody.limit = limit;
+					if (this.sortDirection != null) {
+						this.postBody.sort = this.sortField;
+						this.postBody.direction = this.sortDirection;
+					} else {
+						if (this.postBody.sort) { delete this.postBody.sort; }
+						if (this.postBody.direction) { delete this.postBody.direction; }
+					}
 				}
 				if (this.apiMethod == "GET") {
-					if (this.apiLevel == 4) {
-						this.apiClass
-							.get('/' + this.dataUrl, this.apiLevel == 4 ? this.params : queryParams, this.token)
-							.subscribe(
-								data => {
-									this.processGetReponse(data, page, offset, limit).then(resolve, reject);
-									this.loading = false;
-								},
-								() => {
-									this.loading = false;
-									reject();
-								}
-							);
-					}
-					else {
-						this.apiClass
-							.get('/' + this.dataUrl + (this.dataUrl.indexOf('?') == -1 ? '?' : '&') + queryParams, this.token)
-							.subscribe(
-								data => {
-									this.processGetReponse(data, page, offset, limit).then(resolve, reject);
-									this.loading = false;
-								},
-								() => {
-									this.loading = false;
-									reject();
-								}
-							);
-					}
+					this.apiClass
+						.get('/' + this.dataUrl, this.params, this.token)
+						.subscribe(
+							data => {
+								this.processGetReponse(data, page, offset, limit).then(resolve, reject);
+								this.loading = false;
+							},
+							() => {
+								this.loading = false;
+								reject();
+							}
+						);
 				} else if (this.apiMethod == "POST") {
 					this.apiClass
 						.post('/' + this.dataUrl, this.postBody, this.token)
@@ -1092,7 +1112,7 @@ export class SmdDataTable
 					this.dummyRowCount =
 						data[this.dataHeader].length - 1 + "+";
 					this.rowCount = data[this.dataHeader].length;
-					if (limit) {
+					if (limit && limit != -1) {
 						this.paginatorComponent.hasMore = data.hasMore && this.rowCount == limit;
 					}
 					if (offset)
@@ -1140,42 +1160,6 @@ export class SmdDataTable
 		});
 	}
 
-	public clearAllFilters() {
-		if (this.columns) {
-			this.columns.forEach(column => {
-				if (
-					this.columnFilterInputs[column.id] &&
-					this.columnFilterInputs[column.id].value
-				) {
-					this.columnFilterInputs[column.id].setValue("");
-				}
-			});
-		}
-	}
-
-	public resetPage() {
-		this.paginatorComponent.reset();
-	}
-
-	public setColumnFilterInputValues(columnFilterInputValues) {
-		this.columnFilterInputsValues = columnFilterInputValues;
-	}
-
-	public getColumnFilterInputValues() {
-		let values: any[] = [];
-		if (this.columns) {
-			this.columns.forEach(column => {
-				if (
-					this.columnFilterInputs[column.id] &&
-					this.columnFilterInputs[column.id].value
-				) {
-					values[column.field] = this.columnFilterInputs[column.id].value;
-				}
-			});
-		}
-		return values;
-	}
-
 	private _updateVisibleRows() {
 		if (this.paginated) {
 			this.visibleRows = this.rows.filter(
@@ -1190,9 +1174,10 @@ export class SmdDataTable
 			this.visibleRows = this.rows;
 		}
 		this._setHeaderCheckBox();
+		this.setTableDimentions();
 		this.visibleRows.forEach(row => {
 			if (this.checkedRows.length)
-				if (this.checkIfInsideArray(this.checkedRows,row.model)) { row.checked = true; }
+				if (this.checkIfInsideArray(this.checkedRows, row.model)) { row.checked = true; }
 		});
 		this.selectedRowCount = this.checkedRows.length;
 	}
@@ -1204,6 +1189,7 @@ export class SmdDataTable
 			});
 		}
 	}
+
 	private _setHeaderCheckBox() {
 		let flag = false;
 		if (this.visibleRows && this.visibleRows.length > 0) { flag = true; }
@@ -1219,29 +1205,50 @@ export class SmdDataTable
 		return this.showCheckBox;
 	}
 
-	ngAfterContentChecked() {
-		if (this.primaryListing) {
+	private setTableDimentions() {
+		this.isHeaderReady = false;
+		if (this.primaryListing || this.scrollType == 'scroll') {
 			let domTable = this._viewContainer.element.nativeElement;
-			let tr = domTable.querySelectorAll(
-				".smd-table-body > table > tbody > tr"
-			)[0];
-			if (tr) {
-				let rowsHeight = (this.loading ? this.dummyRows.length * 27 : this.visibleRows.length * tr.offsetHeight) + 26 + (this.showTotal ? 27 : 0);
-				let viewHeight =
-					domTable.offsetHeight -
-					(this.paginated
-						? this.paginatorComponent.nativeElement.nativeElement.offsetHeight +
-						28
-						: 0);
-				domTable.parentElement.classList.add('primary-listing');
-				this.tableHeight = viewHeight < rowsHeight ? viewHeight : rowsHeight;
-				let tds = tr.querySelectorAll("td");
-				this.columns.forEach((column: SmdDataTableColumnComponent, index) => {
-					if (this.paginated) { index++; }
-					column.headerWidth =
-						tds[index].offsetWidth - (column.title == " " ? 20 : 16);
-				});
+			if (this.primaryListing) {
+				domTable.parentElement.style.height = '100%';
 			}
+			setTimeout(() => {
+				let bodyRow = domTable.querySelectorAll(
+					".smd-table-body > table > tbody > tr"
+				)[0];
+				if (bodyRow) {
+					let headerHeight = (domTable.querySelectorAll(".smd-table-body > table > thead")[0].offsetHeight) + 1;
+					let rowsHeight = ((this.loading ? this.dummyRows.length : (this.scrollType == 'scroll' ? (this.defaultRange < this.visibleRows.length ? this.defaultRange : this.visibleRows.length) : this.visibleRows.length)) * bodyRow.offsetHeight) + headerHeight + (this.showTotal ? 27 : 0);
+					if (this.primaryListing) {
+						let viewHeight =
+							domTable.parentElement.offsetHeight - (this.paginated ? this.paginatorComponent.nativeElement.nativeElement.offsetHeight + 1 : 0) -
+							(this.filterEnabled ? 27 : 0);
+						this.tableHeight = viewHeight < rowsHeight ? viewHeight : rowsHeight;
+					}
+					else {
+						this.tableHeight = rowsHeight;
+					}
+					this.tableMargin = 0 - (headerHeight + 3);
+				}
+				else {
+					let headerHeight = (domTable.querySelectorAll(".smd-table-body > table > thead")[0].offsetHeight) + 4;
+					this.tableHeight = headerHeight;
+					this.tableMargin = 0 - headerHeight;
+				}
+				setTimeout(() => {
+					let headerRow = domTable.querySelectorAll(
+						".smd-table-body > table > thead > tr"
+					)[0];
+					if (headerRow) {
+						let tds = headerRow.querySelectorAll("th");
+						this.columns.forEach((column: SmdDataTableColumnComponent, index) => {
+							if (this._shouldRenderCheckbox()) { index++; }
+							column.headerWidth = tds[index].offsetWidth - 16;
+						});
+					}
+					this.isHeaderReady = true;
+				}, 0);
+			}, 0);
 		}
 	}
 
@@ -1346,11 +1353,21 @@ export class SmdDataTable
 		return JSON.stringify(a) == JSON.stringify(b)
 	}
 
-	checkIfInsideArray(array,object){
-		return this.findIndex(array,object) != -1
+	checkIfInsideArray(array, object) {
+		return this.findIndex(array, object) != -1
 	}
 
-	findIndex(array,object){
+	findIndex(array, object) {
 		return array.findIndex(row => { return this.equals(row, object) })
 	}
+
+	onBodyScroll(event: any) {
+		if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) {
+			if (this.rows.length == (this.preFetchPages * this.defaultRange) + 3) {
+				this.preFetchPages += 1;
+				this._queryTableData();
+			}
+		}
+	}
+
 }

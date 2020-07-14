@@ -34,7 +34,6 @@ export class RoutingListComponent implements OnInit {
 
   _onDataChange(dataChange: any) {
     if (dataChange.data && dataChange.data.routing){
-      console.log(dataChange.data.routing)
       this._shared.setListData(dataChange.data);
       this._shared.columnFilterValues = dataChange.columnFilterValues;
       this._shared.params = this.dataTable.getParams();

@@ -5,7 +5,7 @@
             <label>Customer</label>
             <div class="val">
                 <tnz-input [path]="_shared.getHeaderAttrPath('partnerName')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('partnerName')"
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('partnerName')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
                 </tnz-input>
             </div>
@@ -14,7 +14,7 @@
             <label>SO</label>
             <div class="val">
                 <tnz-input [path]="_shared.getHeaderAttrPath('so')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('so')"
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('so')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>
@@ -22,7 +22,7 @@
             <label>Style</label>
             <div class="val">
                 <tnz-input  [path]="_shared.getHeaderAttrPath('style')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                    validators="required" [isEdit]="getIfEditable('style')" [loading]="_shared.headerLoading || _shared.loading">
+                    [isEdit]="getIfEditable('style')" [loading]="_shared.headerLoading || _shared.loading">
                 </tnz-input>
             </div>
         </li>
@@ -31,23 +31,21 @@
             <label>Delivery</label>
             <div class="val">
                 <tnz-input type="date" [path]="_shared.getHeaderAttrPath('delivery')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('delivery')"
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('delivery')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>
         <li>
             <label>Order Qty</label>
             <div class="val">
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('orderQnty')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('orderQnty')"
+                <tnz-input  [value]="_shared.getHeaderAttributeValue('orderQnty') + ' Pcs'" [isEdit]="getIfEditable('orderQnty')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>
         <li>
             <label>Packed Qty</label>
             <div class="val">
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('packedQnty')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('packedQnty')"
+                <tnz-input  [value]="_shared.getHeaderAttributeValue('packedQnty') + ' Pcs'" [isEdit]="getIfEditable('packedQnty')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>
@@ -56,15 +54,14 @@
             <label>Total Packs</label>
             <div class="val">
                 <tnz-input [path]="_shared.getHeaderAttrPath('totalPackQty')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('totalPackQty')"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('totalPackQty')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>
         <li>
             <label>Carton</label>
             <div class="val">
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('cartons')" [primaryKey]="_shared.primaryKey" 
-                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('cartons')"
+                <tnz-input  [value]="_shared.getHeaderAttributeValue('cartons') + ' Ctn'" [isEdit]="getIfEditable('cartons')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
             </div>
         </li>

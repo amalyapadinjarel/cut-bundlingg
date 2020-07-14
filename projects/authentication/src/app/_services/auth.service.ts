@@ -44,7 +44,7 @@ export class AuthService {
 			method: 'put'
 		}
 		return this.http.put(
-			`${environment.api_url_v4}${path}`,
+			`${environment.api_url}${path}`,
 			JSON.stringify(body),
 			{ headers: this.setHeaders(config) }
 		).pipe(

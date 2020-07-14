@@ -3,17 +3,13 @@ import {SmdDataTable} from '../../../../../../../../src/app/shared/component/smd
 import {MfgRoutingSharedService} from '../../../../services/mfg-routing-shared.service';
 import {MfgRoutingService} from '../../../../services/mfg-routing.service';
 import {SubSink} from 'subsink';
-import {semiProductsLovconfig} from '../../../../../../../Routing/src/app/models/lov-config';
-import {AddNewSemiProductComponent} from '../../../../../../../Routing/src/app/routing-form/add-new-semi-product/add-new-semi-product.component';
 import {AlertUtilities} from '../../../../../../../../src/app/shared/utils';
 import {TnzInputService} from '../../../../../../../../src/app/shared/tnz-input/_service/tnz-input.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {NewOperationGroupComponent} from '../new-operation-group/new-operation-group.component';
 import {UploadFileComponent} from '../../../../../../../../src/app/shared/component';
 import {DocumentService} from '../../../../../../../../src/app/shared/services';
-import {fi} from 'cronstrue/dist/i18n/locales/fi';
 
-// import {} from 'assets/data/Routing-Steps-Upload-Template.xlsx'
 
 @Component({
     selector: 'operations-tab',
@@ -170,7 +166,7 @@ export class OperationsTabComponent implements OnInit, OnDestroy {
                     }
                 }
             );
-        }else{
+        } else {
             this.alertUtils.showAlerts('Please upload xlsx or xls file.')
             this.matDialogRef.close();
 
@@ -208,7 +204,11 @@ export const operationsLovconfig: any = {
         {
             key: 'label',
             title: 'Operation'
-        }]
+        },
+        {
+            key: 'shortCode',
+            title: 'Operation Code'
+        },]
 };
 
 export const operationsGroupLovconfig: any = {
@@ -222,5 +222,10 @@ export const operationsGroupLovconfig: any = {
         {
             key: 'label',
             title: 'Operation'
-        }]
+        },
+        {
+            key: 'shortCode',
+            title: 'Operation Code'
+        },
+    ]
 };

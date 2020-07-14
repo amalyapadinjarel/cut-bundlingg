@@ -31,6 +31,7 @@ import { AddPacksComponent } from './packing-instructions-form/packs/add-packs/a
 import { SolidPacksComponent } from './packing-instructions-form/packs/solid-packs/solid-packs.component';
 import { RatioPacksComponent } from './packing-instructions-form/packs/ratio-packs/ratio-packs.component';
 import { CartonsComponent } from './packing-instructions-form/cartons/cartons.component';
+import { RepackReasonComponent } from './packing-instructions-form/packs/repack-reason/repack-reason.component';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -91,7 +92,8 @@ const PROVIDERS = [
     AddPacksComponent,
     SolidPacksComponent,
     RatioPacksComponent,
-    CartonsComponent
+    CartonsComponent,
+    RepackReasonComponent
   ],
   imports: [
     PackingInstructionsRouting,

@@ -1,7 +1,7 @@
 	<div style="display: flex;">
 		<h3>Solid</h3>
 		<span class="flex-filler"></span>
-		<div style="display: flex;">
+		<div style="display: flex; margin-right: 10px">
 			<h4 style="color: #6B538B; font-weight: 400;">Qty/CTN </h4> <h4>{{qntyPerCtn}}</h4>
 		</div>
 	</div>
@@ -10,13 +10,6 @@
 	<smd-datatable [tableId]="_shared.appKey + '.packsDetails.' + mainIndex" [paginated]="!_shared.getPacksDetailsEditable()" [loading]="_shared.packsDetailsLoading"
 	class="tnz-input-table"  [filterEnabled]="!_shared.getPacksDetailsEditable()" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
 	[sortEnabled]="!_shared.getPacksDetailsEditable()" [showCheckBox]="_shared.getPacksDetailsEditable()">
-		<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
-			<ng-template let-model="data" let-index="index">
-				<div class="row-operations">
-					<mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
-				</div>
-			</ng-template>
-		</smd-datatable-column>
 		<smd-datatable-column title="Pack#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
 			<ng-template let-model="data" let-index="index">
 				<span *ngIf="!_shared.getPacksDetailsEditable()">{{model.sequence}}</span>
@@ -43,7 +36,18 @@
 				<span *ngIf="!_shared.getPacksDetailsEditable('orderQty')">{{model.orderQty}}</span>
 				<div *ngIf="_shared.getPacksDetailsEditable('orderQty')">
 					<tnz-input type="number" [path]="_shared.getPacksDetailsPath(mainIndex,index,'orderQty')" [primaryKey]="_shared.packsDetailsPrimaryKey" [sharedData]="_shared.formData['packsDetails'].grpData"
-					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('orderQty') && !_shared.isCartonGenerated" [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="onValueChanged($event,index,'orderQty')">
+					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('orderQty') && ( !_shared.isCartonGenerated || (model.activeCarton == 0 && model.packedOrOnholdCount == 0))" [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="onValueChanged($event,index,'orderQty')">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Packing Method" field="packingMethod" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getPacksDetailsEditable('packingMethod') || model.packedOrOnholdCount > 0">{{model.packingMethod?.label}}</span>
+				<div *ngIf="_shared.getPacksDetailsEditable('packingMethod') && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)">
+					<tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="packingMethod" [path]="_shared.getPacksDetailsPath(mainIndex,index,'packingMethod')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpData" [isEdit]="_shared.getPacksDetailsEditable() && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)"
+						[loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'packingMethod')" [disable]="_shared.isCartonGenerated && model.packedOrOnholdCount > 0">
 					</tnz-input>
 				</div>
 			</ng-template>
@@ -63,7 +67,7 @@
 				<span *ngIf="!_shared.getPacksDetailsEditable('short')">{{getShort(model.short)}}</span>
 				<div *ngIf="_shared.getPacksDetailsEditable('short')">
 					<tnz-input [path]="_shared.getPacksDetailsPath(mainIndex,index,'short')" [primaryKey]="_shared.packsDetailsPrimaryKey" [sharedData]="_shared.formData['packsDetails'].grpData"
-					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('short') && _shared.isCartonGenerated && checkShortAndExcessEditable(index,'excess')" 
+					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('short') && _shared.isCartonGenerated && model.activeCarton > 0 && checkShortAndExcessEditable(index,'excess')" 
 					[loading]="_shared.packsDetailsLoading || _shared.loading" class="tnz-input-red">
 					</tnz-input>
 				</div>
@@ -74,7 +78,7 @@
 				<span *ngIf="!_shared.getPacksDetailsEditable('excess')">{{getExcess(model.excess)}}</span>
 				<div *ngIf="_shared.getPacksDetailsEditable('excess')">
 					<tnz-input [path]="_shared.getPacksDetailsPath(mainIndex,index,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" [sharedData]="_shared.formData['packsDetails'].grpData"
-					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('excess') && _shared.isCartonGenerated && checkShortAndExcessEditable(index,'short')" 
+					validators="min:0" [isEdit]="_shared.getPacksDetailsEditable('excess') && model.activeCarton > 0 && _shared.isCartonGenerated && checkShortAndExcessEditable(index,'short')" 
 					[loading]="_shared.packsDetailsLoading || _shared.loading" class="tnz-input-green">
 					</tnz-input>
 				</div>
@@ -87,6 +91,27 @@
 					<tnz-input  type="number" [path]="_shared.getPacksDetailsPath(mainIndex,index,'packedQty')" [primaryKey]="_shared.packsDetailsPrimaryKey" [sharedData]="_shared.formData['packsDetails'].grpData"
 					validators="min:0" [isEdit]="false" [loading]="_shared.packsDetailsLoading || _shared.loading">
 					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+			<ng-template let-model="data" let-index="index">
+				<div class="row-operations">
+					<mat-icon class="mat-color-danger" matTooltip="Delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+			<ng-template let-model="data" let-index="index">
+				<div class="row-operations">
+					<mat-icon class="mat-color-info" matTooltip="Delete Carton" (click)="deleteCartonLines(model)">delete_forever</mat-icon>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+			<ng-template let-model="data" let-index="index">
+				<div class="row-operations">
+					<mat-icon class="mat-color-success" matTooltip="Repack" (click)="rePackCarton(model)">autorenew</mat-icon>
 				</div>
 			</ng-template>
 		</smd-datatable-column>

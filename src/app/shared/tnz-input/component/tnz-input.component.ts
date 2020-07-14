@@ -209,6 +209,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     }
 
     ngOnChanges() {
+
         if (!this.loading) {
             if (this.lovConfig) {
                 if (this.lovConfig.returnKey) {
@@ -360,6 +361,13 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
                         if (!Number.isNaN(max) && newValue > max) {
                             this.status = 'error';
                             this.alert = this.title + ' should not go beyond ' + max + '.';
+                        }
+                    }
+                    if (validator.startsWith('length:')) {
+                        let length = Number(validator.split(':')[1]);
+                        if (newValue.length > length) {
+                            this.status = 'error';
+                            this.alert = 'Length exceeded ' + length + ' characters.';
                         }
                     }
                     if (this.customValidator) {

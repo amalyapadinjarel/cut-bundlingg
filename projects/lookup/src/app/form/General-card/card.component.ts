@@ -26,9 +26,6 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 
 	applicationLov = JSON.parse(JSON.stringify(ApplicationLovConfig));
 
-
-
-	//new options-added by shery
 	accessLevelOptions = [
 		{
 			label: 'User',
@@ -39,8 +36,6 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 			value: 'S'
 		}
 	];
-
-
 
 
 	constructor(
@@ -102,7 +97,7 @@ export class GeneralCardComponent implements OnInit, OnDestroy {
 		let tmp = event.value.toUpperCase();
 		//console.log("tmp-", tmp);
 		//set lookuptype to header
-	//	console.log("formdata=", this._shared.getHeaderAttributeValue('lookupType'));
+		//	console.log("formdata=", this._shared.getHeaderAttributeValue('lookupType'));
 		this._shared.formData.header.lookupType = tmp;
 
 		if (tmp.length > 30) {

@@ -9,7 +9,7 @@ import {MfgRoutingService} from '../../services/mfg-routing.service';
     selector: 'app-mfg-routing-form',
     templateUrl: './mfg-routing-form.component.html',
     styleUrls: ['./mfg-routing-form.component.scss'],
-    host: { 'class': 'form-view' }
+    host: {'class': 'form-view'}
 
 })
 export class MfgRoutingFormComponent implements OnInit, OnDestroy {
@@ -22,7 +22,7 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
                 private alertUtils: AlertUtilities,
                 private route: ActivatedRoute,
                 private _service: MfgRoutingService,
-                public dateUtils:DateUtilities
+                public dateUtils: DateUtilities
     ) {
     }
 
@@ -32,7 +32,8 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
             this.routerChanged(change);
         })
         this.subs.sink = this._shared.refreshData.subscribe(change => {
-            this.loadData();
+            setTimeout(_ => this.loadData(), 0);
+
         })
     }
 
@@ -40,7 +41,7 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
         this.subs.unsubscribe()
     }
 
-    test(){
+    test() {
         console.log(this._shared.formData)
 
     }
@@ -61,13 +62,13 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
             this._shared.id = 0;
             this._shared.editMode = true;
         } else {
+            this._shared.id = Number(this.route.snapshot.params.routingId);
             if (this.router.url.endsWith('/edit')) {
                 this._shared.editMode = true;
             } else {
                 this._shared.editMode = false;
                 this._shared.refreshData.next(true);
             }
-            this._shared.id = Number(this.route.snapshot.params.routingId);
         }
         this._shared.setFormData({});
     }

@@ -100,10 +100,21 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
         loadChildren: () => import('../../projects/roles/src/app/roles.module').then(m => m.RolesModule)
     },
 	{
+		path: 'operations',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/operation/src/app/operation.module').then(m => m.OperationModule)
+	},
+	{
 
 		path: 'routing-cut-panels',
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/Routing/src/app/routing.module').then(m => m.RoutingModule)
+	},
+	{
+
+		path: 'document-type',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/document-type/src/app/document-type.module').then(m => m.DocumentTypeModule)
 	},
 	{
 
@@ -116,6 +127,12 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		path: 'division',
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/division/src/app/division.module').then(m => m.DivisionModule)
+	},
+	{
+
+		path: 'operation-group',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/operationGroup/src/app/operationGroup.module').then(m => m.OperationGroupModule)
 	},
 	{
 		path: '**',

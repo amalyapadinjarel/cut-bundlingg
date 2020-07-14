@@ -4,7 +4,7 @@ import { CutRegisterSharedService } from './cut-register-shared.service';
 import { CutRegister, Product, CutPanelDetails } from '../models/cut-register.model';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Router } from '@angular/router';
-import { AlertUtilities } from 'app/shared/utils';
+import { AlertUtilities, CommonUtilities } from 'app/shared/utils';
 import { HttpParams } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'app/shared/component';
@@ -310,10 +310,10 @@ export class CutRegisterService {
                     this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
                     this._shared.loading = false;
                     if (isCreate) {
-                        this._shared.onNewDocumentCreated();                        
-                        this.router.navigateByUrl('/cut-register/' + this._shared.id + (exit ? '':'/edit'))
+                        this._shared.onNewDocumentCreated();
+                        this.router.navigateByUrl('/cut-register/' + this._shared.id + (exit ? '' : '/edit'))
                     } else {
-                        if(exit)
+                        if (exit)
                             this.router.navigateByUrl('/cut-register/' + this._shared.id);
                         else
                             this._shared.refreshData.next(true);
@@ -321,6 +321,7 @@ export class CutRegisterService {
                     resolve(true);
                 }, err => {
                     if (err) {
+                        console.error(err)
                         this.alertUtils.showAlerts('Failed to ' + ((isCreate ? 'save' : 'edit') + ' document. ') + err);
                     }
                     this._shared.loading = false;
@@ -366,9 +367,15 @@ export class CutRegisterService {
                 reject('Please fill mandatory fields.');
             } else {
                 let saveData = this._cache.getCachedValue(this._shared.appPath);
-                // Adding the removedkeys as active - N to remove them
-                if (saveData) {
 
+                if (saveData) {
+                    // Reordering seq # in all details tables
+                    this._shared.lineKeys.forEach(key => {
+                        // if (key != 'orderDetails')
+                            saveData = this.reOrderLines(saveData, key);
+                    })
+
+                    // Adding the removedkeys as active - N to remove them
                     this._shared.lineKeys.forEach(key => {
                         if (!saveData[key]) {
                             saveData[key] = [];
@@ -384,6 +391,8 @@ export class CutRegisterService {
                             });
                         }
                     });
+
+                    // Choosing to edit or save based on id 
                     let observable;
                     if (id == 0) {
                         observable = this.apiService.post('/cut-register/lay-register', saveData)
@@ -644,5 +653,33 @@ export class CutRegisterService {
                         reject(errorMsg);
                 })
         })
+    }
+
+    reOrderLines(saveData, key) {
+        const sortKey = this._shared.getSeqKey(key);
+        let detailsLines = this._shared.formData[key];
+        let removedKeys = saveData[key + 'RemovedKeys'];
+        let editedLines = saveData[key];
+        let primaryKey = this._shared[key + 'PrimaryKey']
+        if (editedLines || removedKeys) {
+            if (!editedLines)
+                editedLines = []
+            detailsLines.forEach((line, index) => {
+                if (!editedLines[index]) {
+                    editedLines[index] = {};
+                    editedLines[index][primaryKey] = line[primaryKey]
+                    editedLines[index][sortKey] = line[sortKey]
+                } else if(!editedLines[index][sortKey]){
+                    editedLines[index][sortKey] = line[sortKey]                    
+                }
+            })
+            let sortedModel = [];
+            sortedModel = CommonUtilities.sortByKey(editedLines, sortKey);
+            sortedModel.forEach((line, index) => {
+                line[sortKey] = index + 1
+            })
+            saveData[key] = sortedModel;
+        }
+        return saveData;
     }
 }

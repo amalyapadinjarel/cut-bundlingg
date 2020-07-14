@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   base_url: 'http://192.168.70.207:8080/',
-  api_url: 'http://192.168.70.133:8080/cbp',
+  api_url: 'http://192.168.70.207:8080/cbp',
   api_action_url: 'http://192.168.70.217:7007/',
   api_url_v4: 'http://192.168.70.217:8080/hcm-web',
   bpm_url: 'http://192.168.70.217:8080/activiti-rest/service/',

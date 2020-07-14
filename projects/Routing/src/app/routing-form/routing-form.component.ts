@@ -33,7 +33,6 @@ export class RoutingFormComponent implements OnInit {
     }
   
     ngOnDestroy(): void {
-      if (this.routerSubs)
         this.routerSubs.unsubscribe();
     }
   
@@ -55,6 +54,8 @@ export class RoutingFormComponent implements OnInit {
     }
 
     setRouting() {
+      this._shared.setFormData({});
+      this._shared.id = Number(this.route.snapshot.params.routingId);
       if (this.router.url.endsWith('/edit')) {
         this._shared.editMode = true;
       }
@@ -62,8 +63,6 @@ export class RoutingFormComponent implements OnInit {
         this._shared.editMode = false;
         this._shared.refreshData.next(true);
       }
-      this._shared.id = Number(this.route.snapshot.params.routingId);
-      this._shared.setFormData({});
     }
 
   deleteLine(key) {

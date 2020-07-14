@@ -21,8 +21,6 @@ export class HeaderComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this._shared.formData)
-		console.log(this._shared.getHeaderAttrPath( 'documentTypeFTR'))
 	}
 
 	ngOnDestroy(): void {

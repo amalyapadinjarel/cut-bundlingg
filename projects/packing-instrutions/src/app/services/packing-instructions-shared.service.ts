@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { PacksDetails, ratioDetails, StyleVarient } from '../models/packDeatils';
 import { AlertUtilities } from 'app/shared/utils';
+import { number } from 'app/shared/directives/validators/number';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class PackingInstructionsSharedService {
   packsDetailsPrimaryKey = 'csPackId';
   cartonPrimaryKey = 'csPackId';
   solidPackPrimaryKey = 'orderLineId';
-  lineKeys = ['packsDetails','carton'];
+  lineKeys = ['packsDetails'];
   selectedLines = [];
   packDetailsAttributes = ['sequence'];
 
@@ -127,6 +128,10 @@ export class PackingInstructionsSharedService {
       return this.appPath + '.carton';
     }
 
+    get rePackReasonPath() {
+      return this.appPath + '.rePackReason';
+    }
+
     get packsDetailsSeq() {
       this._packsDetailsSeq += this.packsDetailsSeqIncBy;
       return this._packsDetailsSeq - this.packsDetailsSeqIncBy;
@@ -134,7 +139,7 @@ export class PackingInstructionsSharedService {
 
     get packsDetailsAttributes() {
       return ['noOfCartons','orderId','orderLineId', 'orderQty','parentProduct','po','productId','qntyPerCtn'
-      ,'sequence','styleVariant','packType','short','excess','packedQty','uom','size','colorCode','colorValue','csId','color']
+      ,'sequence','styleVariant','packType','short','excess','packedQty','uom','size','colorCode','colorValue','csId','color','packQty','prePack','packingMethod'];
     }
     
     set packsDetailsSeq(value) {
@@ -229,6 +234,10 @@ export class PackingInstructionsSharedService {
 
     getRatioHeaderBasepath(mainIndex){
       return this.appPath + '.' + mainIndex ;
+    }
+
+    getRePackReasonBasePath(attr){
+      return this.rePackReasonPath + '.' + attr ;
     }
 
     getHeaderEditable(attr, primaryKey) {
@@ -520,13 +529,14 @@ setIsCartonGenerated(cartonCount){
 
 validateQuantity(saveData) : any{
   let isValid = true;
+  let notValidRatio = [];
   this.styleVarientDetailsCopy = this.generateNewCopy(this.styleVarientDetails);
   saveData.packsDetails.forEach(elem=>{
     if(elem.active){
       null;
     }
     else{
-      if(elem.csPackId && (elem.orderQty || elem.noOfCartons)){
+      if(elem.csPackId && (elem.orderQty || elem.noOfCartons || elem.packQty || elem.prePack)){
         let csPackId = elem.csPackId;
         let qtyDiff = 0;
         let pId = 0
@@ -537,13 +547,13 @@ validateQuantity(saveData) : any{
           }
           if(x.packType && x.csPackId == csPackId){
             flag = true;
-            qtyDiff = Number(elem.noOfCartons) - Number(x.noOfCtn)
+            qtyDiff = Number(elem.packQty) - Number(x.packQty);
             x.color.forEach(y=>{
               try{
                 y.forEach(z=>{
                   z.size.forEach(a=>{
                     if(a.value){
-                      this.calcQuantity(a.productId,Number(a.value)*qtyDiff);
+                      this.calcQuantity(a.productId,(Number(a.value)/Number(x.sumOfRatios)) * qtyDiff);
                     }
                 })
                 })
@@ -551,11 +561,14 @@ validateQuantity(saveData) : any{
               catch(err){
                 y.size.forEach(a=>{
                     if(a.value){
-                      this.calcQuantity(a.productId,Number(a.value)*qtyDiff);
+                      this.calcQuantity(a.productId,(Number(a.value)/Number(x.sumOfRatios)) * qtyDiff);
                     }
                 })
               }
             })
+            if((Number(elem.packQty) % Number(x.sumOfRatios)) != 0 || (Number(elem.packQty) < (Number(elem.prePack) * x.sumOfRatios))){
+              notValidRatio.push(Number(x.sequence));
+            }
           }
           else{
             try{
@@ -588,9 +601,16 @@ validateQuantity(saveData) : any{
         }
         else{
           let noOfCtn = elem.noOfCartons;
-          elem.size.forEach(x=>{
-            this.calcQuantity(x.productId,Number(noOfCtn)*Number(x.value))
-          })
+          let sumofRatios = Number(elem.qntyPerCtn)/Number(elem.prePack);
+          try{
+            elem.size.forEach(x=>{
+              this.calcQuantity(x.productId,(Number(x.value)/sumofRatios)*Number(elem.packQty))
+            })
+            if((Number(elem.packQty) % sumofRatios != 0 ) || (Number(elem.packQty) < (Number(elem.prePack) * sumofRatios))){
+              notValidRatio.push(Number(elem.sequence));
+            }
+          }
+          catch(err){}
         }
       }
 
@@ -608,7 +628,15 @@ validateQuantity(saveData) : any{
   this.styleVarientDetails = this.generateNewCopy(this.styleVarientDetailsCopy)
   if(!isValid){
     msg = 'Failed to save. Entered quantity is more than order quantity for '+msg;
-    this.validationEmitter.emit({'error': productIdArray});
+    if(notValidRatio.length != 0)
+      this.validationEmitter.emit({'error': productIdArray,'packQtyNotValidSeq': notValidRatio});
+    else
+      this.validationEmitter.emit({'error': productIdArray});
+    return msg;
+  }
+  if(notValidRatio.length != 0 ){
+    msg = 'Enter valid Data'
+    this.validationEmitter.emit({'packQtyNotValidSeq': notValidRatio});
     return msg;
   }
   return true;

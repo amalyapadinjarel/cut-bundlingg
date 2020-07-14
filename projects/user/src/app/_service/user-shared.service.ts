@@ -358,7 +358,7 @@ export class UserSharedService {
       if (model) value = model[attr];
       if (attr == primaryKey) value = 0;
       // else if (attr==seqKey) value=seq.tostring();
-      if (typeof value == 'undefined' || value == '') newLine[attr] = '';
+      if (typeof value == 'undefined' || value === '') newLine[attr] = '';
       else {
         newLine[attr] = value;
         this.inputService.updateInput(path + '[' + newIndex + '].' + attr, value);

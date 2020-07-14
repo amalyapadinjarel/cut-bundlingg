@@ -14,6 +14,8 @@ export class PacksDetails {
     excess: String
     packedQty: Number
     uom : Number
+    packingMethod: any;
+    activeCarton: Number; 
     constructor(model = null) {
         this.noOfCartons = model ? model.noOfCartons : 0;
         this.orderId = model ? model.orderId : 0;
@@ -29,6 +31,8 @@ export class PacksDetails {
         this.excess = model ? model.excess : "";
         this.packedQty = model ? model.packedQty : 0;
         this.uom = model ? model.uom : 0;
+        this.packingMethod = model ? model.packingMethod: {};
+        this.activeCarton = model ? model.activeCarton : 0;
     }
 
     equals(model: any) {
@@ -57,6 +61,10 @@ export class ratioDetails {
     qntyPerCtn: Number;
     noOfCartons: Number;
     quantity: Number;
+    packQty: Number;
+    prePack: Number;
+    packingMethod: any;
+    activeCarton: Number; 
     constructor(model = null) {
         this.colorCode = model ? model.colorCode : "";
         this.colorValue = model ? model.colorValue : "";
@@ -71,6 +79,10 @@ export class ratioDetails {
         this.qntyPerCtn = model ? model.qntyPerCtn : 0;
         this.noOfCartons = model ? model.noOfCartons: 0;
         this.quantity = model ? model.quantity: 0;
+        this.packQty = model ? model.packQty: 0;
+        this.prePack = model ? model.prePack: 0;
+        this.packingMethod = model ? model.packingMethod: {};
+        this.activeCarton = model ? model.activeCarton : 0;
     }
 
     equals(model: any) {

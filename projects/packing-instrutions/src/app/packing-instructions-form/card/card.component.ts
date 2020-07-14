@@ -27,7 +27,6 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
 	this.refreshSub = this._shared.refreshData.subscribe(change => {
-		if(change)
 			this.loadData();
 	})
   }

@@ -848,7 +848,7 @@ tnz-input {
                         display: flex;
                         flex-direction: column;
                         min-width: 230px;
-                        max-width: 300px;
+                        max-width: 355px;
                         margin-right: 12px;
 
                         .group {
@@ -1579,6 +1579,12 @@ mat-card.input-card .date-tracks {
 .tnz-input-center-align{
     input {
         text-align: center !important; 
+    }
+}
+
+.tnz-input-align-lov-icon{
+    mat-icon{
+        margin-top: 13px;
     }
 }
 
