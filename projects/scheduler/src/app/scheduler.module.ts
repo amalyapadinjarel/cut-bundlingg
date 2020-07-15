@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
-import { ApiServiceV4, EventService, AuthGuard, UserService, JwtService } from 'app/shared/services';
+import { ApiServiceV4, EventService, AuthGuard, UserService, JwtService, LocalCacheService } from 'app/shared/services';
 import { SchedulerService } from './_services';
 
 import { SchedulerComponent } from './scheduler.component';
@@ -53,7 +53,8 @@ const PROVIDERS = [
 	UserService,
 	JwtService,
 	AlertUtilities,
-	DateUtilities
+	DateUtilities,
+	LocalCacheService
 ]
 
 const schedulerRouting: ModuleWithProviders = RouterModule.forChild([
