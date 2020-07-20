@@ -66,6 +66,7 @@ export class PackingInstructionsSharedService {
 
   styleVarientDetails: any;
   styleVarientDetailsCopy: any;
+  refreshList: Boolean = false;
 
   totalPacks: any;
   constructor(private _cache: LocalCacheService,
@@ -593,7 +594,14 @@ validateQuantity(saveData) : any{
         })
       }
       else if(elem.csPackId && ((elem.short || elem.short == "") || (elem.excess || elem.excess == "") || elem.sequence)){
-        null;
+        if(elem.short && elem.short != "" && elem.sumOfRatios && elem.sequence){
+          if(Number(elem.short) % Number(elem.sumOfRatios) != 0)
+            notValidRatio.push(Number(elem.sequence));
+        }
+        if(elem.excess && elem.excess != "" && elem.sumOfRatios && elem.sequence){
+          if(Number(elem.excess) % Number(elem.sumOfRatios) != 0)
+            notValidRatio.push(Number(elem.sequence));
+        }
       }
       else{
         if(elem.packType == 'SOLID'){

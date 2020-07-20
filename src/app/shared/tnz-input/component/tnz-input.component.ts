@@ -110,6 +110,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     @Input() precision;
     @Input() selectOptions: any = [];
     @Input() addNewLovOption: Boolean = false;
+    @Input() autoLovNullDetect: Boolean = false;
 
     @Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
     @Output() valueChangedFromUI: EventEmitter<any> = new EventEmitter<any>();
@@ -258,17 +259,17 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
         if (this.isEdit) {
 
             if ((this.type == 'select' || this.type == 'radio') && this.selectOptions) {
+                if (this.selectOptions.length == 1) {
+                    newValue = value = this.selectOptions[0][this.returnKey];
+                    valueChange = true;
+                }
                 if (this.setters && this.lovSetters) {
                     let data = this.selectOptions.filter(option => {
-                        return option[this.returnKey] == value[this.returnKey];
+                        return option[this.returnKey] == value;
                     });
                     this.setters.forEach((element, idx) => {
                         this._service.updateInput(this.getFullPathToKey(element), (data.length == 1 ? data[0][this.lovSetters[idx]] : undefined));
                     });
-                }
-                if (this.selectOptions.length == 1) {
-                    newValue = value = this.selectOptions[0][this.returnKey];
-                    valueChange = true;
                 }
             }
             if (value) {
@@ -708,5 +709,16 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
     getStatus() {
         return this.status;
+    }
+
+    lovValueChanged(event){
+        if((event.value == "" || event.value == undefined) && this.autoLovNullDetect){
+            this.valueChanged.emit({
+                key: this._key,
+                value: null,
+                displayValue: this.displayValue,
+                path: this.fullPath
+            })
+        }
     }
 }

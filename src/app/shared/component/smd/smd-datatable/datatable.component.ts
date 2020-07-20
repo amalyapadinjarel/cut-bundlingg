@@ -355,7 +355,16 @@ export class SmdDataTable
 		private _cache: LocalCacheService
 	) {
 		this.loading = !this.loading && !this.models ? true : this.loading;
-		this.filterInput = new FormControl(this._cache.getCachedValue('datatables.' + this.tableId + '.filter' || ""));
+		this.filterInput = new FormControl(this.getCachedConfig('filter') || "");
+	}
+
+	private getCachedConfig(path) {
+		return this.tableId ? this._cache.getCachedValue('datatables.' + this.tableId + '.' + path) : undefined;
+	}
+
+	private setCachedConfig(path, value) {
+		if (this.tableId)
+			this._cache.setLocalCache('datatables.' + this.tableId + '.' + path, value);
 	}
 
 	@HostListener('window:resize')
@@ -393,7 +402,7 @@ export class SmdDataTable
 			this.dataHeader = "persons";
 		}
 		this.originalPreFetchPages = this.preFetchPages;
-		this.selectedPage = parseInt(this._cache.getCachedValue('datatables.' + this.tableId + '.page')) || 1;
+		this.selectedPage = parseInt(this.getCachedConfig('page') || 1);
 		this.lastQueryExecutedPage = this.selectedPage;
 
 		if (this.paginated) {
@@ -407,7 +416,7 @@ export class SmdDataTable
 			debounceTime(400),
 			distinctUntilChanged())
 			.subscribe((value) => {
-				this._cache.setLocalCache('datatables.' + this.tableId + '.filter', value);
+				this.setCachedConfig('filter', value)
 				this.resetPage();
 				this._queryTableData().then(() => { }, () => { });
 			});
@@ -460,15 +469,15 @@ export class SmdDataTable
 				this.columns = this.tempColumns
 			}
 		}
-		
+
 		this.columns.forEach(column => {
 			if (column.filterable) {
-				this.columnFilterInputs[column.id] = new FormControl(this._cache.getCachedValue('datatables.' + this.tableId + '.' + column.field + '.filter') || "");
+				this.columnFilterInputs[column.id] = new FormControl(this.getCachedConfig(column.field + '.filter') || "");
 				this.columnFilterInputs[column.id].valueChanges.pipe(
 					debounceTime(400),
 					distinctUntilChanged())
 					.subscribe((value) => {
-						this._cache.setLocalCache('datatables.' + this.tableId + '.' + column.field + '.filter', value);
+						this.setCachedConfig(column.field + '.filter', value);
 						this.resetPage();
 						this._queryTableData().then(() => { }, () => { });
 					});
@@ -749,7 +758,7 @@ export class SmdDataTable
 	}
 
 	_onPageChange() {
-		this._cache.setLocalCache('datatables.' + this.tableId + '.page', this.paginatorComponent.currentPage.page);
+		this.setCachedConfig('page', this.paginatorComponent.currentPage.page);
 		if (
 			this.paginatorComponent.currentPage.page < this.lastQueryExecutedPage ||
 			this.paginatorComponent.currentPage.page >=
@@ -848,13 +857,13 @@ export class SmdDataTable
 		}
 		else if (this.paginatorComponent) {
 			this.paginatorComponent.selectedPage = 1;
-			this._cache.setLocalCache('datatables.' + this.tableId + '.page', 1);
+			this.setCachedConfig('page', 1);
 		}
 	}
 
 	private clearAllFilters() {
 		this.filterInput.setValue("", { emitEvent: false });
-		this._cache.setLocalCache('datatables.' + this.tableId + '.filter', null);
+		this.setCachedConfig('filter', null);
 		if (this.columns) {
 			this.columns.forEach(column => {
 				if (
@@ -862,7 +871,7 @@ export class SmdDataTable
 					this.columnFilterInputs[column.id].value
 				) {
 					this.columnFilterInputs[column.id].setValue("", { emitEvent: false });
-					this._cache.setLocalCache('datatables.' + this.tableId + '.' + column.field + '.filter', null);
+					this.setCachedConfig(column.field + '.filter', null);
 				}
 			});
 		}
@@ -1170,6 +1179,12 @@ export class SmdDataTable
 						this.paginatorComponent.currentPage.size
 					)
 			);
+		} else if (this.scrollType == 'scroll') {
+			this.visibleRows = this.rows.filter(
+				(value: SmdDataRowModel, index: number) => {
+					return index < (this.preFetchPages * this.defaultRange) + 3;
+				}
+			);
 		} else {
 			this.visibleRows = this.rows;
 		}
@@ -1363,9 +1378,12 @@ export class SmdDataTable
 
 	onBodyScroll(event: any) {
 		if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) {
-			if (this.rows.length == (this.preFetchPages * this.defaultRange) + 3) {
+			if (this.rows.length >= (this.preFetchPages * this.defaultRange) + 3) {
 				this.preFetchPages += 1;
-				this._queryTableData();
+				if (this.dataHeader && this.dataUrl)
+					this._queryTableData();
+				else
+					this._updateVisibleRows();
 			}
 		}
 	}

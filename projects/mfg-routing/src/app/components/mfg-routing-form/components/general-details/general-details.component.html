@@ -22,12 +22,13 @@
         <li>
             <label>Name</label>
             <div class="val">
-                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('name')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('name')" [primaryKey]="_shared.primaryKey" displayKey="label"
                            [sharedData]="_shared.formData"  validators="required,length:60" [isEdit]="getIfEditable('name')"
                            [loading]="_shared.headerLoading || _shared.loading" >
                 </tnz-input>
             </div>
         </li>
+    <br>
         <li>
             <label>SMV</label>
             <div class="val">

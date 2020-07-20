@@ -55,6 +55,9 @@ export class PackingInstructionsFormComponent implements OnInit {
     unsetPackingInstructions() {
       this._shared.editMode = false;
       this._shared.id = 0;
+      this._shared.poId = 0;
+      this._shared.orderId = 0;
+      this._shared.parentProductId = 0;
       this._shared.setFormData({});
     }
 

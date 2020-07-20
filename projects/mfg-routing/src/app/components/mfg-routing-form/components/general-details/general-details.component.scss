@@ -1,0 +1,11 @@
+label {
+    min-width: 60px !important;
+}
+
+.val {
+    width: calc(100% - 65px);
+
+    tnz-input {
+        width: calc(100% - 4px);
+    }
+}

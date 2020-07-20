@@ -134,6 +134,17 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		// canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/operationGroup/src/app/operationGroup.module').then(m => m.OperationGroupModule)
 	},
+	
+	{	path: 'embeddedURL',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/embedded-URL/src/app/embeddedURL.module').then(m => m.EmbeddedURLModule)
+	},
+	{
+
+		path: 'executable',
+		// canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/executable/src/app/executable.module').then(m => m.ExecutableModule)
+	},
 	{
 		path: '**',
 		redirectTo: 'not-found'

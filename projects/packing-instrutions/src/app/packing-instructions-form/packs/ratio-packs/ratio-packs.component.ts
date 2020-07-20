@@ -155,6 +155,38 @@ export class RatioPacksComponent implements OnInit {
         }
         break;
       }
+      case 'short' :{
+        if(event.value !=""){
+          if(Number(event.value) % Number(this.formData.sumOfRatios) != 0){
+            this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'short'),"Short quantity should be a multiple of sum of ratios(" + this.formData.sumOfRatios + ")");
+          }
+          this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sumOfRatios'),this.formData.sumOfRatios);
+          let seq = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'));
+          if(seq){
+            this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'),seq);
+          }
+          else{
+            this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'),this.formData.sequence);
+          }
+        }
+        break;
+      }
+      case 'excess' :{
+        if(event.value != ""){
+          if(Number(event.value) % Number(this.formData.sumOfRatios) != 0){       
+            this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'excess'),"Excess quantity should be a multiple of sum of ratios(" + this.formData.sumOfRatios + ")");
+          }
+          this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sumOfRatios'),this.formData.sumOfRatios);
+            let seq = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'));
+            if(seq){
+              this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'),seq);
+            }
+            else{
+              this.inputService.updateInputCache(this._shared.getRatioHeaderFromKey(this.mainIndex,'sequence'),this.formData.sequence);
+            }
+        }
+        break;
+      }
     }
   }
 
@@ -217,11 +249,23 @@ export class RatioPacksComponent implements OnInit {
     if(seqList.includes(Number(this.formData.sequence))){
       let prePack = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'prePack'));
       let packQty = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'packQty'));
+      let short = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'short'));
+      let excess = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'excess'));
       if(Number(this.formData.orderQty) % Number(this.formData.sumOfRatios) != 0){
         this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'packQty'),"Pack quantity should be a multiple of sum of ratios (" + this.formData.sumOfRatios + ")");
       }
       else if(Number(packQty) < (Number(prePack) * Number(this.formData.sumOfRatios))){
         this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'packQty'),"Pack quantity should be greater than 'Pre Pack * Total Units' (" + (Number(prePack) * Number(this.formData.sumOfRatios)) + ")");
+      }
+      if(short && short != ""){
+        if(Number(short) % Number(this.formData.sumOfRatios) != 0){
+          this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'short'),"Short quantity should be a multiple of sum of ratios(" + this.formData.sumOfRatios + ")");
+        }
+      }
+      if(excess && excess != ""){
+        if(Number(excess) % Number(this.formData.sumOfRatios) != 0){
+          this.inputService.setError(this._shared.getRatioHeaderFromKey(this.mainIndex,'excess'),"Excess quantity should be a multiple of sum of ratios(" + this.formData.sumOfRatios + ")");
+        }
       }
     }
   }

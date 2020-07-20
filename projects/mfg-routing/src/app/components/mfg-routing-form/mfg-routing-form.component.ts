@@ -71,6 +71,7 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
             }
         }
         this._shared.setFormData({});
+        this._shared.resetAllInput();
     }
 
     unsetMFGRouting() {

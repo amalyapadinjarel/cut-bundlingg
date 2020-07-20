@@ -20,7 +20,8 @@ export const DocTypeLovconfig: any = {
     dataHeader: 'data',
     returnKey: 'value',
     displayKey: 'label',
-    filterAttributes: ['label']
+    filterAttributes: ['label'],
+    setters: 'openingStatus,openingStatusLabel'
 };
 
 export const OddBundleLovConfig: any = {

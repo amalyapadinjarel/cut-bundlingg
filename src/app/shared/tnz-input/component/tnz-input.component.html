@@ -23,7 +23,7 @@
 
     <ng-container *ngIf="type == 'lov'">
         <input #Element [id]="path" [value]="displayValue" [type]="dataType" [matAutocomplete]="autoComplete" (focus)="resetAutoComplete($event)"
-            (click)="resetAutoComplete($event)" (keyup)="resetAutoComplete($event)" [matTooltip]="alert" [ngClass]="status" 
+            (click)="resetAutoComplete($event)" (keyup)="resetAutoComplete($event)" [matTooltip]="alert" [ngClass]="status" (blur)="lovValueChanged($event)"
              (focus)="$event.target.select()"/>
         <mat-icon (click)="openLOV()" class="suffix">search</mat-icon>
         <mat-autocomplete #autoComplete="matAutocomplete" [displayWith]="autoCompleteDisplayFn.bind(this)" (optionSelected)='setLovValue($event.option.value)'>

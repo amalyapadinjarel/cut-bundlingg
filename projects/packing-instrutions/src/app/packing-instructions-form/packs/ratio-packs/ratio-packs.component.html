@@ -102,20 +102,20 @@
             <span style="display: flex; margin-left: 10px;" *ngIf="(short && short != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
                 <label class="label-class">Short</label>
                 <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'">
-                    <span style="padding: 0px 4px; color: red;" *ngIf="!_shared.getPacksDetailsEditable() && (short && short != '')">-{{short}} Ctn</span>
+                    <span style="padding: 0px 4px; color: red;" *ngIf="!_shared.getPacksDetailsEditable() && (short && short != '')">-{{short}} Pcs</span>
                     <tnz-input *ngIf="_shared.getPacksDetailsEditable()"  [path]="_shared.getRatioHeaderFromKey(mainIndex,'short')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
                         [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable() && checkShortAndExcessEditable('excess')"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true" (valueChanged)="valuechanged($event,'short')"
                         [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('excess') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-red"></tnz-input>
                 </div>
             </span>
             <span style="display: flex; margin-left: 20px;" *ngIf="(excess && excess != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
                 <label class="label-class">Excess</label>
                 <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'" >
-                    <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}}Ctn</span>
+                    <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}}Pcs</span>
                     <tnz-input *ngIf="_shared.getPacksDetailsEditable()" [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
                         [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable() && checkShortAndExcessEditable('short')"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true"
+                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true" (valueChanged)="valuechanged($event,'excess')"
                         [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('short') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-green"></tnz-input>
                 </div>
             </span>

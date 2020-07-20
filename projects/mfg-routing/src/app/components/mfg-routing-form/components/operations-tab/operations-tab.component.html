@@ -53,7 +53,7 @@
             </ng-template>
         </smd-datatable-column>
         <smd-datatable-column title="Seq#" field="opSequence" [sortable]="true" [filterable]="true"
-                              [colStyle]="{'width':'15px'}" [numeric]="true">
+                              [colStyle]="{'width':'15px','text-align':'center'}" [numeric]="true">
             <ng-template let-model="data" let-index="index">
                 <span *ngIf="!_shared.getOperationDetailsEditable()">{{model.opSequence}}</span>
                 <div *ngIf="_shared.getOperationDetailsEditable('opSequence')">
@@ -62,7 +62,7 @@
                                [sharedData]="_shared.formData"
                                [isEdit]="_shared.getOperationDetailsEditable('opSequence')"
                                [loading]="_shared.operationDetailsLoading || _shared.loading"
-                               (valueChangedFromUI)="valueChangedFromUI($event)">
+                               (valueChangedFromUI)="valueChangedFromUI($event)" class="tnz-input-center-align">
                     </tnz-input>
                 </div>
             </ng-template>

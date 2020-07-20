@@ -29,9 +29,11 @@ export class PdmCostingHeaderComponent implements OnInit, OnDestroy {
 	}
 
 	valueChanged(change) {
+		console.log(change);
 		switch(change.key){
 			case 'docType':
-				this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatus'),'DRAFT')
+				// this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatus'), 'DRAFT')
+				// this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatusName'),'Draft')
 				break;
 			default:
 				break;

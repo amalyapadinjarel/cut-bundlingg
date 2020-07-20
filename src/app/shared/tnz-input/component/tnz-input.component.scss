@@ -1,11 +1,16 @@
 :host {
-	position: relative;
-	display: flex;
-	align-items: center;
-	.value {
-		padding: 0 4px;
-		flex: 1;
-		/*&.warning {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .value {
+        padding: 0 4px;
+        flex: 1;
+        width: 100%;
+        overflow-wrap: break-word;
+
+
+    /*&.warning {
 			background: rgba(226, 131, 6, 0.12);
 		}
 		&.changed {
@@ -14,116 +19,116 @@
 		&.error {
 			background: rgba(229, 83, 80, 0.12);
 		}*/
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 0 4px;
+    border: 0;
+    margin: 1px;
+    color: #444;
+    background: transparent;
+    font-size: 12px;
+    box-sizing: border-box;
+    outline-style: auto;
+    background: #f3f2f4;
+    font-family: inherit;
+}
+
+mat-checkbox {
+    margin: 0 4px;
+}
+
+input,
+select,
+textarea,
+mat-checkbox {
+    line-height: 18px;
+    box-sizing: border-box;
+    outline-color: #cbc7d2;
+
+    &.warning {
+        // outline-style: auto !important;
+        outline-color: #e28306 !important;
+        background: rgba(226, 131, 6, 0.12) !important;
     }
 
-    input,
-    select,
-    textarea {
-        width: 100%;
-        padding: 0 4px;
-        border: 0;
-        margin: 1px;
-        color: #444;
-        background: transparent;
-        font-size: 12px;
-        box-sizing: border-box;
-        outline-style: auto;
-        background: #f3f2f4;
-        font-family: inherit;
+    &.changed {
+        // outline-style: auto !important;
+        outline-color: #43a047 !important;
+        background: rgba(67, 160, 71, 0.12) !important;
     }
 
-    mat-checkbox {
-        margin: 0 4px;
+    &.error {
+        // outline-style: auto !important;
+        outline-color: #e01c17 !important;
+        background: rgba(229, 83, 80, 0.12) !important;
     }
 
-    input,
-    select,
-    textarea,
-    mat-checkbox {
-        line-height: 18px;
-        box-sizing: border-box;
-        outline-color: #cbc7d2;
+    &[type="checkbox"] {
+        width: auto;
+    }
+}
 
-        &.warning {
-            // outline-style: auto !important;
-            outline-color: #e28306 !important;
-            background: rgba(226, 131, 6, 0.12) !important;
-        }
+&:hover input,
+&:hover select,
+&:hover mat-checkbox,
+select:focus,
+input:focus {
+    outline-color: #5f5175 !important;
+    outline-style: auto !important;
+    outline-width: 1px !important;
+    background: #fff !important;
+}
 
-        &.changed {
-            // outline-style: auto !important;
-            outline-color: #43a047 !important;
-            background: rgba(67, 160, 71, 0.12) !important;
-        }
+.suffix {
+    position: absolute;
+    z-index: 3;
+    top: 2px;
+    right: 2px;
+    visibility: hidden;
+    background: #fff;
+}
 
-        &.error {
-            // outline-style: auto !important;
-            outline-color: #e01c17 !important;
-            background: rgba(229, 83, 80, 0.12) !important;
-        }
+&:hover .suffix,
+input:focus+.suffix {
+    visibility: visible;
+}
 
-        &[type="checkbox"] {
-            width: auto;
-        }
+mat-icon.suffix {
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+mat-checkbox.mat-checkbox-disabled {
+    outline: none;
+}
+
+mat-radio-group {
+    .mat-radio-container {
+        width: 15px;
+        height: 15px;
     }
 
-    &:hover input,
-    &:hover select,
-    &:hover mat-checkbox,
-    select:focus,
-    input:focus {
-        outline-color: #5f5175 !important;
-        outline-style: auto !important;
-        outline-width: 1px !important;
-        background: #fff !important;
+    .mat-radio-outer-circle {
+        width: 15px;
+        height: 15px;
     }
 
-    .suffix {
-        position: absolute;
-        z-index: 3;
-        top: 2px;
-        right: 2px;
-        visibility: hidden;
-        background: #fff;
+    .mat-radio-inner-circle {
+        width: 15px;
+        height: 15px;
     }
+}
 
-    &:hover .suffix,
-    input:focus+.suffix {
-        visibility: visible;
-    }
-
-    mat-icon.suffix {
-        height: 16px;
-        line-height: 16px;
-        text-align: center;
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    mat-checkbox.mat-checkbox-disabled {
-        outline: none;
-    }
-
-    mat-radio-group {
-        .mat-radio-container {
-            width: 15px;
-            height: 15px;
-        }
-
-        .mat-radio-outer-circle {
-            width: 15px;
-            height: 15px;
-        }
-
-        .mat-radio-inner-circle {
-            width: 15px;
-            height: 15px;
-        }
-    }
-
-    .numeric{
-        text-align: right;
-    }
+.numeric {
+    text-align: right;
+}
 }

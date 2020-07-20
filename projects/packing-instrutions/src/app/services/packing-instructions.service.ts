@@ -164,7 +164,8 @@ saveData(id): Promise<any> {
                           })
                           .subscribe(res => {
                               if (res && res.status == 'S') {
-                                  resolve(res)
+                                  resolve(res);
+                                  this._shared.refreshList = true;
                               } else {
                                   reject(res && res.message ? res.message : 'Unknown error');
                               }

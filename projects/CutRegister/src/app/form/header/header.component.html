@@ -1,14 +1,16 @@
 <div class="doc-title slice">
     <div>
-        <tnz-input class="doc-num" [value]="_shared.getHeaderAttributeValue('documentNo') || '###'" 
-        [loading]="_shared.loading" [sharedData]="_shared.formData"></tnz-input>
+        <tnz-input class="doc-num" [value]="_shared.getHeaderAttributeValue('documentNo') || '###'" [loading]="_shared.loading"
+            [sharedData]="_shared.formData"></tnz-input>
         <div class="doc-status-button" [ngStyle]="{'color':_shared.getHeaderAttributeValue('docStatusColor'), 'background-color':_shared.getHeaderAttributeValue('docStatusColor') + '2e', 'border-color':_shared.getHeaderAttributeValue('docStatusColor')}">
-            {{_shared.getHeaderAttributeValue('docStatusName') || 'Draft'}}</div>
+            <tnz-input [value]="_shared.getHeaderAttributeValue('docStatusName') || '###'" [loading]="_shared.loading"
+                [sharedData]="_shared.formData"></tnz-input>
+        </div>
     </div>
     <div>
         <tnz-input class="doc-name" type="select" [path]="_shared.getHeaderAttrPath('docType')" [primaryKey]="_shared.primaryKey"
             [sharedData]="_shared.formData" [lovConfig]="docTypeLov" validators="required" [loading]="_shared.loading" [isEdit]="_shared.getHeaderEditable('docType', _shared.id)"
-            (valueChanged)="valueChanged($event)">
+            setters="docStatus,docStatusName" (valueChanged)="valueChanged($event)">
         </tnz-input>
         <tnz-input [value]="'v' + (_shared.getHeaderAttributeValue('revisionNo') || 1)" [loading]="_shared.loading">
         </tnz-input>

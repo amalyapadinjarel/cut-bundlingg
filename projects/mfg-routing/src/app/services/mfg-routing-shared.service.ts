@@ -247,4 +247,8 @@ export class MfgRoutingSharedService {
     setSelectedLines(key, models) {
         this.selectedLines[key] = models;
     }
+
+    resetAllInput() {
+        this.inputService.resetSharedData();
+    }
 }

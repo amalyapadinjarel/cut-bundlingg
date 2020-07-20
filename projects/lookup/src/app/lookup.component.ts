@@ -70,9 +70,10 @@ export class LookupComponent {
     this.docService.checkAppPermission(this._shared.taskFlowName, 'edit')
       .then(data => {
         this.location.go('lookup/' + this._shared.lookupType + '/edit');
-
         this._shared.editMode = true;
         this._shared.initLocalCache();
+        this._shared.refreshData.next(true);
+
       })
       .catch(err => {
         this.alertutils.showAlerts(err)

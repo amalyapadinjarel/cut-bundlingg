@@ -92,7 +92,7 @@ export class PdmCostingFormComponent {
 			}
 		}
 		this._shared.setFormData({});
-		this._shared.resetAllInput();
+		this._inputService.resetInputService(this._shared.appKey);
 	}
 
 	deleteLine(key) {
