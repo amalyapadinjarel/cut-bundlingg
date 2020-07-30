@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'app/shared/component';
 import { PackingInstructionsSharedService } from './packing-instructions-shared.service';
 import { Location } from '@angular/common';
+import { style } from '@angular/animations';
 
 
 @Injectable({
@@ -34,6 +35,7 @@ export class PackingInstructionsService {
             (data) => {
               if (data.packingInstruction){
                 this._shared.id = data.csId; 
+                this._shared.styleId = data.packingInstruction.style
                 this._shared.setIsCartonGenerated(Number(data.carton));
                 resolve(data.packingInstruction);
               }
@@ -537,6 +539,10 @@ rePackCartonValidation(csPackId){
       resolve([]);
     }
   });
+}
+
+sendMessage(message){
+  this.apiService.baseUrlPost("production-tracking/socket-message",message).subscribe();
 }
 
 }

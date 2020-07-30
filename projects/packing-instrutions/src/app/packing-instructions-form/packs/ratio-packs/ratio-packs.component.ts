@@ -226,6 +226,12 @@ export class RatioPacksComponent implements OnInit {
             if(data){
               this._service.deleteCartonPerPack(this.formData.csPackId).then(data=>{
                 if(data){
+                  let pushMessage = {
+                    appIdentifier: 'PACKING',
+                    action: 'PACK_DELETED',
+                    content: [this.formData.csPackId]
+                  };
+                  this._service.sendMessage(pushMessage);
                   this.alertUtils.showAlerts("Carton delete successfull.")
                   this._shared.refreshData.next(true);
                 }

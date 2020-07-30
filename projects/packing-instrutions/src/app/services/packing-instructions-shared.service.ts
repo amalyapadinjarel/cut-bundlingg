@@ -20,6 +20,7 @@ export class PackingInstructionsSharedService {
   poId: any;
   orderId: any;
   parentProductId: any;
+  styleId:any;
   formData: any = {};
   solidPackData: any = {};
   ratioPackData: any = {};
@@ -78,6 +79,7 @@ export class PackingInstructionsSharedService {
 
     init() {
       this.id = 0;
+      this.styleId = 0;
       this.editMode = false;
       this.refreshData = new BehaviorSubject(false);
       this.refreshpacksDetails = new BehaviorSubject(false);
@@ -89,6 +91,7 @@ export class PackingInstructionsSharedService {
 
   clear() {
       this.id = 0;
+      this.styleId = 0;
       this.editMode = false;
       this.refreshData.unsubscribe();
       this.refreshpacksDetails.unsubscribe();
@@ -868,6 +871,29 @@ findMaxSequence(){
 setCartonListData(data,key){
   this.formData[key] = data.cartonDetails;
   this.cartonCount = data.count;
+}
+
+fetchAllPackIds(){
+  let ids = [];
+  const packDetails = this.formData['packsDetails'].grpData;
+  if(packDetails){
+    packDetails.forEach(elem=>{
+      try{
+        if(elem){
+          elem.forEach(solid=>{
+            if(solid.csPackId)
+              ids.push(solid.csPackId);
+          })
+        }
+      }
+      catch(err){
+        if(elem && elem.csPackId){
+          ids.push(elem.csPackId);
+        }
+      }
+    })
+  }
+  return ids;
 }
 
 }

@@ -123,4 +123,13 @@ export class ApiService {
 			}));
 	}
 
+	baseUrlPost(path: string, body: Object = {},token=null): Observable<any> {
+		return this.http.post(
+			`${environment.base_url}${path}`,
+			JSON.stringify(body),
+			{ headers: this.setHeaders() }
+		).pipe(catchError((err) => { return this.formatErrors(err, path); }),
+			map((res: HttpResponse<JSON>) => res));
+	}
+
 }

@@ -10,6 +10,7 @@ import {JSONUtils} from 'app/shared/utils/json.utility';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { packingMethodLovconfig } from '../../../models/lov-config';
 import { RepackReasonComponent } from '../repack-reason/repack-reason.component';
+import { PushMessageService } from 'app/shared/websocket/push-message.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class SolidPacksComponent implements OnInit {
 		public _shared: PackingInstructionsSharedService,
 		private alertUtils: AlertUtilities,
 		public inputService: TnzInputService,
-		private dialog: MatDialog) { 
+    private dialog: MatDialog) { 
       this._shared.validationEmitter.subscribe(data=>{
         if(data.error){
           this.setError(data.error);
@@ -121,6 +122,12 @@ export class SolidPacksComponent implements OnInit {
                 if(data){
                   this.alertUtils.showAlerts("Carton delete successfull.")
                   this._shared.refreshData.next(true);
+                  let pushMessage = {
+                    appIdentifier: 'PACKING',
+                    action: 'PACK_DELETED',
+                    content: [model.csPackId]
+                  };
+                  this._service.sendMessage(pushMessage);
                 }
                 else{
                   this.alertUtils.showAlerts("Carton delete Failed.")

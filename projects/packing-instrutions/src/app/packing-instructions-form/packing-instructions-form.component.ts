@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertUtilities, DateUtilities } from 'app/shared/utils';
 import { AddPacksComponent } from './packs/add-packs/add-packs.component';
 import { ConfirmPopupComponent } from 'app/shared/component';
+import { PushMessageService } from 'app/shared/websocket/push-message.service';
 
 @Component({
   selector: 'app-packing-instructions-form',
@@ -122,6 +123,13 @@ export class PackingInstructionsFormComponent implements OnInit {
           dialog.afterClosed().subscribe(data=>{
             if(data){
               this._service.deleteCarton().then(data=>{
+                let packIds = this._shared.fetchAllPackIds();
+                let pushMessage = {
+                  appIdentifier: 'PACKING',
+                  action: 'PACK_DELETED',
+                  content: packIds
+                };
+                this._service.sendMessage(pushMessage);
                 this._shared.refreshData.next(true);
                 this._service.loadData('carton');
               })
@@ -137,6 +145,15 @@ export class PackingInstructionsFormComponent implements OnInit {
     generateCartonLines(){
       if(this._shared.totalPacks > 0){
         this._service.generateCarton('Y').then(data=>{
+          let pushMessage = {
+            appIdentifier: 'PACKING',
+            action: 'PACK_GENERATED',
+            content: {
+              style: this._shared.styleId,
+              purchaseOrder: this._shared.poId
+            }
+          };
+          this._service.sendMessage(pushMessage);
         })
       }
       else{
