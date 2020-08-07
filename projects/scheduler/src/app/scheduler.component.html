@@ -9,20 +9,21 @@
 <div class="app-content-container">
     <div class="nav-tabs">
         <nav>
-            <button mat-ripple class="text-normal" routerLink="general" routerLinkActive="selected"
-                matTooltip="General">
+            <button mat-ripple class="text-normal" routerLink="general" routerLinkActive="selected" matTooltip="General">
                 <span class="text">General</span>
             </button>
-            <button mat-ripple class="text-normal" routerLink="jobs" routerLinkActive="selected"
-                matTooltip="Jobs">
+            <button mat-ripple class="text-normal" routerLink="jobs" routerLinkActive="selected" matTooltip="Jobs">
                 <span class="text">Jobs</span>
             </button>
-<!--            Functionality not implemented in backend-->
-            <button mat-ripple class="text-normal" routerLink="schedules" routerLinkActive="selected"
-                matTooltip="Schedules">
+            <!--            Functionality not implemented in backend-->
+            <button mat-ripple class="text-normal" routerLink="schedules" routerLinkActive="selected" matTooltip="Schedules">
                 <span class="text">Schedules</span>
             </button>
         </nav>
+        <button mat-icon-button matTooltip="refresh" style="min-width:32px;background: none;" *ngIf="selectedTab != 'general'" (click)="refresh()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+
     </div>
     <div class="app-content-wrapper scheduler">
         <router-outlet></router-outlet>

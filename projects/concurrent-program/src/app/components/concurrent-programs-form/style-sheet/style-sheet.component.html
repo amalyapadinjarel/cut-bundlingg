@@ -1,0 +1,58 @@
+
+<smd-datatable [tableId]="_shared.appKey + '.styleSheet'" [paginated]="!_shared.getStyleSheetEditable()" [loading]="_shared.styleSheetDetailsLoading" [primaryListing]="false"
+class="tnz-input-table"  [filterEnabled]="!_shared.getStyleSheetEditable()" [sortEnabled]="!_shared.getStyleSheetEditable()" [showCheckBox]="false" (dataChange)="onDataChange($event)"
+[inputPath]="_shared.styleSheetDetailsPath">
+   <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+       <ng-template let-model="data" let-index="index">
+           <div class="row-operations">
+                <mat-icon *ngIf="model.fileId" class="mat-color-disabled-danger" style="cursor: auto">delete</mat-icon>
+                <mat-icon *ngIf="!model.fileId" class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+           </div>
+       </ng-template>
+   </smd-datatable-column>
+   <smd-datatable-column title="#" field="sequence" sortable="true" [filterable]="true">
+       <ng-template let-model="data" let-index="index">
+           <span>{{model.sequence}}</span>
+       </ng-template>
+   </smd-datatable-column>
+   <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+    <ng-template let-model="data" let-index="index">
+        <div class="row-operations">
+                <input class="inputfile" #fileInput type="file" (change)="fileChanged($event,index)"/>
+                <mat-icon class="mat-color-info" matTooltip="Upload file" (click)="fileUpload(index)">cloud_upload</mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+   <smd-datatable-column title="File Name" field="fileName" sortable="true" [filterable]="true" [stretch]="true">
+       <ng-template let-model="data" let-index="index">
+           <span *ngIf="!_shared.getStyleSheetEditable()">{{model.fileName}}</span>
+           <div *ngIf="_shared.getStyleSheetEditable('fileName')">
+               <tnz-input [path]="_shared.getStyleSheetDetailsPath(index,'fileName')" [primaryKey]="_shared.styleSheetDetailsPrimaryKey" [disable]="true"
+               [sharedData]="_shared.formData" validators="required" [isEdit]="_shared.getStyleSheetEditable('fileName')" [loading]="_shared.styleSheetDetailsLoading || _shared.loading">
+               </tnz-input>
+           </div>
+       </ng-template>
+   </smd-datatable-column>
+<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'30px'}">
+    <ng-template let-model="data" let-index="index">
+        <div class="checkbox-center-align" *ngIf="!_shared.getStyleSheetEditable('active')">
+            <mat-icon *ngIf="model.active == 'Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+            <mat-icon *ngIf="model.active == 'N'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+        </div>
+        <div *ngIf="_shared.getStyleSheetEditable('active')">
+            <tnz-input type="checkbox" [path]="_shared.getStyleSheetDetailsPath(index,'active')"
+                [primaryKey]="_shared.styleSheetDetailsPrimaryKey" [sharedData]="_shared.formData"
+                [isEdit]="_shared.getStyleSheetEditable(index,'active')" [loading]="_shared.styleSheetDetailsLoading || _shared.loading"
+                class="checkbox-center-align">
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title=" " field=" " [colStyle]="{'width':'20px','padding-right': '0px'}">
+    <ng-template let-model="data" let-index="index">
+        <div class="row-operations">
+            <mat-icon class="mat-color-info" matTooltip="Download file" (click)="downloadFile(model.fileName)">cloud_download</mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+</smd-datatable>

@@ -1,0 +1,58 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <doc-seq-general collapsibleComponent></doc-seq-general>
+
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div *ngIf="!_shared.editMode" class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdBy}} on
+                    {{_shared.formData.header?.creationDate}}, Modified
+                    by {{_shared.formData.header?.lastUpdatedBy}} on
+                    {{_shared.formData.header?.lastUpdatedDate|date:dateUtils.dateMinFormat}}</span>
+                 <form-nav [apiUrl]="'/doc-sequence/navigation/' + _shared.id" navUrl="/doc-sequence"
+                    [params]="_shared.params"></form-nav> 
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Lines">
+                <perfect-scrollbar>
+                    <div class="group-flex"  >
+                     
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Next Number</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getLineDetailEditable() && (this._shared.formData.header?.resetYear =='Y'||this._shared.resetyearFlag)">
+                          <button mat-button matTooltip="delete line">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLines('SeqLineDetail')">delete</mat-icon>
+                                </button> 
+                                <button mat-button matTooltip="Add line">
+                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('SeqLineDetail')">add_box
+                                    </mat-icon>
+                                </button>
+                            </div>
+                            <br>
+                        </div>
+                        <line-detail></line-detail>
+                    </div>
+                    <div class="group" >
+                        <div class="group-header">
+                            <h3>Configuration Reference</h3>
+                            <span class="flex-filler"></span>
+                           
+                        </div>
+                        <config-ref></config-ref>
+                    </div>
+                   
+                </div>
+                <br>
+                <br>
+                </perfect-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

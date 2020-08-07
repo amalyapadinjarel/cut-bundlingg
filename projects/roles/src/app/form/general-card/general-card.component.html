@@ -1,0 +1,76 @@
+<div class="group">
+    <h4>General</h4>
+    <ul >
+        <li>
+            <label>Short Code</label>
+            <div class="val">
+                <tnz-input type="text" class="text-upper" [path]="_shared.getHeaderAttrPath('roleShortCode')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" stretch="true" validators="required"
+                    [isEdit]="getIfEditable('roleShortCode')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="roleShortCodeValidation($event)">
+                </tnz-input>
+
+            </div>
+        </li>
+        <li>
+            <label>Name</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('roleName')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" stretch="true" validators="required"
+                    [isEdit]="getIfEditable('roleName')" [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChanged)="headerLengthCheck($event,'roleName')">
+                </tnz-input>
+
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Start Date</label>
+            <div class="val">
+                <tnz-input type="date" [path]="_shared.getHeaderAttrPath('startDate')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('startDate')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
+                    title="Start Date">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>End Date</label>
+            <div class="val">
+                <tnz-input type="date" [path]="_shared.getHeaderAttrPath('endDate')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('endDate')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
+                    title="End Date">
+                </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Author</label>
+            <div class="val">
+                <tnz-input type="radio" [path]="_shared.getHeaderAttrPath('author')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('author')" [loading]="_shared.headerLoading || _shared.loading"
+                    displayKey='label' returnKey='value' validators="min:1,required"
+                    [selectOptions]="authorOptions" [nullable]="false"
+                   >
+                </tnz-input>
+            </div>
+        </li>
+
+    </ul>
+</div>
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading"
+                   (valueChanged)="headerLengthCheck($event,'description')">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

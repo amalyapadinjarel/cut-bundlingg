@@ -4,7 +4,7 @@ import { DateUtilities, AlertUtilities } from 'app/shared/utils';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { CutRegisterService } from '../../_service/cut-register.service';
 import { Subscription } from 'rxjs';
-import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLovConfig } from '../../models/lov-config';
+import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLovConfig, UserFacilityLovConfig } from '../../models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 
 	private refreshSub: Subscription;
 	private refreshHeaderSub: Subscription;
-	cutFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
+	cutFacilityLov = JSON.parse(JSON.stringify(UserFacilityLovConfig));
 	sewingFacilityLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	markerNameMethodLov = JSON.parse(JSON.stringify(FacilityLovConfig));
 	oddBundleLovConfig = JSON.parse(JSON.stringify(OddBundleLovConfig));

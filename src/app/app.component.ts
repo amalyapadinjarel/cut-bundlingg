@@ -18,16 +18,40 @@ import { AlertUtilities } from './shared/utils/alert.utility';
 import { AuthPopUpComponent } from '../../projects/authentication/src/app/auth-pop-up/auth-pop-up.component';
 import { DateUtilities } from './shared/utils';
 
+//  import { StyleRenderer, ThemeVariables, lyl, WithStyles } from '@alyle/ui';
+
+// const STYLES = (theme: ThemeVariables) => ({
+// 	$global: lyl `{
+// 	  body {
+// 		background-color: ${theme.background.default}
+// 		color: ${theme.text.default}
+// 		font-family: ${theme.typography.fontFamily}
+// 		margin: 0
+// 		direction: ${theme.direction}
+// 	  }
+// 	}`,
+// 	root: lyl `{
+// 	  display: block
+// 	}`
+//   });
+
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: [
 		'../freee.scss',
 		'../dark.scss',
-		'../boot.scss'
-	]
+		'../boot.scss']
+				//added by shery
+		//,
+		// providers: [
+		// 	StyleRenderer
+		//   ]
+	
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+	//export class AppComponent implements OnInit, OnDestroy, AfterViewInit, WithStyles {
+
 	count: any = 0;
 	s1: HTMLScriptElement;
 	s0: HTMLScriptElement;
@@ -56,6 +80,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 	gadgetOverlay = false;
 	gadgetSubs: Subscription;
 
+	//readonly classes = this.sRenderer.renderSheet(STYLES, true);
+
+
 	constructor(private route: ActivatedRoute,
 		private userService: UserService,
 		public navService: NavigationService,
@@ -65,7 +92,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 		private dialog: MatDialog,
 		private router: Router,
 		public pushMessageService: PushMessageService,
-		public dateUtils: DateUtilities) {
+		public dateUtils: DateUtilities
+		//,
+		//readonly sRenderer: StyleRenderer //added on 28 jul shery
+		) {
 
 		/** Setting embedded mode */
 		this.apiService.changeEmitted$.subscribe(data => {

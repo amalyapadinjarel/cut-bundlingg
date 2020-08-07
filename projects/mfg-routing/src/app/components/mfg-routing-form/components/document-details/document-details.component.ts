@@ -24,7 +24,7 @@ export class DocumentDetailsComponent implements OnInit {
     valueChanged(change) {
         switch (change.key) {
             case 'docType':
-                this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatus'), 'DRAFT')
+                // this._inputService.updateInput(this._shared.getHeaderAttrPath('docStatus'), 'DRAFT')
                 break;
             default:
                 break;
@@ -40,7 +40,8 @@ const DocTypeLovconfig: any = {
     dataHeader: 'data',
     returnKey: 'value',
     displayKey: 'label',
-    filterAttributes: ['label']
+    filterAttributes: ['label'],
+    setters: 'openingStatus,openingStatusLabel'
 };
 
 const lovFilter = () => {

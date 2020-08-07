@@ -1,0 +1,88 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" tableId="concurrentProgramsList" dataHeader="concurrentPrograms" (onRowSelected)="rowSelected($event)" [primaryListing]="false" (dataChange)="_onDataChange($event)"
+        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" scrollType="page">
+            <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    <span class="text-uppercase">{{model.shortCode}}</span>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Program" field="pgmName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.pgmName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Executable" field="exeName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.exeName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Application" field="application" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.application}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Email Template" field="emailTempName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.emailTempName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Non-concurrent" field="isNonconcurrent" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}"> 
+                <ng-template let-model="data">
+                    <tnz-input type="checkbox" [value]="model.isNonconcurrent" [isEdit]="false" [checkType]="'1:0'" class="center-align"></tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Output File Name" field="outputFileName" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    {{model.outputFileName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="File Type" field="outputFileType" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.outputFileType}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Store on FS" field="storeOpInFs" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}">
+                <ng-template let-model="data">
+                    <tnz-input type="checkbox" [value]="model.storeOpInFs" [isEdit]="false" [checkType]="'1:0'" class="center-align"></tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    <mat-icon *ngIf="model.active =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                    <mat-icon *ngIf="model.active !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Required Parameter" field="reqdParamCount" sortable="true" [filterable]="true" [numeric]="true">
+                <ng-template let-model="data">
+                    {{model.reqdParamCount}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    {{model.createdBy}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="CreatedOn" field="creationDate" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    {{model.creationDate}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified By" field="lastUpdateBy" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    {{model.lastUpdateBy}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified On" field="lastUpdateDate" sortable="true" [filterable]="true" >
+                <ng-template let-model="data">
+                    {{model.lastUpdateDate}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

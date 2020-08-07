@@ -46,4 +46,14 @@ export class ListComponent implements OnInit {
   _onPageChange(pageChangeEvent: any) {
     this._shared.selectedPage = pageChangeEvent.page;
   }
+
+  onRowChecked(event){
+    let models = this.dataTable.selectedModels()
+    if(models.length && models.length == 1){
+      this._shared.reportData["pCutId"] = models[0].registerId;
+      this._shared.reportData["pDocumentNum"] = models[0].documentNo;
+    } else {
+      this._shared.reportData = {}
+    }
+  }
 }

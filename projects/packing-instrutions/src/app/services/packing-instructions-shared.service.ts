@@ -12,6 +12,7 @@ import { number } from 'app/shared/directives/validators/number';
 })
 export class PackingInstructionsSharedService {
 
+  reportData: any = {};
   appKey = 'po';
   apiBase = 'packing-instructions';
   taskFlowName = 'PACKINGINSTRUCTIONS'
@@ -143,7 +144,7 @@ export class PackingInstructionsSharedService {
 
     get packsDetailsAttributes() {
       return ['noOfCartons','orderId','orderLineId', 'orderQty','parentProduct','po','productId','qntyPerCtn'
-      ,'sequence','styleVariant','packType','short','excess','packedQty','uom','size','colorCode','colorValue','csId','color','packQty','prePack','packingMethod'];
+      ,'sequence','styleVariant','packType','short','excess','packedQty','uom','size','colorCode','colorValue','csId','color','packQty','prePack','packingMethod','facility','workCenter'];
     }
     
     set packsDetailsSeq(value) {
@@ -282,6 +283,7 @@ export class PackingInstructionsSharedService {
       let newLine = false;
       let data = this.formData[key].grpData[mainIndex];
       let model = data[index];
+      this.updateStyleVarientDetails(model,'SOLID');
       this.reArrangeSequence(mainIndex,index,model.sequence,'SOLID');
       let linePrimaryKey = this[key + 'PrimaryKey'];
       let path = this.appPath + '.' + mainIndex;
@@ -313,8 +315,8 @@ export class PackingInstructionsSharedService {
   deleteRatioLine(key, index, mainIndex) {
     let data = this.formData[key].grpData;
     let model = data[index];
+    this.updateStyleVarientDetails(model,'RATIO');
     this.reArrangeSequence(mainIndex+1,index,model.sequence,'RATIO');
-
     let linePrimaryKey = this[key + 'PrimaryKey'];
     let path = this.appPath + '.' + mainIndex;
     let cache = this._cache.getCachedValue(path)
@@ -535,6 +537,8 @@ validateQuantity(saveData) : any{
   let isValid = true;
   let notValidRatio = [];
   this.styleVarientDetailsCopy = this.generateNewCopy(this.styleVarientDetails);
+  let removedPath = this.packsDetailsRemovedKeysPath;
+  let cache = this._cache.getCachedValue(removedPath)
   saveData.packsDetails.forEach(elem=>{
     if(elem.active){
       null;
@@ -894,6 +898,47 @@ fetchAllPackIds(){
     })
   }
   return ids;
+}
+
+updateStyleVarientDetails(model,packType){
+  if(packType == 'SOLID' && model && model.csPackId){
+    this.styleVarientDetails.forEach(elem=>{
+      if(elem.productId == model.productId){
+        elem.packQnty = Number(elem.packQnty) - Number(model.orderQty);
+      }
+    })
+  }
+
+  if(packType == 'RATIO' && model && model.csPackId){
+    model.color.forEach(y=>{
+      try{
+        y.forEach(z=>{
+          z.size.forEach(a=>{
+            if(a.value){
+              let val = ((Number(a.value)/Number(model.sumOfRatios))*Number(model.packQty));
+              this.styleVarientDetails.forEach(elem=>{
+                if(elem.productId == a.productId){
+                  elem.packQnty = Number(elem.packQnty) - Number(val);
+                }
+              })
+            }
+          })
+        })
+      }
+      catch(err){
+        y.size.forEach(a=>{
+          if(a.value){
+            let val = ((Number(a.value)/Number(model.sumOfRatios))*Number(model.packQty));
+            this.styleVarientDetails.forEach(elem=>{
+              if(elem.productId == a.productId){
+                elem.packQnty = Number(elem.packQnty) - Number(val);
+              }
+            })
+          }
+        })
+      }
+    })
+  };
 }
 
 }

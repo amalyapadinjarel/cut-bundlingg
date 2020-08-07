@@ -1,4 +1,4 @@
-<smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getCutPanelDetailsEditable()" [loading]="_shared.cutPanelDetailsLoading"
+<smd-datatable [tableId]="_shared.appKey + '.prodlist'" scrollType="scroll" defaultRange="10" [loading]="_shared.cutPanelDetailsLoading"
  class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [filterEnabled]="!_shared.getCutPanelDetailsEditable()"
  [sortEnabled]="!_shared.getCutPanelDetailsEditable()" [showCheckBox]="_shared.getCutPanelDetailsEditable()">
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">

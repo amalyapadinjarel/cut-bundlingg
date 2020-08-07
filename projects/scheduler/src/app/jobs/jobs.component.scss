@@ -1,4 +1,11 @@
-:host{
+:host {
+  .refresh {
+    position: relative;
+    top: 25px;
+    left: 0px;
+    z-index: 5;
+  }
+
   //transform: scale(1.1);
   //transform-origin: 0 0;
 }

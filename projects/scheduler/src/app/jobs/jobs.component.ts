@@ -21,6 +21,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 	@ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
 
 	onPushMessage: Subscription;
+	onRefresh: Subscription;
 
 	constructor(
 		public schedulerService: SchedulerService,
@@ -34,14 +35,19 @@ export class JobsComponent implements OnInit, OnDestroy {
 				.subscribe(change => {
 					this.processPushMessage(change);
 				});
+		this.onRefresh = this.schedulerService.onRefresh.subscribe( change => {
+			this.dataTable.refresh();
+		})
 	}
-
 	ngOnInit() {
 	}
 
 	ngOnDestroy(): void {
 		if (this.onPushMessage) {
 			this.onPushMessage.unsubscribe();
+		}
+		if (this.onRefresh) {
+			this.onRefresh.unsubscribe();
 		}
 	}
 

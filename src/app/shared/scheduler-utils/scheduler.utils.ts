@@ -1,4 +1,3 @@
-
 import { throwError as observableThrowError, Observable, BehaviorSubject } from 'rxjs';
 
 import { map, catchError } from 'rxjs/operators';
@@ -267,7 +266,10 @@ export class SchedulerUtils {
         return new Promise((resolve, reject) => {
             this.post('/scheduler/jobs/' + tnzJobInstncId + '/mail-output', mailData)
                 .subscribe(response => {
-                    resolve(response);
+                    if(response && response.status == 'S')
+                        resolve(response);
+                    else
+                        reject(response);
                 }, () => {
                     reject();
                 });

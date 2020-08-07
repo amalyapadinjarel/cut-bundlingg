@@ -1,0 +1,109 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="executable" (onRowSelected)="onRowSelected()" (dataChange)="_onDataChange($event)"
+            [rowCount]="_shared.count" (pageChange)="pageChanged($event)" [selectedPage]="_shared.selectedPage" [sortEnabled]="!_shared.editMode"
+            [filterEnabled]="!_shared.editMode" [primaryListing]="false" (onAllRowsSelected)="onRowSelected()" class="tnz-input-table">
+            <smd-datatable-column title=" " field=" " [colStyle]="{'width':'10px'}"  *ngIf="_shared.editMode">
+                <ng-template let-model="data" let-index="index" >
+                    <div class="row-operations" *ngIf= "_shared.getExeEditable('shortCode',model.exeId)" >
+                        <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+                    </div>
+                    <div class="row-operations" *ngIf= "!_shared.getExeEditable('shortCode',model.exeId)" >
+                        <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Executable Code" field="shortCode" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input class="text-upper" [path]="_shared.getExecutableAttrPath(index,'shortCode')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('shortCode',model.exeId)" [loading]=false
+                        style=" min-width: 300px;" validators="required" (valueChanged)="validateData($event,index,'shortCode')">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Executable Name" field="exeName" sortable="true" [filterable]="true" [colStyle]="{'width':'350px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'exeName')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('exeName')" [loading]="false" style=" min-width: 350px;"
+                        (valueChanged)="validateData($event,index,'exeName')" validators="required">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Execution File" field="exeFile" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'exeFile')" [primaryKey]="_shared.executablePrimaryKey"
+                        validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('exeFile')" [loading]="false"
+                        style=" min-width: 400px;" (valueChanged)="validateData($event,index,'exeFile')">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Execution Method" field="exeMethodName" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="lov" [path]="_shared.getExecutableAttrPath(index,'exeMethodName')" [primaryKey]="_shared.executablePrimaryKey"
+                        validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('exeMethodName')"
+                        [loading]="false" [lovConfig]="exeMethodLovList" style=" max-width: 130px;">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Application" field="applicationName" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="lov" [path]="_shared.getExecutableAttrPath(index,'applicationName')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('applicationName')" style=" min-width: 150px;"
+                        [loading]="false" [lovConfig]="applicationLovList" >
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+
+
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'description')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('description')" [loading]=false (valueChanged)="validateData($event,index,'description')"
+                        style=" min-width: 300px;">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <div *ngIf="!_shared.getExeEditable('active')">
+                        <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                    </div>
+                    <div *ngIf="_shared.getExeEditable('active')">
+                        <tnz-input type="checkbox" [path]="_shared.getExecutableAttrPath(index,'active')" [primaryKey]="_shared.executablePrimaryKey"
+                            [sharedData]="_shared.formData" [isEdit]="_shared.getExeEditable('active')" [loading]=false class="checkbox-center-align">
+                        </tnz-input>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'createdUser')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created On" field="creationDateTr" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'creationDateTr')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified By" field="lastUpdatedUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'lastUpdatedUser')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified On" field="lastUpdatedDateTr" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getExecutableAttrPath(index,'lastUpdatedDateTr')" [primaryKey]="_shared.executablePrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

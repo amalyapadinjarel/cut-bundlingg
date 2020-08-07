@@ -1,0 +1,15 @@
+.text-upper::ng-deep input {
+	text-transform: uppercase;
+	width: 100%;
+}
+.stretch {
+	width: 100%;
+}
+#label{
+    min-width: 75px;
+    // max-width: 65px;
+   }
+.group{
+    min-width: 230px;
+    max-width: 230px;
+}

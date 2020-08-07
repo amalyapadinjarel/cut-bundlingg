@@ -1,0 +1,34 @@
+<smd-datatable [tableId]="_shared.appKey + '.rolesAppAccess'" [paginated]="false"
+    [loading]="_shared.rolesAppAccessLoading" [filterEnabled]="false"
+    [sortEnabled]="!_shared.getRolesAppAccessEditable()"  (onRowSelected)="rowSelected($event)"
+    (onAllRowsSelected)="onAllRowSelected()" [showCheckBox]="false">
+
+
+     <smd-datatable-column title="Application" field="applicationName" sortable="true" [filterable]="true">
+        <ng-template let-model="data">
+            {{model.applicationName}}
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Access" field="isAllowed" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'10px'}">
+        <ng-template let-model="data" let-index="index">
+            <div class="checkbox-center-align" *ngIf="!_shared.getRolesAppAccessEditable('isAllowed')">
+                <!-- <mat-checkbox [ngModel]="model.isAllowed == 'Y'" disabled></mat-checkbox> -->
+                <mat-icon *ngIf="model.isAllowed=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                    matTooltip="Active">check_circle
+                </mat-icon>
+                <mat-icon *ngIf="model.isAllowed!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+                    matTooltip="Inactive">cancel</mat-icon>
+            </div>
+            <div *ngIf="_shared.getRolesAppAccessEditable('isAllowed')" class="checkbox-center-align">
+                <tnz-input type="checkbox" [path]="_shared.getRolesAppAccessPath(index,'isAllowed')"
+                    [primaryKey]="_shared.rolesAppAccessPrimaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable(index,'isAllowed')"
+                    [loading]="_shared.rolesAppAccessLoading || _shared.loading"
+                    >
+                </tnz-input>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+
+</smd-datatable>

@@ -60,6 +60,7 @@ export class UserProfileMenuComponent implements OnInit, OnDestroy {
     }
     logout() {
         this.closeGadget();
+        this.eventService.onLogout.next(true);
         this.userService.purgeAuth();
         this.router.navigateByUrl('/login');
     }
@@ -80,7 +81,13 @@ export class UserProfileMenuComponent implements OnInit, OnDestroy {
         this.closeGadget();
         this.router.navigateByUrl('/trendz-drive');
     }
-
+    userProfile(){
+        this.closeGadget();
+        this.router.navigateByUrl('/user-profile').then(s => {
+        }, f => {
+            console.log(f);
+        });
+    }
     switchDivison(division) {
         this.closeGadget();
         this.eventService.isLoadingPage.next(true);

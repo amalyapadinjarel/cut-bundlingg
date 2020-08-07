@@ -8,19 +8,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./crop-image.component.css']
 })
 export class CropImageComponent implements OnInit {
+  // cropperSettings: any;
 
   // data: any;
   // imageUploaded = false;
-  // cropperSettings: CropperSettings;
+  // // cropperSettings: CropperSettings;
+
   // @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
   // constructor(private dialogRef: MatDialogRef<CropImageComponent>) {
   //   this.cropperSettings = new CropperSettings();
-  //   // this.cropperSettings.width = 400;
-  //   // this.cropperSettings.height = 300;
+  
   //   this.cropperSettings.croppedWidth = 256;
   //   this.cropperSettings.croppedHeight = 256;
-  //   // this.cropperSettings.canvasWidth = 400;
-  //   // this.cropperSettings.canvasHeight = 300;
+  
   //   this.cropperSettings.dynamicSizing = true;
   //   this.cropperSettings.cropperClass = 'ui-cropper';
   //   this.data = {};
@@ -38,7 +38,7 @@ export class CropImageComponent implements OnInit {
   //     const that = this;
   //     myReader.onloadend = function (loadEvent: any) {
   //       image.src = loadEvent.target.result;
-  //       that.cropper.setImage(image);
+  //       /that.cropper.setImage(image);
   //     };
   //     myReader.readAsDataURL(file);
   //     this.imageUploaded = true;
@@ -48,5 +48,5 @@ export class CropImageComponent implements OnInit {
   //   if (this.data.image) {
   //     this.dialogRef.close(this.data.image);
   //   }
-  // }
+ // }
 }

@@ -500,7 +500,13 @@ deleteCartonPerPackValidation(csPackId){
               resolve(false);
             }
             else if(data.message && data.message.activeCartonCount != 0 && data.message.packOrOnholdCartonCount == 0){
-              resolve(true);
+              if(data.message.shortQty == 0 && data.message.excessQty == 0 ){
+                resolve(true);
+              }
+              else{
+                this.alertUtils.showAlerts("Carton deletion failed since short/excess quantity exist.");
+                resolve(false);
+              }
             }
             resolve(false);
           }
@@ -545,4 +551,14 @@ sendMessage(message){
   this.apiService.baseUrlPost("production-tracking/socket-message",message).subscribe();
 }
 
+loadDefaultFacility(){
+  return new Promise((resolve, reject)=>{
+      this.apiService.get('/' + this._shared.apiBase + '/default-facility')
+      .subscribe(data => {
+          if (data) {
+            resolve(data.defaultFacility);
+          }
+      }, err => reject(err));
+  });
+}
 }

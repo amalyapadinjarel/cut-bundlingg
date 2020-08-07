@@ -45,7 +45,7 @@ export class UserService {
 			this.jwtService.saveResetToken(user.resetToken);
 		} else {
 			this.jwtService.saveToken(user.token);
-			localStorage.setItem('trendzBIAuthentication', user.trendzBIAuthentication);
+			this.jwtService.saveTrendzBiToken(user.trendzBIAuthentication);
 			this.currentUserSubject.next(user);
 			this.isAuthenticatedSubject.next(true);
 			this.authenticated = true;

@@ -8,6 +8,8 @@ import {ConfirmPopupComponent, UploadFileComponent} from '../../../../src/app/sh
 import {Location} from '@angular/common';
 import {MfgRoutingService} from './services/mfg-routing.service';
 import {SubSink} from 'subsink';
+import { CopyRoutingComponent } from './components/copy-routing/copy-routing.component';
+import { style } from '@angular/animations';
 
 @Component({
     templateUrl: './mfg-routing.component.html'
@@ -27,6 +29,7 @@ export class MfgRoutingComponent implements OnDestroy {
                 private _service: MfgRoutingService,
                 private dialog: MatDialog
     ) {
+        this._shared.init()
     }
 
     cancelEdit() {
@@ -57,6 +60,7 @@ export class MfgRoutingComponent implements OnDestroy {
         this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
             .then(value => {
                 this.router.navigateByUrl('/routing/create').then(done => {
+                    this._shared.resetInputService();
                     this._shared.editMode = true;
                     this._shared.initLocalCache();
                 }).catch(reason => console.log(reason))
@@ -100,6 +104,7 @@ export class MfgRoutingComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.subs.unsubscribe();
+        this._shared.clear();
     }
 
     approve() {
@@ -161,13 +166,14 @@ export class MfgRoutingComponent implements OnDestroy {
     }
 
     copyRouting() {
-        const dialogRef = this.dialog.open(ConfirmPopupComponent);
-        dialogRef.componentInstance.confirmText = 'CONFIRM';
-        dialogRef.componentInstance.dialogTitle = 'Copy Routing';
-        dialogRef.componentInstance.message = 'Are you sure you want to copy the current routing ? '
-        this.subs.sink = dialogRef.afterClosed().subscribe(flag => {
-            if (flag) {
-                this._service.copyRouting().then((data: any) => {
+        const dialogRef = this.dialog.open(CopyRoutingComponent);
+        // dialogRef.componentInstance.confirmText = 'CONFIRM';
+        // dialogRef.componentInstance.dialogTitle = 'Copy Routing';
+        // dialogRef.componentInstance.message = 'Are you sure you want to copy the current routing ? '
+        this.subs.sink = dialogRef.afterClosed().subscribe(styleId => {
+            if (styleId) {
+                console.log(styleId)
+                this._service.copyRouting(styleId).then((data: any) => {
                     if (data.additionalData && data.additionalData.targetId) {
                         this.router.navigateByUrl('/routing/' + data.additionalData.targetId)
                     }

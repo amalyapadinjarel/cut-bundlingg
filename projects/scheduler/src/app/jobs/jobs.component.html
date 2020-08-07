@@ -1,6 +1,6 @@
 <smd-datatable [apiClass]="schedulerUtils" dataUrl="scheduler/jobs" dataHeader="jobs"
-               [primaryListing]="false" (onRowSelected)="rowSelected($event)" (dataChange)="onDataChange($event)">
-    <smd-datatable-column title="Status" field="tnzJobState" sortable="true" [filterable]="true">
+[primaryListing]="false" (onRowSelected)="rowSelected($event)" (dataChange)="onDataChange($event)">
+<smd-datatable-column title="Status" field="tnzJobState" sortable="true" [filterable]="true">
         <ng-template let-model="data">
             <div
                     class="smd-table-icon-wrap" style="padding: 5px">

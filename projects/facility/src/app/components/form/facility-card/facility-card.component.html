@@ -1,0 +1,87 @@
+<div class="group">
+    <h4>General</h4>
+     <ul>
+        <li>
+            <label id="label">Short Code</label>
+            <div class="val"> 
+              <tnz-input class="text-upper" type="text"  
+              [path]="_shared.getHeaderAttrPath('shortCode')"
+              [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                  validators="required,length:60" (valueChanged)="valueChangedFromUI($event)" [isEdit]="getIfEditable('shortCode')" 
+               
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input>  
+                 
+            </div>
+        </li>
+      <li>
+            <label id = "label">Name</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('facilityName')"
+                 [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                  validators="required,length:120"  [isEdit]="getIfEditable('facilityName')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <br>
+     <li>
+            <label id = "label">Company</label>
+            <div class="val">
+                
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('company')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+                  validators="required"  [isEdit]="getIfEditable('company')" [lovConfig]="companyLov" displayKey="label"
+                  [loading]="_shared.headerLoading || _shared.loading" (valueChanged)= "setCompanyLovValue($event)"> 
+                </tnz-input> 
+
+            </div>
+        </li>   
+   
+        <li>
+            <label id = "label">Division</label>
+            <div class="val" *ngIf =" _shared.formData.header?.company">
+                
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('divisionName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+                  validators="required"  [isEdit]="getIfEditable('divisionName')" [lovConfig]="divisionLov" displayKey="label"
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+
+            </div>
+        </li>  
+        <br>
+        <li>
+            <label id = "label">Facility Group</label>
+            <div class="val">
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('facilityGroup')" [primaryKey]="_shared.primaryKey" [lovConfig]="facilityGroupLov"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('facilityGroup')" [loading]="_shared.headerLoading || _shared.loading"
+                    [nullable]="false"></tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id = "label">Active</label>
+            <div *ngIf="!getIfEditable('active')">
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf= "_shared.formData.header?.active =='N'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+
+                </div>
+            <div class="val" *ngIf="getIfEditable('active')"> 
+                <tnz-input class="text-upper" type="checkbox" [path]="_shared.getHeaderAttrPath('active')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                  validators="required"  [isEdit]="getIfEditable('active')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li> 
+    </ul> 
+</div>
+<div class="group">
+    <h4 id = "label">Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                validators="length:240" [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

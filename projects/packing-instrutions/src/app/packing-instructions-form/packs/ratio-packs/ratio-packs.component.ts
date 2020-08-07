@@ -5,7 +5,7 @@ import { AlertUtilities } from 'app/shared/utils';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { packingMethodLovconfig } from '../../../models/lov-config';
+import { packingMethodLovconfig, facilityLovconfig, workCenterLovConfig } from '../../../models/lov-config';
 import { ConfirmPopupComponent } from 'app/shared/component';
 import { RepackReasonComponent } from '../repack-reason/repack-reason.component';
 
@@ -27,7 +27,8 @@ export class RatioPacksComponent implements OnInit {
   private updatePackDetails: Subscription;
   public sequence;
   packingMethod = JSON.parse(JSON.stringify(packingMethodLovconfig));
-
+  facilityLov = JSON.parse(JSON.stringify(facilityLovconfig));
+  
   constructor(private _service: PackingInstructionsService,
 		public _shared: PackingInstructionsSharedService,
 		private alertUtils: AlertUtilities,
@@ -97,6 +98,11 @@ export class RatioPacksComponent implements OnInit {
     });
   }
 
+  workCenterLov(index,field) {
+    let cache = this.inputService.getInputValue(this._shared.getRatioHeaderFromKey(this.mainIndex,'facility'))
+    return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
+  }
+  
   deleteRatioLine(index){
     if(!this._shared.isCartonGenerated || this.formData.activeCarton == 0){
       this._shared.deleteRatioLine('packsDetails',index,this.mainIndex);

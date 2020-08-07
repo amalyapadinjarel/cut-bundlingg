@@ -1,0 +1,56 @@
+:host{
+        max-width: none !important;
+        // margin-top: 20px;
+        border: solid #4442;
+        border-width: 0 0 1px 1px;
+        // border-top:none;
+        // border-left-width:10px ;
+
+    
+        
+    }
+
+#validation{
+    margin-top: 20px; 
+    display: grid;
+    grid-row-gap: 10px;
+    place-items: flex-start;
+ }
+ 
+ 
+ 
+ /* Extra small devices (phones, 600px and down) */
+ @media only screen and (max-width: 600px) {#validation{
+         grid-template-columns: minmax(100px, auto)   ;
+         }}
+ 
+ /* Small devices (portrait tablets and large phones, 600px and up) */
+ @media only screen and (min-width: 600px) {#validation{
+        grid-template-columns: minmax(100px, auto) minmax(100px, auto)  ;
+         }}
+ 
+ /* Medium devices (landscape tablets, 768px and up) */
+ @media only screen and (min-width: 768px) {#validation{
+        grid-template-columns: minmax(200px, auto) minmax(200px, auto)  ;
+         }}
+ 
+ /* Large devices (laptops/desktops, 992px and up) */
+ @media only screen and (min-width: 992px) {#validation{
+        grid-template-columns: minmax(200px, auto) minmax(200px, auto)  ;
+         }}
+ 
+ /* Extra large devices (large laptops and desktops, 1200px and up) */
+ @media only screen and (min-width: 1200px) {#validation{
+         grid-template-columns: minmax(200px, auto) minmax(200px, auto)  ;
+         }}
+         #query{
+               margin:1px;
+               width:392px;
+               height:131px
+             }
+
+             .textarea{
+               
+                width:392px;
+                height:131px
+             }

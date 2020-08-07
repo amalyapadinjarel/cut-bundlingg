@@ -14,7 +14,8 @@ export class EventService {
     showGadget: BehaviorSubject<any> = new BehaviorSubject([]);
     schedulerJobChnaged: BehaviorSubject<any> = new BehaviorSubject([]);
 	onNewNotification: BehaviorSubject<any> = new BehaviorSubject([]);
-	onPendingNotificationCountChanged: BehaviorSubject<any> = new BehaviorSubject([]);
+    onPendingNotificationCountChanged: BehaviorSubject<any> = new BehaviorSubject([]);
+    onLogout: BehaviorSubject<any> = new BehaviorSubject([]);
     
     constructor() {
 

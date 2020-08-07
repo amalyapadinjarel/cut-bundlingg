@@ -328,6 +328,8 @@ export class ProgramFormComponent implements OnInit, OnDestroy {
 				if (field.fieldType == 'Date') {
 					let datePipe = new DatePipe("en-US");
 					value = datePipe.transform(new Date(field.fieldValue), 'dd/MM/yyyy');
+				}else if (field.fieldType == 'Lov') {
+					value = '' + fc.value
 				}
 				else {
 					value = field.fieldValue;
@@ -346,6 +348,7 @@ export class ProgramFormComponent implements OnInit, OnDestroy {
 	}
 
 	submitForm() {
+		console.log('testsddfd')
 		let valid = true;
 		this.loading = true;
 		for (let field of this.formFields) {

@@ -18,6 +18,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
 	onJobScheduled: Subscription;
 	onPushMessage: Subscription;
+	onRefresh: Subscription;
 
 	constructor(
 		public schedulerService: SchedulerService,
@@ -39,6 +40,9 @@ export class QueueComponent implements OnInit, OnDestroy {
 				.subscribe(change => {
 					this.processPushMessage(change);
 				});
+		this.onRefresh = this.schedulerService.onRefresh.subscribe(change => {
+			this.dataTable.refresh();
+		})
 	}
 
 	ngOnInit() {
@@ -50,6 +54,9 @@ export class QueueComponent implements OnInit, OnDestroy {
 		}
 		if (this.onPushMessage) {
 			this.onPushMessage.unsubscribe();
+		}
+		if (this.onRefresh) {
+			this.onRefresh.unsubscribe();
 		}
 	}
 

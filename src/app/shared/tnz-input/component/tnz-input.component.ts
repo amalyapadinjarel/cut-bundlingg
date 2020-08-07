@@ -57,6 +57,12 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     @Input() loading = false;
 
     @Input()
+    textAreaProperties = {
+        rows :2,
+        cols: 20     
+    }
+
+    @Input()
     set value(value: any) {
         this._value = typeof value == 'undefined' ? '' : value;
         this._orgValue = this.value;
@@ -110,7 +116,6 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     @Input() precision;
     @Input() selectOptions: any = [];
     @Input() addNewLovOption: Boolean = false;
-    @Input() autoLovNullDetect: Boolean = false;
 
     @Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
     @Output() valueChangedFromUI: EventEmitter<any> = new EventEmitter<any>();
@@ -320,7 +325,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
                 }
                 this.valueChangedFromUI.emit({
                     key: this._key,
-                    value: this._cache.getCachedValue(this.getFullPathToKey(this._key)),
+                    value: this.path ? this._cache.getCachedValue(this.getFullPathToKey(this._key)) : this.value,
                     displayValue: this.displayValue,
                     path: this.fullPath
                 });
@@ -711,14 +716,12 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
         return this.status;
     }
 
-    lovValueChanged(event){
-        if((event.value == "" || event.value == undefined) && this.autoLovNullDetect){
-            this.valueChanged.emit({
-                key: this._key,
-                value: null,
-                displayValue: this.displayValue,
-                path: this.fullPath
-            })
+    onBlur(event) {
+        if ( event.target && event.target.value == '') {
+            const json = {};
+            json[this.returnKey] = '';
+            json[this.displayKey] = '';
+            this.setValue(json, true)
         }
     }
 }

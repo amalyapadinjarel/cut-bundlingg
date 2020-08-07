@@ -18,32 +18,73 @@
 	<div class="app-content" [class.login]="!isAuthenticated">
 		<router-outlet></router-outlet>
 	</div>
+	<user-downloads *ngIf="isAuthenticated && currentGadget == 'downloads'" class="gadget" [class.right]="gadgetPosition.align == 'right'"
+	 [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'" [style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+	 [style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-downloads>
 
-	<user-profile-menu *ngIf="isAuthenticated && currentGadget == 'usermenu'" class="gadget"
-		[class.right]="gadgetPosition.align == 'right'" [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
-		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
-		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-profile-menu>
 
-	<user-settings *ngIf="isAuthenticated && currentGadget == 'usersettings'" class="gadget"
-		[class.right]="gadgetPosition.align == 'right'" [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
-		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
-		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-settings>
+	<user-profile-menu *ngIf="isAuthenticated && currentGadget == 'usermenu'" class="gadget" [class.right]="gadgetPosition.align == 'right'"
+	 [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'" [style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+	 [style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-profile-menu>
 
-	<app-report-listing *ngIf="isAuthenticated && currentGadget == 'application-reports'"
-		[taskflowKey]="currentGadgetData.taskflowKey" [module]="currentGadgetData.module"
-		[params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
-		[style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
-		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
-		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-report-listing>
+	<user-settings *ngIf="isAuthenticated && currentGadget == 'usersettings'" class="gadget" [class.right]="gadgetPosition.align == 'right'"
+	 [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'" [style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+	 [style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></user-settings>
 
-	<app-program-listing *ngIf="isAuthenticated && currentGadget == 'application-programs'"
-		[taskflowKey]="currentGadgetData.taskflowKey" [module]="currentGadgetData.module"
-		[params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
-		[style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'"
-		[style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
-		[style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-program-listing>
+	<app-report-listing *ngIf="isAuthenticated && currentGadget == 'application-reports'" [taskflowKey]="currentGadgetData.taskflowKey"
+	 [module]="currentGadgetData.module" [params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
+	 [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'" [style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+	 [style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-report-listing>
+
+	<app-program-listing *ngIf="isAuthenticated && currentGadget == 'application-programs'" [taskflowKey]="currentGadgetData.taskflowKey"
+	 [module]="currentGadgetData.module" [params]="currentGadgetData.params" class="gadget scheduler" [class.right]="gadgetPosition.align == 'right'"
+	 [style.top.px]="gadgetPosition.top? gadgetPosition.top : 'auto'" [style.left.px]="gadgetPosition.left != null? gadgetPosition.left : 'auto'"
+	 [style.right.px]="gadgetPosition.right != null? gadgetPosition.right : 'auto'"></app-program-listing>
 
 	<div class="gadget-overlay" *ngIf="gadgetOverlay" (click)="closeGadget()"></div>
+
+	<div class="push-message-container" *ngIf="isAuthenticated">
+		<div *ngFor="let msg of pushMessageService.pushMessages">
+			<div *ngIf="!msg.hidden && msg.type == 'scheduler-job'" class="message">
+				<div class="icon" [matTooltip]="(msg.state | schedulerJobState) + ' ' + (msg.status | schedulerJobStatus)">
+					<mat-icon *ngIf="msg.state == 'C' && msg.status == 'S'" class='mat-color-success'>check_circle</mat-icon>
+					<mat-icon *ngIf="msg.state == 'C' && msg.status == 'W'" class='mat-color-warning'>warning</mat-icon>
+					<mat-icon *ngIf="msg.state == 'R'" class='mat-color-info spinner'>camera</mat-icon>
+					<mat-icon *ngIf="msg.state == 'A'" class='mat-color-danger'>error</mat-icon>
+					<mat-icon *ngIf="msg.state != 'R' && msg.state != 'C' && msg.state != 'A'" class='mat-color-disabled'>schedule</mat-icon>
+				</div>
+				<div class="content job" [class.success]="msg.state == 'C' && msg.status == 'S'" [class.warning]="msg.state == 'C' && msg.status == 'W'"
+				 [class.info]="msg.state == 'R'" [class.danger]="msg.state == 'A'">
+					<img class="job-icon" [src]="'./assets/images/drive/doc/' + (msg.fileType ? (msg.fileType | lowerCase) : 'code') + '.png'">
+					<div class="info">
+						<div class="data">
+							<div class="title">{{msg.fileName}}</div>
+							<div class="sub-title">
+								<span class="time">{{msg.startTime| date:dateUtils.timeformat}}
+									<span *ngIf="msg.endTime">➤</span> {{msg.endTime| date:dateUtils.timeformat}}
+								</span>
+								<span class="job-name" *ngIf="msg.jobName != msg.fileName">{{msg.jobName}}</span>
+							</div>
+						</div>
+						<div class="actions">
+							<button mat-stroked-button matTooltip="download" color="primary" (click)="pushMessageService.downloadOutput(msg.instanceId)"
+							 *ngIf="msg.status == 'S' && msg.state == 'C' && msg.fileType" class="download-btn">
+								<mat-icon>file_download</mat-icon> Download
+							</button>
+							<button mat-stroked-button matTooltip="preview" color="primary" (click)="pushMessageService.previewOutput(msg, false)" *ngIf="msg.status == 'S' && msg.state == 'C' && msg.fileType == 'PDF'">
+								<mat-icon>remove_red_eye</mat-icon> Preview
+							</button>
+							<mat-checkbox [(ngModel)]="pushMessageService.runReportsInBackground" class="small" *ngIf="msg.state == 'R'">Always run in background</mat-checkbox>
+							<span class="horizontal-filler"></span>
+							<button mat-stroked-button matTooltip="run in background" color="basic" (click)="pushMessageService.closeUIMessage(msg, false)"
+							 *ngIf="msg.state == 'R'">Close</button>
+							<button mat-stroked-button matTooltip="close" color="basic" (click)="pushMessageService.closeUIMessage(msg)" *ngIf="msg.state != 'R'">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </mat-sidenav-container>
 

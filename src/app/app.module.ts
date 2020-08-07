@@ -23,7 +23,8 @@ import {
 	LocalConfigService,
 	NavigationService,
 	DocumentService,
-	ApiService
+	ApiService,
+	LocalCacheService
 } from './shared/services';
 import { AlertUtilities, AutoCompleteUtilities, DateUtilities } from './shared/utils';
 import { UserNotificationsComponent } from './gadgets/user-notifications/user-notifications.component';
@@ -45,6 +46,36 @@ import { CutRegisterComponent } from '../../projects/CutRegister/src/app/cutRegi
 import { CutRegisterModule } from '../../projects/CutRegister/src/app/cutRegister.module';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { TrendzDateAdapter } from 'app/shared/locale-adapters/trendz-date-adapter';
+import { InsufficientPrivilageComponent } from './shared/component/insufficient-privilage/insufficient-privilage.component';
+import { UserDownloadsComponent } from './gadgets/user-downloads/user-downloads.component';
+import { PipesModule } from 'app/shared/pipes/pipes.module';
+
+
+// Gestures
+import {
+	HAMMER_GESTURE_CONFIG,
+	HammerModule
+} from '@angular/platform-browser';
+
+/** Import Alyle UI */
+import {
+	LyTheme2,
+	StyleRenderer,
+	LY_THEME,
+	LY_THEME_NAME,
+	LyHammerGestureConfig
+} from '@alyle/ui';
+
+
+/** Import the component modules */
+import { LyButtonModule } from '@alyle/ui/button';
+import { LyToolbarModule } from '@alyle/ui/toolbar';
+import { LyImageCropperModule } from '@alyle/ui/image-cropper';
+
+/** Import themes */
+import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+
+
 
 const TRENDZ_DATE_FORMATS = {
 	parse: {
@@ -64,92 +95,133 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		component: PageNotFoundComponent
 	},
 	{
+		path: 'insufficient-privilage',
+		component: InsufficientPrivilageComponent
+	},
+	{
 		path: 'loading',
 		canActivate: [AuthGuard],
 		component: LoadingComponent
 	},
 	{
 		path: 'cut-register',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard], 
 		loadChildren: () => import('../../projects/CutRegister/src/app/cutRegister.module').then(m => m.CutRegisterModule)
 	},
 	{
-		path: 'routing',
-		// canActivate: [AuthGuard],
+		path: 'routing', 
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/mfg-routing/src/app/mfgRouting.module').then(m => m.MfgRoutingModule)
 	},
 	{
 		path: 'scheduler',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/scheduler/src/app/scheduler.module').then(m => m.SchedulerModule)
 	},
-    {
+	{
 		path: 'lookup',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/lookup/src/app/lookup.module').then(m => m.LookupModule)
 	},
-	
+
 	{
 		path: 'user',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/user/src/app/user.module').then(m => m.UserModule)
 	},
 	{
         path: 'roles',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         loadChildren: () => import('../../projects/roles/src/app/roles.module').then(m => m.RolesModule)
     },
 	{
 		path: 'operations',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/operation/src/app/operation.module').then(m => m.OperationModule)
 	},
 	{
 
-		path: 'routing-cut-panels',
-		// canActivate: [AuthGuard],
+		path: 'routing-cut-panels', 
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/Routing/src/app/routing.module').then(m => m.RoutingModule)
 	},
 	{
 
 		path: 'document-type',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/document-type/src/app/document-type.module').then(m => m.DocumentTypeModule)
 	},
 	{
 
 		path: 'packing-instructions',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/packing-instrutions/src/app/packing-instructions.module').then(m => m.PackingInstructionsModule)
 	},
 	{
 
 		path: 'division',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/division/src/app/division.module').then(m => m.DivisionModule)
 	},
 	{
 
 		path: 'operation-group',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/operationGroup/src/app/operationGroup.module').then(m => m.OperationGroupModule)
 	},
-	
-	{	path: 'embeddedURL',
-		// canActivate: [AuthGuard],
+
+	{
+		path: 'embeddedURL',
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/embedded-URL/src/app/embeddedURL.module').then(m => m.EmbeddedURLModule)
 	},
 	{
 
 		path: 'executable',
-		// canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/executable/src/app/executable.module').then(m => m.ExecutableModule)
+	},
+	{
+
+		path: 'valueSet',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/valueSet/src/app/valueSet.module').then(m => m.ValueSetModule)
+	},
+	{
+
+		path: 'document-status',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/document-status/src/app/document-status.module').then(m => m.DocumentStatusModule)
+	},
+    {
+
+		path: 'doc-sequence',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/doc-sequence/src/app/doc-sequence.module').then(m => m.DocSequenceModule)
+	},
+    {
+
+
+		path: 'facility',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/facility/src/app/facility.module').then(m => m.FacilityModule)
+	},
+	{
+		path: 'concurrent-programs',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/concurrent-program/src/app/concurrent-programs.module').then(m => m.ConcurrentProgramsModule)
+	},
+	{
+
+		path: 'user-profile',
+		//canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/userProfile/src/app/user-profile.module').then(m => m.UserProfileModule)
 	},
 	{
 		path: '**',
 		redirectTo: 'not-found'
 	}
-], { useHash: true , onSameUrlNavigation : 'reload'});
+], { useHash: true, onSameUrlNavigation: 'reload' });
 
 @NgModule({
 	declarations: [
@@ -162,10 +234,10 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		AppNavMenuComponent,
 		PageNotFoundComponent,
 		UserNotificationsComponent,
+		UserDownloadsComponent,
 		UserSettingsComponent,
 		UserProfileMenuComponent,
 		ApplicationReportListingComponent,
-
 		ApplicationProgramListingComponent
 	],
 	imports: [
@@ -179,7 +251,13 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		SharedModule,
 		SchedulerUtilsModule,
 		ClickOutsideDirectiveModule,
-		LOVComponentsModule
+		LOVComponentsModule,
+		// Add components
+		LyButtonModule,
+		LyToolbarModule,
+		LyImageCropperModule,
+		// Gestures
+		HammerModule
 	],
 	entryComponents: [
 		AuthPopUpComponent
@@ -199,9 +277,21 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		TrendzMessageService,
 		PushMessageService,
 		LocalConfigService,
+		LocalCacheService,
 		{ provide: DateAdapter, useClass: TrendzDateAdapter },
 		{ provide: MAT_DATE_FORMATS, useValue: TRENDZ_DATE_FORMATS },
 		{ provide: ErrorHandler, useClass: TrendzErrorHandler },
+
+		/** Add themes */
+
+		[LyTheme2],
+		[StyleRenderer],
+		// Theme that will be applied to this module
+		{ provide: LY_THEME_NAME, useValue: 'minima-light' },
+		{ provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
+		{ provide: LY_THEME, useClass: MinimaDark, multi: true }, // name: `minima-dark`
+		// Gestures
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: LyHammerGestureConfig }
 	],
 	bootstrap: [AppComponent]
 })

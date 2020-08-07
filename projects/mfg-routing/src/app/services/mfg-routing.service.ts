@@ -219,10 +219,11 @@ export class MfgRoutingService {
     }
 
 
-    copyRouting() {
-        const defaultMsg = 'Unknown Error. Failed to generate next cut.';
+    copyRouting(styleId) {
+        const defaultMsg = 'Unknown Error. Failed to copy current routing.';
         let params: HttpParams = new HttpParams();
         params = params.set('docNum', this._shared.getHeaderAttributeValue('documentNo'))
+        params = params.set('styleId', styleId)
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/copy-routing', params)
                 .subscribe(ret => {

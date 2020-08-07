@@ -1,0 +1,100 @@
+<div>
+    <smd-datatable tableId="_shared.apiBase.list" [dataUrl]="_shared.apiBase" dataHeader="embeddedURL" (onRowSelected)="rowSelected($event)"
+        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [primaryListing]="false"
+        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" >
+
+        <!-- <smd-datatable-column title="URL ID" field="URLId" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.urlId}}
+            </ng-template>
+        </smd-datatable-column> -->
+        <smd-datatable-column title="Title" field="title" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.title}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="URL" field="url" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.url}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Base Site URL" field="baseSiteURL" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.baseSiteURL}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="BI Vendor" field="biVendor" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.biVendor}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Secret Key" field="secretKey" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.secretKey}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Payload" field="payload" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.payload}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Menu" field="taskFlowName" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.taskFlowName}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Location" field="location" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.location}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                matTooltip="Active">check_circle
+            </mat-icon>
+            <mat-icon *ngIf="model.active=='N'" style="color:red;font-size:20px;vertical-align: middle;"
+                matTooltip="Inactive">cancel</mat-icon>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Default" field="isDefault" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                <!-- {{model.default}} -->
+
+                <mat-icon *ngIf="model.isDefault=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
+                matTooltip="Default URL">check_circle
+            </mat-icon>
+            <mat-icon *ngIf="model.isDefault=='N'" style="color:gray;font-size:20px;vertical-align: middle;"
+                matTooltip="Not defaulted">cancel</mat-icon>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.description}}
+            </ng-template>
+        </smd-datatable-column>
+       
+        <smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.createdByUser}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Created Date" field="creationDateTr" sortable="true" sortField="creationDate"
+            [filterable]="true">
+            <ng-template let-model="data">
+                {{model.creationDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Updated By" field="modifiedByUser" sortable="true" [filterable]="true">
+            <ng-template let-model="data">
+                {{model.modifiedByUser}}
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Updated Date" field="lastUpdateDateTr" sortable="true" sortField="lastUpdateDate"
+            [filterable]="true">
+            <ng-template let-model="data">
+                {{model.lastUpdateDateTr}}
+            </ng-template>
+        </smd-datatable-column>
+    </smd-datatable>
+</div>

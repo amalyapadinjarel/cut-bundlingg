@@ -1,0 +1,104 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <roles-general-card collapsibleComponent></roles-general-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div *ngIf="_shared.id!=0" class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByUser}} on
+                    {{_shared.formData.header?.creationDate|date:dateUtils.dateFormat}}, Modified
+                    by {{_shared.formData.header?.modifiedByUser}} on
+                    {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}</span>
+
+                <form-nav [apiUrl]="'/roles/navigation/' + _shared.id" navUrl="/roles" [params]="_shared.params">
+                </form-nav>
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Details">
+                <perfect-scrollbar>
+
+
+                    <!-- <div class="group-flex">
+                        
+                        <br>
+                        <div class="group" style="max-width: 350px;">
+                            <div class="group-header">
+                                <h3>Application Access</h3>
+                                <span class="flex-filler"></span>
+                           </div>
+                           <app-application-group></app-application-group>
+                        </div>
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>TaskFlow Access</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex">
+                                        <ng-container *ngIf="_shared.getRolesTaskFlowAccessEditable()&& _shared.selectedAppAccess=='Y'">
+ 
+                                        <button mat-button matTooltip="Add TaskFlow">
+                                            <mat-icon class="mat-color-info" (click)="copyFromTaskFlow()">add_box
+                                            </mat-icon>
+                                        </button>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <app-taskflow></app-taskflow>
+                        </div>
+                    </div> -->
+
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Application Access</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display: flex;">
+                                <ng-container *ngIf="_shared.getRolesTaskFlowAccessEditable()&& _shared.selectedAppAccess=='Y'">
+                    
+                                    <button mat-button matTooltip="Add TaskFlow">
+                                        <mat-icon class="mat-color-info" (click)="copyFromTaskFlow()">add_box
+                                        </mat-icon>
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                        
+                        <app-application></app-application>
+                    </div>
+
+                    <div class="group-flex">
+                        <div class="group" style="max-width: 350px;">
+                            <div class="group-header">
+                                <h3>Org access</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex" *ngIf="_shared.getRolesOrgAccessEditable()">
+                                    <button mat-button matTooltip="Add Division">
+                                        <mat-icon class="mat-color-info" (click)="copyFromDivision()">add_box</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <role-org-access></role-org-access>
+                        </div>
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Users</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex">
+                                    <ng-container *ngIf="_shared.getRoleUsersEditable()">
+                                        <button mat-button matTooltip="Add Users">
+                                            <mat-icon class="mat-color-info" (click)="copyFromUsers()">add_box
+                                            </mat-icon>
+                                        </button>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <role-users></role-users>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

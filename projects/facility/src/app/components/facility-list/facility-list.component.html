@@ -1,0 +1,38 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [tableId]="_shared.appKey + '.facilitylist'" [dataUrl]="_shared.apiBase" dataHeader="facility" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+        
+        <smd-datatable-column title="Facility Name" field="facilityName" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'280px'}" >
+            <ng-template let-model="data">
+                {{model.facilityName}}
+            </ng-template>
+       </smd-datatable-column>
+        
+        <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'180px'}" >
+                 <ng-template let-model="data">
+                    {{model.shortCode}}
+                 </ng-template> 
+            </smd-datatable-column> 
+            
+            
+        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'280px'}">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column> 
+            
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
+            [colStyle]="{'width':'10px'}"> 
+                <ng-template let-model="data"> 
+                   <mat-icon   *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon> 
+                    <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                 </ng-template> 
+                </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar> 
+</div> 
+

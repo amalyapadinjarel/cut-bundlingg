@@ -9,6 +9,7 @@ import { ConfirmPopupComponent } from 'app/shared/component';
 @Injectable()
 export class CutRegisterSharedService {
 
+    reportData: any = {};
     appKey = 'cutRegister';
     apiBase = 'cut-register';
     taskFlowName = 'CUTREGISTER'

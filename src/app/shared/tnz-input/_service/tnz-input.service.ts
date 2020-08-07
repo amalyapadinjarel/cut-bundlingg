@@ -219,7 +219,7 @@ export class TnzInputService {
 		let input = JSONUtils.getJSONPath(this.registeredInputs, path);
 		if (input) {
 			input.setErrors(alert);
-       }
+		}
 	}
 
 	resetError(path){

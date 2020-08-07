@@ -137,7 +137,7 @@ export class RoutingSharedService {
 
     getHeaderEditable(attr, primaryKey) {
       let editable = this.editMode;
-      let nonEditableAttrs = ['docType', 'documentTypeFTR', 'productFTR','facility','routingName','smv','description'];// attributes that cannot be edited after creation
+      let nonEditableAttrs = ['docType', 'documentTypeFTR', 'productFTR','facility','routingName','smv','description','docTypeId'];// attributes that cannot be edited after creation
       if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
           editable = false
       }

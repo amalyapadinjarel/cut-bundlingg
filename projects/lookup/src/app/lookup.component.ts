@@ -72,7 +72,7 @@ export class LookupComponent {
         this.location.go('lookup/' + this._shared.lookupType + '/edit');
         this._shared.editMode = true;
         this._shared.initLocalCache();
-        this._shared.refreshData.next(true);
+        this._shared.refreshData.next(true); //added because of scroll
 
       })
       .catch(err => {

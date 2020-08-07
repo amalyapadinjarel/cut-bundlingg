@@ -4,6 +4,7 @@ import { FileSizePipe } from './file-size.pipe';
 import { HtmlToPlaintextPipe } from './htmlToPlaintext.pipe';
 import { LineBreakToBR } from './lineBreakToBR.pipe';
 import { SquareBracketPipe } from './square-bracket.pipe';
+import { LowerCasePipe } from './toLowerCase.pipe';
 
 
 const PIPES = [
@@ -12,6 +13,7 @@ const PIPES = [
     HtmlToPlaintextPipe,
     LineBreakToBR,
     SquareBracketPipe,
+    LowerCasePipe,
 ];
 
 @NgModule({

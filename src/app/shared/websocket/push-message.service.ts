@@ -146,6 +146,7 @@ export class PushMessageService {
             msg.isSchedule = message.job.isSchedule;
             if (message.type == 'job-started') {
                 msg.state = 'R';
+
                 if (!this.localConfig.isReportPreviewInBackground() && msg.fileType == 'PDF' && !msg.isSchedule) {
                     msg.hidden = true;
                     this.previewOutput(msg);

@@ -2,10 +2,12 @@
     <div>
         <tnz-input class="doc-num" [value]="_shared.getHeaderAttributeValue('documentNo') || '###'" [loading]="_shared.loading"
             [sharedData]="_shared.formData"></tnz-input>
-        <div class="doc-status-button" [ngStyle]="{'color':_shared.getHeaderAttributeValue('docStatusColor'), 'background-color':_shared.getHeaderAttributeValue('docStatusColor') + '2e', 'border-color':_shared.getHeaderAttributeValue('docStatusColor')}">
+        <!-- <div class="doc-status-button" [ngStyle]="{'color':_shared.getHeaderAttributeValue('docStatusColor'), 'background-color':_shared.getHeaderAttributeValue('docStatusColor') + '2e', 'border-color':_shared.getHeaderAttributeValue('docStatusColor')}">
             <tnz-input [value]="_shared.getHeaderAttributeValue('docStatusName') || '###'" [loading]="_shared.loading"
                 [sharedData]="_shared.formData"></tnz-input>
-        </div>
+        </div> -->
+        <doc-status [status]="_shared.getHeaderAttributeValue('docStatus')"></doc-status>
+        
     </div>
     <div>
         <tnz-input class="doc-name" type="select" [path]="_shared.getHeaderAttrPath('docType')" [primaryKey]="_shared.primaryKey"

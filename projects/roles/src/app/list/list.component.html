@@ -1,0 +1,76 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="roles" (onRowSelected)="rowSelected($event)"
+            [primaryListing]="false" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
+            [selectedPage]="_shared.selectedPage" tableId="_shared.appKey.list">
+            
+            <smd-datatable-column title="Short Code" field="roleShortCode" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.roleShortCode}}
+                </ng-template>
+            </smd-datatable-column>
+           
+            <smd-datatable-column title="Role Name" field="roleName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.roleName}}
+                </ng-template>
+            </smd-datatable-column>
+          
+
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Author" field="authorText" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.authorText}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Start Date" field="startDateTr" sortable="true" sortField="startDate"
+                [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.startDateTr}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="End Date" field="endDateTr" sortable="true" sortField="endDate"
+                [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.endDateTr}}
+                </ng-template>
+            </smd-datatable-column>
+
+
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                    matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+                    matTooltip="Inactive">cancel</mat-icon>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.createdByUser}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created Date" field="creationDateTr" sortField="creationDate" sortable="true"
+                [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.creationDateTr}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="modifiedByUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.modifiedByUser}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdateDateTr" sortField="lastUpdateDate"
+                sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.lastUpdateDateTr}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

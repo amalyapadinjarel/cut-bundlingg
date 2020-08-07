@@ -6,9 +6,9 @@
             <mat-icon>refresh</mat-icon>
         </button>
     </mat-toolbar>
-    <smd-datatable [apiClass]="schedulerUtils" dataUrl="scheduler/jobs" dataHeader="jobs" [preFilters]="preFilters"
-        [isTitleNeeded]='false' [defaultRange]='7' [paginatorRanges]='[7]'
-        (dataChange)="onDataChange($event)">
+    <smd-datatable [models]="null" [apiClass]="schedulerUtils" dataUrl="scheduler/jobs" dataHeader="jobs" [preFilters]="preFilters" [paginated]="true"
+    [paginated]="true" [filterEnabled]="true" [isTitleNeeded]='false' [isModel]='true' [defaultRange]='7' [paginatorRanges]='[]'
+    [preFetchPages]='5' (dataChange)="onDataChange($event)" showTableFilter="true" [showCheckBox]="false" class="downloads">
         <smd-datatable-column title=" " field="outputFileType" [filterable]="true">
             <ng-template let-model="data">
                 <div class="job-icon"

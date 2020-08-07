@@ -1,0 +1,67 @@
+
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <app-general></app-general>
+            
+        </perfect-scrollbar>
+    </div>
+     <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div *ngIf="!_shared.editMode" class="form-nav">
+                <span class="doc-contributors"> Created by {{_shared.formData.header?.createdByName}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdatedBy}}
+                    on {{_shared.formData.header?.lastUpdateDate}}</span>
+                <form-nav [apiUrl]="'/valueSet/navigation/' + _shared.id" navUrl="/valueSet" [params]="_shared.params"></form-nav>
+            </div>
+        </div>
+      <mat-tab-group *ngIf=" _shared.formData.header?.validationType =='T' || _shared.validationType=='T' ">
+        <mat-tab label="Validation-Table">
+         
+            <app-validation-table></app-validation-table>
+        </mat-tab>
+    </mat-tab-group>
+    <mat-tab-group *ngIf=" _shared.formData.header?.validationType =='Q' || _shared.validationType=='Q'">
+        <mat-tab label="Validation-Query Based">
+            <app-validation-query-based></app-validation-query-based>
+        </mat-tab>
+    </mat-tab-group>
+    <mat-tab-group *ngIf=" _shared.formData.header?.validationType =='S' || _shared.validationType=='S'">
+        <!-- <mat-tab label="Validation-Static">
+            <div class="group">
+                <div class="group-header">
+            <div style="display:flex" *ngIf="_shared.getValidValueEditable()">
+                
+                <button mat-button matTooltip="Add line">
+                    <mat-icon class="mat-color-info" (click)="_shared.addLine('valueId')">add_box</mat-icon> 
+               </button>
+            </div>
+        </div>
+
+    </div>
+
+            <app-validation-static></app-validation-static>
+        </mat-tab> -->
+        <mat-tab label="Validation-Static">
+            <perfect-scrollbar>
+                <div class="group">
+                    <div class="group-header">
+                        <h3>Validation-Static</h3>
+                        <span class="flex-filler"></span>
+                        <div style="display:flex" *ngIf="_shared.getValidValueEditable()">
+                             <!-- <button mat-button matTooltip="Set Active">
+                                <mat-icon class="mat-color-disabled" (click)="setActive('lookupValue')">{{toggle?'check_box_out':'check_box'}}</mat-icon>
+                            </button> -->
+                             <button mat-button matTooltip="Add line">
+                                 <mat-icon class="mat-color-info" (click)="_shared.addLine('validDetails')">add_box</mat-icon> 
+                            </button>
+                         </div>
+                    </div>
+                    <app-validation-static></app-validation-static>
+                </div>
+               
+            </perfect-scrollbar>
+        </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -126,9 +126,15 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="Lay Yardage" field="layYardage" sortable="true" [filterable]="true">
-		<ng-template let-model="data">
-			{{model.layYardage}}
+	<smd-datatable-column title="Lay Yardage" field="layYardage" sortable="true" [filterable]="true" numeric="true">
+		<ng-template let-model="data" let-index="index">
+			<span *ngIf="!_shared.getLayerDetailsEditable('layYardage')">{{model.layYardage}}</span>
+			<div *ngIf="_shared.getLayerDetailsEditable('layYardage')">
+				<tnz-input type="number" [path]="_shared.getLayerDetailsPath(index,'layYardage')" [primaryKey]="_shared.layerDetailsPrimaryKey"
+				 [sharedData]="_shared.formData" [isEdit]="getIfEditable(index,'layYardage')" [loading]="_shared.layerDetailsLoading || _shared.loading"
+				 (valueChangedFromUI)="valueChangedFromUI($event,index)">
+				</tnz-input>
+			</div>
 		</ng-template>
 	</smd-datatable-column>
 	<!-- <smd-datatable-column title="Style" field="style" sortable="true" [filterable]="true">

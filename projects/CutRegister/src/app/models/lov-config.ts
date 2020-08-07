@@ -223,4 +223,20 @@ export const StickerColorLovConfig: any = {
     ]
 };
 
+export const UserFacilityLovConfig: any = {
+    title: 'Select Facility',
+    url: 'lovs/facility?userAcessOnly=true',
+    dataHeader: 'data',
+    returnKey: 'value',
+    displayKey: 'label',
+    filterAttributes: ['label'],
+    displayFields: [{
+        key: 'shortCode',
+        title: 'Facility Short Code'
+    }, {
+        key: 'label',
+        title: 'Facility Name'
+    }]
+};
+
 

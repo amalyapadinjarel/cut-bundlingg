@@ -1,0 +1,44 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <general-card collapsibleComponent></general-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors">Last Login Date :
+                    {{_shared.formData.header?.lastLoginDate|date:dateUtils.dateTimeFormat}}</span>
+
+             
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Details">
+                <perfect-scrollbar>
+                    <div class="group-flex">
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Profile Details</h3>
+                                <span class="flex-filler"></span>
+                          </div>
+                            <personal-details></personal-details>
+                        </div>
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Change Password</h3>
+                                <span class="flex-filler"></span>
+                            </div>
+                            <change-password></change-password>
+                        </div>
+
+                    </div>
+
+                </perfect-scrollbar>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+</div>

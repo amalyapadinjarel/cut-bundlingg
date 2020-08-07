@@ -11,4 +11,4 @@ export const environment = {
 };
 
 
-export const appVersion = 'alpha 1.9.22';
+export const appVersion = 'alpha 1.10.48';

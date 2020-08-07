@@ -1,0 +1,151 @@
+<div class="group">
+    <h4>General</h4>
+    <ul>
+        <li>
+            <label>Title</label>
+            <div class="val">
+                <tnz-input type="text" class="text-upper" [path]="_shared.getHeaderAttrPath('title')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                    validators="length:120,required" [isEdit]="getIfEditable('title')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+
+            </div>
+        </li>
+        <li>
+            <label>Base Site URL</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('baseSiteURL')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                    validators="length:512,required" [isEdit]="getIfEditable('baseSiteURL')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>BI Vendor</label>
+            <div class="val">
+              
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('biVendor')"
+                    [primaryKey]="_shared.primaryKey" [lovConfig]="BIVendorLov" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('biVendor')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Secret Key</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('secretKey')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" stretch="true" validators="length:256"
+                    [isEdit]="getIfEditable('secretKey')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Payload</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('payload')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" stretch="true" validators="length:2000"
+                    [isEdit]="getIfEditable('payload')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Menu</label>
+            <div class="val">
+
+                <!-- <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('taskflow')"
+                    [primaryKey]="_shared.primaryKey" displayKey="taskFlowName" returnKey="taskFlowId"
+                    [sharedData]="_shared.formData" [lovConfig]="taskflowLov" [isEdit]="getIfEditable('taskflow')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input> -->
+               
+                     <tnz-input type="select" [path]="_shared.getHeaderAttrPath('taskflowId')"
+                        [primaryKey]="_shared.primaryKey" [lovConfig]="taskflowLov" 
+                        [sharedData]="_shared.formData" [isEdit]="getIfEditable('taskflowId')"
+                        [loading]="_shared.headerLoading || _shared.loading">
+                    </tnz-input>
+
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Location</label>
+            <div class="val">
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('location')"
+                    [primaryKey]="_shared.primaryKey" [lovConfig]="locationLov" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('location')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Active</label>
+            <div class="val">
+                <div class="checkbox-center-align" *ngIf="!getIfEditable('active')">
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('active')=='Y'"
+                        style="color:green;font-size:20px;vertical-align: middle;padding-left: 5px;"
+                        matTooltip="Active">check_circle</mat-icon>
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('active')!='Y'"
+                        style="color:red;font-size:20px;vertical-align: middle;padding-left: 5px;"
+                        matTooltip="Inactive">cancel</mat-icon>
+                </div>
+                <div class="checkbox-center-align" *ngIf="getIfEditable('active')">
+                    <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('active')"
+                        [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                        [isEdit]="getIfEditable('active')" [loading]="_shared.headerLoading || _shared.loading">
+                    </tnz-input>
+                </div>
+            </div>
+        </li>
+        <li>
+            <label>Default</label>
+            <div class="val">
+                <div class="checkbox-center-align" *ngIf="!getIfEditable('isDefault')">
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('isDefault')=='Y'"
+                        style="color:dodgerblue;font-size:20px;vertical-align: middle;padding-left: 5px;"
+                        matTooltip="Default">check_circle</mat-icon>
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('isDefault')!='Y'"
+                        style="color:gray;font-size:20px;vertical-align: middle;padding-left: 5px;"
+                        matTooltip="Not default">cancel</mat-icon>
+                </div>
+                <div class="checkbox-center-align" *ngIf="getIfEditable('isDefault')">
+                    <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('isDefault')"
+                        [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                        [isEdit]="getIfEditable('isDefault')" [loading]="_shared.headerLoading || _shared.loading">
+                    </tnz-input>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="group">
+    <h4>URL</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('url')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData" validators="length:2000,required" [isEdit]="getIfEditable('url')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="length:400"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

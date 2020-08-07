@@ -42,7 +42,8 @@ export class CutRegister {
     workStation: string;
     fabric: string;
     description: string;
-    layNo: string;
+    layNo: string; 
+    docStatusColor: string;
 
     constructor(model) {
         this.registerId = model.registerId;
@@ -84,6 +85,7 @@ export class CutRegister {
         this.createdByName = model.createdByName;
         this.lastUpdateByName = model.lastUpdateByName;
         this.lastUpdateDateTime = model.lastUpdateDateTime;
+        this.docStatusColor = model.docStatusColor;
     }
 
 }

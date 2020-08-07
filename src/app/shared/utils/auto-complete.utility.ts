@@ -179,7 +179,7 @@ export class AutoCompleteUtilities {
             }
             if (addLimit) {
                 params = params.set('limit', '30');
-                params = params.set('offset', '1');
+                params = params.set('offset', '0');
             }
             if(json){
                 params = params.set(filter, JSON.stringify(json));

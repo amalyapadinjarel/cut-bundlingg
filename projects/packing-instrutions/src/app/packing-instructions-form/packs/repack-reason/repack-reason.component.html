@@ -1,0 +1,19 @@
+<div class="group">
+    <h4>Select Repack reason</h4>
+    <ul>
+      <br>
+      <li>
+        <label>Repack reason</label>
+        <div class="val">
+          <tnz-input type="lov" [lovConfig]="rePackReason" [path]="_shared.getRePackReasonBasePath('rePackReason')" [primaryKey]="_shared.primaryKey" [isEdit]="true" (valueChangedFromUI)="onValueChange($event)" validators="required"> </tnz-input>
+        </div>
+      </li>
+      <br>
+    </ul>
+  </div>
+  <mat-dialog-actions>
+    <span class="flex-filler"></span>
+    <button mat-raised-button color="accent" (click)="save()">Confirm</button>
+    <button mat-button mat-dialog-close color="accent">Cancel</button>
+  </mat-dialog-actions>
+  

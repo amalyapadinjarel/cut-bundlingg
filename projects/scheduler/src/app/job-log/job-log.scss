@@ -2,16 +2,19 @@
     display: flex;
     align-items: center;
     margin: 12px 12px 20px;
+
     .title {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .submitted-info {
         font-weight: 400;
         font-size: 13px;
         color: rgba(0, 0, 0, .72);
     }
+
     img {
         height: 64px;
         margin-right: 8px;
@@ -20,4 +23,26 @@
 
 .input-card {
     box-shadow: none;
+}
+
+.mat-tab-label {
+    padding: 0 8px;
+    min-width: 84px;
+    height: 28px;
+    font-family: Roboto, Helvetica Neue, sans-serif;
+    font-weight: 400;
+    user-select: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    color: #fff;
+    background: rgb(88, 77, 104);
+    border-radius: 3px 3px 0 0;
+    margin: 0 3px;
+    outline: 0;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
 }

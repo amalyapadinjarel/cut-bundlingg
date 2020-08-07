@@ -67,6 +67,18 @@ material-app {
         height: 17px;
         line-height: 17px;
     }
+
+    &.active-icon {
+        color: green;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    &.inactive-icon {
+        color: red;
+        font-size: 20px;
+        vertical-align: middle;
+    }
 }
 
 
@@ -150,6 +162,10 @@ tnz-input {
 
 .mat-color-danger {
     color: #e61313 !important;
+}
+
+.mat-color-disabled-danger {
+    color: #808080 !important;
 }
 
 .mat-color-disabled {
@@ -833,8 +849,19 @@ tnz-input {
                                             background: rgba(95, 81, 117, 0.12);
                                             border-color: rgba(95, 81, 117, 0.32);
                                         }
+
+                                        .upper-case{
+                                            input{
+                                                text-transform: uppercase;
+                                            }
+                                        }
                                     }
                                 }
+                            }
+
+                            .break-word {
+                                word-break: break-all;
+                                margin-left: 8px;
                             }
                         }
 
@@ -1561,29 +1588,30 @@ mat-card.input-card .date-tracks {
     font-size: 22px !important;
 }
 
-.checkbox-center-align{
+.checkbox-center-align {
     display: flex;
     place-content: center;
 
 }
-.ratio-table{
-     input {
-      height: 30px !important;
-      text-align: center !important;
-      outline-style: none !important;
-    //   background: transparent !important;
-      
-    }
-}
 
-.tnz-input-center-align{
+.ratio-table {
     input {
-        text-align: center !important; 
+        height: 30px !important;
+        text-align: center !important;
+        outline-style: none !important;
+        //   background: transparent !important;
+
     }
 }
 
-.tnz-input-align-lov-icon{
-    mat-icon{
+.tnz-input-center-align {
+    input {
+        text-align: center !important;
+    }
+}
+
+.tnz-input-align-lov-icon {
+    mat-icon {
         margin-top: 13px;
     }
 }
@@ -1597,5 +1625,12 @@ mat-card.input-card .date-tracks {
 .tnz-input-green {
     input {
         color: green !important;
+    }
+}
+
+.downloads tr {
+    border: none!important;
+    td{
+        border: none!important;
     }
 }

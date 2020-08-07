@@ -1,0 +1,49 @@
+ <div>
+    <perfect-scrollbar>
+        <smd-datatable [tableId]="_shared.appKey + '.divisionlist'" [dataUrl]="_shared.apiBase" dataHeader="divisions" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+            <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true">
+                 <ng-template let-model="data">
+                    {{model.shortCode}}
+                 </ng-template> 
+            </smd-datatable-column> 
+            
+            <smd-datatable-column title="Division" field="divisionName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.divisionName}}
+                </ng-template>
+           </smd-datatable-column>
+        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column> 
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'10px'}" > 
+                <ng-template let-model="data"> 
+                   <mat-icon  *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon> 
+                    <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                 </ng-template> 
+                </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.createdByName}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.creationDate}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="lastUpdatedBy" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.lastUpdatedBy}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.lastUpdateDate}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div> 

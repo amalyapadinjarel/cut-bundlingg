@@ -1,0 +1,43 @@
+<div class="details">
+  <div>
+    <perfect-scrollbar>
+      <card></card>
+    </perfect-scrollbar>
+  </div>
+  <!-- <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div *ngIf="!_shared.editMode" class="form-nav">
+<app-header></app-header>
+
+            </div> -->
+  <div class="line-details">
+    <div style="display: flex;">
+      <span class="flex-filler"></span>
+      <div *ngIf="!_shared.editMode" class="form-nav">
+        <span class="doc-contributors"
+          >Created by {{ _shared.formData.header?.createdByName }} on
+          {{ _shared.formData.header?.creationDate }}, Modified by
+          {{ _shared.formData.header?.lastUpdatedBy }} on
+          {{
+            _shared.formData.header?.lastUpdateDate
+              | date: dateUtils.dateMinFormat
+          }}</span
+        >
+       
+        <form-nav
+          [apiUrl]="'/division/navigation/' + _shared.id"
+          navUrl="/division"
+          [params]="_shared.params"
+        ></form-nav>
+      </div>
+     
+    </div>
+    <mat-tab-group>
+      <mat-tab label="Address">
+          <app-header></app-header>
+      </mat-tab>
+  </mat-tab-group>
+   
+  </div>
+</div>

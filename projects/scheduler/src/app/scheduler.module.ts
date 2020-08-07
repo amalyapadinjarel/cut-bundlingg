@@ -30,8 +30,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {EMailOutputComponent} from "./email-output/email-output";
 import {ProgramMoreInfoComponent} from "./program-more-info/more-info";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {SchedulerJobStatePipe} from "./_services/jobStatePipe";
-import {SchedulerJobStatusPipe} from "./_services/jobStatusPipe";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 
 // const MATERIAL_MODULE = [
@@ -48,7 +46,7 @@ import {SharedModule} from "../../../../src/app/shared/shared.module";
 const PROVIDERS = [
 	SchedulerService,
 	ApiServiceV4,
-	EventService,
+	// EventService,
 	SchedulerUtils,
 	UserService,
 	JwtService,
@@ -114,8 +112,6 @@ const schedulerRouting: ModuleWithProviders = RouterModule.forChild([
 		JobLogComponent,
 		EMailOutputComponent,
 		ProgramMoreInfoComponent,
-		SchedulerJobStatePipe,
-		SchedulerJobStatusPipe
 	],
 	entryComponents: [
 		JobLogComponent

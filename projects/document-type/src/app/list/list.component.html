@@ -1,0 +1,40 @@
+<smd-datatable [tableId]="_shared.appKey + '.doctypelist'" [dataUrl]="_shared.apiBase" dataHeader="docType"
+    (onRowSelected)="rowSelected($event)" [primaryListing]="true" (dataChange)="_onDataChange($event)"
+    [selectedPage]="_shared.selectedPage" (pageChange)="pageChange($event)">
+    <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'280px'}">
+        <ng-template let-model="data">
+            {{model.shortCode}}
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Name" field="docName" sortable="true" [filterable]="true"
+        [colStyle]="{'width': '415px'}">
+        <ng-template let-model="data">
+            {{model.docName}}
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Base Document" field="docBase" sortable="true" [filterable]="true">
+        <ng-template let-model="data">
+            {{model.docBase}}
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Doc Sequence" field="docSeq" sortable="true" [filterable]="true"
+        [colStyle]="{'width': '410px'}">
+        <ng-template let-model="data">
+            <div *ngIf="model.numControlled=='Y'"> {{model.docSeq}}</div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'35px','text-align':'center'}">
+        <ng-template let-model="data">
+            <mat-icon *ngIf="model.active =='Y'"
+                style="color:green;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Active">
+                check_circle</mat-icon>
+            <mat-icon *ngIf=" model.active =='N'"
+                style="color:red;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Inactive">cancel
+            </mat-icon>
+
+        </ng-template>
+    </smd-datatable-column>
+
+</smd-datatable>

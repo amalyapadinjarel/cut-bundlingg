@@ -1,0 +1,119 @@
+<h3>Import Data</h3>
+<mat-dialog-content>
+    <perfect-scrollbar>
+        <div class="group">
+            <div class="group-header">
+                <h3>New Value Set</h3>
+                <h5 style="color: red;">* - Mandatory field</h5>
+                <span class="flex-filler"></span>
+            </div>
+            <div>
+                    <smd-datatable  #newLines tableId="valusetImport" (onRowSelected)="rowSelected($event)" (onAllRowsChecked)="rowSelected($event)" [primaryListing]="false" 
+                     [selectedPage]="_shared.selectedPage" scrollType="page">
+                    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" >
+                        <ng-template let-model="data">
+                            <mat-icon *ngIf="model.active =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                            <mat-icon *ngIf="model.active !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Division *" field="division" sortable="true" [filterable]="true"  >
+                        <ng-template let-model="data"  >
+                           {{model.division}} 
+                        </ng-template>
+                    </smd-datatable-column>
+                        <smd-datatable-column title="Facility *" field="facility" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.facility}}
+                            </ng-template>
+                        </smd-datatable-column>
+                   
+                    <smd-datatable-column title="shortCode *" field="shortCode" sortable="true" [filterable]="true">
+                        <ng-template let-model="data">
+                            {{model.shortCode}}
+                        </ng-template>
+                    </smd-datatable-column>
+                  
+                        <smd-datatable-column title="Name *" field="setName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.setName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                    <smd-datatable-column title="List Type *" field="listTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.listTypes}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Data Type *" field="dataType" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.dataType}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Validation Type *" field="validationTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.validationTypes}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    
+                    </smd-datatable> 
+            </div>
+        </div>
+        <div class="group">
+            <div class="group-header">
+                <h3>Duplicate Record</h3>
+                <span class="flex-filler"></span>
+            </div>
+            <smd-datatable #duplicates tableId="valusetImportDuplicate" [primaryListing]="false" 
+                    [selectedPage]="_shared.selectedPage" scrollType="page" [showCheckBox]="false">
+                    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" >
+                        <ng-template let-model="data">
+                            <mat-icon *ngIf="model.active =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                            <mat-icon *ngIf="model.active !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true">
+                        <ng-template let-model="data">
+                            {{model.division}}
+                        </ng-template>
+                    </smd-datatable-column>
+                        <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true" [style]="">
+                            <ng-template let-model="data">
+                                {{model.facility}}
+                            </ng-template>
+                        </smd-datatable-column>
+                   
+                    <smd-datatable-column title="shortCode" field="shortCode" sortable="true" [filterable]="true">
+                        <ng-template let-model="data">
+                            {{model.shortCode}}
+                        </ng-template>
+                    </smd-datatable-column>
+                  
+                        <smd-datatable-column title="Name" field="setName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.setName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                    <smd-datatable-column title="List Type" field="listTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.listTypes}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Data Type" field="dataType" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.dataType}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    <smd-datatable-column title="Validation Type" field="validationTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                        <ng-template let-model="data">
+                            {{model.validationTypes}}
+                        </ng-template>
+                    </smd-datatable-column>
+                    </smd-datatable>
+        </div>
+    </perfect-scrollbar>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <span class="flex-filler"></span>
+  <button mat-raised-button color="accent" (click)="import()" [disabled]="selectedPrograms.length == 0">Import</button>
+  <button mat-button color="accent" (click)="close()">Cancel </button>
+</mat-dialog-actions>
+

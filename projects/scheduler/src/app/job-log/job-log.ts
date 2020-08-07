@@ -14,7 +14,9 @@ export class JobLogComponent implements OnInit, OnDestroy {
 	loading = false;
 	jobData: any;
 
-	@ViewChild(SmdDataTable, { static: false }) dataTable: SmdDataTable;
+	@ViewChild("jobLog") jobLogTable: SmdDataTable;
+	@ViewChild("pgmLog") pgmLogTable: SmdDataTable;
+
 
 	constructor(
 		private schedulerUtils: SchedulerUtils,
@@ -23,21 +25,24 @@ export class JobLogComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		if (!this.jobData.log) {
+		if (!this.jobData.jobLog || !this.jobData.pgmLog) {
 			this.loading = true;
 			this.schedulerUtils.getJobLog(this.jobData.tnzJobInstncId).then(
 				(data) => {
 					if (data.status == 'S') {
-						this.jobData.log = data.jobLog;
+						this.jobData.jobLog = data.jobLog;
+						this.jobData.pgmLog = this.getPgmLog(data);
 						this.loading = false;
-						this.dataTable.refresh(this.jobData.log);
-						this.dataTable.rowCount = this.jobData.log.length;
+						this.jobLogTable.refresh(this.jobData.jobLog);
+						this.pgmLogTable.refresh(this.jobData.pgmLog);
+						this.jobLogTable.rowCount = this.jobData.jobLog.length;
+						this.pgmLogTable.rowCount = this.jobData.pgmLog.length;
 					}
 					else {
 						this.loading = false;
 					}
 				},
-				() => {
+				(err) => {
 					this.loading = false;
 				});
 		}
@@ -46,4 +51,24 @@ export class JobLogComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 
 	}
+
+	convertFormat(date) {
+		let split = date.split('.');
+		return split[0];
+	}
+
+	getPgmLog(data) {
+		if(data && data.pgmLog){
+
+			data.pgmLog.forEach(model => {
+				model["type"] = model.logLevel ? model.logLevel.logCode : "";
+				model["time"] = this.convertFormat(model.logDate)
+				model["message"] = model.logText
+			})
+			return data.pgmLog
+		} else {
+			return []
+		}
+	}
 }
+

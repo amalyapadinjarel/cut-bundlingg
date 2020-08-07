@@ -1,0 +1,41 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <embeddedURL-general-card collapsibleComponent></embeddedURL-general-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors">Created by {{_shared.formData.header?.createdByUser}} on {{_shared.formData.header?.creationDate|date:dateUtils.dateFormat}}, Modified by {{_shared.formData.header?.modifiedByUser}}
+                    on {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}</span>
+                    
+                    <form-nav [apiUrl]="'/embeddedURL/navigation/' + _shared.id" navUrl="/embeddedURL" [params]="_shared.params"></form-nav>
+
+            </div>
+        </div>
+        
+        <mat-tab-group>
+            <mat-tab label="Embedded URL Access">
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Users</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getEmbeddedURLUsersEditable()">
+                                <button mat-button matTooltip="Add Users">
+                                    <mat-icon class="mat-color-info" (click)="copyFromUsers()">add_box
+                                    </mat-icon>
+                                </button>
+                                <button mat-button matTooltip="Delete All">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('embeddedURLUsers')">delete</mat-icon>
+                                </button>
+                             </div>
+                        </div>
+                         <app-embedded-url-users></app-embedded-url-users> 
+                    </div>
+               </mat-tab>
+            
+        </mat-tab-group> 
+    </div>
+</div>

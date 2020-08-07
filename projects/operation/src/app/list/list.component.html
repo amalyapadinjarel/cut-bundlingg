@@ -1,0 +1,116 @@
+<div >
+    <!-- <perfect-scrollbar> -->
+
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="operations" [primaryListing]="false" class="tnz-input-table"
+            (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage"
+            [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode" [showCheckBox]="true">
+
+            <smd-datatable-column title=" " field=" " *ngIf="_shared.getOperationsEditable()" [colStyle]="{'width':'10px','text-align':'center'}">
+                <ng-template let-model="data" let-index="index">
+                    <div class="row-operations">
+                        <mat-icon *ngIf=" model[_shared.operationsPrimaryKey] == 0" class="mat-color-danger"
+                            matTooltip="Delete Line" (click)="_shared.deleteLine('operations',index)">delete</mat-icon>
+                        <mat-icon *ngIf="model[_shared.operationsPrimaryKey] != 0" style="color:gray"
+                            matTooltip="Delete disabled" >delete</mat-icon>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Operation Code" field="shortCode" sortable="true" [filterable]="true"
+                [colStyle]="{'width':'60px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" class="text-upper" [path]="_shared.getOperationsPath(index,'shortCode')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                        validators="required" [isEdit]="_shared.getOperationsEditable('shortCode',model.opId)"
+                        [loading]="false" stretch="true" (valueChanged)="validateOpcode($event,index,'shortCode')" >
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Operation Name" field="opName" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'opName')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                        validators="required" [isEdit]="_shared.getOperationsEditable('opName',model.opId)"
+                        [loading]="false" stretch="true" (valueChanged)="validateData($event,index,'opName')">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+
+            <smd-datatable-column title="Parent Operation" field="parentOpName" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <span *ngIf="!_shared.getOperationsEditable()">{{model.parentOpName}}</span>
+                    <div *ngIf="_shared.getOperationsEditable('parentOpName')">
+                        <tnz-input type="lov" [lovConfig]="getOperationsLov(model.opId)"
+                            [path]="_shared.getOperationsPath(index,'parentOpName')"
+                            [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                            [isEdit]="_shared.getOperationsEditable('parentOpName')" [loading]="false" stretch="true">
+                        </tnz-input>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'description')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                        [isEdit]="_shared.getOperationsEditable('description')" [loading]="false" stretch="true"
+                        (valueChanged)="validateData($event,index,'description')">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
+                [colStyle]="{'width':'10px'}">
+                <ng-template let-model="data" let-index="index">
+                    <div class="checkbox-center-align" *ngIf="!_shared.getOperationsEditable('active')">
+                        <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                            matTooltip="Active">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+                            matTooltip="Inactive">cancel</mat-icon>
+                    </div>
+                    <div class="checkbox-center-align" *ngIf="model[_shared.operationsPrimaryKey] == 0">
+                        <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+                    </div>
+                 
+                    <div class="checkbox-center-align" *ngIf="_shared.getOperationsEditable('active')&&model[_shared.operationsPrimaryKey] != 0">
+                        <tnz-input type="checkbox" [path]="_shared.getOperationsPath(index,'active')"
+                            [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                            [isEdit]="_shared.getOperationsEditable('active')" [loading]="false">
+                        </tnz-input>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'createdUser')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData" [isEdit]="false"
+                        [loading]="false">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created Date" field="creationDateTr" sortable="true" [filterable]="true"
+                [colStyle]="{'width':'60px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'creationDateTr')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData" [isEdit]="false"
+                        [loading]="false">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="lastUpdatedUser" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'lastUpdatedUser')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData" [isEdit]="false"
+                        [loading]="false">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdatedDateTr" sortable="true" [filterable]="true"
+                [colStyle]="{'width':'60px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'lastUpdatedDateTr')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData" [isEdit]="false"
+                        [loading]="false">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    <!-- </perfect-scrollbar> -->
+</div>

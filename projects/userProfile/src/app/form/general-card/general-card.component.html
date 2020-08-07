@@ -1,0 +1,16 @@
+<div class="group">
+<app-crop-circle-component></app-crop-circle-component>
+<h4>{{_shared.getHeaderAttributeValue('knownAs') }} ({{_shared.getHeaderAttributeValue('userName')}})</h4>
+
+<img pImage class="img-circle person" [imageUrl]="'/images/users/'+ currentUser.userId"
+    title="{{_shared.getHeaderAttributeValue('knownAs') }}">
+</div>
+<!-- <img [src]="url" height="200"> <br/>
+    <input type='file' (change)="onSelectFile($event)"> -->
+<div class="group">
+    <h4>Signature</h4>
+<img pImage [imageUrl]="'/images/users/signature/'+ currentUser.userId" width="200px" height="50px">
+<button mat-button (click)="openSignatureUploader()" class="upload-button">
+    <mat-icon>file_upload</mat-icon>upload
+</button>
+</div>

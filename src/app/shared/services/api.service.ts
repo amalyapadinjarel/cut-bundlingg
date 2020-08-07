@@ -38,6 +38,15 @@ export class ApiService {
 		return new HttpHeaders(headersConfig);
 	}
 
+	private getMultipartHeadersTrendzBi(): HttpHeaders {
+		let headersConfig = {
+		};
+		if (this.jwtService.getToken()) {
+			headersConfig['Authorization'] = `${this.jwtService.getTrendzBiToken()}`;
+		}
+		return new HttpHeaders(headersConfig);
+	}
+
 	private formatErrors(error: any, path) {
 		if (path != '/user/login') {
 			this.emitChangeSource.next(error);
@@ -121,6 +130,23 @@ export class ApiService {
 				json.token = token;
 				return json;
 			}));
+	}
+
+	postMultipartTrendzBi(path: string, body): Observable<any> {
+		return this.http.post(
+			`${environment.bi_url}${path}`, body, { headers: this.getMultipartHeadersTrendzBi() }
+		).pipe(
+			catchError((err) => { return this.formatErrors(err, path) }),
+			map((res: HttpResponse<JSON>) => res));
+	}
+
+	trendzBiDownloadFile(path: string, fileName: String){
+		let url = environment.bi_url + path + "/" + fileName + "?token=" + this.jwtService.getTrendzBiToken();
+		const link = document.createElement('a');
+		link.setAttribute('href', url);
+		document.body.appendChild(link);
+		link.click();
+		link.remove();
 	}
 
 	baseUrlPost(path: string, body: Object = {},token=null): Observable<any> {

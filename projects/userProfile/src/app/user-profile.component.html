@@ -1,0 +1,84 @@
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+
+<div class="app-content-header">
+    <div class="app-title">
+        <span class="primary">User </span> Profile
+    </div>
+    <!-- <div class="app-menus">
+        <div class="group">
+
+            <ng-container *ngIf="!_shared.editMode">
+                <a (click)="editUserProfile()">Edit</a>
+            </ng-container>
+
+            <ng-container class="group" *ngIf="_shared.editMode">
+                <a (click)="save()">Save</a>
+                <a (click)="cancelEdit()">Cancel</a>
+            </ng-container>
+        </div>
+    </div> -->
+</div>
+<div class="app-content-container">
+    <div class="app-content-wrapper">
+
+        <div class="wrapper">
+            <div class="userBox">
+                <div class="header">
+                    <p>{{_shared.getHeaderAttributeValue('knownAs') }} ({{_shared.getHeaderAttributeValue('userName')}})
+                    </p>
+                </div>
+                <img pImage class="userPic" [imageUrl]="'/images/users/'+ currentUser.userId"
+                    title="Upload Profile Picture" (click)="openImageUploader()" default="avatars/no-user.jpg">
+
+                <div class="middle">
+                    <div class="middleText">
+
+                        <p>
+                            <mat-icon>person</mat-icon> {{_shared.getHeaderAttributeValue('firstName')}}
+                            {{_shared.getHeaderAttributeValue('middleName')}}
+                            {{_shared.getHeaderAttributeValue('lastName')}}
+                        </p>
+                        <p>
+                            <mat-icon>mail</mat-icon><span> {{_shared.getHeaderAttributeValue('emailAddress')}} </span>
+                        </p>
+                        <p>
+                            <mat-icon>branding_watermark</mat-icon>
+                            {{_shared.getHeaderAttributeValue('personnelNum')?.personnelNum}}
+                        </p>
+                        <p>
+                            <mat-icon matPrefix class="prefix">phone</mat-icon>
+<!--                            
+                                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryCode')"
+                                [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                                [lovConfig]="countryCodeLOV" validators="required" [isEdit]="false"
+                                [loading]="_shared.headerLoading || _shared.loading" title="Country Code"
+                                class="text-reduce-width" numeric="true" style="width:20%">
+                            </tnz-input> -->
+                            <span>   {{_shared.getHeaderAttributeValue('countryCode')?.label}}  {{_shared.getHeaderAttributeValue('phoneNumber')}}</span>
+                           
+                            
+                            
+                        </p>
+
+                        <img class="person" pImage [imageUrl]="'/images/users/signature/'+ currentUser.userId"
+                            title="Upload Signature" (click)="openSignatureUploader()" default="avatars/insert-signature.png">
+
+                    </div>
+
+                </div>
+                <div class="footer">
+                    <ul>
+                        <li (click)="changePassword()"> <span>
+                                <mat-icon matPrefix class="prefix">lock</mat-icon>
+                            </span> Change Password</li>
+                        <li></li>
+                        <li (click)="editProfileDetails()"> <span>
+                                <mat-icon matPrefix class="prefix">create</mat-icon>
+                            </span> Edit Profile Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,165 @@
+ <div class="group">
+    <h4>General</h4>
+   <ul >
+    <li>
+        <label id="header">Division</label>
+        <div class="val">
+            
+            <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('division')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+              validators="required"  [isEdit]="getIfEditable('division')" [lovConfig]="divisionLov" displayKey="label"  (valueChanged)="valueChangedFromDivision($event)"
+              [loading]="_shared.headerLoading || _shared.loading"  stretch = "true" > 
+            </tnz-input> 
+
+        </div>
+    </li> 
+
+    <li>
+        <label id="header">Facility</label>
+        <div class="val">
+            
+            <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('facility')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+              validators="required"  [isEdit]="getIfEditable('facility')"  [lovConfig]="facilityLov"  displayKey="label" (click)="valueChangedFromFacility($event)"
+              [loading]="_shared.headerLoading || _shared.loading"   stretch = "true">
+            </tnz-input> 
+
+        </div>
+    </li>
+    <br>
+    <li >
+        <label id="header">Short Code</label>
+        <div class="val">
+          <tnz-input class="text-upper" type="text" 
+          [path]="_shared.getHeaderAttrPath('shortCode')"
+          [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+              validators="required"  [isEdit]="getIfEditable('shortCode')" 
+              (valueChanged)="valueChangedFromUI($event)"
+              [loading]="_shared.headerLoading || _shared.loading" > 
+            </tnz-input>  
+             
+        </div>
+    </li> 
+
+        <li >
+            <label id="header">Name</label>
+            <div class="val">
+              <tnz-input type="text" 
+              [path]="_shared.getHeaderAttrPath('setName')"
+              [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                  validators="required"  [isEdit]="getIfEditable('setName')" 
+ 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input>  
+                 
+            </div>
+        </li>
+   
+
+       
+  
+        <li>
+            <label id="header">List Type</label>
+            <div class="val">
+                
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('listType')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('listType')" [loading]="_shared.headerLoading || _shared.loading"
+                    displayKey='label' returnKey='value' validators="required"
+                    [selectOptions]="ListTypeOptions"  [nullable]="false">
+                </tnz-input> 
+            </div>
+        </li>  
+        <br>
+        <li>
+            <label id="header">Data Type</label>
+            <div class="val">
+                
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('dataType')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('dataType')" [loading]="_shared.headerLoading || _shared.loading"
+                    displayKey='value' returnKey='value' validators="required"  (valueChanged)="valueChangedFromDataType($event)"
+                    [selectOptions]="DataTypeOptions"  [nullable]="false">
+                </tnz-input> 
+            </div>
+        </li> 
+    
+        <li>
+            <label id="header">Validation Type</label>
+            <div class="val">
+                
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('validationType')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('validationType')" [loading]="_shared.headerLoading || _shared.loading"
+                    displayKey='label' returnKey='value' validators="required" (valueChanged)="valueChangedFromValidationType($event)"
+                    [selectOptions]="ValidationTypeOptions"  [nullable]="false">
+                </tnz-input> 
+            </div>
+        </li> 
+    
+        <li>
+            <label id="header">Author</label>
+            <div class="val">
+                
+                <tnz-input type="select" [path]="_shared.getHeaderAttrPath('setAuthor')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('setAuthor')" [loading]="_shared.headerLoading || _shared.loading"
+                    displayKey='label' returnKey='value'
+                    [selectOptions]="AuthorOptions"  [nullable]="false">
+                </tnz-input> 
+            </div>
+        </li> 
+
+        <!-- <br/>
+      <li>
+            <label id="header">Division</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getHeaderAttrPath('divisionName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                  validators="required"  [isEdit]="getIfEditable('divisionName')" 
+                  (valueChanged)="valueChangedFromDivision($event)"
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <br/>
+     <li>
+            <label id="header">Company</label>
+            <div class="val">
+                
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('company')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+                  validators="required"  [isEdit]="getIfEditable('company')" [lovConfig]="companyLov" displayKey="label"
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+
+            </div>
+        </li>   
+        <br/> -->
+        <li>
+            <label id="header">Active</label>
+            <div class="val" *ngIf=_shared.editMode >
+                
+                <tnz-input  type="checkbox" [path]="_shared.getHeaderAttrPath('active')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+                  validators="required"  [isEdit]="getIfEditable('active')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+             <div class="val" *ngIf=!_shared.editMode style="padding-left: 9px">
+                
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'"  style="color:green;font-size:20px;vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+                <mat-icon *ngIf=" _shared.formData.header?.active !='Y'"  style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+         <!-- <div class="val" *ngIf=!_shared.editMode and model.active='N'>
+                
+                <mat-icon  style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+            </div> -->
+       </li>  
+<br>
+
+ </ul>
+</div>
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li> 
+    </ul> 
+</div>

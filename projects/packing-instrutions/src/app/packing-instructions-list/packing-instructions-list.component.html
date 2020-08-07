@@ -1,7 +1,7 @@
 <div>
     <perfect-scrollbar>
         <smd-datatable [dataUrl]="_shared.apiBase" tableId="packingInstructionsList" dataHeader="packingInstructions" (onRowSelected)="rowSelected($event)" [primaryListing]="false" (dataChange)="_onDataChange($event)"
-        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" (pageChange)="_onPageChange($event)" scrollType="page">
+        (onRowChecked)="onRowChecked($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" (pageChange)="_onPageChange($event)" scrollType="page">
             <smd-datatable-column title="PO" field="po" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.po}}

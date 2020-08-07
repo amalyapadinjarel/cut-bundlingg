@@ -1,0 +1,13 @@
+
+<smd-datatable [tableId]="'seqline'" [models]="this.tableData" [loading]="false" [showCheckBox]="false" [paginated]="false" [filterEnabled]="false">
+<smd-datatable-column title="Pattern" field="pattern" >
+    <ng-template let-model="data" let-index="index" >
+        <span >{{model.pattern}}</span>
+        </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Resolution" field="resolution"  >
+    <ng-template let-model="data" let-index="index">
+        <span >{{model.resolution}}</span>
+        </ng-template>
+</smd-datatable-column>
+</smd-datatable> 

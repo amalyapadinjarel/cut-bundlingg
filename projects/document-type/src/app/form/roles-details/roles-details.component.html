@@ -1,0 +1,100 @@
+<smd-datatable [tableId]="_shared.appKey + '.rolelist'" scrollType="scroll" defaultRange="10" [loading]="_shared.RoledetailLoading"
+class="tnz-input-table" [filterEnabled]="!_shared.getRoleDetailsEditable()" [sortEnabled]="!_shared.getRoleDetailsEditable()"
+(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
+[showCheckBox]="false" [inputPath]="_shared.RoledetailPath">
+
+<smd-datatable-column title=" " field=" " *ngIf="_shared.getRoleDetailsEditable()" >
+    <ng-template let-model="data" let-index="index">
+        <div class="row-operations">
+            <mat-icon *ngIf="model[_shared.RoledetailPrimaryKey] == 0" class="mat-color-danger"
+                matTooltip="Delete Line" (click)="deleteLine(index,model)">delete</mat-icon>
+        </div>
+        <div class="row-operations">
+            <mat-icon *ngIf="model[_shared.RoledetailPrimaryKey] != 0" class="mat-color-disabled-danger"
+                matTooltip="Delete Line" >delete</mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}">
+	<ng-template let-index="index">
+		{{index+1}}
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Role" field="role" sortable="true" [filterable]="true" >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getRoleDetailsEditable('role')">{{model.role}}</span>
+        <div *ngIf="_shared.getRoleDetailsEditable('role')" style="min-width: 100px">
+            <tnz-input type="lov" [lovConfig]="RolesLov"
+                       [path]="_shared.getRoledetailPath(index,'role')"
+                       [primaryKey]="_shared.RoledetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required"
+                       [isEdit]="_shared.getRoleDetailsEditable('role')"
+                       [loading]="_shared.RoledetailLoading || _shared.loading"
+                       (valueChangedFromUI)="valueChangedFromUI($event)"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column  title="Status" field="isActive" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getRoleDetailsEditable('isActive')">
+            <mat-icon *ngIf=" model.isActive =='Y'"  style="color:green;font-size:20px;text-align:'center';vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+            <mat-icon *ngIf=" model.isActive =='N'"  style="color:red;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Inactive">cancel</mat-icon>
+        </span>
+        <div *ngIf="_shared.getRoleDetailsEditable('isActive')" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getRoledetailPath(index,'isActive')"
+                       [primaryKey]="_shared.RoledetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="_shared.getRoleDetailsEditable('isActive')"
+                       [loading]="_shared.RoledetailLoading || _shared.loading"
+                       style="padding-left: 15px"
+                      >
+            </tnz-input>
+        </div>
+        
+    </ng-template>
+</smd-datatable-column> 
+<smd-datatable-column title="Change Assignee?" field="isChngeAssigne" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getRoleDetailsEditable('isChngeAssigne')" > 
+            <mat-icon *ngIf=" model.isChngeAssigne =='Y'"  style="color:green;font-size:20px;vertical-align: middle;text-align:'center'"  matTooltip="Active">check_circle</mat-icon> 
+            <mat-icon *ngIf=" model.isChngeAssigne =='N'"  style="color:red;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Inactive">cancel</mat-icon>
+        </span>
+        <div *ngIf="_shared.getRoleDetailsEditable('isChngeAssigne')" style="min-width: 50px">
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getRoledetailPath(index,'isChngeAssigne')"
+                       [primaryKey]="_shared.RoledetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="_shared.getRoleDetailsEditable('isChngeAssigne')"
+                       [loading]="_shared.RoledetailLoading || _shared.loading"
+                       style="padding-left: 50px ;"
+                       >
+            </tnz-input>
+        </div>
+       
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Initiator?" field="isInitiate" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getRoleDetailsEditable('isInitiate')"> 
+            <mat-icon *ngIf=" model.isInitiate =='Y'"  style="color:green;font-size:20px;vertical-align: middle;text-align:'center'"  matTooltip="Active">check_circle</mat-icon> 
+            <mat-icon *ngIf=" model.isInitiate =='N'"  style="color:red;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Inactive">cancel</mat-icon>
+        </span>
+        <div *ngIf="_shared.getRoleDetailsEditable('isInitiate')" style="min-width: 15px">
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getRoledetailPath(index,'isInitiate')"
+                       [primaryKey]="_shared.RoledetailPrimaryKey"
+                       [sharedData]="_shared.formData"
+                       [isEdit]="_shared.getRoleDetailsEditable('isInitiate')"
+                       [loading]="_shared.RoledetailLoading || _shared.loading"
+                       style="padding-left: 30px; vertical-align: middle;"
+                       >
+            </tnz-input>
+        </div>
+       
+    </ng-template>
+</smd-datatable-column>
+</smd-datatable> 

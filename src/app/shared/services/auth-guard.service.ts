@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 
 import { UserService } from './user.service';
@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
 	constructor(
 		private userService: UserService,
 		private navService: NavigationService,
+		private router: Router
 	) { }
 
 	canActivate(
@@ -22,17 +23,18 @@ export class AuthGuard implements CanActivate {
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.isValidUrl(state).then(res => {
+				this.userService.redirectUrl = state.url;
 				if (res) {
-					this.userService.redirectUrl = state.url;
 					if (this.userService.authenticated) {
 						resolve(true);
-					} else {
-						resolve(false);
-					}
+					} 
 				} else if (this.userService.authenticated) {
 					const menu = this.navService.allowedUrls.find(item => {
 						return state.url.startsWith(item);
 					})
+					if(!(menu ? true : (state.url == '/'))){
+						this.redirectToInsufficientPrivilage();
+					}
 					resolve(menu ? true : (state.url == '/'));
 				}
 				else {
@@ -75,10 +77,14 @@ export class AuthGuard implements CanActivate {
 				}
 			});
 			return (!keepGoing);
-		} else if (state.url.indexOf(menu.url) == 0) {
+		} else if (state.url.slice(1).indexOf(menu.url) == 0) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	private redirectToInsufficientPrivilage(){
+		this.router.navigate(['/insufficient-privilage']);
 	}
 }

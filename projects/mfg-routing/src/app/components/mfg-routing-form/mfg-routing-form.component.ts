@@ -4,6 +4,7 @@ import {ActivatedRoute, NavigationEnd, ResolveEnd, Router} from '@angular/router
 import {AlertUtilities, DateUtilities} from '../../../../../../src/app/shared/utils';
 import {SubSink} from 'subsink';
 import {MfgRoutingService} from '../../services/mfg-routing.service';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
     selector: 'app-mfg-routing-form',
@@ -22,7 +23,8 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
                 private alertUtils: AlertUtilities,
                 private route: ActivatedRoute,
                 private _service: MfgRoutingService,
-                public dateUtils: DateUtilities
+                public dateUtils: DateUtilities,
+                private _inputService: TnzInputService
     ) {
     }
 
@@ -78,6 +80,7 @@ export class MfgRoutingFormComponent implements OnInit, OnDestroy {
         this._shared.editMode = false;
         this._shared.id = 0;
         this._shared.setFormData({});
+        this._inputService.resetInputService(this._shared.appKey);
     }
 
 

@@ -37,6 +37,7 @@ export class CutRegisterComponent {
 
   ngOnDestroy() {
     this._shared.clear();
+    console.log("Destroyed")
   }
 
   newCosting() {
@@ -119,7 +120,7 @@ export class CutRegisterComponent {
   }
 
   showReports() {
-    this.reportData = {}
+    this.reportData = this._shared.reportData
     this.reportData["userId"] = this.userService.getCurrentUser().userId;
     if (this._shared.id) {
       this.reportData["pCutId"] = this._shared.id;

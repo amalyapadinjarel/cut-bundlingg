@@ -1,7 +1,8 @@
 <div>
     <perfect-scrollbar>
         <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="registers" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
-            (dataChange)="_onDataChange($event)" (pageChange)="_onPageChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+            (dataChange)="_onDataChange($event)" (pageChange)="_onPageChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage"
+            (onRowChecked)="onRowChecked($event)" inputPath="cutRegister" tableId="cutRegister">
             <smd-datatable-column title="CR#" field="documentNo" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.documentNo}}
@@ -24,7 +25,7 @@
             </smd-datatable-column>
             <smd-datatable-column title="Status" field="docStatusName" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
-                    {{model.docStatusName}}
+                    <doc-status [status]="model.docStatus" [insideTable]="true"></doc-status>
                 </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Cut Type" field="cutType" sortable="true" [filterable]="true">

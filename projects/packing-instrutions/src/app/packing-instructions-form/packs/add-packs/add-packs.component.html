@@ -14,6 +14,18 @@
             [isEdit]="true" (valueChanged)="valueChanged($event,'packingMethodTemp')" class="tnz-input-center-align tnz-input-align-lov-icon">
             </tnz-input>
         </div>
+        <div>
+            <h4>Facility </h4>
+            <tnz-input type="lov" [lovConfig]="facilityLov" [path]="_shared.getSolidPackDetailsPath(0,'facilityTemp')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'facilityTemp')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
+        <div>
+            <h4>Work Center </h4>
+            <tnz-input type="lov" [lovConfig]="workCenterLov(0,'facilityTemp')" [path]="_shared.getSolidPackDetailsPath(0,'workCenterTemp')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'workCenterTemp')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
     </div>
     <div *ngIf = "addType == 1" class="ratio-options">
         <div>
@@ -34,6 +46,19 @@
             [isEdit]="true" (valueChanged)="valueChanged($event,'packingMethod')" class="tnz-input-center-align tnz-input-align-lov-icon">
             </tnz-input>
         </div>
+        <div>
+            <h4>Facility </h4>
+            <tnz-input type="lov" [lovConfig]="facilityLov" [path]="_shared.getRatioPacksHeaderPath(0,'facility')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'facility')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
+        <div>
+            <h4>Work Center </h4>
+            <tnz-input type="lov" [lovConfig]="workCenterLov(0,'facility')" [path]="_shared.getRatioPacksHeaderPath(0,'workCenter')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.ratioPackData"
+            [isEdit]="true" (valueChanged)="valueChanged($event,'workCenter')" class="tnz-input-center-align tnz-input-align-lov-icon">
+            </tnz-input>
+        </div>
+
     </div>
 </div>
 <mat-dialog-content>
@@ -88,6 +113,28 @@
                 </div>
             </ng-template>
         </smd-datatable-column>
+        <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getPacksDetailsEditable('facility')">{{model.facility?.label}}</span>
+                <div *ngIf="_shared.getPacksDetailsEditable('facility')">
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="facilityLov" [path]="_shared.getSolidPackDetailsPath(index,'facility')" [primaryKey]="_shared.primaryKey" 
+                        [sharedData]="_shared.formData"  [isEdit]="_shared.getPacksDetailsEditable('facility')" [loading]="_shared.solidPackLoading || _shared.loading" 
+                        (valueChanged)="valueChanged($event,'facility',index)">
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Work Center" field="workCenter" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getPacksDetailsEditable('workCenter')">{{model.workCenter?.label}}</span>
+                <div *ngIf="_shared.getPacksDetailsEditable('workCenter')">
+                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="workCenterLovForSolidLines(index,'facility')" [path]="_shared.getSolidPackDetailsPath(index,'workCenter')" [primaryKey]="_shared.primaryKey" 
+                        [sharedData]="_shared.formData"  [isEdit]="_shared.getPacksDetailsEditable('workCenter')" [loading]="_shared.solidPackLoading || _shared.loading" 
+                        (valueChanged)="valueChanged($event,'workCenter11',index)">
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
         <smd-datatable-column title="No of Cartons" field="noOfCartons" sortable="true" [filterable]="true">
             <ng-template let-model="data" let-index="index">
                 <span *ngIf="!_shared.getPacksDetailsEditable('noOfCartons')">{{model.noOfCartons}}</span>
@@ -105,7 +152,7 @@
         </smd-datatable-column>
        </smd-datatable>
     </span>
-    <span *ngIf = "addType == 1 && TempformData && TempformData.length > 0">
+    <span *ngIf = "addType == 1 && TempformData && TempformData.length > 0" style="display: grid;">
         <table class="ratio-table">
             <tr class="ratio-tr">
                 <th style = "background: linear-gradient(
@@ -141,7 +188,7 @@
         </div>
        
     </span> 
-    <span *ngIf = "addType == 1 && TempformData && TempformData?.length == 0">
+    <span *ngIf = "addType == 1 && TempformData && TempformData?.length == 0" style="display: grid;">
         <table class="ratio-table">
             <tr class="ratio-tr">
                 <th style = "background: linear-gradient(

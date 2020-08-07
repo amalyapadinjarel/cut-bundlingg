@@ -52,6 +52,28 @@
 				</div>
 			</ng-template>
 		</smd-datatable-column>
+		<smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getPacksDetailsEditable('facility') || model.packedOrOnholdCount > 0">{{model.facility?.label}}</span>
+				<div *ngIf="_shared.getPacksDetailsEditable('facility') && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)">
+					<tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="facilityLov" [path]="_shared.getPacksDetailsPath(mainIndex,index,'facility')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpData" [isEdit]="_shared.getPacksDetailsEditable() && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)"
+						[loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'facility')" [disable]="_shared.isCartonGenerated && model.packedOrOnholdCount > 0">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
+		<smd-datatable-column title="Work Center" field="workCenter" sortable="true" [filterable]="true">
+			<ng-template let-model="data" let-index="index">
+				<span *ngIf="!_shared.getPacksDetailsEditable('workCenter') || model.packedOrOnholdCount > 0">{{model.workCenter?.label}}</span>
+				<div *ngIf="_shared.getPacksDetailsEditable('workCenter') && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)">
+					<tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="workCenterLov(index,'facility')" [path]="_shared.getPacksDetailsPath(mainIndex,index,'workCenter')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                        [sharedData]="_shared.formData['packsDetails'].grpData" [isEdit]="_shared.getPacksDetailsEditable() && (!_shared.isCartonGenerated || model.packedOrOnholdCount == 0)"
+						[loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'workCenter')" [disable]="_shared.isCartonGenerated && model.packedOrOnholdCount > 0">
+					</tnz-input>
+				</div>
+			</ng-template>
+		</smd-datatable-column>
 		<smd-datatable-column title="No. of CTN" field="noOfCartons" sortable="true" [filterable]="true" numeric="true">
 			<ng-template let-model="data" let-index="index">
 				<span *ngIf="!_shared.getPacksDetailsEditable('noOfCartons')">{{model.noOfCartons}}</span>

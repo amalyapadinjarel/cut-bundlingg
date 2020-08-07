@@ -2,7 +2,7 @@
     <div class="smd-paginator-selected-count" *ngIf="selectedRowCount > 0"> Selected
         rows:&nbsp;&nbsp;{{selectedRowCount}} </div>
     <div class="flex-filler"></div>
-    <div class="smd-paginator-range" *ngIf="ranges.length > 0">
+    <div class="smd-paginator-range" *ngIf="ranges.length > 1">
         Rows per page:
         <mat-select [(ngModel)]="selectedRange" style="padding:0px" (change)="rangeChanged()">
             <mat-option *ngFor="let range of ranges" [value]="range">

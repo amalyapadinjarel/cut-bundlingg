@@ -1,0 +1,44 @@
+<smd-datatable [tableId]="_shared.appKey + '.docSeqList'" [dataUrl]="_shared.apiBase" dataHeader="docSequence"
+    (onRowSelected)="rowSelected($event)" [primaryListing]="true" (dataChange)="_onDataChange($event)"
+    [selectedPage]="_shared.selectedPage" (pageChange)="pageChange($event)">
+    <smd-datatable-column title="Sequence Name" field="docSeqName" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Application" field="appName" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'40px'}">
+    </smd-datatable-column>
+    <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Author" field="authorCode" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'40px'}">
+    </smd-datatable-column>
+    <smd-datatable-column title="Next Number" field="nextNum" sortable="true" [filterable]="true" [numeric]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Increment By" field="incrementBy" sortable="true" [filterable]="true" [numeric]="true">
+        <ng-template let-model="data">
+            <div *ngIf="model.useCustPgm=='Y'"> {{model.incrementBy}}</div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
+        [colStyle]="{'width':'35px','text-align':'center'}">
+        <ng-template let-model="data">
+            <mat-icon *ngIf="model.active =='Y'"
+                style="color:green;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Active">
+                check_circle</mat-icon>
+            <mat-icon *ngIf=" model.active =='N'"
+                style="color:red;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Inactive">
+                cancel</mat-icon>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Created On" field="creationDate" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified By" field="lastUpdatedBy" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified On" field="lastUpdatedDate" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+</smd-datatable>

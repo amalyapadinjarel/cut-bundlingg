@@ -1,0 +1,86 @@
+<div class="details">
+    <div>
+        <perfect-scrollbar>
+            <!-- <concurrent-programs-header></concurrent-programs-header> -->
+            <concurrent-programs-card collapsibleComponent style="max-width: 240px;"></concurrent-programs-card>
+        </perfect-scrollbar>
+    </div>
+    <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div class="form-nav">
+                <span class="doc-contributors"> Created by {{_shared.formData.header?.createdBy}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateBy}}
+                    on {{_shared.formData.header?.lastUpdateDateTime}}</span>
+                <form-nav [apiUrl]="'/concurrent-programs/navigation/' + _shared.id" navUrl="/concurrent-programs" [params]="_shared.params"></form-nav>
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Concurrent Program">
+                <perfect-scrollbar>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Parameters</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getParametersEditable()">
+                                <!-- <button mat-button matTooltip="delete line">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('parametersDetails')">delete</mat-icon>
+                                </button> -->
+                                <button mat-button matTooltip="add line">
+                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('parametersDetails')">add_box</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <concurrent-programs-parameter></concurrent-programs-parameter>
+                    </div>
+                    <div class="group">
+                        <div class="group-header">
+                            <h3>Template</h3>
+                            <span class="flex-filler"></span>
+                            <div style="display:flex" *ngIf="_shared.getTemplatesEditable()">
+                                <!-- <button mat-button matTooltip="delete line">
+                                    <mat-icon class="mat-color-danger" (click)="deleteLine('templatesDetails')">delete</mat-icon>
+                                </button> -->
+                                <button mat-button matTooltip="add line">
+                                    <mat-icon class="mat-color-info" (click)="_shared.addLine('templatesDetails')">add_box</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <concurrent-programs-templates></concurrent-programs-templates>
+                    </div>
+                    <div class="group-flex">
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Style Sheet</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex" *ngIf="_shared.getStyleSheetEditable()">
+                                    <!-- <button mat-button matTooltip="delete line">
+                                        <mat-icon class="mat-color-danger" (click)="deleteLine('styleSheetDetails')">delete</mat-icon>
+                                    </button> -->
+                                    <button mat-button matTooltip="add line" *ngIf="styleSheetCount == 0">
+                                        <mat-icon class="mat-color-info" (click)="_shared.addLine('styleSheetDetails')">add_box</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <concurrent-programs-style-sheet></concurrent-programs-style-sheet>
+                        </div>
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Roles</h3>
+                                <span class="flex-filler"></span>
+                                <div style="display:flex" *ngIf="_shared.getRolesEditable()">
+                                    <!-- <button mat-button matTooltip="delete line">
+                                        <mat-icon class="mat-color-danger" (click)="deleteLine('rolesDetails')">delete</mat-icon>
+                                    </button> -->
+                                    <button mat-button matTooltip="add line">
+                                        <mat-icon class="mat-color-info" (click)="_shared.addLine('rolesDetails')">add_box</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <concurrent-programs-roles></concurrent-programs-roles>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

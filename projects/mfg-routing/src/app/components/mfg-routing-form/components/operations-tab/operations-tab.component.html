@@ -1,4 +1,3 @@
-<perfect-scrollbar>
     <div class="group">
         <div class="group-header">
             <h3>Operations</h3>
@@ -7,8 +6,6 @@
         <ng-container *ngTemplateOutlet="operationDataTable"></ng-container>
 
     </div>
-</perfect-scrollbar>
-
 <ng-template #actionButtons>
     <span class="flex-filler"></span>
     <div style="display:flex" *ngIf="_shared.editMode">
@@ -37,7 +34,7 @@
 
 
 <ng-template #operationDataTable>
-    <smd-datatable [tableId]="_shared.appKey + '.operation-list'" [paginated]="true"
+    <smd-datatable [tableId]="_shared.appKey + '.operation-list'" scrollType="scroll" defaultRange="10"
                    [loading]="false"
                    class="tnz-input-table" [filterEnabled]="!_shared.getOperationDetailsEditable()"
                    [sortEnabled]="!_shared.getOperationDetailsEditable()"

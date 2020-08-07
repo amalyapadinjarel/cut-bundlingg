@@ -1,0 +1,110 @@
+<div class="group">
+    <h4>Add New Location</h4>
+    <ul>
+        <li>
+            <label>Location</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getlocationPath('locationCode')" 
+                validators="required,length:60"   [isEdit]="true"
+                > 
+              </tnz-input>
+            </div>
+        </li>
+      <li>
+            <label>Address Line 1</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine1')" 
+                   [isEdit]="true" validators="required" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Address Line 2</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine2')" 
+                   [isEdit]="true" 
+                   > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Address Line 3</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine3')" 
+                   [isEdit]="true" 
+                  > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Country</label>
+            <div class="val">
+                <tnz-input  type="lov" [path]="_shared.getlocationPath('countryName')" 
+                [isEdit]="true" 
+                [lovConfig]="countryLov" displayKey="label" validators="required"> 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>State</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('state')" 
+                [isEdit]="true"
+                  > 
+                </tnz-input> 
+            </div>
+        </li>
+   
+    <li>
+        <label>City</label>
+        <div class="val">
+            <tnz-input  type="text" [path]="_shared.getlocationPath('city')" 
+               [isEdit]="true" 
+              > 
+            </tnz-input> 
+        </div>
+    </li>
+   
+        <li>
+            <label>Zip Code</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('postalCode')" [isEdit]="true"  >
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Email</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getlocationPath('email')" 
+                   [isEdit]="true"  (valueChanged)="emailValidation($event)" 
+                  > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Website</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getlocationPath('websiteUrl')" 
+                   [isEdit]="true" 
+                 > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Telephone</label>
+            <div class="val">
+                <tnz-input  type="number" [path]="_shared.getlocationPath('telephoneNo1')" 
+                   [isEdit]="true" validators="required" (valueChanged)="PhoneNumberValidation($event)" 
+                 > 
+                </tnz-input> 
+            </div>
+        </li>
+      
+        
+    </ul>
+</div>
+<mat-dialog-actions>
+    <span class="flex-filler"></span>
+    <button mat-raised-button color="accent" (click)="save()">Save</button>
+    <button mat-button mat-dialog-close color="accent">Cancel</button>
+</mat-dialog-actions>

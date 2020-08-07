@@ -1,0 +1,202 @@
+<div class="group">
+    <h4>General</h4>
+    <ul style="margin-left: -15px;padding-left: 5px;">
+        <li>
+            <label>Program</label>
+            <div class="val">
+                <tnz-input [path]="_shared.getHeaderAttrPath('pgmName')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('pgmName')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Short Code</label>
+            <div class="val">
+                <div class="break-word text-uppercase" *ngIf="!getIfEditable('displayActive')">{{_shared.getHeaderAttributeValue('shortCode')}}</div>
+                <tnz-input class="upper-case" type="text" *ngIf="getIfEditable('displayActive')" [path]="_shared.getHeaderAttrPath('shortCode')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('shortCode')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input> 
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Executables</label>
+            <div class="val">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('exeName')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                    [sharedData]="_shared.formData" [lovConfig]="executableLov" validators="required" [isEdit]="getIfEditable('exeName')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                    </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Application</label>
+            <div class="val">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('application')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                    [sharedData]="_shared.formData" [lovConfig]="applicationLov" validators="required" [isEdit]="getIfEditable('application')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                    </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Data Source</label>
+            <div class="val">
+                <tnz-input  [path]="_shared.getHeaderAttrPath('dataSource')" [primaryKey]="_shared.primaryKey"
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('dataSource')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Division</label>
+            <div class="val">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('divisionShortCode')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                    [sharedData]="_shared.formData" [lovConfig]="divisionLov" [isEdit]="getIfEditable('divisionShortCode')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                    </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Facility</label>
+            <div class="val">
+                    <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('facilityShortCode')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                    [sharedData]="_shared.formData" [lovConfig]="facilityLov"  [isEdit]="getIfEditable('facilityShortCode')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                    </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Output File Name</label>
+            <div class="val">
+                <tnz-input  [path]="_shared.getHeaderAttrPath('outputFileName')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('outputFileName')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>File Type</label>
+            <div class="val">
+                <tnz-input  [path]="_shared.getHeaderAttrPath('outputFileType')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData"  [isEdit]="getIfEditable('outputFileType')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Email Template</label>
+            <div class="val">
+                <tnz-input  [path]="_shared.getHeaderAttrPath('emailTempName')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('emailTempName')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Active</label>
+            <div class="val">
+                <span *ngIf="!getIfEditable('active') && _shared.getHeaderAttributeValue('active')">
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('active') =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('active') !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                </span>
+                <tnz-input *ngIf="getIfEditable('active')" type="checkbox" [path]="_shared.getHeaderAttrPath('active')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('active')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Required Parameter</label>
+            <div class="val">
+                <div *ngIf="!getIfEditable('reqdParamCount')" style="margin-left: 8px;">{{_shared.getHeaderAttributeValue('reqdParamCount')}}</div>
+                <tnz-input type="text" *ngIf="getIfEditable('reqdParamCount')" [path]="_shared.getHeaderAttrPath('reqdParamCount')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('reqdParamCount')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Non-concurrent</label>
+            <div class="val">
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('isNonconcurrent')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('isNonconcurrent')" [loading]="_shared.headerLoading || _shared.loading" [checkType]="'1:0'">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Secured</label>
+            <div class="val">
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('isSecured')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('isSecured')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Store on FS</label>
+            <div class="val">
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('storeOpInFs')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('storeOpInFs')" [loading]="_shared.headerLoading || _shared.loading" [checkType]="'1:0'">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Avail in scheduler</label>
+            <div class="val">
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('availInJs')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('availInJs')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Available for Quick Printing</label>
+            <div class="val">
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('quickPrint')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                [isEdit]="getIfEditable('quickPrint')" [loading]="_shared.headerLoading || _shared.loading">
+            </tnz-input>
+            </div>
+        </li>
+        <br>
+        <li>
+            <label>Module</label>
+            <div class="val">
+                <tnz-input  [path]="_shared.getHeaderAttrPath('moduleName')" [primaryKey]="_shared.primaryKey" 
+                    [sharedData]="_shared.formData" [isEdit]="false" displayKey="label"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Form</label>
+            <div class="val">
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('form')" [primaryKey]="_shared.primaryKey" displayKey="label"
+                    [sharedData]="_shared.formData" [lovConfig]="taskFlowLov" [isEdit]="getIfEditable('form')"
+                    [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event,'form')">
+                    </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label>Active</label>
+            <div class="val">
+                <span *ngIf="!getIfEditable('displayActive') && _shared.getHeaderAttributeValue('displayActive')">
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('displayActive') =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('displayActive') =='N'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                </span>
+                <tnz-input *ngIf="getIfEditable('displayActive')" type="checkbox" [path]="_shared.getHeaderAttrPath('displayActive')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('displayActive')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li>
+    
+    </ul>
+</div>
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading" validators="required">
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

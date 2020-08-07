@@ -47,6 +47,9 @@ import { ExpansionPanelComponent, ExpansionPanelTitle, ExpansionPanelContent, Ex
 import { UploadFileComponent } from './component/upload-file/upload-file.component';
 import { SmdModule } from './component/smd/smd.module';
 import { FormNavComponent } from './component/form-nav/form-nav.component';
+import { SchedulerJobStatePipe } from '../../../projects/scheduler/src/app/_services/jobStatePipe';
+import { SchedulerJobStatusPipe } from '../../../projects/scheduler/src/app/_services/jobStatusPipe';
+import { DocStatusComponent } from './component/doc-status/doc-status.component';
 const MATERIAL_MODULE = [
     MatAutocompleteModule
     , MatCheckboxModule
@@ -87,7 +90,13 @@ const COMPONENTS = [
     ExpansionPanelButtons,
     UploadFileComponent,
     TrendzFilePreviewComponent,
-    FormNavComponent
+    FormNavComponent,
+    DocStatusComponent
+];
+
+const PIPES = [
+    SchedulerJobStatePipe,
+    SchedulerJobStatusPipe,
 ];
 
 const IMPORTS = [
@@ -106,6 +115,8 @@ const IMPORTS = [
 ];
 
 
+
+
 @NgModule({
     imports: [
         IMPORTS,
@@ -113,10 +124,11 @@ const IMPORTS = [
         PerfectScrollbarModule,
         CommonComponentsModule
     ],
-    declarations: [COMPONENTS],
+    declarations: [PIPES,COMPONENTS],
     exports: [
         IMPORTS,
         COMPONENTS,
+        PIPES,
         MATERIAL_MODULE,
     ],
     entryComponents: [

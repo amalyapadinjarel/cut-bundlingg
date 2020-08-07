@@ -1,0 +1,176 @@
+<h3>Import Data</h3>
+<mat-dialog-content>
+    <perfect-scrollbar>
+        <div class="group">
+            <div class="group-header">
+                <h3>New Concurrent Programs</h3>
+                <span class="flex-filler"></span>
+            </div>
+            <div>
+                    <smd-datatable  #newLines tableId="concurrentProgramsImportNewList" (onRowSelected)="rowSelected($event)" (onAllRowsChecked)="rowSelected($event)" [primaryListing]="false" 
+                    [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" scrollType="page">
+                        <smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.division}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.facility}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Program" field="pgmName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.pgmName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="File Type" field="outputFileType" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.outputFileType}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Required Parameter" field="reqdParamCount" sortable="true" [filterable]="true" [numeric]="true">
+                            <ng-template let-model="data">
+                                {{model.reqdParamCount}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.shortCode}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.description}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Executable" field="exeName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.exeName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Application" field="application" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.application}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Output File Name" field="outputFileName" sortable="true" [filterable]="true" >
+                            <ng-template let-model="data">
+                                {{model.outputFileName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Store on FS" field="storeOpInFs" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}">
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.storeOpInFs =='1'">done</mat-icon>
+                                <mat-icon *ngIf="model.storeOpInFs =='0'">close</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Non-concurrent" field="isNonconcurrent" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}"> 
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.isNonconcurrent =='1'">done</mat-icon>
+                                <mat-icon *ngIf="model.isNonconcurrent =='0'">close</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" >
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.active =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                                <mat-icon *ngIf="model.active !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Available for quick printing" field="quickPrint" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.quickPrint}}
+                            </ng-template>
+                        </smd-datatable-column>
+                    </smd-datatable>
+            </div>
+        </div>
+        <div class="group">
+            <div class="group-header">
+                <h3>Duplicate Record</h3>
+                <span class="flex-filler"></span>
+            </div>
+            <smd-datatable #duplicates tableId="concurrentProgramsImportDuplicate" [primaryListing]="false" 
+                    [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" scrollType="page" [showCheckBox]="false">
+                        <smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.division}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.facility}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Program" field="pgmName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.pgmName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="File Type" field="outputFileType" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.outputFileType}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Required Parameter" field="reqdParamCount" sortable="true" [filterable]="true" [numeric]="true">
+                            <ng-template let-model="data">
+                                {{model.reqdParamCount}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.shortCode}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.description}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Executable" field="exeName" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.exeName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Application" field="application" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.application}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Output File Name" field="outputFileName" sortable="true" [filterable]="true" >
+                            <ng-template let-model="data">
+                                {{model.outputFileName}}
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Store on FS" field="storeOpInFs" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}">
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.storeOpInFs =='1'">done</mat-icon>
+                                <mat-icon *ngIf="model.storeOpInFs =='0'">close</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Non-concurrent" field="isNonconcurrent" sortable="true" [filterable]="true" [colStyle]="{'text-align':'center'}"> 
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.isNonconcurrent =='1'">done</mat-icon>
+                                <mat-icon *ngIf="model.isNonconcurrent =='0'">close</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" >
+                            <ng-template let-model="data">
+                                <mat-icon *ngIf="model.active =='Y'" class="active-icon" matTooltip="Active">check_circle</mat-icon>
+                                <mat-icon *ngIf="model.active !='Y'" class="inactive-icon" matTooltip="Inactive">cancel</mat-icon>
+                            </ng-template>
+                        </smd-datatable-column>
+                        <smd-datatable-column title="Available for quick printing" field="quickPrint" sortable="true" [filterable]="true">
+                            <ng-template let-model="data">
+                                {{model.quickPrint}}
+                            </ng-template>
+                        </smd-datatable-column>
+                    </smd-datatable>
+        </div>
+    </perfect-scrollbar>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <span class="flex-filler"></span>
+  <button mat-raised-button color="accent" (click)="import()" [disabled]="selectedPrograms.length == 0">Import</button>
+  <button mat-button color="accent" (click)="close()">Cancel </button>
+</mat-dialog-actions>

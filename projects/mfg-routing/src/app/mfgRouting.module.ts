@@ -26,6 +26,7 @@ import {MfgRoutingService} from './services/mfg-routing.service';
 import { OperationsTabComponent } from './components/mfg-routing-form/components/operations-tab/operations-tab.component';
 import { NewOperationGroupComponent } from './components/mfg-routing-form/components/new-operation-group/new-operation-group.component';
 import {SharedModule} from '../../../../src/app/shared/shared.module';
+import { CopyRoutingComponent } from './components/copy-routing/copy-routing.component';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -49,7 +50,8 @@ const PROVIDERS = [MfgRoutingService, MfgRoutingSharedService, LocalCacheService
     DocumentDetailsComponent,
     GeneralDetailsComponent,
     OperationsTabComponent,
-    NewOperationGroupComponent
+    NewOperationGroupComponent,
+    CopyRoutingComponent
   ],
     imports: [
         MfgRoutingRoutingModule,
@@ -64,6 +66,7 @@ const PROVIDERS = [MfgRoutingService, MfgRoutingSharedService, LocalCacheService
         SharedModule
     ],
   providers: [PROVIDERS],
+  entryComponents: [CopyRoutingComponent],
   bootstrap: [MfgRoutingComponent]
 })
 export class MfgRoutingModule {

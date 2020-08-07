@@ -1,0 +1,22 @@
+<div class="app-content-header">
+	<div class="app-title" routerLink="./list">
+		<span class="primary">Facility</span>
+	</div>
+	<div class="app-menus">
+	<div class="group"  *ngIf="!_shared.editMode">
+			<a (click)="newFacility()">Create</a>
+			<a *ngIf=" _shared.id " (click)="editFacility()">Edit</a> 
+		</div>
+		
+		<div class="group" *ngIf="_shared.editMode">
+			<a (click)="save()">Save</a>
+			<a (click)="save(true)">Save & exit</a>
+			<a (click)="cancelEdit()">Cancel</a>
+		</div> 
+	</div>
+</div>
+<div class="app-content-container">
+	<div class="app-content-wrapper">
+		<router-outlet></router-outlet>
+	</div>
+</div>

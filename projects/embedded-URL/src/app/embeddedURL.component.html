@@ -1,0 +1,29 @@
+<div class="app-content-header">
+
+    <div class="app-title" routerLink="./list">
+        <span class="primary">Embedded</span> URL
+    </div>
+    <div class="app-menus">
+        <div class="group">
+  
+            <ng-container *ngIf="!_shared.editMode">
+                <a (click)="newEmbeddedURL()">Create</a>
+                <a *ngIf="_shared.id!=0" (click)="editEmbeddedURL()">Edit</a>
+                <!-- <a *ngIf="_shared.id" (click)="copyRoles()">Copy</a> -->
+              </ng-container>
+  
+            <ng-container class="group" *ngIf="_shared.editMode">
+                <a (click)="save()">Save</a>
+                <a (click)="save(true)">Save & Exit</a>
+                <a (click)="cancelEdit()">Cancel</a>
+            </ng-container>
+        </div> 
+      
+    </div>
+  </div>
+  
+  <div class="app-content-container">
+    <div class="app-content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+  </div>

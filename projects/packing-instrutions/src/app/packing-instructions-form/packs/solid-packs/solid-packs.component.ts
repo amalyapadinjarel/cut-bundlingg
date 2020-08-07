@@ -8,7 +8,7 @@ import { Input } from '@angular/core';
 import { SmdDataTable, ConfirmPopupComponent } from 'app/shared/component';
 import {JSONUtils} from 'app/shared/utils/json.utility';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { packingMethodLovconfig } from '../../../models/lov-config';
+import { packingMethodLovconfig, facilityLovconfig, workCenterLovConfig } from '../../../models/lov-config';
 import { RepackReasonComponent } from '../repack-reason/repack-reason.component';
 import { PushMessageService } from 'app/shared/websocket/push-message.service';
 
@@ -25,6 +25,7 @@ export class SolidPacksComponent implements OnInit {
   @Input() formData ;any;
   public qntyPerCtn;
   private refreshPackDetails: Subscription;
+  facilityLov = JSON.parse(JSON.stringify(facilityLovconfig));
   packingMethod = JSON.parse(JSON.stringify(packingMethodLovconfig));
   constructor(private _service: PackingInstructionsService,
 		public _shared: PackingInstructionsSharedService,
@@ -45,6 +46,11 @@ export class SolidPacksComponent implements OnInit {
 			if (change){}
         this.refreshDataTable();
 		});
+  }
+
+  workCenterLov(index,field) {
+    let cache = this.inputService.getInputValue(this._shared.getPacksDetailsPath(this.mainIndex,index,'facility'))
+    return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
   }
 
   deleteLine(index,model?){

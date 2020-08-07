@@ -15,3 +15,13 @@ export const semiProductsLovconfig: any = {
         title: 'Code'
     }]
 };
+
+export const DocTypeLovconfig: any = {
+    title: 'Select Facility',
+    url: 'lovs/doc-type/ROUT',
+    dataHeader: 'data',
+    returnKey: 'value',
+    displayKey: 'label',
+    filterAttributes: ['label'],
+    setters: 'openingStatus,openingStatusLabel'
+};

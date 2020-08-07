@@ -1,0 +1,62 @@
+<div class="group" style="box-shadow: unset;"> 
+
+    <ul id=validation >
+        
+    <li>
+            <label>Return Field</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getHeaderAttrPath('returnFieldName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('returnFieldName')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+       
+        <li>
+            <label>Display Field</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getHeaderAttrPath('displayFieldName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('displayFieldName')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li >
+            <label>Selected Fields</label>
+            <div class="val">
+                <tnz-input  [textAreaProperties]="{rows: 10, cols:60}" type="textarea" [path]="_shared.getHeaderAttrPath('selectFieldName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('selectFieldName')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Query Select</label>
+            <div class="val">
+                <tnz-input  [textAreaProperties]="{rows: 10, cols:60}" type="textarea" [path]="_shared.getHeaderAttrPath('querySelect')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('querySelect')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Query Where</label>
+            <div class="val">
+                <tnz-input  [textAreaProperties]="{rows: 10, cols:60}" type="textarea" [path]="_shared.getHeaderAttrPath('queryWhere')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('queryWhere')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Query Order By</label>
+            <div class="val">
+                <tnz-input  [textAreaProperties]="{rows: 10, cols:60}" type="textarea" [path]="_shared.getHeaderAttrPath('queryOrderBy')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                [isEdit]="getIfEditable('queryOrderBy')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        
+    </ul> 
+</div>

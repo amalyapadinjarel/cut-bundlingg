@@ -1,0 +1,246 @@
+<div class="group">
+    <h4>General</h4>
+    <ul>
+        <li>
+            <label id="label">Short Code</label>
+            <div class="val"  >
+                <tnz-input class="text-upper" type="text" [path]="_shared.getHeaderAttrPath('shortCode')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" (valueChanged)="valueChangedFromUI($event)"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('shortCode')"
+                    [loading]="_shared.headerLoading || _shared.loading"
+                    >
+              
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Name</label>
+            <div class="val">
+
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('docName')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    validators="required,length:60" [isEdit]="getIfEditable('docName')"
+                    [loading]="_shared.headerLoading || _shared.loading"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+                </tnz-input>
+
+            </div>
+
+        </li>
+        <br>
+        <li>
+            <label id="label">Base Document</label>
+            <div class="val">
+                <tnz-input type="lov" [lovConfig]="baseDocLov" [path]="_shared.getHeaderAttrPath('docBase')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label " [sharedData]="_shared.formData"
+                    validators="required" [isEdit]="getIfEditable('docBase')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Opening Status</label>
+            <div class="val">
+                <tnz-input type="select" [lovConfig]="statusLov" [path]="_shared.getHeaderAttrPath('openStatus')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    validators="required" [isEdit]="getIfEditable('openStatus')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Active</label>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('active')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('active')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'"
+                    style="color:green;font-size:20px;vertical-align: middle;padding-left: 8px" matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.active =='N'"
+                    style="color:red;font-size:20px;vertical-align: middle;padding-left: 8px" matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+        </li>
+    </ul>
+
+</div>
+<div class="group">
+    <h4>Numbering Rule</h4>
+    <ul>
+        <li>
+            <label id="label">Number Controlled</label>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('numControlled')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" (valueChanged)="valueChangedFromUI($event)"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('numControlled')"
+                    [loading]="_shared.headerLoading || _shared.loading">
+
+                </tnz-input>
+            </div>
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" _shared.formData.header?.numControlled =='Y'"
+                    style="color:green;font-size:20px;vertical-align: middle;padding-left: 8px" matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.numControlled =='N'"
+                    style="color:red;font-size:20px;vertical-align: middle;padding-left: 8px" matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+        </li>
+        <li>
+            <label id="label">Doc Sequence</label>
+            <div class="val" *ngIf="docSeqFlag || _shared.formData.header?.numControlled =='Y'">
+                <tnz-input type="lov" [lovConfig]="docSeqLov" [path]="_shared.getHeaderAttrPath('docSeq')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    validators="required" [isEdit]="getIfEditable('docSeq')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="group">
+    <h4>Rounding Method</h4>
+    <ul>
+        <li>
+            <label id="label">Allow Override</label>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('override')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label " [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('override')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" _shared.formData.header?.override =='Y'"
+                    style="color:green;font-size:20px;vertical-align: middle;padding-left: 10px" matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.override =='N'"
+                    style="color:red;font-size:20px;vertical-align: middle;padding-left: 10px" matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+        </li>
+        <li>
+            <label id="label">Rounding Method</label>
+            <div class="val">
+                <tnz-input type="select" [lovConfig]="roundMethodLov" [path]="_shared.getHeaderAttrPath('roundMethod')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('roundMethod')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="group">
+    <h4>Currency Conversion</h4>
+    <ul>
+        <li>
+            <label id="label">Allow Override</label>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('allowOverride')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label " [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('allowOverride')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" _shared.formData.header?.allowOverride =='Y'"
+                    style="color:green;font-size:20px;vertical-align: middle;padding-left: 10px" matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.allowOverride =='N'"
+                    style="color:red;font-size:20px;vertical-align: middle;padding-left: 10px" matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+        </li>
+        <li>
+            <label id="label">Conversion Type</label>
+            <div class="val">
+                <!-- <tnz-input  type="select" [lovConfig]="currConvLov"  [path]="_shared.getHeaderAttrPath('currConvType')" [primaryKey]="_shared.primaryKey" 
+            [sharedData]="_shared.formData"  [isEdit]="getIfEditable('currConvType')" [loading]="_shared.headerLoading || _shared.loading" stretch = "true">
+          
+        </tnz-input> -->
+                <tnz-input type="lov" [lovConfig]="currConvLov" [path]="_shared.getHeaderAttrPath('currConvType')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" (valueChanged)='valueChangedFromUI($event)'
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('roundMethod')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
+<div class="group">
+    <h4>Transaction Date Tolerance</h4>
+    <ul>
+        <li>
+            <label id="label">Back Entry</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('backEntry')" [primaryKey]="_shared.primaryKey"
+                    validators="required" displayKey="label" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('backEntry')" (valueChanged)="ValidateEntryNum($event)"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Forward Entry</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('forwdEntry')" validators="required"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    (valueChanged)="ValidateEntryNum($event)" [isEdit]="getIfEditable('forwdEntry')"
+                    [loading]="_shared.headerLoading || _shared.loading" stretch="true">
+
+                </tnz-input>
+            </div>
+
+        </li>
+    </ul>
+</div>
+<div class="group">
+    <h4>Work Flow</h4>
+    <ul>
+        <li>
+            <label id="label"> Name </label>
+            <div class="val">
+                <tnz-input type="lov" [lovConfig]="workflowLov" [path]="_shared.getHeaderAttrPath('workflow')"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('workflow')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" validators="length:255"
+                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading"
+                    stretch="true">
+
+                </tnz-input>
+            </div>
+        </li>
+    </ul>
+</div>

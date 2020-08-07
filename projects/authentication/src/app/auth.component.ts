@@ -118,7 +118,7 @@ export class AuthComponent {
 						this.authForm.controls.password.setValue("");
 						this.resetForm = false;
 						this.loginForm = true;
-						this.alertUtils.showAlerts("Your password has been successfully changed.Login with  new password ", true);
+						this.alertUtils.showAlerts("Your password has been successfully changed. Login with the new password.", true);
 					}
 					else {
 						this.alertUtils.showAlerts(data.message, true);
@@ -167,8 +167,8 @@ export class AuthComponent {
 		this.blnValidPassword = event;
 	}
 
-	navigateAfterLogin(){
-		if (this.userService.redirectUrl && this.navService.isValidUrl(this.userService.redirectUrl) && this.userService.redirectUrl !== '/login' && this.userService.redirectUrl !== '/not-found') {
+	navigateAfterLogin(){ 
+		if (this.userService.redirectUrl && this.userService.redirectUrl !== '/login' && this.userService.redirectUrl !== '/not-found' && this.userService.redirectUrl !== '/insufficient-privilage') {
 			this.alertUtils.allowAlerts();
 			this.router.navigateByUrl(this.userService.redirectUrl).then(() => {
 				this.eventService.isLoadingPage.next(false);

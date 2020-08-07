@@ -1,0 +1,29 @@
+<div class="app-content-header">
+	<div class="app-title" routerLink="./list">
+		<span class="primary">Executable </span>
+	</div>
+	<div class="app-menus">
+		<div class="group" *ngIf="!_shared.editMode">
+			<a (click)="addNewLine()">Add</a>
+			<a (click)="editOpGrp()">Edit</a>
+			<a (click)="exportData(true)">Export</a>
+			<a (click)="exportData(false)">Export All</a>
+			<a (click)="import($event)" #fileInput type="file">Import</a>
+		</div>
+		<div class="group" *ngIf="_shared.editMode">
+			<a (click)="addNewLine()">Add</a>
+			<a (click)="saveAction()">Save</a>
+			<a (click)="cancelAction()">Cancel</a>
+		</div>
+	</div>
+</div>
+<div class="app-content-container">
+	<div class="app-content-wrapper">
+		<router-outlet></router-outlet>
+	</div>
+</div>
+
+
+<div style="display: none;">
+		<input class="inputfile" id='import' #fileInput type="file" (change)="fileChanged($event)" />
+</div>

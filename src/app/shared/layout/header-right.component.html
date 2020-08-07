@@ -1,6 +1,10 @@
 
 <button mat-button routerLink="/scheduler/general" (click)="closeGadget()" matTooltip="scheduler" class="sm-hidden">
-  <mat-icon class="mat-icon-medium"> timelapse </mat-icon>
+  <mat-icon class="mat-icon-medium"> scheduler </mat-icon>
+</button>
+
+<button mat-button (click)="showDownloads()" #downloadsBtn matTooltip="downloads">
+  <mat-icon> file_download </mat-icon>
 </button>
 
 <button mat-button (click)="showUserSettings()" #settingsBtn matTooltip="settings">

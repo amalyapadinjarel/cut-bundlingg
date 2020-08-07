@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RoutingSharedService } from '../../_service/routing-shared.service';
-import { DocTypeLovconfig } from '../../../../../CutRegister/src/app/models/lov-config';
 import { DateUtilities } from 'app/shared/utils';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
+import { DocTypeLovconfig } from '../../models/lov-config';
 
 @Component({
   selector: 'app-routing-header',

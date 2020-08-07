@@ -8,8 +8,16 @@ export class JwtService {
     return window.localStorage['jwtToken'];
   }
 
+  getTrendzBiToken(): String {
+    return window.localStorage['trendzBIAuthentication'];
+  }
+
   saveToken(token: String) {
     window.localStorage['jwtToken'] = token;
+  }
+
+  saveTrendzBiToken(token: String) {
+    window.localStorage['trendzBIAuthentication'] = token;
   }
 
   saveResetToken(token: String) {

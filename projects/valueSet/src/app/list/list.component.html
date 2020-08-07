@@ -1,0 +1,79 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable  [tableId]="_shared.appKey + '.valueSetlist'" [dataUrl]="_shared.apiBase" dataHeader="valueSet" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" >
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'10px'}">
+                 <ng-template let-model="data">
+                    <mat-icon  *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon> 
+                    <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                 </ng-template> 
+            </smd-datatable-column> 
+            
+            <smd-datatable-column title="Value Set Name" field="setName" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.setName}}
+                </ng-template>
+           </smd-datatable-column>
+        <smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true" [colStyle]="{'width':'30px'}">
+                <ng-template let-model="data">
+                    {{model.division}}
+                </ng-template>
+            </smd-datatable-column> 
+            <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true"> 
+                <ng-template let-model="data"> 
+                    {{model.shortCode}}
+                 </ng-template> 
+                </smd-datatable-column>
+            <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true" [colStyle]="{'width':'40px'}">
+                <ng-template let-model="data">
+                    {{model.facility}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Data Type" field="dataType" sortable="true" [filterable]="true" [colStyle]="{'width':'60px'}">
+                <ng-template let-model="data">
+                    {{model.dataType}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="List Type" field="listTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.listTypes}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Author" field="setAuthors" sortable="true" [filterable]="true" [colStyle]="{'width':'60px'}">
+                <ng-template let-model="data">
+                    {{model.setAuthors}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Validation Type" field="validationTypes" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.validationTypes}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    {{model.description}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.createdBy}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Created On" field="creationDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.creationDate}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified By" field="lastUpdatedBy" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.lastUpdatedBy}}
+                </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Modified On" field="lastUpdateDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data">
+                    {{model.lastUpdateDate}}
+                </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div> 

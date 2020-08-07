@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 import { EventService } from "app/shared/services";
 import { Program } from "../_models";
@@ -18,6 +18,7 @@ export class SchedulerService {
     programs: Program[] = [];
     frequentPrograms: Program[] = [];
     programsLoaded = false;
+    onRefresh: Subject<any> = new Subject<any>();
 
     onLogin: Subscription;
 

@@ -74,6 +74,7 @@ export class PdmCostingFormComponent {
 		this._shared.editMode = false;
 		this._shared.id = 0;
 		this._shared.setFormData({});
+		this._inputService.resetInputService(this._shared.appKey);		
 	}
 
 	setCosting() {
@@ -92,7 +93,7 @@ export class PdmCostingFormComponent {
 			}
 		}
 		this._shared.setFormData({});
-		this._inputService.resetInputService(this._shared.appKey);
+		// this._inputService.resetInputService(this._shared.appKey);
 	}
 
 	deleteLine(key) {

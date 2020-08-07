@@ -28,6 +28,7 @@ export class AuthPopUpComponent implements OnInit {
     setTimeout(() => {
       clearInterval(counter);
       this.eventService.showGadget.next(false);
+      this.eventService.onLogout.next(true);
       this.jwtService.destroyToken();
       this.userService.currentUserSubject.next(new User());
       this.userService.isAuthenticatedSubject.next(false);

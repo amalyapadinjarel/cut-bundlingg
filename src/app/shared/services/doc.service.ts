@@ -7,7 +7,8 @@ import { ApiService } from 'app/shared/services/api.service';
 
 @Injectable()
 export class DocumentService {
-
+    statusData;
+    statusLoading = false;
     constructor(
         private apiService: ApiService
     ) { }
@@ -109,13 +110,52 @@ export class DocumentService {
     checkRevisionPermission(docStatus, docTypeId) {
         return new Promise((resolve, reject) => {
             this.checkRevisionPrivilege(docStatus, docTypeId)
-            .subscribe( data => {
-                if (data.documentRevisionKey){
-                    resolve()
+                .subscribe(data => {
+                    if (data.documentRevisionKey) {
+                        resolve()
+                    } else {
+                        reject("You are not given privilege to revise this document in this status.")
+                    }
+                })
+        });
+    }
+
+    getAllStatusData() {
+        return new Promise(async (resolve, reject) => {
+            if (this.statusData) {
+                resolve(this.statusData)
+            } else {
+                if (!this.statusLoading) {
+                    this.statusLoading = true;
+                    this.apiService.get('/lovs/lookup?lookupType=TRENDZ_DOC_STATUS').subscribe(
+                        res => {
+                            this.statusData = res.data
+                                .map(line => {
+                                    return {
+                                        label: line.label,
+                                        value: line.value,
+                                        color: line.value1
+                                    }
+                                });
+                            this.statusLoading = false;
+                            resolve(this.statusData);
+                        }, err => {
+                            reject()
+                        });
                 } else {
-                    reject("You are not given privilege to revise this document in this status.")
+                    while (this.statusLoading) {
+                        await this.wait(500);
+                    }
+                    resolve(this.statusData)
                 }
-            })
+
+            }
+        });
+    }
+
+    wait(timeout) {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
         });
     }
 }

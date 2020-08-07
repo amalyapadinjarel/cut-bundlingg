@@ -20,107 +20,124 @@
             </button>
         </div>
     </div>
-    <div style="display: flex;">
-        <span class="flex-filler"></span>
-        <span style="display: flex; margin-bottom: 2px;">
-            <span style="display: flex; margin-left: 10px; margin-bottom: 8px">
-                <label class="label-class">Pack Qty </label>
-                <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
-                    <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.packQty}}</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'packQty')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable() &&  (!_shared.isCartonGenerated || formData.activeCarton == 0)"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'packQty')" [disable]="_shared.isCartonGenerated && formData.activeCarton > 0"
-                        [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.activeCarton > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
-                </div>
-            </span>
-        </span>
-        <span style="display: flex; margin-bottom: 2px;">
-            <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
-                <label class="label-class">Pre Pack </label>
-                <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
-                    <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.prePack}}</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'prePack')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable() &&  (!_shared.isCartonGenerated || formData.activeCarton == 0)"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'prePack')" [disable]="_shared.isCartonGenerated && formData.activeCarton > 0"
-                        [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.activeCarton > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
-                </div>
-            </span>
-        </span>
-        <span style="display: flex; margin-bottom: 2px;">
-            <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
-                <label class="label-class">Packing Method </label>
-                <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
-                    <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.packingMethod?.label}}</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="packingMethod" [path]="_shared.getRatioHeaderFromKey(mainIndex,'packingMethod')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                        [sharedData]="_shared.formData['packsDetails'].grpKey" [isEdit]="_shared.getPacksDetailsEditable()  && (!_shared.isCartonGenerated || formData.packedOrOnholdCount == 0)"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'packingMethod')" [disable]="_shared.isCartonGenerated && formData.packedOrOnholdCount > 0"
-                        [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.packedOrOnholdCount > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
-                </div>
-            </span>
-        </span>
-    </div>
-    <mat-dialog-content>
-    
-        <table [ngStyle]="{'width': sizeArray.length > 7 ? '100%' : ''}">
-            <tr class="ratio-tr">
-                <th style = "background: linear-gradient(
-                    to top right,
-                    #ccc7d3 calc(50% - 1px),
-                    #000a,
-                    #ccc7d3 calc(49% + 1px)
-                ); width: 28vw;" class="ratio-th">
-                    <span class="gradient-bottom">Color/Inseam</span>
-                    <span class="gradient-top">Size</span>
-                </th>
-                <th class="ratio-th abc" *ngFor="let size of sizeArray"> 
-                    {{size}}
-                </th>
-            </tr>
-            <tr *ngFor="let ratio of formData.color; let i = index" class="ratio-tr">
-                <td *ngIf="ratio.name != 'Color'" style="padding-left: 5px;" class="abc" >
-                    {{ratio.name}}
-                </td>
-                <td *ngFor="let s of ratio.size" style="text-align: center;" >
-                    {{s.value ? s.value : s == 'Total Units' ? ratio.totalUnit : ''}}
-                </td>
-            </tr>
-        </table>
-    </mat-dialog-content>
-    <div style="display: flex;">
-        <span style="display: flex;">
-            <label class="label-class">No. of CTN:  {{formData.noOfCartons}}</label>
-            <!-- <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
-                <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.noOfCartons}}</span>
-                <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'noOfCartons')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                    [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable() && !_shared.isCartonGenerated"
-                    [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'noOfCartons')" [disable]="_shared.isCartonGenerated"
-                    [ngStyle]="{'pointer-events': _shared.isCartonGenerated ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
-            </div> -->
-        </span>
-        <span class="flex-filler"></span>
-        <span style="display: flex; margin-bottom: 2px;">
-            <span style="display: flex; margin-left: 10px;" *ngIf="(short && short != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
-                <label class="label-class">Short</label>
-                <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'">
-                    <span style="padding: 0px 4px; color: red;" *ngIf="!_shared.getPacksDetailsEditable() && (short && short != '')">-{{short}} Pcs</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()"  [path]="_shared.getRatioHeaderFromKey(mainIndex,'short')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable() && checkShortAndExcessEditable('excess')"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true" (valueChanged)="valuechanged($event,'short')"
-                        [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('excess') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-red"></tnz-input>
-                </div>
-            </span>
-            <span style="display: flex; margin-left: 20px;" *ngIf="(excess && excess != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
-                <label class="label-class">Excess</label>
-                <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'" >
-                    <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}}Pcs</span>
-                    <tnz-input *ngIf="_shared.getPacksDetailsEditable()" [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
-                        [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable() && checkShortAndExcessEditable('short')"
-                        [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="true" (valueChanged)="valuechanged($event,'excess')"
-                        [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('short') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-green"></tnz-input>
-                </div>
-            </span>
-        </span>
+    <div style="display: grid">
 
+        <div style="display: flex;">
+            <span class="flex-filler"></span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 10px; margin-bottom: 8px">
+                    <label class="label-class">Pack Qty </label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
+                        <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.packQty}}</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'packQty')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable() &&  (!_shared.isCartonGenerated || formData.activeCarton == 0)"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'packQty')" [disable]="_shared.isCartonGenerated && formData.activeCarton > 0"
+                            [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.activeCarton > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
+                    </div>
+                </span>
+            </span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
+                    <label class="label-class">Pre Pack </label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
+                        <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.prePack}}</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="number" [path]="_shared.getRatioHeaderFromKey(mainIndex,'prePack')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:1" [isEdit]="_shared.getPacksDetailsEditable() &&  (!_shared.isCartonGenerated || formData.activeCarton == 0)"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'prePack')" [disable]="_shared.isCartonGenerated && formData.activeCarton > 0"
+                            [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.activeCarton > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
+                    </div>
+                </span>
+            </span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
+                    <label class="label-class">Packing Method </label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
+                        <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.packingMethod?.label}}</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="packingMethod" [path]="_shared.getRatioHeaderFromKey(mainIndex,'packingMethod')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" [isEdit]="_shared.getPacksDetailsEditable()  && (!_shared.isCartonGenerated || formData.packedOrOnholdCount == 0)"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'packingMethod')" [disable]="_shared.isCartonGenerated && formData.packedOrOnholdCount > 0"
+                            [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.packedOrOnholdCount > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
+                    </div>
+                </span>
+            </span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
+                    <label class="label-class">Facility </label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
+                        <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.facility?.label}}</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="facilityLov" [path]="_shared.getRatioHeaderFromKey(mainIndex,'facility')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" [isEdit]="_shared.getPacksDetailsEditable()  && (!_shared.isCartonGenerated || formData.packedOrOnholdCount == 0)"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'facility')" [disable]="_shared.isCartonGenerated && formData.packedOrOnholdCount > 0"
+                            [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.packedOrOnholdCount > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
+                    </div>
+                </span>
+            </span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 20px; margin-bottom: 8px">
+                    <label class="label-class">Work Center </label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box box' : 'data-box-edit'">
+                        <span class="data-value" *ngIf="!_shared.getPacksDetailsEditable()" >{{formData.workCenter?.label}}</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" type="lov" [lovConfig]="workCenterLov(mainIndex,'facility')" [path]="_shared.getRatioHeaderFromKey(mainIndex,'workCenter')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" [isEdit]="_shared.getPacksDetailsEditable()  && (!_shared.isCartonGenerated || formData.packedOrOnholdCount == 0)"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" (valueChanged)="valuechanged($event,'workCenter')" [disable]="_shared.isCartonGenerated && formData.packedOrOnholdCount > 0"
+                            [ngStyle]="{'pointer-events': _shared.isCartonGenerated && formData.packedOrOnholdCount > 0 ? 'none' : 'auto' }" class="tnz-input-center-align"></tnz-input>
+                    </div>
+                </span>
+            </span>
+        </div>        
+            <table [ngStyle]="{'width': sizeArray.length > 6 ? '100%' : ''}">
+                <tr class="ratio-tr">
+                    <th style = "background: linear-gradient(
+                        to top right,
+                        #ccc7d3 calc(50% - 1px),
+                        #000a,
+                        #ccc7d3 calc(49% + 1px)
+                    ); width: 25vw;" class="ratio-th">
+                        <span class="gradient-bottom">Color/Inseam</span>
+                        <span class="gradient-top">Size</span>
+                    </th>
+                    <th class="ratio-th abc" *ngFor="let size of sizeArray"> 
+                        {{size}}
+                    </th>
+                </tr>
+                <tr *ngFor="let ratio of formData.color; let i = index" class="ratio-tr">
+                    <td *ngIf="ratio.name != 'Color'" style="padding-left: 5px;" class="abc" >
+                        {{ratio.name}}
+                    </td>
+                    <td *ngFor="let s of ratio.size" style="text-align: center;" >
+                        {{s.value ? s.value : s == 'Total Units' ? ratio.totalUnit : ''}}
+                    </td>
+                </tr>
+            </table>
+        <div style="display: flex;">
+            <span style="display: flex;">
+                <label class="label-class">No. of CTN:  {{formData.noOfCartons}}</label>
+            </span>
+            <span class="flex-filler"></span>
+            <span style="display: flex; margin-bottom: 2px;">
+                <span style="display: flex; margin-left: 10px;" *ngIf="(short && short != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
+                    <label class="label-class">Short</label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'">
+                        <span style="padding: 0px 4px; color: red;" *ngIf="!_shared.getPacksDetailsEditable() && (short && short != '')">-{{short}} Pcs</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()"  [path]="_shared.getRatioHeaderFromKey(mainIndex,'short')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable()"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="!checkShortAndExcessEditable('excess')" (valueChanged)="valuechanged($event,'short')"
+                            [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('excess') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-red"></tnz-input>
+                    </div>
+                </span>
+                <span style="display: flex; margin-left: 20px;" *ngIf="(excess && excess != '') || (_shared.isCartonGenerated && formData.activeCarton > 0)">
+                    <label class="label-class">Excess</label>
+                    <div [ngClass]="(!_shared.getPacksDetailsEditable()) ? 'data-box-bottom box' : 'data-box-edit-bottom'" >
+                        <span style="padding: 0px 4px; color: green;" *ngIf="!_shared.getPacksDetailsEditable() && (excess && excess != '')">+{{excess}}Pcs</span>
+                        <tnz-input *ngIf="_shared.getPacksDetailsEditable()" [path]="_shared.getRatioHeaderFromKey(mainIndex,'excess')" [primaryKey]="_shared.packsDetailsPrimaryKey" 
+                            [sharedData]="_shared.formData['packsDetails'].grpKey" validators="min:0" [isEdit]="_shared.getPacksDetailsEditable()"
+                            [loading]="_shared.packsDetailsLoading || _shared.loading" [disable]="!checkShortAndExcessEditable('short')" (valueChanged)="valuechanged($event,'excess')"
+                            [ngStyle]="{'pointer-events': !checkShortAndExcessEditable('short') ? 'none' : 'auto' }" class="tnz-input-center-align tnz-input-green"></tnz-input>
+                    </div>
+                </span>
+            </span>
+    
+        </div>
     </div>
     <div>
         <span>

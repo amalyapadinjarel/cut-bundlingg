@@ -1,0 +1,52 @@
+<smd-datatable [tableId]="_shared.appKey + '.seqlinelist'" [paginated]="!_shared.getLineDetailEditable()" [loading]="_shared.SeqLineDetailLoading"
+class="tnz-input-table" [filterEnabled]="!_shared.getLineDetailEditable()" [sortEnabled]="!_shared.getLineDetailEditable()"
+(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
+[showCheckBox]="_shared.getLineDetailEditable()&& (this._shared.formData.header?.resetYear =='Y'||this._shared.resetyearFlag)">
+
+<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode && (this._shared.formData.header?.resetYear =='Y'||this._shared.resetyearFlag)" [colStyle]="{'width':'20px'}">
+    <ng-template let-model="data" let-index="index">
+        <div class="row-operations">
+            <mat-icon class="mat-color-danger" matTooltip="delete line"
+                      (click)=" this._shared.deleteLine('SeqLineDetail', index)">delete
+            </mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}">
+	<ng-template let-index="index">
+		{{index+1}}
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Year" field="year" sortable="true" [filterable]="true" >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getLineDetailEditable('year')">{{model.year}}</span>
+        <div *ngIf="_shared.getLineDetailEditable('year')" >
+            <tnz-input type="lov" [lovConfig]="YearLov"
+                       [path]="_shared.getSeqLineDetailPath(index,'year')"
+                       [primaryKey]="_shared.SeqLineDetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required"
+                       [isEdit]="_shared.getLineDetailEditable('year')"
+                       [loading]="_shared.SeqLineDetailLoading || _shared.loading"
+                       (valueChangedFromUI)="valueChangedFromUI($event)"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Next Number" field="nextNum" sortable="true" [filterable]="true"  [numeric]='true'>
+    <ng-template let-model="data" let-index="index" >
+        <span *ngIf="!_shared.getLineDetailEditable('nextNum')" >{{model.nextNum}}</span>
+        <div *ngIf="_shared.getLineDetailEditable('nextNum')">
+            <tnz-input type="number"
+                       [path]="_shared.getSeqLineDetailPath(index,'nextNum')"
+                       [primaryKey]="_shared.SeqLineDetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required"
+                       [isEdit]="_shared.getLineDetailEditable('nextNum')"
+                       [loading]="_shared.SeqLineDetailLoading || _shared.loading"
+                      
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+</smd-datatable> 

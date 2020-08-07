@@ -13,13 +13,14 @@ export class ImageDirective implements OnChanges {
 
 	@Input() imageUrl: string;
 	@Input() module: string;
+	@Input() default: string = 'avatars/no-user.jpg';
 	constructor(private sanitizer: DomSanitizer
 		, private apiService: ApiService) {
 
 	}
 
 	@HostListener('error') onError() {
-		this.src = this.sanitizer.bypassSecurityTrustUrl('assets/images/avatars/no-user.jpg');
+		this.src = this.sanitizer.bypassSecurityTrustUrl('assets/images/' + this.default);
 	}
 
 	ngOnChanges() {
@@ -27,17 +28,17 @@ export class ImageDirective implements OnChanges {
 			this.src = this.sanitizer.bypassSecurityTrustUrl('/trendz-static-assets/profile-pic/' + this.imageUrl.replace('/images/persons/', '') + '.jpg');
 		}
 		else {
-			this.src = this.sanitizer.bypassSecurityTrustUrl('assets/images/avatars/no-user.jpg');
-			this.apiService.getImage(this.imageUrl)
+			this.src = this.sanitizer.bypassSecurityTrustUrl('assets/images/' + this.default);
+			this.apiService.get(this.imageUrl)
 				.subscribe(
 					data => {
-						if (data && data.text()) {
-							this.src = this.sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + data.text());
+						if (data && data.image) {
+							this.src = this.sanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + data.image);
 						}
 
 					},
 					errorResponse => {
-						null;
+						console.log(errorResponse);
 					}
 				);
 		}

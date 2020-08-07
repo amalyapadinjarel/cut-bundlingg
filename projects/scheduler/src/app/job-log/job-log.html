@@ -13,30 +13,61 @@
 		</button>
 	</div>
 	<mat-dialog-content [class.component-loading]="loading">
-		<smd-datatable [models]="jobData.log" [rowCount]="jobData.log?.length" noDataDisplayMessage="No logs to display"
-		 noDataDisplayIcon="assignment">
-			<smd-datatable-column title=" " field="type">
-				<ng-template let-model="data">
-					<div [matTooltip]="model.type">
-						<mat-icon [class.mat-color-info]="model.type=='INFO'" [class.mat-color-warning]="model.type=='WARNING'" [class.mat-color-danger]="model.type=='SEVERE'">error</mat-icon>
-					</div>
-				</ng-template>
-			</smd-datatable-column>
-			<smd-datatable-column title="Type" field="type">
-				<ng-template let-model="data">
-					{{model.type}}
-				</ng-template>
-			</smd-datatable-column>
-			<smd-datatable-column title="Message" field="message" [stretch]="true">
-				<ng-template let-model="data">
-					{{model.message}}
-				</ng-template>
-			</smd-datatable-column>
-			<smd-datatable-column title="Time" field="time">
-				<ng-template let-model="data">
-					{{model.time}}
-				</ng-template>
-			</smd-datatable-column>
-		</smd-datatable>
+		<mat-tab-group class="purple-tabs">
+		<mat-tab label="Job Log">
+			<smd-datatable #jobLog [models]="jobData.jobLog" [rowCount]="jobData.jobLog?.length" [paginated]="true" noDataDisplayMessage="No logs to display"
+			 noDataDisplayIcon="assignment" filterEnabled="true" showColumnFilter="true" [showTableFilter]="false" [loading]="loading">
+				<smd-datatable-column title=" " field="type">
+					<ng-template let-model="data">
+						<div [matTooltip]="model.type">
+							<mat-icon [class.mat-color-info]="model.type=='INFO'" [class.mat-color-warning]="model.type=='WARNING'" [class.mat-color-danger]="model.type=='SEVERE'">error</mat-icon>
+						</div>
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Type" field="type" [filterable]="true">
+					<ng-template let-model="data">
+						{{model.type}}
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Message" field="message" [stretch]="true" [filterable]="true">
+					<ng-template let-model="data">
+						{{model.message}}
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Time" field="time" [filterable]="true">
+					<ng-template let-model="data">
+						{{model.time}}
+					</ng-template>
+				</smd-datatable-column>
+			</smd-datatable>
+		</mat-tab>
+		<mat-tab label="Program Log">
+			<smd-datatable #pgmLog [models]="jobData.pgmLog" [rowCount]="jobData.pgmLog?.length" [paginated]="true" noDataDisplayMessage="No logs to display"
+			 noDataDisplayIcon="assignment" filterEnabled="true" showColumnFilter="true" [showTableFilter]="false" [loading]="loading">
+				<smd-datatable-column title=" " field="type" sortable="true">
+					<ng-template let-model="data">
+						<div [matTooltip]="model.type">
+							<mat-icon [class.mat-color-info]="model.type=='INFO'" [class.mat-color-warning]="model.type=='WARN'" [class.mat-color-danger]="model.type=='FATAL' || model.type=='ERROR'">error</mat-icon>
+						</div>
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Type" field="type" [filterable]="true" sortable="true">
+					<ng-template let-model="data">
+						{{model.type}}
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Message" field="message" [stretch]="true" [filterable]="true" sortable="true">
+					<ng-template let-model="data">
+						{{model.message}}
+					</ng-template>
+				</smd-datatable-column>
+				<smd-datatable-column title="Time" field="time" [filterable]="true" sortable="true">
+					<ng-template let-model="data">
+						{{model.time}}
+					</ng-template>
+				</smd-datatable-column>
+			</smd-datatable>
+		</mat-tab>
+	</mat-tab-group>
 	</mat-dialog-content>
 </mat-card>

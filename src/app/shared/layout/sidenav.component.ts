@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, HostListener, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
 import { appVersion } from "environments/environment";
-import { NavigationService } from '../services';
+import { NavigationService, EventService } from '../services';
 import { AlertUtilities } from '../utils/alert.utility';
 
 
@@ -31,12 +31,19 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private navService: NavigationService
-		, private alertUtils: AlertUtilities
+		, private alertUtils: AlertUtilities,
+		private eventService: EventService
 	) { }
 
 	ngOnInit(): void {
 		this.fetchMenuData();
 		// this.navService.fetchBookmarks();
+		this.eventService.onLogout.subscribe(change=>{
+			if(change){
+				this.navService.appMenus = null;
+			}
+		})
+
 	}
 
 	fetchMenuData() {

@@ -7,6 +7,7 @@
         margin-top: 4px;
         height: 48px;
     }
+
     .mat-icon {
         position: absolute;
         bottom: 3px;
@@ -15,17 +16,22 @@
         border-radius: 12px;
         opacity: 0.9;
         cursor: default;
+        height: 24px;
+        width: 24px;
+        font-size: 24px;
     }
 }
 
 .job {
     display: flex;
     padding: 8px 0;
+
     .info {
         width: 100%;
         flex: 1 1 auto;
         opacity: .72;
         cursor: default;
+
         .title {
             font-size: 14px;
             line-height: 16px;
@@ -33,17 +39,40 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .timespan {
             font-size: 11px;
         }
+
         &.active {
             opacity: 1;
+
             .title {
                 cursor: pointer;
+
                 &:hover {
                     text-decoration: underline;
                 }
             }
         }
+    }
+}
+
+.row-operations {
+    float: right;
+
+    .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        line-height: 40px;
+        border-radius: 50%;
+    }
+
+    .mat-icon {
+        font-size: 22px;
+        color: #81729a;
     }
 }

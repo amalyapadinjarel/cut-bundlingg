@@ -272,6 +272,7 @@ export class SmdDataTable
 	@ContentChildren(SmdDataTableColumnComponent) columns: QueryList<SmdDataTableColumnComponent>;
 
 	@Input() tableId: string;
+	@Input() inputPath: string;
 	@Input() rowCount: number = 0;
 	dummyRowCount: any = 0;
 	dummyRows: any[] = [1, 2, 3];
@@ -521,7 +522,7 @@ export class SmdDataTable
 					(model: any, index: number) =>
 						(this.rows[index] = new SmdDataRowModel(model, false))
 				);
-				this.rows.forEach((row, index) => (row.originalOrder = index));
+				this.rows.forEach((row, index) => (row.originalOrder = this.findIndex(this.models, models[index])));
 				this._setSelectedRows();
 				this._updateVisibleRows();
 			} catch (error) { }
@@ -1072,14 +1073,15 @@ export class SmdDataTable
 									let value = this.columnFilterInputs[column.id].value;
 									value = value.toLowerCase();
 									let field = column.field;
-									this.filteredModels.forEach((model) => {
+									this.filteredModels.forEach((model, line) => {
 										if (model.hasOwnProperty("unfiltered") && model.unfiltered == true) {
 											tempModels.push(model);
 										} else if (model.hasOwnProperty(field)) {
-											if (typeof model[field] == "object" && CommonUtilities.searchInObj(model[field], value)) { tempModels.push(model); }
-											else if (typeof model[field] == "string" && CommonUtilities.searchInString(model[field], value)) { tempModels.push(model); }
-											else if (Array.isArray(model[field]) && CommonUtilities.searchInArray(model[field], value)) { tempModels.push(model); }
-											else if (typeof model[field] == "number" && CommonUtilities.searchInString(model[field].toString(), value)) { tempModels.push(model); }
+											let fieldValue = this._cache.getCachedValue(this.inputPath + '[' + line + '].' + field) || model[field];
+											if (typeof fieldValue == "object" && CommonUtilities.searchInObj(fieldValue, value)) { tempModels.push(model); }
+											else if (typeof fieldValue == "string" && CommonUtilities.searchInString(fieldValue, value)) { tempModels.push(model); }
+											else if (Array.isArray(fieldValue) && CommonUtilities.searchInArray(fieldValue, value)) { tempModels.push(model); }
+											else if (typeof fieldValue == "number" && CommonUtilities.searchInString(fieldValue.toString(), value)) { tempModels.push(model); }
 										}
 									});
 									this.filteredModels = JSON.parse(JSON.stringify(tempModels));

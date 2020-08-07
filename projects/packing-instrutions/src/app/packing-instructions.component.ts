@@ -75,7 +75,7 @@ export class PackingInstructionsComponent {
   }
 
   showReports() {
-    this.reportData = {}
+    this.reportData = this._shared.reportData;
     this.reportData["userId"] = this.userService.getCurrentUser().userId;
     if (this._shared.id) {
       this.reportData["pCsId"] = this._shared.id;
@@ -83,6 +83,7 @@ export class PackingInstructionsComponent {
       this.reportData["pPo"] = this._shared.poId;
       this.reportData["pStyle"] = this._shared.parentProductId;
     }
+    console.log(this.reportData)
     this.navService.showApplicationReports(
       "PACKINGINSTRUCTIONS",
       "PACK",

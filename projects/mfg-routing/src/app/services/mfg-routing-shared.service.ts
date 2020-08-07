@@ -37,6 +37,25 @@ export class MfgRoutingSharedService {
                 private inputService: TnzInputService) {
     }
 
+    init() {
+        this.id = 0;
+        this.editMode = false;
+        this.refreshOpertionTable = new BehaviorSubject(false);
+        this.refreshData = new BehaviorSubject(false);
+        this.formData = {};
+        this.listData = null;
+        this.inputService.resetInputService(this.appPath)
+    }
+
+    clear() {
+        this.id = 0;
+        this.editMode = false;
+        this.refreshOpertionTable.unsubscribe();
+        this.refreshData.unsubscribe();
+        this.formData = {};
+        this.inputService.resetInputService(this.appPath)
+    }
+
     initLocalCache() {
         this._cache.setLocalCache('mfgRouting', {});
     }
@@ -250,5 +269,9 @@ export class MfgRoutingSharedService {
 
     resetAllInput() {
         this.inputService.resetSharedData();
+    }
+
+    resetInputService(){
+        this.inputService.resetInputService(this.appKey);
     }
 }

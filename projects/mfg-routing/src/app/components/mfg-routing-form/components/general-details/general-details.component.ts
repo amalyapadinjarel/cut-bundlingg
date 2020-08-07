@@ -45,7 +45,7 @@ export const styleLovconfig: any = {
 
 export const FacilityLovConfig: any = {
   title: 'Select Facility',
-  url: 'lovs/facility',
+  url: 'lovs/facility?userAcessOnly=true',
   dataHeader: 'data',
   returnKey: 'value',
   displayKey: 'label',

@@ -1,0 +1,116 @@
+
+
+
+    <smd-datatable [tableId]="_shared.appKey + '.validValue'" [paginated]="true"
+                   [loading]="false"
+                   class="tnz-input-table" [filterEnabled]="!_shared.getValidValueEditable()"
+                   [sortEnabled]="!_shared.getValidValueEditable()"
+                   (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
+                   [showCheckBox]="false">
+        
+	<smd-datatable-column title=" " field=" " *ngIf="_shared.getValidValueEditable() " [colStyle]="{'width':'10px'}">
+		<ng-template let-model="data" let-index="index">
+			<div class="row-operations">
+				<mat-icon *ngIf="model[_shared.validDetailsPrimaryKey] == 0 " class="mat-color-danger"
+					matTooltip="Delete Line" (click)="deleteLine(index,model)">delete</mat-icon>
+            </div>
+            <div class="row-operations" *ngIf="model[_shared.validDetailsPrimaryKey] != 0 " >
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+		</ng-template>
+	</smd-datatable-column>
+        <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'10px'}">
+            <ng-template let-model="data" let-index="index">
+            <div class="val" *ngIf=_shared.editMode>
+                
+                <tnz-input  type="checkbox" [path]="_shared.getValidDetailsPath(index,'active')" [primaryKey]="_shared.validDetailsPrimaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="_shared.getValidValueEditable('active')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+             <div class="val" *ngIf=!_shared.editMode>
+                
+                <mat-icon *ngIf="model.active=='Y'"  style="color:green;font-size:20px;vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+                <mat-icon *ngIf="model.active!='Y'"  style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+        </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Seq#" field="sequence" [sortable]="true" [filterable]="true"
+                              [colStyle]="{'width':'15px','text-align':'center'}" [numeric]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getValidValueEditable()">{{model.sequence}}</span>
+                <div *ngIf="_shared.getValidValueEditable('sequence')" style="text-align:'center'">
+                    <tnz-input type="number" [path]="_shared.getValidDetailsPath(index,'sequence')"
+                               [primaryKey]="_shared.validDetailsPrimaryKey"
+                               [sharedData]="_shared.formData"
+                               [isEdit]="_shared.getValidValueEditable('sequence')"
+                               style="padding-right: 10px"
+                               [loading]="_shared.validDetailsLoading || _shared.loading"
+                              >
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column *ngIf=" _shared.formData.header?.dataType =='Number' || _shared.dateType=='N' " title="Value" field="numValue"
+        [colStyle]="{'text-align':'right'}" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getValidValueEditable()">{{model.numValue}}</span>
+                <div *ngIf="_shared.getValidValueEditable('numValue')">
+                    <tnz-input type="number" 
+                               [path]="_shared.getValidDetailsPath(index,'numValue')"
+                               [primaryKey]="_shared.validDetailsPrimaryKey"
+                               [sharedData]="_shared.formData"
+                               [isEdit]="_shared.getValidValueEditable('numValue')"
+                               [loading]="_shared.validDetailsLoading || _shared.loading"
+                               >
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column *ngIf=" _shared.formData.header?.dataType =='Character' || _shared.dateType=='C'" title="Value" field="charValue" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getValidValueEditable()">{{model.charValue}}</span>
+                <div *ngIf="_shared.getValidValueEditable('charValue')">
+                    <tnz-input type="text" 
+                               [path]="_shared.getValidDetailsPath(index,'charValue')"
+                               [primaryKey]="_shared.validDetailsPrimaryKey"
+                               [sharedData]="_shared.formData"
+                               [isEdit]="_shared.getValidValueEditable('charValue')"
+                               [loading]="_shared.validDetailsLoading || _shared.loading"
+                               >
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column *ngIf=" _shared.formData.header?.dataType =='Date' || _shared.dateType=='D' " title="Value" field="dateValue" sortable="true" [filterable]="true" [colStyle]="{'width':'150px'}">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getValidValueEditable()">{{model.dateValue}}</span>
+                <div *ngIf="_shared.getValidValueEditable('dateValue')">
+                    <tnz-input type="date" 
+                               [path]="_shared.getValidDetailsPath(index,'dateValue')"
+                               [primaryKey]="_shared.validDetailsPrimaryKey"
+                               [sharedData]="_shared.formData"
+                               [isEdit]="_shared.getValidValueEditable('dateValue')"
+                               [loading]="_shared.validDetailsLoading || _shared.loading"
+                               >
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        <smd-datatable-column title="Description" field="valueDesc" sortable="true" [filterable]="true">
+            <ng-template let-model="data" let-index="index">
+                <span *ngIf="!_shared.getValidValueEditable()">{{model.valueDesc}}</span>
+                <div *ngIf="_shared.getValidValueEditable('valueDesc')">
+                    <tnz-input type="text" 
+                               [path]="_shared.getValidDetailsPath(index,'valueDesc')"
+                               [primaryKey]="_shared.validDetailsPrimaryKey"
+                               [sharedData]="_shared.formData"
+                               [isEdit]="_shared.getValidValueEditable('valueDesc')"
+                               [loading]="_shared.validDetailsLoading || _shared.loading"
+                               >
+                    </tnz-input>
+                </div>
+            </ng-template>
+        </smd-datatable-column>
+        
+    </smd-datatable>

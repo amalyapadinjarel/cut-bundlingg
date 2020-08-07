@@ -7,8 +7,9 @@ import { AlertUtilities } from "app/shared/utils";
 import { TnzInputService } from "app/shared/tnz-input/_service/tnz-input.service";
 import { PacksDetails, ratioDetails } from "../../../models/packDeatils";
 import { LocalCacheService } from "app/shared/services";
-import { packingMethodLovconfig } from '../../../models/lov-config';
+import { packingMethodLovconfig, facilityLovconfig, workCenterLovConfig } from '../../../models/lov-config';
 import { invalid } from '@angular/compiler/src/render3/view/util';
+import { ChoiceList } from 'app/models/common.model';
 
 @Component({
   selector: "app-add-packs",
@@ -23,6 +24,8 @@ export class AddPacksComponent implements OnInit {
   totalRatioSum = 0;
   packQty = 0;
   packingMethod = JSON.parse(JSON.stringify(packingMethodLovconfig));
+  facilityLov = JSON.parse(JSON.stringify(facilityLovconfig));
+  // workCenterLov = JSON.parse(JSON.stringify(packingMethodLovconfig));
   @ViewChild(SmdDataTable, { static: false }) dataTable: SmdDataTable;
 
   constructor(
@@ -45,6 +48,33 @@ export class AddPacksComponent implements OnInit {
   }
 
   ngOnDestroy() { }
+
+  workCenterLov(index,feild) {
+    let cache;
+    if(this.addType == 0){
+      cache = this._cache.getCachedValue(this._shared.getSolidPackDetailsPath(index,feild))
+    }
+    else{
+      cache = this._cache.getCachedValue(this._shared.getRatioPacksHeaderPath(index,feild))
+    }
+    return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
+  }
+
+  workCenterLovForSolidLines(index,feild){
+    let cache = this._cache.getCachedValue(this._shared.getSolidPackDetailsPath(index,feild))
+    return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
+  }
+
+  loadDefaultFacility(){
+    this.servcie.loadDefaultFacility().then((res:ChoiceList)=>{
+      if(res.label && res.value && this.addType == 0){
+        this.inputService.updateInput(this._shared.getSolidPackDetailsPath(0,'facilityTemp'),res);
+      }
+      if(res.label && res.value && this.addType == 1){
+        this.inputService.updateInput(this._shared.getRatioPacksHeaderPath(0,'facility'),res);
+      }
+    })
+  }
 
   close(isCancel: boolean) {
     if (isCancel) {
@@ -145,6 +175,8 @@ export class AddPacksComponent implements OnInit {
               color: color,
               sumOfRatios: Number(qtyPerCarton),
               uom: uom,
+              facility: headerData.facility,
+              workCenter: headerData.workCenter
             };
             if (this.validateQty(data)) {
               this.alertUtils.showAlerts(
@@ -181,6 +213,7 @@ export class AddPacksComponent implements OnInit {
           });
           this._shared["solidPack" + "Loading"] = false;
           this.refreshTable();
+          this.loadDefaultFacility();
         }
         (err) => {
           this._shared["solidPack" + "Loading"] = false;
@@ -210,6 +243,7 @@ export class AddPacksComponent implements OnInit {
           this.TempformData = this.formatData(this.TempformData);
           this._shared.formData["ratioPack"] = this.TempformData;
           this.refreshTable();
+          this.loadDefaultFacility();
         }
         (err) => {
           this._shared["ratioPack" + "Loading"] = false;
@@ -294,6 +328,27 @@ export class AddPacksComponent implements OnInit {
     else if( key == 'packingMethod' && this.addType == 0){
       this._shared.formData["solidPack"][index].packingMethod = event.value;
     }
+    else if( key == 'facilityTemp' && this.addType == 0){
+      this.insertFacilityInAllLines(event.value);
+      if(event.value != ""){
+        this.inputService.updateInputCache(this._shared.getSolidPackDetailsPath(0,'workCenterTemp'),"");
+        this.insertWorkCenterInAllLines("");
+        this.refreshTable();
+      }
+    }
+    else if( key == 'facility' && this.addType == 0){
+      this._shared.formData["solidPack"][index].facility = event.value;
+      if(event.value != ""){
+        this._shared.formData["solidPack"][index].workCenter = "";
+        this.inputService.updateInputCache(this._shared.getSolidPackDetailsPath(index,'workCenter'),"");
+      }
+    }
+    else if( key == 'workCenterTemp' && this.addType == 0){
+      this.insertWorkCenterInAllLines(event.value);
+    }
+    else if( key == 'workCenter' && this.addType == 0){
+      this._shared.formData["solidPack"][index].workCenter = event.value;
+    }
   }
 
   modifyData(val) {
@@ -317,6 +372,22 @@ export class AddPacksComponent implements OnInit {
       }
     });
     this.refreshTable();
+  }
+
+  insertFacilityInAllLines(val){
+    this._shared.formData["solidPack"].forEach((elem) => {
+      if(val){
+        elem.facility = val;
+      }
+    });
+    this.refreshTable();
+  }
+  
+  insertWorkCenterInAllLines(val){
+    this._shared.formData["solidPack"].forEach((elem) => {
+        elem.workCenter = val;
+    });
+    // this.refreshTable();
   }
 
   checkDuplicateAndPush(elem) {
