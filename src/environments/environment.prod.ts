@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
-  base_url: 'http://192.168.10.83:8080/',
-  api_url: 'http://192.168.10.83:8080/cbp',
-  api_action_url: 'http://192.168.10.83:7007/',
-  api_url_v4: 'http://192.168.10.83:8080/hcm-web',
-  bpm_url: 'http://192.168.10.83:8080/activiti-rest/service/',
-  bi_url: 'http://192.168.10.83:8080/trendz-bi',
-  asset_url: 'http://192.168.10.83:8080/trendz-app-assets/resources',
-  ws_url: 'http://192.168.10.83:8080/trendz-websocket/socket',
+  base_url: 'http://trendzv5.cfaiteam.com/',
+  api_url: 'http://trendzv5.cfaiteam.com/cbp',
+  api_action_url: 'http://trendzv5.cfaiteam.com/',
+  api_url_v4: 'http://trendzv5.cfaiteam.com/hcm-web',
+  bpm_url: 'http://trendzv5.cfaiteam.com/activiti-rest/service/',
+  bi_url: 'http://trendzv5.cfaiteam.com/trendz-bi',
+  asset_url: 'http://trendzv5.cfaiteam.com/trendz-app-assets/resources',
+  ws_url: 'http://trendzv5.cfaiteam.com/trendz-websocket/socket',
 };
 
 
