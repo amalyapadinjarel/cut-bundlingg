@@ -32,48 +32,90 @@ export class FacilityHeaderComponent implements OnInit, OnDestroy {
   getIfEditable(key) {
 		return !this.disabled[key] && this._shared.getHeaderEditable(key, this._shared.id);
   }
-  valueChangedFromUI(change) {
-    if (change.displayValue == 'ADD NEW') {
+  // valueChangedFromUI(change) {
+  //   if (change.displayValue == 'ADD NEW') {
   
-      const dialogRef = this.dialog.open(AddlocationPopupComponent);
+  //     const dialogRef = this.dialog.open(AddlocationPopupComponent);
     
-      this.subs.sink = dialogRef.afterClosed().subscribe(res => {
-        console.log(res);
+  //     this.subs.sink = dialogRef.afterClosed().subscribe(res => {
+  //       console.log(res);
         
+  //         if (res) {
+  //             let newLocation = {
+  //                 value: res.locationId,
+  //                 label: res.locationCode
+  //             }
+  //             this.inputService.updateInput(change.path, newLocation);
+  //         } else {
+  //             this.inputService.updateInput(change.path, '');
+  //         }
+  //     })
+  // }
+  // else{
+  //   let flag = false;
+  //   let foundOne = false;
+  //   let path = change.path;
+  //   if (flag){
+      
+  //     this.alertUtils.showAlerts('Selected location already exist.');
+  //     this.inputService.setError(path, 'Selected location already exist.')
+  //   }
+  // }
+  // if (change.displayValue != 'ADD NEW'){
+  //   this._shared.addressLoading = true;
+  //  this._service.fetchAddress(change.value.value).then((address : Address)=>{
+  //  this._shared.setAddress(address);
+  //  console.log(this._shared.formData);
+   
+  //  this._shared.addressLoading = false;
+  //  });
+  
+  // }
+  
+  // }
+  ngOnDestroy(): void {
+  }
+  valueChangedFromUI(change) {
+ 
+    if(change.value.value ){
+  
+     this._shared.addressLoading = true;
+    this._service.fetchAddress(change.value.value).then((address : Address)=>{
+    this._shared.setAddress(address);
+   
+  
+    this._shared.addressLoading = false;
+    
+    
+    });
+   
+   }
+ 
+ }
+ addLocation(){
+  // if (change.displayValue == 'ADD NEW') {
+ 
+    let path='facility.'+this._shared.id+'.header.location'
+     const dialogRef = this.dialog.open(AddlocationPopupComponent);
+     this.subs.sink = dialogRef.afterClosed().subscribe(res => {
           if (res) {
               let newLocation = {
                   value: res.locationId,
                   label: res.locationCode
               }
-              this.inputService.updateInput(change.path, newLocation);
-          } else {
-              this.inputService.updateInput(change.path, '');
-          }
-      })
-  }
-  else{
-    let flag = false;
-    let foundOne = false;
-    let path = change.path;
-    if (flag){
-      
-      this.alertUtils.showAlerts('Selected location already exist.');
-      this.inputService.setError(path, 'Selected location already exist.')
-    }
-  }
-  if (change.displayValue != 'ADD NEW'){
-    this._shared.addressLoading = true;
-   this._service.fetchAddress(change.value.value).then((address : Address)=>{
-   this._shared.setAddress(address);
-   console.log(this._shared.formData);
-   
-   this._shared.addressLoading = false;
-   });
-  
-  }
-  
-  }
-  ngOnDestroy(): void {
-  }
-  
+             this.inputService.updateInput(path, newLocation);
+         } else {
+             // this.inputService.updateInput(path, '');
+         }
+     })
+ //  } else {
+ //      let flag = false;
+ //      let foundOne = false;
+ //      let path = change.path;
+ //      if (flag) {
+ //          this.alertUtils.showAlerts('Selected location already exist.');
+ //          this.inputService.setError(path, 'Selected location already exist.')
+ //      }
+ //     }
+ }
 }

@@ -1,41 +1,42 @@
 :host{
-    max-width: none !important;
-    margin-top: 20px;
-    border: 1px solid #4441;
+        max-width: none !important;
+       // margin-top: 20px;
+       border: solid #4442;
+       border-width: 0 0 1px 1px;
     
-}
-#address{
-     
-   display: grid;
-}
-// button { 
-//         left: 15px;  
-//         background-color: red; 
-//     } 
-
-
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {#address{
-        grid-template-columns: auto   ;
-        }}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {#address{
-        grid-template-columns: auto auto  ;
-        }}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {#address{
-        grid-template-columns: auto auto  ;
-        }}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {#address{
-        grid-template-columns: auto auto auto ;
-        }}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {#address{
-        grid-template-columns: auto auto auto ;
-        }}
+        
+    }
+    #address{
+       margin-top: 20px; 
+       display: grid;
+       place-items: flex-start;
+       
+    }
+    
+ 
+    
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {#address{
+            grid-template-columns: auto   ;
+            }}
+    
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {#address{
+            grid-template-columns: auto auto  ;
+            }}
+    
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {#address{
+            grid-template-columns: auto auto  ;
+            }}
+    
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {#address{
+            grid-template-columns: auto auto auto ;
+            }}
+    
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @media only screen and (min-width: 1200px) {#address{
+            grid-template-columns: auto auto auto ;
+            }}
+    

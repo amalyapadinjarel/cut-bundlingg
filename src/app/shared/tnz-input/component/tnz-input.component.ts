@@ -10,18 +10,18 @@ import {
     OnDestroy,
     ɵSWITCH_CHANGE_DETECTOR_REF_FACTORY__POST_R3__
 } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
-import {LocalCacheService} from 'app/shared/services';
-import {DateUtilities, AutoCompleteUtilities} from 'app/shared/utils';
-import {JSONUtils} from 'app/shared/utils/json.utility';
-import {TnzInputLOVComponent} from '../input-lov/input-lov.component';
-import {TnzInputService} from '../_service/tnz-input.service';
-import {Observable} from 'rxjs';
-import {URLSearchParams} from '@angular/http';
-import {HttpParams} from '@angular/common/http';
-import {CustomValidators} from '../../directives/validators';
-import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import { LocalCacheService } from 'app/shared/services';
+import { DateUtilities, AutoCompleteUtilities } from 'app/shared/utils';
+import { JSONUtils } from 'app/shared/utils/json.utility';
+import { TnzInputLOVComponent } from '../input-lov/input-lov.component';
+import { TnzInputService } from '../_service/tnz-input.service';
+import { Observable } from 'rxjs';
+import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
+import { CustomValidators } from '../../directives/validators';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -58,8 +58,8 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
     @Input()
     textAreaProperties = {
-        rows :2,
-        cols: 20     
+        rows: 2,
+        cols: 20
     }
 
     @Input()
@@ -349,8 +349,11 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
                     // 	this.status = 'warning';
                     // 	this.alert =  'Choose from the given list of options.';
                     // }
+                    console.log(newValue,this.returnKey)
                     if (validator == 'required') {
-                        if (typeof newValue == 'undefined' || newValue === '') {
+                        if (typeof newValue == 'undefined' || newValue === '' ||
+                            (this.type == 'lov' && (typeof newValue[this.returnKey] !== 'undefined' && newValue[this.returnKey] === '')) 
+                           ) {
                             this.status = 'warning';
                             this.alert = this.title + ' cannot be left blank.';
                         }
@@ -708,7 +711,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
 
     resetError() {
         this.status = 'ok';
-        this.alert="";
+        this.alert = "";
 
     }
 
@@ -717,7 +720,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
     }
 
     onBlur(event) {
-        if ( event.target && event.target.value == '') {
+        if (event.target && event.target.value == '') {
             const json = {};
             json[this.returnKey] = '';
             json[this.displayKey] = '';

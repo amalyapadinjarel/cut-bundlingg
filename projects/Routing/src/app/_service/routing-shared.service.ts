@@ -280,4 +280,9 @@ setListData(data) {
   this.count = data.count;
 }
 
+  getSeqKey(key) {
+    let seq = "sequence"
+    return seq;
+  }
+
 }

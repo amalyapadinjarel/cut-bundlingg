@@ -1,0 +1,126 @@
+<div>
+    <perfect-scrollbar>
+        <smd-datatable [tableId]="_shared.appKey + '.machineslist'" [dataUrl]="_shared.apiBase" dataHeader="machines"  [primaryListing]="false"
+       [rowCount]="_shared.count" class="tnz-input-table" (dataChange)="_onDataChange($event)"  (pageChange)="pageChanged($event)" [selectedPage]="_shared.selectedPage">
+           
+       <smd-datatable-column title=" " field=" " [colStyle]="{'width':'10px'}"  *ngIf="_shared.editMode">
+        <ng-template let-model="data" let-index="index" >
+            <div class="row-operations" *ngIf= "_shared.getMachineEditable('machineCode',model.machineId)" >
+                <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+            </div>
+            <div class="row-operations" *ngIf= "!_shared.getMachineEditable('machineCode',model.machineId)" >
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+       
+       
+       <smd-datatable-column title="Machine Code" field="machineCode" sortable="true" [filterable]="true"> 
+                <ng-template let-model="data"  let-index="index">
+                    <tnz-input class="text-upper" [path]="_shared.getMachinesAttrPath(index,'machineCode')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="_shared.getMachineEditable('machineCode',model.machineCode)" [loading]=false style=" min-width: 200px;"
+                    validators="required,length:60" (valueChanged)="validateData($event,index,'machineCode')" >
+                </tnz-input>
+
+                </ng-template>
+            </smd-datatable-column> 
+             
+            <smd-datatable-column title="Machine Type" field="machineType" sortable="true" [filterable]="true">
+                <ng-template let-model="data"  let-index="index">
+                    <tnz-input type="lov" [lovConfig]="machineTypeLov" [path]="_shared.getMachinesAttrPath(index,'machineType')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false 
+                    validators="required" >
+                </tnz-input>
+                </ng-template>
+           </smd-datatable-column>
+        <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input  type="lov" [lovConfig]="facilityLov" [path]="_shared.getMachinesAttrPath(index,'facility')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false 
+                    validators="required"  (valueChangedFromUI)="valueChangedFromFacility(index,$event, model.machineId)">
+                </tnz-input>
+            </ng-template>
+            </smd-datatable-column> 
+            <!-- <smd-datatable-column title="Work Center" field="wc" sortable="true" [filterable]="true">
+                    <ng-template let-model="data" let-index="index">
+                        <tnz-input type="lov" [lovConfig]="workCenterLov" displayKey="label" [path]="_shared.getMachinesAttrPath(index,'wc')" [primaryKey]="_shared.machinesPrimaryKey"
+                        [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false 
+                        validators="required" >
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column> -->
+            <smd-datatable-column title="Workcenter" field="wc" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="lov" [lovConfig]="workCenterLov(index,model.facility)" [path]="_shared.getMachinesAttrPath(index,'wc')" [primaryKey]="_shared.machinesPrimaryKey"
+                    validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.editMode "[loading]=false >
+                       </tnz-input> 
+                   </ng-template> 
+            </smd-datatable-column>
+            <smd-datatable-column title="Operation" field="operation" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="lov" [lovConfig]="operationsLov" [path]="_shared.getMachinesAttrPath(index,'operation')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false 
+                    validators="required" >
+                </tnz-input>
+            </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'10px'}" > 
+                <ng-template let-model="data" let-index="index"> 
+                    <!-- <div *ngIf="!_shared.editMode">
+                        <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"  matTooltip="Inactive">cancel</mat-icon>
+                    </div>
+                     <div *ngIf="_shared.editMode && model[_shared.machinesPrimaryKey] != 0">
+                        <tnz-input type="checkbox" [path]="_shared.getMachinesAttrPath(index,'active')" [primaryKey]="_shared.machinesPrimaryKey"
+                            [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false class="checkbox-center-align">
+                        </tnz-input>
+                    </div>
+                   <div class="checkbox-center-align" *ngIf="model[_shared.machinesPrimaryKey] == 0">
+                        <mat-checkbox [ngModel]="model.active == 'Y'" ></mat-checkbox>
+                    </div>  -->
+                    <div *ngIf="!_shared.editMode">
+                        <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                    </div>
+                    <div *ngIf="_shared.editMode">
+                        <tnz-input type="checkbox" [path]="_shared.getMachinesAttrPath(index,'active')" [primaryKey]="_shared.machinesPrimaryKey"
+                            [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false class="checkbox-center-align">
+                        </tnz-input>
+                    </div>
+                </ng-template>
+                </smd-datatable-column>
+            <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input  [path]="_shared.getMachinesAttrPath(index,'createdByName')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="false" [loading]=false 
+                    >
+                </tnz-input>
+            </ng-template>
+            </smd-datatable-column>
+        <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+            <ng-template let-model="data" let-index="index">
+                <tnz-input  [path]="_shared.getMachinesAttrPath(index,'creationDate')" [primaryKey]="_shared.machinesPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false 
+                 >
+            </tnz-input>
+        </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated By" field="lastUpdatedBy" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input  [path]="_shared.getMachinesAttrPath(index,'lastUpdatedBy')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="false" [loading]=false 
+                    >
+                </tnz-input>
+            </ng-template>
+            </smd-datatable-column>
+            <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input  [path]="_shared.getMachinesAttrPath(index,'lastUpdateDate')" [primaryKey]="_shared.machinesPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="false" [loading]=false 
+                    >
+                </tnz-input>
+            </ng-template>
+            </smd-datatable-column>
+        </smd-datatable>
+    </perfect-scrollbar>
+</div>

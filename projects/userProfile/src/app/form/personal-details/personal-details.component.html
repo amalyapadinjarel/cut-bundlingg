@@ -1,20 +1,9 @@
     
-            <h2 color="accent"> Edit Profile Details</h2>
+            <div class="dark"> Edit Profile</div>
+            <br>
+            <br/>
             <table style="align-content: center;">
-                <tr>
-                    <td>User Name</td>
-                    <td>:</td>
-                    <td> {{_shared.getHeaderAttributeValue('userName')}}</td>
-                </tr>
-                <tr>
-                    <td>Personnel#</td>
-                    <td>:</td>
-                    <td>
-
-                        {{_shared.getHeaderAttributeValue('personnelNum')?.personnelNum}}
-
-                    </td>
-                </tr>
+               
                 <tr>
                     <td>First Name</td>
                     <td>:</td>
@@ -71,7 +60,7 @@
                     <td>
                         <tnz-input type="text" [path]="_shared.getHeaderAttrPath('emailAddress')"
                             [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                            validators="length:150,required" (valueChanged)="emailValidation($event)"
+                            validators="length:150" (valueChanged)="emailValidation($event)"
                             [isEdit]="true"
                             [loading]="_shared.headerLoading || _shared.loading" title="Email Address" stretch="true">
                         </tnz-input>
@@ -81,111 +70,37 @@
                 <tr>
                     <td>Phone</td>
                     <td>:</td>
-                    <td>
+                    <td style="display: flex;">
                       
 
-                            <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryCode')"
+                            <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryPhCode')"
                                 [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
-                                [lovConfig]="countryCodeLOV" validators="required"
+                                [lovConfig]="countryCodeLOV" 
                                 [isEdit]="true"
                                 [loading]="_shared.headerLoading || _shared.loading" title="Country Code"
                                 class="text-reduce-width" numeric="true" style="width:20%">
                             </tnz-input>
                             <tnz-input type="number" [path]="_shared.getHeaderAttrPath('phoneNumber')"
-                                [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                                [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
                                 [isEdit]="true" (valueChanged)="PhoneNumberValidation($event)"
                                 [loading]="_shared.headerLoading || _shared.loading" title="Phone Number" stretch="true"
                                 style="width:80%">
                             </tnz-input>
                     </td>
                 </tr>
+                <tr></tr>
+                <tr></tr>
+                <br/>
                 <tr>
-                    <td> <button mat-raised-button color="accent" (click)="save(true)"> Save</button> </td>
-                    <td> <button mat-button mat-dialog-close color="accent"> Cancel</button> </td>
+                    <td></td>
+                    <td style="text-align: center;"> <button mat-raised-button color="accent" (click)="save(true)"> Save</button> </td>
+                    <td > <button mat-button mat-dialog-close color="accent"> Cancel</button> </td>
 
                 </tr>
               
                 
             </table>
-<!-- Using div -->
-<!-- <div class="group">
-    <h4>Edit Profile Details</h4>
-    <ul>
-    <li>
-        <label>First Name</label>
-        <div class="val">
 
-            <tnz-input type="text" [path]="_shared.getHeaderAttrPath('firstName')" [primaryKey]="_shared.primaryKey"
-                [sharedData]="_shared.formData" validators="required" [isEdit]="true"
-                [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                 title="First Name">
-            </tnz-input>
-        </div>
-    </li>
-
-    <li>
-        <label>Middle Name</label>
-        <div class="val">
-            <tnz-input type="text" [path]="_shared.getHeaderAttrPath('middleName')"
-                [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
-                [isEdit]="true" [loading]="_shared.headerLoading || _shared.loading"
-                stretch="true" >
-            </tnz-input>
-        </div>
-    </li>
-
-    <li>
-        <label>Last Name</label>
-        <div class="val">
-            <tnz-input type="text" [path]="_shared.getHeaderAttrPath('lastName')" [primaryKey]="_shared.primaryKey"
-                [sharedData]="_shared.formData" validators="required" [isEdit]="true"
-                [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                title="Last Name">
-            </tnz-input>
-        </div>
-    </li>
-    <li>
-        <label>Known As</label>
-        <div class="val">
-            <tnz-input type="text" [path]="_shared.getHeaderAttrPath('knownAs')" [primaryKey]="_shared.primaryKey"
-                [sharedData]="_shared.formData" validators="required" [isEdit]="true"
-                [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                title="Known As">
-            </tnz-input>
-        </div>
-    </li>
-    <br />
-
-    <li>
-        <label>Email</label>
-        <div class="val">
-            <tnz-input type="text" [path]="_shared.getHeaderAttrPath('emailAddress')"
-                [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
-                (valueChanged)="emailValidation($event)" [isEdit]="true"
-                [loading]="_shared.headerLoading || _shared.loading" title="Email Address" stretch="true">
-            </tnz-input>
-        </div>
-    </li>
-    <li>
-        <label>Phone</label>
-       
-
-        <div class="val" >
-            <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryCode')"
-                [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
-                [lovConfig]="countryCodeLOV" validators="required" [isEdit]="true"
-                [loading]="_shared.headerLoading || _shared.loading" 
-                title="Country Code" class="text-reduce-width" numeric="true" style="max-width:65px">
-            </tnz-input>
-            <tnz-input type="number" [path]="_shared.getHeaderAttrPath('phoneNumber')"
-                [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
-                [isEdit]="true" (valueChanged)="PhoneNumberValidation($event)"
-                [loading]="_shared.headerLoading || _shared.loading" title="Phone Number" stretch="true">
-            </tnz-input>
-        </div>
-    </li>
-</ul>
-</div> -->
 <!-- Mat Card -->
 <!-- <mat-card class="input-card mini-popup-width">
     <mat-toolbar mat-card-image color="accent">
@@ -239,9 +154,9 @@
 
                     <input matInput id="emailAddress" placeholder="Email Address" type="text"
                         formControlName="emailAddress" required>
-                    <mat-error *ngIf="profileEditForm.controls.emailAddress.hasError('required')">
+                     <mat-error *ngIf="profileEditForm.controls.emailAddress.hasError('required')">
                         Email Address is required
-                    </mat-error>
+                    </mat-error> 
                 </mat-form-field>
             </div>
 
@@ -255,7 +170,7 @@
                         formControlName="phoneNumber" required>
                     <mat-error *ngIf="profileEditForm.controls.phoneNumber.hasError('required')">
                         Phone Number is required
-                    </mat-error>
+                    </mat-error> 
                 </mat-form-field>
             </div>
 
@@ -264,9 +179,9 @@
 
     <mat-dialog-actions>
         <span class="horizontal-filler"></span>
-        <button mat-raised-button color="accent" (click)="saveProfile()" [disabled]="!profileEditForm.dirty">
+        <button mat-raised-button color="accent" (click)="saveProfile()" [disabled]="!profileEditForm.valid">
             Save</button>
-        <button mat-raised-button (click)="clear()"> Clear</button>
+        <button mat-button  color="accent" (click)="clear()"> Clear</button>
         <button mat-button mat-dialog-close color="accent">Cancel</button>
     </mat-dialog-actions>
 

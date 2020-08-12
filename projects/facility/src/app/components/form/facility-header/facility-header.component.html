@@ -1,46 +1,44 @@
-<div class="group">
+<div class="group" style="box-shadow: unset;" >
     <!-- <h4>Address</h4> -->
     <ul id=address>
+
         <li>
             <label>Location</label>
             <div class="val">
                 <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('location')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
                 validators="required"  (valueChanged)="valueChangedFromUI($event)" [isEdit]="getIfEditable('location')" [lovConfig]="locationLov" displayKey="label"
-                [loading]="_shared.headerLoading || _shared.loading" [addNewLovOption]="true" > 
+                [loading]="_shared.headerLoading || _shared.loading"> 
               </tnz-input>
-            </div>
-        </li>
-      <li>
-            <label>Address Line 1</label>
-            <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine1')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
-                   [isEdit]="false" 
-                  [loading]="_shared.addressLoading || _shared.loading" > 
-                </tnz-input> 
-            </div>
-        </li>
-        <li>
-            <label>Address Line 2</label>
-            <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine2')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
-                   [isEdit]="false" 
-                  [loading]="_shared.addressLoading || _shared.loading" > 
-                </tnz-input> 
-            </div>
-        </li>
-        <li>
-            <label>Address Line 3</label>
-            <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine3')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
-                   [isEdit]="false" 
-                  [loading]="_shared.addressLoading || _shared.loading" > 
-                </tnz-input> 
+              <div *ngIf="_shared.editMode" >
+              <button [style]="{'line-height':'18px'}" mat-button matTooltip="Add location">
+                <mat-icon class="mat-color-info" (click)="addLocation()" >add_box
+                </mat-icon>
+            </button>
+        </div>
             </div>
         </li>
         <li>
             <label>City</label>
             <div class="val">
                 <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('city')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="false" 
+                  [loading]="_shared.addressLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Email</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('email')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="false" 
+                  [loading]="_shared.addressLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+      <li>
+            <label>Address Line 1</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine1')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
                    [isEdit]="false" 
                   [loading]="_shared.addressLoading || _shared.loading" > 
                 </tnz-input> 
@@ -56,18 +54,27 @@
             </div>
         </li>
         <li>
-            <label>Country</label>
+            <label>Website</label>
             <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('countryName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('websiteUrl')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
                    [isEdit]="false" 
                   [loading]="_shared.addressLoading || _shared.loading" > 
                 </tnz-input> 
             </div>
         </li>
         <li>
-            <label>Pin Code</label>
+            <label>Address Line 2</label>
             <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('postalCode')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine2')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="false" 
+                  [loading]="_shared.addressLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Country</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('countryName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
                    [isEdit]="false" 
                   [loading]="_shared.addressLoading || _shared.loading" > 
                 </tnz-input> 
@@ -83,6 +90,26 @@
             </div>
         </li>
         <li>
+            <label>Address Line 3</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('addressLine3')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="false" 
+                  [loading]="_shared.addressLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+        <li>
+            <label>Zip Code</label>
+            <div class="val">
+                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('postalCode')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                   [isEdit]="false" 
+                  [loading]="_shared.addressLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+        </li>
+
+ 
+        <li>
             <label>Telephone# 2</label>
             <div class="val">
                 <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('telephoneNumber2')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
@@ -91,24 +118,8 @@
                 </tnz-input> 
             </div>
         </li>
-        <li>
-            <label>Email</label>
-            <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('email')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
-                   [isEdit]="false" 
-                  [loading]="_shared.addressLoading || _shared.loading" > 
-                </tnz-input> 
-            </div>
-        </li>
-        <li>
-            <label>Website Url</label>
-            <div class="val">
-                <tnz-input class="text-upper" type="text" [path]="_shared.getAddressAttrPath('websiteUrl')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
-                   [isEdit]="false" 
-                  [loading]="_shared.addressLoading || _shared.loading" > 
-                </tnz-input> 
-            </div>
-        </li>
+
+
         
   
         

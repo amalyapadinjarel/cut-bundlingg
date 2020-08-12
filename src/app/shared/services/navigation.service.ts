@@ -9,7 +9,9 @@ export class NavigationService implements OnDestroy {
 
     appMenus;
     bookmarks;
-    allowedUrls = ['/login', '/embed', '/mailbox', '/scheduler', '/not-found', '/wip', '/loading', '/trendz-drive', '/pdm-costing'];
+    // allowedUrls = ['/login', '/embed', '/mailbox', '/scheduler', '/not-found', '/wip', '/loading', '/trendz-drive', '/pdm-costing'];
+     allowedUrls = ['/login', '/embed', '/mailbox', '/scheduler', '/not-found', '/wip', '/loading', '/trendz-drive', '/pdm-costing','/P-profile'];
+
     bookmarkedTaskFlows: number[] = [];
     showQuickMenu = false;
 

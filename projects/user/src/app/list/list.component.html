@@ -1,8 +1,8 @@
-<div>
-    <perfect-scrollbar>
-        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="users" (onRowSelected)="rowSelected($event)"
-            [primaryListing]="false" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
-            [selectedPage]="_shared.selectedPage">
+<!-- <div> -->
+    <!-- <perfect-scrollbar> -->
+        <smd-datatable [tableId]="_shared.appKey+'.list'" [dataUrl]="_shared.apiBase" dataHeader="users" (onRowSelected)="rowSelected($event)"
+            [primaryListing]="true" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
+            [selectedPage]="_shared.selectedPage" >
             <smd-datatable-column title="User Name" field="userName" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.userName}}
@@ -80,5 +80,5 @@
                 </ng-template>
             </smd-datatable-column>
         </smd-datatable>
-    </perfect-scrollbar>
-</div>
+    <!-- </perfect-scrollbar> -->
+<!-- </div> -->

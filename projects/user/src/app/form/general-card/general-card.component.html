@@ -1,6 +1,6 @@
 <div class="group">
     <h4>General</h4>
-    <ul>
+    <ul style="margin-left: -15px;padding-left: 5px;">
         <li>
             <label>User Name</label>
             <div class="val">
@@ -11,7 +11,7 @@
                 </tnz-input>
             </div>
         </li>
-        <br/>
+        <br />
         <li>
         <li>
             <label>Start Date</label>
@@ -34,7 +34,7 @@
                 </tnz-input>
             </div>
         </li>
-        <br/>
+        <br />
 
         <li>
 
@@ -43,12 +43,12 @@
                 <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('personnelNum')"
                     [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
                     [lovConfig]="personnelNumLOV" [isEdit]="getIfEditable('personnelNum')"
-                    [loading]="_shared.headerLoading || _shared.loading" 
-                    (valueChanged)="personnelNumValidation($event)">
+                    [loading]="_shared.headerLoading || _shared.loading"
+                    (valueChangedFromUI)="personnelNumValidation($event)">
                 </tnz-input>
             </div>
         </li>
-        <br/>
+        <br />
 
         <li>
             <label>First Name</label>
@@ -57,8 +57,7 @@
                 <tnz-input type="text" [path]="_shared.getHeaderAttrPath('firstName')" [primaryKey]="_shared.primaryKey"
                     [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('firstName')"
                     [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                    (valueChanged)="headerLengthCheck($event,'firstName')"
-                    title="First Name">
+                    (valueChanged)="headerLengthCheck($event,'firstName')" title="First Name">
                 </tnz-input>
             </div>
         </li>
@@ -80,55 +79,45 @@
                 <tnz-input type="text" [path]="_shared.getHeaderAttrPath('lastName')" [primaryKey]="_shared.primaryKey"
                     [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('lastName')"
                     [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                    (valueChanged)="headerLengthCheck($event,'lastName')"
-                    title="Last Name">
+                    (valueChanged)="headerLengthCheck($event,'lastName')" title="Last Name">
                 </tnz-input>
             </div>
         </li>
-        <br/>
-
         <li>
             <label>Known As</label>
             <div class="val">
                 <tnz-input type="text" [path]="_shared.getHeaderAttrPath('knownAs')" [primaryKey]="_shared.primaryKey"
                     [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('knownAs')"
                     [loading]="_shared.headerLoading || _shared.loading" stretch="true"
-                    (valueChanged)="headerLengthCheck($event,'knownAs')"
-                    title="Known As">
+                    (valueChanged)="headerLengthCheck($event,'knownAs')" title="Known As">
                 </tnz-input>
             </div>
         </li>
-        <br/>
+        <br />
 
         <li>
             <label>Email</label>
             <div class="val">
                 <tnz-input type="text" [path]="_shared.getHeaderAttrPath('emailAddress')"
-                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
                     (valueChanged)="emailValidation($event)" [isEdit]="getIfEditable('emailAddress')"
                     [loading]="_shared.headerLoading || _shared.loading" title="Email Address" stretch="true">
                 </tnz-input>
             </div>
         </li>
-        <br/>
-
         <li>
             <label>Phone</label>
-            <span  *ngIf="!getIfEditable('phoneNumber')">
-                    {{ _shared.getHeaderAttributeValue('countryCode')==null?"":
-                        ' '+ _shared.getHeaderAttributeValue('countryCode')+'-'+_shared.getHeaderAttributeValue('phoneNumber')
-                    }}
-            </span>
+            
 
-            <div class="val" *ngIf="getIfEditable('phoneNumber')">
-                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryCode')"
-                    [primaryKey]="_shared.primaryKey" displayKey="label" [sharedData]="_shared.formData"
-                    [lovConfig]="countryCodeLOV" validators="required" [isEdit]="getIfEditable('countryCode')"
+             <div class="val"> 
+                <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('countryPhCode')"
+                    [primaryKey]="_shared.primaryKey" displayKey="countryPhCode" [sharedData]="_shared.formData"
+                    [lovConfig]="countryCodeLOV" [isEdit]="getIfEditable('countryPhCode')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"
-                    title="Country Code" class="text-reduce-width" numeric="true" style="max-width:65px">
+                    title="Country Code" class="text-reduce-width" numeric="true" style="max-width:50px">
                 </tnz-input>
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('phoneNumber')"
-                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
+                <tnz-input type="text" [path]="_shared.getHeaderAttrPath('phoneNumber')"
+                    [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
                     [isEdit]="getIfEditable('phoneNumber')" (valueChanged)="PhoneNumberValidation($event)"
                     [loading]="_shared.headerLoading || _shared.loading" title="Phone Number" stretch="true">
                 </tnz-input>
@@ -142,13 +131,12 @@
     <ul>
         <li>
             <label>Password</label>
-           
+
             <div class="val">
                 <tnz-input type="text" dataType="password" [path]="_shared.getHeaderAttrPath('password')"
                     [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
                     [isEdit]="getIfEditable('password')" [loading]="_shared.headerLoading || _shared.loading"
-                    (valueChanged)="passwordValidation($event,'password')"
-                    [validators]="_shared.id==0?'required':''"
+                    (valueChanged)="passwordValidation($event,'password')" [validators]="_shared.id==0?'required':''"
                     title="Password">
                 </tnz-input>
             </div>
@@ -160,9 +148,8 @@
                     [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
                     [isEdit]="getIfEditable('confirmPassword')" [loading]="_shared.headerLoading || _shared.loading"
                     (valueChanged)="confirmPasswordValidation($event,'confirmPassword')"
-                    [validators]="_shared.id==0?'required':''"
-                    title="Confirm Password">
-                    
+                    [validators]="_shared.id==0?'required':''" title="Confirm Password">
+
                 </tnz-input>
             </div>
         </li>
@@ -180,7 +167,7 @@
                 </tnz-input>
                 <span>Days</span>
             </div>
-        </li> -->
+        </li>  -->
         <!-- <li>
             <label>Max Attempts</label>
             <div class="val">
@@ -193,15 +180,21 @@
         </li> -->
         <li>
             <label>Attempts Left</label>
-            <div class="val">
-
-                <tnz-input type="number" [path]="_shared.getHeaderAttrPath('attemptsLeft')"
+            <div class="val" style="margin-left:4px;">
+                {{_shared.getHeaderAttributeValue('attemptsLeft')}}
+                <!-- <tnz-input type="number" [path]="_shared.getHeaderAttrPath('attemptsLeft')"
                     [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" validators="required"
                     [isEdit]="getIfEditable('attemptsLeft')" [loading]="_shared.headerLoading || _shared.loading"
                     (valueChanged)="maxAttempts($event)">
-                </tnz-input>
+                </tnz-input> -->
             </div>
         </li>
+        <!-- <li *ngIf="_shared.getHeaderAttributeValue('attemptsLeft')==0">
+               <label>Unlock Password</label> 
+                <button mat-button matTooltip="Unlock Password">
+                    <mat-icon class="mat-color-info" (click)="resetPassword()">lock_open</mat-icon>
+                </button>
+        </li> -->
     </ul>
 </div>
 <div class="group">

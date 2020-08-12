@@ -28,25 +28,25 @@ export class FacilityComponent {
     .then(() => {
       
   
-      if (this.router.routerState.snapshot.url == '/facility/create') {
-        this.location.go('/facility/create');
-        this._shared.id=0;
-        this._service.inputService.resetInputCache(this._shared.appPath);
-        this._shared.initLocalCache();
-        this._shared.editMode = true;
-        this._shared.refreshData.next(true);
-        this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
+      // if (this.router.routerState.snapshot.url == '/facility/create') {
+      //   this.location.go('/facility/create');
+      //   this._shared.id=0;
+      //   this._service.inputService.resetInputCache(this._shared.appPath);
+      //   this._shared.initLocalCache();
+      //   this._shared.editMode = true;
+      //   this._shared.refreshData.next(true);
+      //   this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
         
-      }
-      else {
+      // }
+      // else {
         this.router.navigateByUrl('/facility/create').then(done => {
           this._shared.editMode = true;
           this._shared.initLocalCache();
-          this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
+          //this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
   
-  
-        }).catch((err) => { console.log('Caught Exception on create!', err) })
-      }
+        });
+      //   }).catch((err) => { console.log('Caught Exception on create!', err) })
+      // }
     }).catch(err => {
       this.alertutils.showAlerts(err);
     })

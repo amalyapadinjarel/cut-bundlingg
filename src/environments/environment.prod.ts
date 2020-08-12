@@ -3,7 +3,7 @@ export const environment = {
   base_url: 'http://trendzv5.cfaiteam.com/',
   api_url: 'http://trendzv5.cfaiteam.com/cbp',
   api_action_url: 'http://trendzv5.cfaiteam.com/',
-  api_url_v4: 'http://trendzv5.cfaiteam.com/hcm-web',
+  api_url_v4: 'http://trendzv4.cfaiteam.com/hcm-web',
   bpm_url: 'http://trendzv5.cfaiteam.com/activiti-rest/service/',
   bi_url: 'http://trendzv5.cfaiteam.com/trendz-bi',
   asset_url: 'http://trendzv5.cfaiteam.com/trendz-app-assets/resources',
@@ -11,4 +11,4 @@ export const environment = {
 };
 
 
-export const appVersion = 'alpha 1.10.48';
+export const appVersion = 'alpha 1.11.13';

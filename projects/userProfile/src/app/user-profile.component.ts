@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { UserProfileSharedService } from './_service/user-profile-shared.service';
@@ -14,14 +14,15 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 import { PersonnelNumLOVConfig, CountryCodeLOVConfig } from '../../../user/src/app/models/lov-config';
 import { SubSink } from 'subsink';
 import { endWith } from 'rxjs/operators';
-import {  ImgCropperConfig, ImgCropperEvent, ImgCropperErrorEvent, LyImageCropper } from '@alyle/ui/image-cropper';
+import { ImgCropperConfig, ImgCropperEvent, ImgCropperErrorEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { StyleRenderer, ThemeVariables, lyl } from '@alyle/ui';
 import { ChangePasswordComponent } from './form/change-password/change-password.component';
 import { CropCircleComponent } from './crop-circle-component/crop-circle-component.component';
 import { PersonalDetailsComponent } from './form/personal-details/personal-details.component';
+import { ImageDirective } from 'app/shared/directives/image.directive';
 
 const STYLES = (theme: ThemeVariables) => ({
-	$global: lyl `{
+	$global: lyl`{
 	  body {
 		background-color: ${theme.background.default}
 		color: ${theme.text.default}
@@ -30,10 +31,10 @@ const STYLES = (theme: ThemeVariables) => ({
 		direction: ${theme.direction}
 	  }
 	}`,
-	root: lyl `{
+	root: lyl`{
 	  display: block
 	}`
-  });
+});
 
 @Component({
 	selector: 'user-profile',
@@ -61,10 +62,12 @@ export class UserProfileComponent {
 	loading = true;
 	changePwd = false;
 	private refreshSub: Subscription;
+	@ViewChild('profilePic', {}) profilePicComponent : ElementRef;
+	@ViewChild('signature', {}) signatureComponent : ElementRef;
 
 	countryCodeLOV = JSON.parse(JSON.stringify(CountryCodeLOVConfig));
 
-	
+
 	constructor(private route: ActivatedRoute,
 		private location: Location,
 		public _shared: UserProfileSharedService,
@@ -83,12 +86,16 @@ export class UserProfileComponent {
 
 	ngOnInit() {
 
-		this.currentUser = this.userService.getCurrentUser();
-		this._shared.id = this.currentUser.userId;
+		this.userService.currentUser.subscribe(user => {
+			// console.log("user:",user)
+			this.currentUser = user
+			this._shared.id = this.currentUser.userId;
+		})
+
+
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
 			this.loadData();
-		  })
-		//this.loadData();
+		})
 	}
 
 	ngOnDestroy() {
@@ -107,13 +114,13 @@ export class UserProfileComponent {
 
 	save(exit = false) {
 		this._service.save(exit)
-		  .then((flag) => {
-			if (flag && exit) {
-			  this.cancelEdit();
-			}
-		  })
-	  }
-	
+			.then((flag) => {
+				if (flag && exit) {
+					this.cancelEdit();
+				}
+			})
+	}
+
 
 	loadData() {
 		this.setLoading(true);
@@ -146,21 +153,30 @@ export class UserProfileComponent {
 
 	openImageUploader() {
 		this.matDialogRef = this.dialog.open(CropCircleComponent);
-		this.matDialogRef.componentInstance.displayUrl = '/images/users'+ this._shared.id;
+		// this.matDialogRef.componentInstance.displayUrl = '/images/users/' + this._shared.id;
 		this.matDialogRef.componentInstance.uploadUrl = '/userProfile/image/' + this._shared.id;
+		this.matDialogRef.afterClosed().subscribe(res => {
+			if (res.data)
+				this.profilePicComponent.nativeElement.src = res.data;
+		})
 	}
-	openSignatureUploader(){
+	openSignatureUploader() {
 		this.matDialogRef = this.dialog.open(CropCircleComponent);
-		this.matDialogRef.componentInstance.displayUrl = '/images/users/signature/'+ this._shared.id;
+		// this.matDialogRef.componentInstance.displayUrl = '/images/users/signature/' + this._shared.id;
 		this.matDialogRef.componentInstance.uploadUrl = '/userProfile/signature/' + this._shared.id;
-	}
-	
-	changePassword(){
-		const dialogRef= this.dialog.open(ChangePasswordComponent);
+		this.matDialogRef.afterClosed().subscribe(res => {
+			// console.log(res.data);
+			if (res.data)
+				this.signatureComponent.nativeElement.src = res.data;
+		})
 	}
 
-	editProfileDetails(){
-		const dialogRef= this.dialog.open(PersonalDetailsComponent);
+	changePassword() {
+		const dialogRef = this.dialog.open(ChangePasswordComponent);
+	}
+
+	editProfileDetails() {
+		const dialogRef = this.dialog.open(PersonalDetailsComponent);
 
 	}
 	getIfEditable(key) {

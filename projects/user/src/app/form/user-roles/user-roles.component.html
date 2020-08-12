@@ -1,13 +1,15 @@
 <smd-datatable [tableId]="_shared.appKey + '.userRoles'" [paginated]="!_shared.getUserRolesEditable()"
-	[loading]="_shared.userRolesLoading" class="tnz-input-table" [filterEnabled]="!_shared.getUserRolesEditable()"
+	[loading]="_shared.userRolesLoading" class="tnz-input-table" 
 	[sortEnabled]="!_shared.getUserRolesEditable()" (onRowSelected)="onRowSelected()"
-	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
+	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" [inputPath]="_shared.userRolesPath">
 
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getUserRolesEditable()">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
 				<mat-icon *ngIf="model[_shared.userRolesPrimaryKey] == 0" class="mat-color-danger"
 					matTooltip="Delete Line" (click)="deleteLine(index,model)">delete</mat-icon>
+				<mat-icon *ngIf="model[_shared.userRolesPrimaryKey] != 0" style="color:gray"
+					matTooltip="Delete disabled" >delete</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
@@ -29,11 +31,11 @@
 		</ng-template>
 	</smd-datatable-column>
 
-	<smd-datatable-column title="Start Date" field="roleStartDateTr" sortField="roleStartDate" sortable="true"
+	<smd-datatable-column title="Start Date" field="roleStartDate" sortField="roleStartDate" sortable="true"
 		[filterable]="true" [colStyle]="{'min-width':'95px'}">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getUserRolesEditable('roleStartDateTr')">{{model.roleStartDateTr}}</span>
-			<div *ngIf="_shared.getUserRolesEditable('roleStartDateTr')">
+			<span *ngIf="!_shared.getUserRolesEditable('roleStartDate')">{{model.roleStartDate}}</span>
+			<div *ngIf="_shared.getUserRolesEditable('roleStartDate')">
 				<tnz-input type="date" [path]="_shared.getUserRolesPath(index,'roleStartDate')"
 					[primaryKey]="_shared.userRolesPrimaryKey" [sharedData]="_shared.formData"
 					[isEdit]="getIfEditable(index,'roleStartDate')"
@@ -42,11 +44,11 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="End Date" field="roleEndDateTr" sortField="roleEndDate" sortable="true"
+	<smd-datatable-column title="End Date" field="roleEndDate" sortField="roleEndDate" sortable="true"
 		[filterable]="true" [colStyle]="{'min-width':'95px'}">
 		<ng-template let-model="data" let-index="index">
-			<span *ngIf="!_shared.getUserRolesEditable('roleEndDateTr')">{{model.roleEndDateTr}}</span>
-			<div *ngIf="_shared.getUserRolesEditable('roleEndDateTr')">
+			<span *ngIf="!_shared.getUserRolesEditable('roleEndDate')">{{model.roleEndDate}}</span>
+			<div *ngIf="_shared.getUserRolesEditable('roleEndDate')">
 				<tnz-input type="date" [path]="_shared.getUserRolesPath(index,'roleEndDate')"
 					[primaryKey]="_shared.userRolesPrimaryKey" [sharedData]="_shared.formData"
 					[isEdit]="getIfEditable(index,'roleEndDate')"

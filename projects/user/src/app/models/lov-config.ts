@@ -4,7 +4,7 @@ export const PersonnelNumLOVConfig:any={
     dataHeader:'data',
     returnKey: 'personId',
     displayKey:'personnelNum',
-    filterAttributes:[''],
+    filterAttributes:['personnelNum'],
     displayFields:[
         {
 
@@ -30,7 +30,7 @@ export const CountryCodeLOVConfig:any={
     dataHeader:'data',
     returnKey: 'countryPhCode',
     displayKey:'countryPhCode',
-    filterAttributes:['countryPhCode','countryCode'],
+    filterAttributes:['countryPhCode'],
     displayFields:[
         {
 

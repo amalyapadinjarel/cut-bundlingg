@@ -4,7 +4,7 @@
         <app-facility-card></app-facility-card>
       </perfect-scrollbar>
     </div>
-    <div class="line-details">
+    <div class="line-details" >
       <div style="display: flex;">
         <span class="flex-filler"></span>
         <div *ngIf="!_shared.editMode" class="form-nav">
@@ -13,8 +13,8 @@
             {{ _shared.formData.header?.creationDate }}, Modified by
             {{ _shared.formData.header?.lastUpdatedBy }} on
             {{
-              _shared.formData.header?.lastUpdateDate
-                | date: dateUtils.dateMinFormat
+              _shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat
+              
             }}</span>
           <form-nav
             [apiUrl]="'/facility/navigation/' + _shared.id"

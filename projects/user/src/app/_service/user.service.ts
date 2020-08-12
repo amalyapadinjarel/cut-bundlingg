@@ -10,6 +10,7 @@ import { User } from '../models/user';
 import { ConfirmPopupComponent } from 'app/shared/component';
 import { Subscription } from 'rxjs';
 import { SubSink } from 'subsink';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable(
   // {  providedIn: 'root'}
@@ -97,6 +98,7 @@ export class UserAppService {
           // this._shared.refreshData.next(true);
           resolve(true);
         }, err => {
+          console.log(err)
           if (err) {
             this.alertUtils.showAlerts('Failed to ' + ((isCreate ? 'save' : 'edit') + ' document. ') + err);
           }
@@ -144,7 +146,6 @@ export class UserAppService {
         reject('Please fill mandatory fields.');
       } else {
         let saveData = this._cache.getCachedValue(this._shared.appPath);
-        // Adding the removedkeys as active - N to remove them
         if (saveData) {
 
           // console.log("savedata=", saveData)
@@ -154,18 +155,7 @@ export class UserAppService {
               saveData[key] = [];
             }
 
-            //setting active as N
-            // let removedPath = this._shared[key + 'RemovedKeysPath'];
-            // let linePrimaryKey = this._shared[key + 'PrimaryKey']
-            // saveData[key + 'Removed'] = this._cache.getCachedValue(removedPath) || [];
-            // if (cache && cache.length) {
-            //   cache.forEach(removedPrimaryKey => {
-
-            //     json[linePrimaryKey] = removedPrimaryKey;
-            //     //saveData[key].push(json)
-            //   });
-            // }
-
+        
           });
           let observable;
           if (id == 0) {
@@ -356,6 +346,23 @@ export class UserAppService {
           } 
         })
     })
+  }
+
+  //Method to copy User
+  copyUser() {
+    let defaultMsg = "Unknown Error. Failed to copy role.";
+    let params: HttpParams = new HttpParams();
+    params = params.set('userName', this._shared.getHeaderAttributeValue('userName')) //???
+
+    return new Promise((resolve, reject) => {
+      this.apiService.get('/' + this._shared.apiBase + '/copyUser/' + this._shared.id, params)
+        .subscribe(data => {
+          if (data) {
+            resolve(data);
+          }
+          reject(defaultMsg);
+        }, err => reject(defaultMsg));
+    });
   }
 
 }

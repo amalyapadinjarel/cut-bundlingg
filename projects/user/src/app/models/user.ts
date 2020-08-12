@@ -14,7 +14,9 @@ export class User {
     passwordLifeSpanDays:number;
     maxAttempts:number;
     attemptsLeft:number;
-    countryCode:number;
+    countryCode:string;
+    countryPhCode:string;
+
     phoneNumber:number;
     phoneNumWithCode:string;
     emailAddress:string;
@@ -43,7 +45,10 @@ export class User {
         this.passwordLifeSpanDays=model?model.passwordLifeSpanDays:"";
         this.maxAttempts=model?model.maxAttempts:"";
         this.attemptsLeft=model?model.attemptsLeft:"";
+        
         this.countryCode=model?model.countryCode:"";
+        this.countryPhCode=model?model.countryPhCode:"";
+
         this.phoneNumber=model?model.phoneNumber:"";
         this.phoneNumWithCode=model?model.phoneNumWithCode:"";
         this.emailAddress=model?model.emailAddress:"";

@@ -1,0 +1,124 @@
+<smd-datatable [dataUrl]="_shared.apiBase" dataHeader="workCenter" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
+    (pageChange)="pageChanged($event)" [selectedPage]="_shared.selectedPage" [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode"
+    [primaryListing]="false" class="tnz-input-table" >
+    <!-- <smd-datatable-column title="#" field=" " sortable="true" [filterable]="true" [colStyle]="{'min-width':'40px'}" numeric="true">
+        <ng-template let-model="data" let-index="index">
+            <span>{{index+1}}</span>
+        </ng-template>
+    </smd-datatable-column> -->
+    <smd-datatable-column title=" " field=" " [colStyle]="{'width':'10px'}" *ngIf="_shared.editMode">
+        <ng-template let-model="data" let-index="index">
+            <div class="row-operations" *ngIf="model[_shared.workCenterPrimaryKey] == 0">
+                <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+            </div>
+            <div class="row-operations" *ngIf="model[_shared.workCenterPrimaryKey] != 0">
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input class="text-upper" type="text" [path]="_shared.getWorkCenterAttrPath(index,'shortCode')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.getWCAttrEditable('shortCode',model.wcId)" [loading]=false
+                style=" min-width: 300px;" validators="required" (valueChanged)="validateData($event,index,'shortCode')">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Name" field="wcName" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'wcName')" [primaryKey]="_shared.workCenterPrimaryKey"
+                (valueChanged)="validateData($event,index,'wcName')" [sharedData]="_shared.formData" [isEdit]="_shared.editMode"
+                [loading]=false style=" min-width: 300px;" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Type" field="wcTypeMeaning" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="lov" [path]="_shared.getWorkCenterAttrPath(index,'wcTypeMeaning')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [lovConfig]="typeLovList" [sharedData]="_shared.formData" [isEdit]="_shared.getWCAttrEditable('wcTypeMeaning',model.wcId)"
+                [loading]=false style=" min-width: 100px;" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'description')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false style=" min-width: 300px;" (valueChanged)="validateData($event,index,'description')">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Facility" field="facilityCode" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="lov" [path]="_shared.getWorkCenterAttrPath(index,'facilityCode')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [lovConfig]="facilityLovList" [sharedData]="_shared.formData" [isEdit]="_shared.getWCAttrEditable('facilityCode',model.wcId)"
+                [loading]=false style=" min-width: 100px;" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Seq#" field="seq" sortable="true" [filterable]="true" [colStyle]="{'width':'30px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'seq')" [primaryKey]="_shared.workCenterPrimaryKey" [sharedData]="_shared.formData"
+                [isEdit]="_shared.editMode" [loading]=false style=" min-width: 30px;" (valueChanged)="validateData($event,index,'seq')" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Group Code 1" field="groupCode1" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'groupCode1')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false style=" min-width: 100px;">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Group Code 2" field="groupCode2" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'groupCode2')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false style=" min-width: 100px;">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'8px'}">
+        <ng-template let-model="data" let-index="index">
+            <div *ngIf="!_shared.editMode" style=" min-width: 10px;">
+                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle; padding-left: 10px;" matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle; padding-left: 10px;" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+            <div *ngIf="_shared.editMode && model[_shared.workCenterPrimaryKey] != 0">
+                <tnz-input type="checkbox" [path]="_shared.getWorkCenterAttrPath(index,'active')" [primaryKey]="_shared.workCenterPrimaryKey"
+                    style=" min-width: 10px;" [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false class="checkbox-center-align">
+                </tnz-input>
+            </div>
+            <div class="checkbox-center-align" *ngIf="model[_shared.workCenterPrimaryKey] == 0">
+                <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Created By" field="createdUser" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'createdUser')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Created On" field="creationDateTr" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'creationDateTr')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified By" field="lastUpdatedUser" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'lastUpdatedUser')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified On" field="lastUpdatedDateTr" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getWorkCenterAttrPath(index,'lastUpdatedDateTr')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+</smd-datatable>

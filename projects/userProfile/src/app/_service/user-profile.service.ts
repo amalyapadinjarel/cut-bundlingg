@@ -55,7 +55,6 @@ export class UserProfileService {
 
   //method to save the form data in cache and load the data
   save(exit): Promise<any> {
-    console.log("inside save() in service")
     this._shared.loading = true;
     return new Promise((resolve, reject) => {
       this.saveData(this._shared.id)
@@ -78,7 +77,6 @@ export class UserProfileService {
 
   //method to save data from cache to the backend by calling post or put
   saveData(id): Promise<any> {
-    console.log("Inside saveData")
     return new Promise((resolve, reject) => {
       let inValid;
 

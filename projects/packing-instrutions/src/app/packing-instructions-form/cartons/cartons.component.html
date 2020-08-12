@@ -36,6 +36,11 @@ dataHeader="cartonDetails" [rowCount]="_shared.cartonCount" [primaryListing]="fa
 		<ng-template let-model="data" let-index="index">
 			<span>{{model.packedTime}}</span>
 		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Packed Work Center" field="wcName" sortable="true" [filterable]="true">
+		<ng-template let-model="data" let-index="index">
+			<span>{{model.wcName}}</span>
+		</ng-template>
     </smd-datatable-column>
     <smd-datatable-column title="Hold Reason" field="holdReason" sortable="true" [filterable]="true">
 		<ng-template let-model="data" let-index="index">

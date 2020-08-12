@@ -1,0 +1,79 @@
+<smd-datatable [tableId]="_shared.appKey + '.userWcAccessList'" [dataUrl]="_shared.apiBase" dataHeader="userWcAccess"
+class="tnz-input-table" [primaryListing]="true" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
+    [selectedPage]="_shared.selectedPage" (pageChange)="pageChanged($event)" [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode">
+    <smd-datatable-column title=" " field=" " [colStyle]="{'width':'10px'}" *ngIf="_shared.editMode">
+        <ng-template let-model="data" let-index="index">
+            <div class="row-operations" *ngIf="model[_shared.userWcAccessPrimaryKey] == 0">
+                <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="_shared.deleteLine('userWcAccess', index)">delete</mat-icon>
+            </div>
+            <div class="row-operations" *ngIf="model[_shared.userWcAccessPrimaryKey] != 0">
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="User" field="userName" sortable="true" [filterable]="true"  >
+<ng-template let-model="data" let-index="index">
+         <tnz-input type="lov" [lovConfig]="UserLov" [path]="_shared.getuserWcAccessAttrPath(index,'userName')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+         validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.editMode "[loading]=false>
+            </tnz-input> 
+        </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true"  [colStyle]="{'width': '220px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input  type="lov" [lovConfig]="facilityLov" [path]="_shared.getuserWcAccessAttrPath(index,'facility')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+            validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.editMode "[loading]=false (valueChangedFromUI)="valueChangedFromFacility(index,$event,model.map_id)">
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Workcenter" field="workCenter" sortable="true" [filterable]="true" [colStyle]="{'width': '240px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="lov" [lovConfig]="WorkcenterLov" [path]="_shared.getuserWcAccessAttrPath(index,'workCenter')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+            validators="required" [sharedData]="_shared.formData" [isEdit]="_shared.editMode "[loading]=false >
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"  [colStyle]="{'width':'35px','text-align':'center'}">
+        <ng-template let-model="data" let-index="index">
+            <div *ngIf="!_shared.editMode">
+                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle; text-align:center" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+            <div *ngIf="_shared.editMode&& model[_shared.userWcAccessPrimaryKey] != 0">
+                <tnz-input type="checkbox" [path]="_shared.getuserWcAccessAttrPath(index,'active')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+                    [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false class="checkbox-center-align">
+                </tnz-input>
+            </div>
+            <div class="checkbox-center-align" *ngIf="model[_shared.userWcAccessPrimaryKey] == 0">
+                <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true"  [colStyle]="{'width': '110px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getuserWcAccessAttrPath(index,'createdBy')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+                   [sharedData]="_shared.formData" [isEdit]="false "[loading]=false >
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Created On" field="creationDate" sortable="true" [filterable]="true"  [colStyle]="{'width': '90px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getuserWcAccessAttrPath(index,'creationDate')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+                   [sharedData]="_shared.formData" [isEdit]="false"[loading]=false >
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified By" field="lastUpdatedBy" sortable="true" [filterable]="true" [colStyle]="{'width': '110px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getuserWcAccessAttrPath(index,'lastUpdatedBy')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+                   [sharedData]="_shared.formData" [isEdit]="false"[loading]=false >
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+    <smd-datatable-column title="Modified On" field="lastUpdatedDate" sortable="true" [filterable]="true"   [colStyle]="{'width': '90px'}">
+        <ng-template let-model="data" let-index="index" >
+            <tnz-input type="text" [path]="_shared.getuserWcAccessAttrPath(index,'lastUpdatedDate')" [primaryKey]="_shared.userWcAccessPrimaryKey"
+                   [sharedData]="_shared.formData" [isEdit]="false"[loading]=false >
+               </tnz-input> 
+           </ng-template> 
+    </smd-datatable-column>
+</smd-datatable>

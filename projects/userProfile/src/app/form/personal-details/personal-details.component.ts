@@ -24,9 +24,7 @@ export class PersonalDetailsComponent implements OnInit {
   errors: Errors = new Errors();
   private ngUnsubscribe: Subject<any> = new Subject<any>();
   isSubmitting: boolean = false;
-  authForm: FormGroup; //?
-  formGroup: FormGroup;
-  formData: any;
+   formData: any;
 
   profileEditForm: FormGroup;
   resetForm: boolean = false;
@@ -72,10 +70,11 @@ export class PersonalDetailsComponent implements OnInit {
 		this._service.save(exit)
 		  .then((flag) => {
 			if (flag && exit) {
-			  this.cancelEdit();
+        this.cancelEdit();
+        this.dialogRef.close();
 			}
       });
-      this.dialogRef.close();
+     
 	  }
   saveProfile() {
     console.log("save")
@@ -101,13 +100,6 @@ export class PersonalDetailsComponent implements OnInit {
         });
 
     }
-  }
-
-  oldPwd() {
-    if (this.profileEditForm.controls.oldPassword.value == '')
-      this.profileEditForm.controls.oldPassword.setErrors({ required: true });
-    else
-      this.profileEditForm.controls.oldPassword.setErrors(null);
   }
 
   checkConfirmPassword() {

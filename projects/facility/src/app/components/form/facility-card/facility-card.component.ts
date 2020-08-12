@@ -22,6 +22,7 @@ export class FacilityCardComponent implements OnInit, OnDestroy {
   companyLov = JSON.parse(JSON.stringify(CompanyLovConfig));
   divisionLov = JSON.parse(JSON.stringify(DivisionLovConfig));
   facilityGroupLov = JSON.parse(JSON.stringify(FacilityGroupLovConfig));
+  showDivision: boolean = false;
 
   constructor(
     private _service: FacilityService,
@@ -42,6 +43,8 @@ export class FacilityCardComponent implements OnInit, OnDestroy {
       })
     }
     setFacility() {
+      console.log('test');
+      this._shared.setFormData({});
       if (this.router.url.endsWith('/create')) {
           this._shared.id = 0;
           this._shared.editMode = true;
@@ -56,7 +59,7 @@ export class FacilityCardComponent implements OnInit, OnDestroy {
           }
           
       }
-      this._shared.setFormData({});
+     
      
   }
   
@@ -129,6 +132,8 @@ valueChangedFromUI(event) {
 setCompanyLovValue(event)
 {
   if(event.key = 'company')
-  this._shared.formData.header.company = event.value;
+  console.log(event);
+  
+  this.showDivision = event.value?.value != '';
 }
 }

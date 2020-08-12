@@ -12,9 +12,9 @@ import { User } from '../../models/user';
   selector: 'user-general-card',
   templateUrl: './general-card.component.html',
   styleUrls: ['./general-card.component.scss'],
-  host: { 'class': 'header-card' }
+  // host: { 'class': 'header-card' }
 
-  //host: { 'class': 'general-card' }
+  host: { 'class': 'general-card' }
 })
 
 export class GeneralCardComponent implements OnInit, OnDestroy {

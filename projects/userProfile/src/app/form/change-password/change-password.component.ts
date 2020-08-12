@@ -20,11 +20,8 @@ import { Router } from '@angular/router';
 export class ChangePasswordComponent implements OnInit {
 	errors: Errors = new Errors();
 	private ngUnsubscribe: Subject<any> = new Subject<any>();
-	isSubmitting: boolean = false;
-	authForm: FormGroup; //?
-	formGroup: FormGroup;
-	formData: any;
-
+	//isSubmitting: boolean = false;
+	
 	passwordResetForm: FormGroup;
 	resetForm: boolean = false;
 	blnValidPassword: boolean = false;
@@ -45,7 +42,6 @@ export class ChangePasswordComponent implements OnInit {
 		private alertUtils: AlertUtilities,
 		private dialogRef: MatDialogRef<ChangePasswordComponent>,
 		private fb: FormBuilder,
-		private authService: AuthService,
 		private eventService: EventService,
 		private userService:UserService,
 		private router: Router
@@ -87,13 +83,6 @@ export class ChangePasswordComponent implements OnInit {
 		}
 	}
 
-	oldPwd() {
-		if (this.passwordResetForm.controls.oldPassword.value == '')
-			this.passwordResetForm.controls.oldPassword.setErrors({ required: true });
-		else
-			this.passwordResetForm.controls.oldPassword.setErrors(null);
-	}
-
 	// oldPasswordValidation(event) {
 	// 	let pass = event.value;
 
@@ -113,11 +102,11 @@ export class ChangePasswordComponent implements OnInit {
 	
 	  }
 	
-	  clear() {
-		this.passwordResetForm.controls.oldPassword.setValue("");
-		this.passwordResetForm.controls.newPassord.setValue("");
-		this.passwordResetForm.controls.confirmPassword.setValue("");
-	  }
+	//   clear() {
+	// 	this.passwordResetForm.controls.oldPassword.setValue("");
+	// 	this.passwordResetForm.controls.newPassord.setValue("");
+	// 	this.passwordResetForm.controls.confirmPassword.setValue("");
+	//   }
 	
 	  ngOnInit() {
 		this.passwordResetForm.controls.userId.setValue(this._shared.id);
@@ -157,19 +146,19 @@ export class ChangePasswordComponent implements OnInit {
 		return visibility;
 	  }
 	
-	  validatePassword() {
-		if (this.passwordResetForm.controls.newPassword.value == '')
-			this.passwordResetForm.controls.newPassword.setErrors({ required: true });
-		else {
-			if (!this.blnValidPassword) {
-				this.passwordResetForm.controls.newPassword.setErrors(null);
-				this.passwordResetForm.controls.newPassword.setErrors({ pattern: true });
-			}
-			else {
-				this.passwordResetForm.controls.newPassword.setErrors(null);
-			}
-		}
-	}
+	//   validatePassword() {
+	// 	if (this.passwordResetForm.controls.newPassword.value == '')
+	// 		this.passwordResetForm.controls.newPassword.setErrors({ required: true });
+	// 	else {
+	// 		if (!this.blnValidPassword) {
+	// 			this.passwordResetForm.controls.newPassword.setErrors(null);
+	// 			this.passwordResetForm.controls.newPassword.setErrors({ pattern: true });
+	// 		}
+	// 		else {
+	// 			this.passwordResetForm.controls.newPassword.setErrors(null);
+	// 		}
+	// 	}
+	// }
 
 	  validatePasswordByAction(action: string) {
 		if(action == "validate"){

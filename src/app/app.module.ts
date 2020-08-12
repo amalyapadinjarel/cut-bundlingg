@@ -212,13 +212,29 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/concurrent-program/src/app/concurrent-programs.module').then(m => m.ConcurrentProgramsModule)
 	},
 	{
+		path: 'machines',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/machines/src/app/machines.module').then(m => m.MachinesModule)
+	},
+	{
 
 		path: 'user-profile',
-		//canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		loadChildren: () => import('../../projects/userProfile/src/app/user-profile.module').then(m => m.UserProfileModule)
 	},
 	{
-		path: '**',
+
+		path: 'user-workcenter-access',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/user-wc-access/src/app/user-wc-access.module').then(m => m.UserWcAccessModule)
+	},
+	{
+		path: 'work-center',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/work-center/src/app/work-center.module').then(m => m.WorkCenterModule)
+	},
+	{
+	path: '**',
 		redirectTo: 'not-found'
 	}
 ], { useHash: true, onSameUrlNavigation: 'reload' });

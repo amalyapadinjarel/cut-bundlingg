@@ -491,6 +491,7 @@ export class SmdDataTable
 		this.range.emit(selectedRange);
 		this.refresh();
 	}
+	
 	ngOnDestroy(): void {
 		this._columnsSubscription.unsubscribe();
 	}

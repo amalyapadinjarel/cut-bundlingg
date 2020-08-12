@@ -10,8 +10,7 @@
                   validators="required,length:60" (valueChanged)="valueChangedFromUI($event)" [isEdit]="getIfEditable('shortCode')" 
                
                   [loading]="_shared.headerLoading || _shared.loading" > 
-                </tnz-input>  
-                 
+                </tnz-input>                  
             </div>
         </li>
       <li>
@@ -39,7 +38,7 @@
    
         <li>
             <label id = "label">Division</label>
-            <div class="val" *ngIf =" _shared.formData.header?.company">
+            <div class="val" *ngIf ="showDivision || _shared.id != 0">
                 
                 <tnz-input type="lov" [path]="_shared.getHeaderAttrPath('divisionName')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
                   validators="required"  [isEdit]="getIfEditable('divisionName')" [lovConfig]="divisionLov" displayKey="label"
@@ -60,8 +59,8 @@
         <li>
             <label id = "label">Active</label>
             <div *ngIf="!getIfEditable('active')">
-                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon>
-                <mat-icon *ngIf= "_shared.formData.header?.active =='N'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;padding-left: 8px;" matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf= "_shared.formData.header?.active =='N'" style="color:red;font-size:20px;vertical-align: middle;padding-left: 8px;" matTooltip="Inactive">cancel</mat-icon>
 
                 </div>
             <div class="val" *ngIf="getIfEditable('active')"> 

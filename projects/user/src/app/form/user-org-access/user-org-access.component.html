@@ -1,13 +1,15 @@
 <smd-datatable [tableId]="_shared.appKey + '.userOrgAccess'" [paginated]="!_shared.getUserOrgAccessEditable()"
 	[loading]="_shared.userOrgAccessLoading" class="tnz-input-table"
-	[filterEnabled]="!_shared.getUserOrgAccessEditable()" [sortEnabled]="!_shared.getUserOrgAccessEditable()"
-	(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
+	 [sortEnabled]="!_shared.getUserOrgAccessEditable()"
+	(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" [inputPath]="_shared.userOrgAccessPath">
 
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getUserOrgAccessEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
 				<mat-icon *ngIf="model[_shared.userOrgAccessPrimaryKey]==0" class="mat-color-danger"
 					matTooltip="delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+				<mat-icon *ngIf="model[_shared.userOrgAccessPrimaryKey] != 0" style="color:gray"
+					matTooltip="Delete disabled" >delete</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
@@ -45,8 +47,10 @@
 		[colStyle]="{'width':'15px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="checkbox-center-align" *ngIf="!_shared.getUserOrgAccessEditable('default')">
-				<mat-checkbox [ngModel]="model.default == 'Y'" disabled></mat-checkbox>
-			</div>
+                <mat-icon *ngIf="model.default=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
+                    matTooltip="Default">check_circle</mat-icon>
+            
+            </div>
 			<div *ngIf="_shared.getUserOrgAccessEditable('default')">
 				<tnz-input type="checkbox" [path]="_shared.getUserOrgAccessPath(index,'default')"
 					[primaryKey]="_shared.userOrgAccessPrimaryKey" [sharedData]="_shared.formData"

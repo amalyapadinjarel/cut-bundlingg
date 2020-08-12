@@ -96,8 +96,8 @@ save(id?: number): Promise<any> {
                 resolve(true);
             }, err => {
                 if (err) {
-                    //this.alertUtils.showAlerts('Failed to ' + 'save' + ' document. ' + err);
-                    this.alertUtils.showAlerts('Failed to ' + ((this._shared.facility == '--' ? 'save' : 'edit') + ' document. ') + err);
+                    this.alertUtils.showAlerts('Failed to ' + 'save' + ' document. ' + err);
+                  //  this.alertUtils.showAlerts('Failed to ' + ((this._shared.facility == '--' ? 'save' : 'edit') + ' document. ') + err);
                 }
                 this._shared.loading = false;
                 resolve(false);
@@ -164,7 +164,8 @@ saveData(id): Promise<any> {
                 })
 
                 
-            } else {
+            } 
+            else {
                 reject('No changes detected');
             }
         }

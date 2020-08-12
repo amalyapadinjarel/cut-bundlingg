@@ -13,7 +13,7 @@ export class ConfirmPopupComponent {
   public description = '';
   public confirmText = 'DELETE';
   public cancelText = 'CANCEL';
-
+  public value='';
   constructor(private dialogRef: MatDialogRef<ConfirmPopupComponent>) { }
 
   close(isCancel: boolean) {

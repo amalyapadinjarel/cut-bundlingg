@@ -1,0 +1,20 @@
+<div class="app-content-header">
+	<div class="app-title" routerLink="./list">
+		<span class="primary">User Workcenter</span>
+		<span class="accent">Access</span>
+	</div>
+	<div class="app-menus">
+		<div class="group">
+			<a (click)="newLine()">Add</a>
+			<a (click)="CopyUser() " *ngIf="!_shared.editMode">Copy</a>
+			<a (click)="edit()" *ngIf="!_shared.editMode">Edit</a>
+			<a (click)="save()" *ngIf="_shared.editMode">Save</a>
+			<a (click)="cancelEdit()" *ngIf="_shared.editMode">Cancel</a>
+		</div>
+	</div>
+</div>
+<div class="app-content-container">
+	<div class="app-content-wrapper">
+		<router-outlet></router-outlet>
+	</div>
+</div>
