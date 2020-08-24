@@ -1,7 +1,7 @@
 <smd-datatable [tableId]="_shared.appKey + '.lookupValue'" 
-	[loading]="_shared.lookupValueLoading" class="tnz-input-table" [filterEnabled]="!_shared.getLookupValueEditable()"
+	[loading]="_shared.lookupValueLoading" class="tnz-input-table" [inputPath]="_shared.lookupValuePath"
 	[sortEnabled]="!_shared.getLookupValueEditable()" (onRowSelected)="onRowSelected()"
-	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" scrollType="scroll" defaultRange="10">
+	(onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" scrollType="scroll" defaultRange="10" >
 
 	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px'}">
 		<ng-template let-index="index">

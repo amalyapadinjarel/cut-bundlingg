@@ -7,19 +7,18 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { User } from '../models/user';
-import { ConfirmPopupComponent } from 'app/shared/component';
 import { Subscription } from 'rxjs';
 import { SubSink } from 'subsink';
 import { HttpParams } from '@angular/common/http';
+
 
 @Injectable(
   // {  providedIn: 'root'}
 )
 export class UserAppService {
- 
+
 
   public apiSubscription: Subscription;
-
   public subs: SubSink;
 
   constructor(
@@ -28,9 +27,7 @@ export class UserAppService {
     private _cache: LocalCacheService,
     private alertUtils: AlertUtilities,
     public inputService: TnzInputService,
-    public router: Router,
-    private _dialog: MatDialog,
-    private location: Location
+    public router: Router 
 
   ) { }
 
@@ -76,7 +73,6 @@ export class UserAppService {
     this._shared.loading = true;
     let isCreate = this._shared.id == 0;
     return new Promise((resolve, reject) => {
-      //this.saveData(id || this._shared.id)
       this.saveData(this._shared.id)
         .then(res => {
           this.inputService.resetInputCache(this._shared.appKey + '.' + this._shared.id);
@@ -84,9 +80,6 @@ export class UserAppService {
           this._shared.listData = null; //to refresh list
 
           if (isCreate) {
-            // this.location.go('/user/' + this._shared.id + '/edit');
-            // this.location.replaceState('/user/' + this._shared.id + '/edit');
-
             this.router.navigateByUrl('/user/' + this._shared.id + (exit ? '' : '/edit'))
 
           }
@@ -95,7 +88,6 @@ export class UserAppService {
               this.router.navigateByUrl('/user/' + this._shared.id);
             this._shared.refreshData.next(true);
           }
-          // this._shared.refreshData.next(true);
           resolve(true);
         }, err => {
           console.log(err)
@@ -155,7 +147,7 @@ export class UserAppService {
               saveData[key] = [];
             }
 
-        
+
           });
           let observable;
           if (id == 0) {
@@ -190,15 +182,18 @@ export class UserAppService {
         return this.fetchUserRoles(id);
       case 'userOrgAccess':
         return this.fetchUserOrgAccess(id);
-
+      case 'rolesOrgAccess':
+        return this.fetchRolesOrgAccess(id);
+      case 'effectiveOrgAccess':
+        return this.fetchEffectiveOrgAccess(id);
       default:
         break;
     }
   }
 
 
-  //method to loadData
-  loadData(key) {
+  loadData(key):Promise<any> {
+    return new Promise((resolve, reject) => {
     this._shared[key + 'Loading'] = true;
     this._shared.setLines(key, []);
 
@@ -208,6 +203,8 @@ export class UserAppService {
       this._shared[key + 'Loading'] = false;
       this._shared.refreshLines(key);
 
+      resolve(true);
+
     } else {
       this.fetchLinesData(key).then((data: any) => {
         this._shared.setLines(key, data);
@@ -216,13 +213,21 @@ export class UserAppService {
         this._shared.refreshLines(key);
         this._shared[key + 'Loading'] = false;
 
+        resolve(true);
+
       }, err => {
         this._shared.refreshLines(key);
         this._shared[key + 'Loading'] = false;
         if (err)
           this.alertUtils.showAlerts(err.message, true);
+
+          reject(err);
       });
     }
+  }).catch(err => {
+    console.log("Error on load data", err);
+
+  });
   }
 
   //method to fetch user Roles
@@ -265,6 +270,43 @@ export class UserAppService {
   }
 
 
+  //method to fetch  org access from roles
+  fetchRolesOrgAccess(id?: number) {
+    return new Promise((resolve, reject) => {
+      if (this._shared.id != 0) {
+        this.apiService.get('/' + this._shared.apiBase + '/orgAccessFromRoles/' + this._shared.id)
+          .subscribe(data => {
+            if (data.orgAccessInheritedFromRoles) {
+              resolve(data.orgAccessInheritedFromRoles);
+            }
+            else reject();
+            //  resolve([]);
+          }, err => reject(err));
+      }
+      else {
+        resolve([]);
+      }
+    });
+  }
+
+  //method to fetch  effective org acccess
+  fetchEffectiveOrgAccess(id?: number) {
+    return new Promise((resolve, reject) => {
+      if (this._shared.id != 0) {
+        this.apiService.get('/' + this._shared.apiBase + '/effectiveOrgAccess/' + this._shared.id)
+          .subscribe(data => {
+            if (data.effectiveOrgAccess) {
+              resolve(data.effectiveOrgAccess);
+            }
+            else reject();
+            //  resolve([]);
+          }, err => reject(err));
+      }
+      else {
+        resolve([]);
+      }
+    });
+  }
 
   //method to delete lines
   deleteDetailsLine(key: string, index: any, model: any) {
@@ -328,7 +370,7 @@ export class UserAppService {
 
   unlock(): Promise<any> {
     return new Promise((resolve, reject) => {
-    this.apiService.put('/' + this._shared.apiBase + '/unlockPassword/'+this._shared.id)
+      this.apiService.put('/' + this._shared.apiBase + '/unlockPassword/' + this._shared.id)
         .catch(err => {
           reject(err);
           return err;
@@ -336,14 +378,14 @@ export class UserAppService {
         })
         .subscribe(data => {
           if (data) {
-             this._shared.refreshHeaderData.next(true);
-             this._shared.listData=null;
-             this._shared.params=null;
-             resolve(true);
+            this._shared.refreshHeaderData.next(true);
+            this._shared.listData = null;
+            this._shared.params = null;
+            resolve(true);
           }
-          else{
+          else {
             resolve(false);
-          } 
+          }
         })
     })
   }

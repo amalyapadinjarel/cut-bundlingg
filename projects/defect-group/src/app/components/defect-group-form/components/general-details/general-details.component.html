@@ -1,0 +1,48 @@
+<div class='group'>
+    <h4> General </h4>
+    <ul>
+        <li>
+            <label id="label">Short Code</label>
+            <div class = 'val'>
+                <tnz-input type="text" [path]="_shared.getdefectGroupHeaderAttrPath('shortCode')" [primaryKey]="_shared.defectGroupPrimaryKey"
+                    displayKey="label" [sharedData]="_shared.formData" [loading]="_shared.headerLoading" validators="required"
+                    [isEdit]="getIfEditable('shortCode')" stretch = "true" class="text-upper"  (valueChanged) = "validateData($event, 'shortCode') ">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Name</label>
+            <div class="val">
+                <tnz-input type="text" [path]="_shared.getdefectGroupHeaderAttrPath('groupName')" [primaryKey]="_shared.defectGroupPrimaryKey"
+                    displayKey="label" [sharedData]="_shared.formData" [loading]="_shared.headerLoading" validators="required"
+                    [isEdit]="getIfEditable('groupName')" stretch  = "true"  (valueChanged) = "validateData($event, 'groupName') ">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Type</label>
+            <div class="val">
+                <tnz-input type="select" [path]="_shared.getdefectGroupHeaderAttrPath('defectType')" [primaryKey]="_shared.defectGroupPrimaryKey"
+                    [sharedData]="_shared.formData" [loading]="_shared.headerLoading" validators="required"
+                    [isEdit]="getIfEditable('defectType')" displayKey="label" returnKey="value" [selectOptions]="DefectTypeOptions">
+                </tnz-input>
+            </div>
+        </li>
+        <li>
+            <label id="label">Active</label>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getdefectGroupHeaderAttrPath('active')" [primaryKey]="_shared.defectGroupPrimaryKey"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="getIfEditable('active')" [loading]="_shared.headerLoading">
+                </tnz-input>
+            </div>
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;padding-left: 10px"
+                    matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf=" _shared.formData.header?.active =='N'" style="color:red;font-size:20px;vertical-align: middle;padding-left: 10px"
+                    matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+        </li>
+    </ul>
+</div>

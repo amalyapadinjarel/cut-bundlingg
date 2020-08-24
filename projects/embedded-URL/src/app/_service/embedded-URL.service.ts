@@ -100,16 +100,19 @@ export class EmbeddedURLService {
     }
   }
 
-  loadData(key) {
+
+
+    loadData(key):Promise<any> {
+    return new Promise((resolve, reject) => {
     this._shared[key + 'Loading'] = true;
     this._shared.setLines(key, []);
 
     if (this._shared.id == 0) {
-
       let data = this._shared.setLinesFromCache(key, [])
       this._shared.formData[key] = data;
       this._shared[key + 'Loading'] = false;
       this._shared.refreshLines(key);
+      resolve(true)
     } else {
 
       this.fetchLinesData(key).then((data: any) => {
@@ -118,14 +121,22 @@ export class EmbeddedURLService {
         this._shared.formData[key] = data;
         this._shared.refreshLines(key);
         this._shared[key + 'Loading'] = false;
+        resolve(true)
       }, err => {
         this._shared.refreshLines(key);
         this._shared[key + 'Loading'] = false;
         if (err)
-          this.alertUtils.showAlerts(err.message, true)
+          this.alertUtils.showAlerts(err.message, true);
+          reject(err);
       });
     }
-  }
+  }).catch(err => {
+    console.log("Error on load data", err);
+
+  });
+
+}
+  
 
   save(exit): Promise<any> {
     this._shared.loading = true;

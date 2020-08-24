@@ -198,6 +198,10 @@ export class PackingInstructionsSharedService {
       return this.appPath + '.cartonRemovedKeys';
     }
 
+    getSolidPackInputPath(mainIndex){
+      return this.appPath + '.' + mainIndex;
+    }
+    
     getHeaderAttributeValue(key) {
       let val = this.inputService.getInputValue(this.getHeaderAttrPath(key));
       val = typeof val != 'undefined' ? val : this.formData.header ? this.formData.header[key] : null;
@@ -226,7 +230,8 @@ export class PackingInstructionsSharedService {
     }
 
     getRatioPackDetailsPath(line,attr){
-      return this.ratioPackPath + '[' + line + '].' + attr;
+      return  `${this.ratioPackPath}[${line}].${attr ? attr.endsWith('.') ? attr.slice(0,-1) : attr : attr}`;
+
     }
 
     getRatioPacksHeaderPath(line,attr){

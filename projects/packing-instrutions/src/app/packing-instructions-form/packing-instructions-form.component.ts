@@ -19,7 +19,8 @@ export class PackingInstructionsFormComponent implements OnInit {
 
   private routerSubs: Subscription;
   hasNextRecord: boolean = false;
-	hasPreviousRecord: boolean = false;
+  hasPreviousRecord: boolean = false;
+  public navKeyArray = ['poId','orderId','parentProductId'];
 
   constructor(public _shared: PackingInstructionsSharedService,
 		private _service: PackingInstructionsService,
@@ -112,64 +113,5 @@ export class PackingInstructionsFormComponent implements OnInit {
         this.alertUtils.showAlerts("Carton already generated");
       }
     }
-
-    deleteCartonLines(){
-      this._service.validateCartonDelete().then(data=>{
-        if(data == 0){
-          const dialog = this.dialog.open(ConfirmPopupComponent);
-          dialog.componentInstance.dialogTitle = 'Warning';
-          dialog.componentInstance.message = 'Are you sure to delete all carton?';
-          dialog.componentInstance.confirmText = 'Delete';
-          dialog.afterClosed().subscribe(data=>{
-            if(data){
-              this._service.deleteCarton().then(data=>{
-                let packIds = this._shared.fetchAllPackIds();
-                let pushMessage = {
-                  appIdentifier: 'PACKING',
-                  action: 'PACK_DELETED',
-                  content: packIds
-                };
-                this._service.sendMessage(pushMessage);
-                this._shared.refreshData.next(true);
-                this._service.loadData('carton');
-              })
-            }
-          })
-        }
-        else{
-          this.alertUtils.showAlerts("One or more carton is not in OPEN status or has excess or short quantity");
-        }
-      })
-    }
-
-    generateCartonLines(){
-      if(this._shared.totalPacks > 0){
-        this._service.generateCarton('Y').then(data=>{
-          let pushMessage = {
-            appIdentifier: 'PACKING',
-            action: 'PACK_GENERATED',
-            content: {
-              style: this._shared.styleId,
-              purchaseOrder: this._shared.poId
-            }
-          };
-          this._service.sendMessage(pushMessage);
-        })
-      }
-      else{
-        this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
-      }
-      // if(this._shared.isCartonGenerated){
-      //   this.alertUtils.showAlerts("Carton already generated ");
-      // }
-      // else{
-      //   if(this._shared.totalPacks > 0){
-      //     this._service.generateCarton('Y').then(data=>{
-      //     })
-      //   }
-      //   else{
-      //     this.alertUtils.showAlerts("Failed to generate cartons. No packs created");
-      //   }
-      // }
-    }
+    
 }

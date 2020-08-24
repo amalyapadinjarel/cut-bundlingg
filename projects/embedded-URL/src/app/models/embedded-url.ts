@@ -1,7 +1,6 @@
 
 export class EmbeddedURL {
 
-    // URLId: number;
     urlId:number;
     location: string;
     biVendor: string;
@@ -12,7 +11,6 @@ export class EmbeddedURL {
     active: string;
     title: string;
     url: string;
-    // URL: string;
     baseSiteURL: string;
     isDefault: string;
     payload: string;
@@ -31,11 +29,9 @@ export class EmbeddedURL {
 
     constructor(model) {
         this.urlId=model.urlId;
-        //this.URLId = model.URLId;
         this.location = model.location;
         this.biVendor = model.biVendor;
         this.title = model.title;
-        //this.URL = model.URL;
         this.url = model.url;
 
         this.baseSiteURL = model.baseSiteURL;

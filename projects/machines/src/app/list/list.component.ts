@@ -77,13 +77,13 @@ valueChangedFromFacility(index,event , primaryKeyvalue = null){
 
 workCenterLov(index,field) {
   let cache = this._inputService.getInputValue(this._shared.getMachinesAttrPath(index,'facility'))
-  return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
+  return JSON.parse(JSON.stringify(workCenterLovConfig(cache ? cache.value != "" ? cache.value: null : null)));
 }
 
 }
 
 export const operationsLovconfig: any = {
-  title: 'Select operation',
+  title: 'Select Operation',
   url: 'lovs/operation',
   dataHeader: 'data',
   returnKey: 'value',
@@ -92,11 +92,11 @@ export const operationsLovconfig: any = {
   displayFields: [
       {
           key: 'label',
-          title: 'Operation'
+          title: 'Name'
       },
       {
           key: 'shortCode',
-          title: 'Operation Code'
+          title: 'Short Code'
       },]
 };
 
@@ -117,19 +117,19 @@ export const machineTypeLovConfig: any = {
 
 
 export const facilityLovconfig: any = {
-  title: 'Select packing Method',
-  url: 'lovs/facility-for-user',
+  title: 'Select Facility',
+  url: 'lovs/facility?userAcessOnly=true',
   dataHeader: 'data',
   returnKey: 'value',
   displayKey: 'shortCode',
   filterAttributes: ['shortCode'],
   displayFields: [{
       key: 'label',
-      title: 'Facility Name'
+      title: 'Name'
   },
   {
       key: 'shortCode',
-      title: 'Facility Short code'
+      title: 'Short Code'
   }]
 };
 
@@ -165,11 +165,11 @@ export function workCenterLovConfig(facilityId) {
           filterAttributes: ['shortCode'],
           displayFields: [{
               key: 'label',
-              title: 'Work center Name'
+              title: 'Name'
           },
           {
               key: 'shortCode',
-              title: 'Work center Short code'
+              title: 'Short Code'
           }]
       }
   return json

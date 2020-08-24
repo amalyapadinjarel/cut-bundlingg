@@ -14,6 +14,7 @@ export class Facility {
     lastUpdatedBy: String;
     creationDate: Date;
     lastUpdateDate: Date;
+    sequence: String;
 
     constructor(facility: any) {
         this.shortCode = facility.shortCode;
@@ -28,6 +29,7 @@ export class Facility {
         this.lastUpdatedBy = facility.lastUpdatedBy;
         this.creationDate = facility.creationDate;
         this.lastUpdateDate= facility.lastUpdateDate;
+        this.sequence = facility.sequence;
         let address = {
             AddressLine1 : facility.addressLine1,
             AddressLine2 : facility.addressLine2,

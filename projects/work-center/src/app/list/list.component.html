@@ -32,6 +32,20 @@
             </tnz-input>
         </ng-template>
     </smd-datatable-column>
+    <smd-datatable-column title="Production Processes" field="process" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <div *ngIf="!_shared.editMode">
+            <tnz-input [path]="_shared.getWorkCenterAttrPath(index,'process')" [primaryKey]="_shared.workCenterPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false style=" min-width: 300px;" (valueChanged)="validateData($event,index,'process')">
+            </tnz-input>
+        </div>
+            <div *ngIf="_shared.editMode" >
+                <mat-select  [compareWith]="compareFn" [(ngModel)]="_shared.productionProcessMap[model.wcId+':'+getShortCode(index, model)]" multiple >
+                <mat-option *ngFor="let process of processList" [value]="process">{{process?.label}}</mat-option>
+            </mat-select>
+        </div>
+        </ng-template>
+    </smd-datatable-column>
     <smd-datatable-column title="Type" field="wcTypeMeaning" sortable="true" [filterable]="true" [colStyle]="{'width':'100px'}">
         <ng-template let-model="data" let-index="index">
             <tnz-input type="lov" [path]="_shared.getWorkCenterAttrPath(index,'wcTypeMeaning')" [primaryKey]="_shared.workCenterPrimaryKey"

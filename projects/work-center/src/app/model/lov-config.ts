@@ -27,3 +27,20 @@ export var FacilityLovConfigurationModel: any = {
         title: 'Facility Name'
     }]
 };
+
+export var ProcessLovConfigurationModel: any = {
+    title: 'Select Processes',
+    url: 'lovs/process',
+    dataHeader: 'data',
+    returnKey: 'value',
+    displayKey: 'shortCode',
+    filterAttributes: ['label'],
+    displayFields: [{
+        key: 'shortCode',
+        title: 'Process Short Code'
+    }, {
+        key: 'label',
+        title: 'Process Name'
+    }]
+    
+};

@@ -1,5 +1,5 @@
 export const packingMethodLovconfig: any = {
-    title: 'Select packing Method',
+    title: 'Select Packing Method',
     url: 'lovs/lookup?lookupType=MFG_PACKING_METHOD',
     dataHeader: 'data',
     returnKey: 'value',
@@ -7,12 +7,12 @@ export const packingMethodLovconfig: any = {
     filterAttributes: ['label'],
     displayFields: [{
         key: 'label',
-        title: 'Packing method'
+        title: 'Name'
     }]
 };
 
 export const rePackReasonLovconfig: any = {
-    title: 'Select repack reason',
+    title: 'Select Repack Reason',
     url: 'lovs/lookup?lookupType=MFG_CARTON_REPACK_REASON_TYPE',
     dataHeader: 'data',
     returnKey: 'value',
@@ -25,20 +25,21 @@ export const rePackReasonLovconfig: any = {
 };
 
 export const facilityLovconfig: any = {
-    title: 'Select packing Method',
-    url: 'lovs/facility-for-user',
+    title: 'Select Facility',
+    url: 'lovs/facility?userAcessOnly=true',
     dataHeader: 'data',
     returnKey: 'value',
     displayKey: 'shortCode',
     filterAttributes: ['shortCode'],
     displayFields: [{
-        key: 'label',
-        title: 'Facility Name'
+        key: 'shortCode',
+        title: 'Short Code'
     },
     {
-        key: 'shortCode',
-        title: 'Facility Short code'
-    }]
+        key: 'label',
+        title: 'Name'
+    }
+    ]
 };
 
 export function workCenterLovConfig(facilityId) {
@@ -51,13 +52,14 @@ export function workCenterLovConfig(facilityId) {
             displayKey: 'shortCode',
             filterAttributes: ['shortCode'],
             displayFields: [{
-                key: 'label',
-                title: 'Work center Name'
+                key: 'shortCode',
+                title: 'Short Code'
             },
             {
-                key: 'shortCode',
-                title: 'Work center Short code'
-            }]
+                key: 'label',
+                title: 'Name'
+            },
+            ]
         }
     return json
 }

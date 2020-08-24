@@ -30,6 +30,7 @@ import { CommonUtilities } from 'app/shared/utils/common.utility';
 import { ApiService, LocalCacheService } from '../../../services';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { HttpParams } from '@angular/common/http';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 let columnIds = 0;
 export class SmdDataRowModel {
@@ -128,6 +129,9 @@ export class SmdDataTableColumnComponent implements OnInit {
 
 	@Input() title: string;
 
+	//added on aug 13
+	@Input() showCheckBox: boolean = false;
+
 	@Input() titleTooltip: string;
 	@Input() field: string;
 	@Input() numeric: boolean = false;
@@ -151,6 +155,8 @@ export class SmdDataTableColumnComponent implements OnInit {
 	@ContentChildren(SmdDataTableColumnComponent) SubColumns: QueryList<SmdDataTableColumnComponent>;
 	@Output() onFieldChange: EventEmitter<any> = new EventEmitter<any>();
 
+	checked = false;
+
 	get template() {
 		return this._customTemplate ? this._customTemplate : this._internalTemplate;
 	}
@@ -159,7 +165,7 @@ export class SmdDataTableColumnComponent implements OnInit {
 		return !!this._customTemplate;
 	}
 
-	constructor() {
+	constructor(@Inject(forwardRef(() => SmdDataTable)) private _parent: SmdDataTable | any) {
 	}
 
 	ngOnInit(): void {
@@ -175,6 +181,9 @@ export class SmdDataTableColumnComponent implements OnInit {
 		return model[this.field];
 	}
 
+	_onChecked(eve) {
+		this._parent._checkAllInColumn(this.field, this.checked ? 'Y' : 'N');
+	}
 }
 
 @Component({
@@ -202,6 +211,65 @@ export class SmdDatatableActionButton {
 	_checkButtonIsVisible() {
 		return this._parent.selectedRows().length == 0;
 	}
+}
+
+@Component({
+	selector: "smd-datatable-icon-button",
+	template: `
+  <button mat-icon-button>
+  <mat-icon>{{icon}}</mat-icon>
+  </button>
+  `
+})
+export class SmdDatatableIconButton {
+	@Input() icon: string;
+	@Input() key: string;
+	@Input() tooltip: string;
+	@Input() class: string;
+	constructor(@Inject(forwardRef(() => SmdDataTable)) private _parent: SmdDataTable | any) {
+	}
+
+	ngOnInit(): void {
+		if(!this.tooltip){
+			this.tooltip = this.key;
+		}
+		if (!this.icon) {
+			throw new Error('Icon is mandatory on smd-datatable-icon-button');
+		}
+		if (!this.key) {
+			throw new Error('Key is mandatory on smd-datatable-icon-button');
+		}
+	}
+
+	
+}
+
+@Component({
+	selector: "smd-datatable-menu-button",
+	template: `
+  <button mat-icon-button>
+  <mat-icon>{{icon}}</mat-icon>
+  </button>
+  `
+})
+export class SmdDatatableMenuButton {
+	@Input() icon: string;
+	@Input() options = [];
+	@Input() tooltip: string;
+	@Input() class: string;
+	constructor(@Inject(forwardRef(() => SmdDataTable)) private _parent: SmdDataTable | any) {
+	}
+
+	ngOnInit(): void {
+		if (!this.icon) {
+			throw new Error('Icon is mandatory on smd-datatable-menu-button');
+		}
+		if (!this.options || this.options.length == 0) {
+			throw new Error('Options is mandatory on smd-datatable-menu-button');
+		}
+	}
+
+	
 }
 
 @Component({
@@ -238,6 +306,7 @@ export class SmdContextualDatatableButton {
 		return shouldShow;
 	}
 }
+
 @Component({
 	selector: "smd-datatable",
 	templateUrl: "./datatable.component.html",
@@ -250,6 +319,7 @@ export class SmdContextualDatatableButton {
 })
 export class SmdDataTable
 	implements AfterContentInit, OnDestroy {
+	filterToggled: boolean = false;
 	totalRow: any;
 	rows: SmdDataRowModel[] = [];
 	private visibleRows: SmdDataRowModel[] = [];
@@ -270,7 +340,8 @@ export class SmdDataTable
 
 	@ViewChild(SmdPaginatorComponent, { static: true }) paginatorComponent: SmdPaginatorComponent;
 	@ContentChildren(SmdDataTableColumnComponent) columns: QueryList<SmdDataTableColumnComponent>;
-
+	@ContentChildren(SmdDatatableIconButton) iconButtons: QueryList<SmdDatatableIconButton>;
+	@ContentChildren(SmdDatatableMenuButton) menuButtons: QueryList<SmdDatatableMenuButton>;
 	@Input() tableId: string;
 	@Input() inputPath: string;
 	@Input() rowCount: number = 0;
@@ -320,6 +391,7 @@ export class SmdDataTable
 	@Output() dataChange: EventEmitter<any> = new EventEmitter<any>();
 	@Output() pageChange: EventEmitter<any> = new EventEmitter<{ page: number }>();
 	@Output() ndAction: EventEmitter<any> = new EventEmitter<any>();
+	@Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 	@Input() selectPage: boolean = false;
 	@Input() loading: boolean = false;
 	@Output() filterParams: EventEmitter<any> = new EventEmitter<any>();
@@ -344,6 +416,8 @@ export class SmdDataTable
 	@Input() fetchAll = false;
 	private originalPreFetchPages = 1;
 	isHeaderReady = false;
+	@Input() primaryKey = null;
+	@Input() title;
 
 	get isPrimaryListing() {
 		return this.primaryListing || (this.scrollType == 'scroll');
@@ -353,7 +427,8 @@ export class SmdDataTable
 		private _viewContainer: ViewContainerRef,
 		public changeDetector: ChangeDetectorRef,
 		private apiService: ApiService,
-		private _cache: LocalCacheService
+		private _cache: LocalCacheService,
+		private _inputService: TnzInputService //shery
 	) {
 		this.loading = !this.loading && !this.models ? true : this.loading;
 		this.filterInput = new FormControl(this.getCachedConfig('filter') || "");
@@ -390,6 +465,9 @@ export class SmdDataTable
 	}
 
 	ngAfterContentInit() {
+		if(this.primaryListing){
+			this.filterToggled = true;
+		}
 		if (this.scrollType == 'scroll') {
 			this.paginated = false;
 		}
@@ -491,7 +569,7 @@ export class SmdDataTable
 		this.range.emit(selectedRange);
 		this.refresh();
 	}
-	
+
 	ngOnDestroy(): void {
 		this._columnsSubscription.unsubscribe();
 	}
@@ -505,10 +583,10 @@ export class SmdDataTable
 			this.rows.length = 0;
 			try {
 				this.models.forEach(
-					(model: any, index: number) =>
-						(this.rows[index] = new SmdDataRowModel(model, false))
-				);
-				this.rows.forEach((row, index) => (row.originalOrder = index));
+					(model: any, index: number) => {
+						this.rows[index] = new SmdDataRowModel(model, false)
+						this.rows[index].originalOrder = index
+					});
 				this._setSelectedRows();
 				this._updateVisibleRows();
 			} catch (error) { console.log(error) }
@@ -520,10 +598,10 @@ export class SmdDataTable
 			this.rows.length = 0;
 			try {
 				models.forEach(
-					(model: any, index: number) =>
-						(this.rows[index] = new SmdDataRowModel(model, false))
-				);
-				this.rows.forEach((row, index) => (row.originalOrder = this.findIndex(this.models, models[index])));
+					(model: any, index: number) => {
+						this.rows[index] = new SmdDataRowModel(model, false);
+						this.rows[index].originalOrder = model._originalOrder;
+					});
 				this._setSelectedRows();
 				this._updateVisibleRows();
 			} catch (error) { }
@@ -730,7 +808,7 @@ export class SmdDataTable
 					itrateModel = this.filteredModels;
 				}
 				let sortedModel = [];
-				sortedModel = CommonUtilities.sortByKey(itrateModel, column.field);
+				sortedModel = this.sortByKey(itrateModel, column.field);
 				if (!column.sortDir) {
 					column.sortDir = "ASC";
 					this._updateRowsFromList(sortedModel);
@@ -832,7 +910,19 @@ export class SmdDataTable
 		}
 	}
 
+	_checkAllInColumn(field, value) {
+
+		this.models.forEach((row, index) => {
+			this._inputService.updateInput(this.inputPath + '[' + index + '].' + field, value, this.primaryKey);
+		})
+	}
+
 	public refresh(model: any[] = null) {
+	//unchecking column checkbox
+		this.columns?.forEach(data=>{
+			data.checked=false;
+		});
+
 		if (model) {
 			this.models = model;
 			if (this.dataHeader && this.dataUrl) {
@@ -1063,6 +1153,9 @@ export class SmdDataTable
 						);
 				}
 			} else {
+				this.models.forEach((model, index) => {
+					model._originalOrder = index;
+				})
 				if (this.models) {
 					this.filteredModels = JSON.parse(JSON.stringify(this.models));
 					let tempModels = [];
@@ -1235,12 +1328,12 @@ export class SmdDataTable
 					".smd-table-body > table > tbody > tr"
 				)[0];
 				if (bodyRow) {
-					let headerHeight = (domTable.querySelectorAll(".smd-table-body > table > thead")[0].offsetHeight) + 1;
+					let headerHeight = (domTable.querySelectorAll(".smd-table-body > table > thead")[0].offsetHeight) + 2;
 					let rowsHeight = ((this.loading ? this.dummyRows.length : (this.scrollType == 'scroll' ? (this.defaultRange < this.visibleRows.length ? this.defaultRange : this.visibleRows.length) : this.visibleRows.length)) * bodyRow.offsetHeight) + headerHeight + (this.showTotal ? 27 : 0);
+					// rowsHeight -= 8 
 					if (this.primaryListing) {
 						let viewHeight =
-							domTable.parentElement.offsetHeight - (this.paginated ? this.paginatorComponent.nativeElement.nativeElement.offsetHeight + 1 : 0) -
-							(this.filterEnabled ? 27 : 0);
+							domTable.parentElement.offsetHeight - (this.paginated ? this.paginatorComponent.nativeElement.nativeElement.offsetHeight + 1 : 0);
 						this.tableHeight = viewHeight < rowsHeight ? viewHeight : rowsHeight;
 					}
 					else {
@@ -1368,7 +1461,18 @@ export class SmdDataTable
 	}
 
 	equals(a, b) {
-		return JSON.stringify(a) == JSON.stringify(b)
+		if (this.primaryKey) {
+			let flag = true;
+			this.primaryKey.split(',').forEach(key => {
+				if (typeof a[key] == 'undefined' || typeof b[key] == 'undefined' || a[key] !== b[key]) {
+					flag = false;
+					return;
+				}
+			});
+			return flag;
+		}
+		else
+			return JSON.stringify(a) == JSON.stringify(b)
 	}
 
 	checkIfInsideArray(array, object) {
@@ -1389,6 +1493,35 @@ export class SmdDataTable
 					this._updateVisibleRows();
 			}
 		}
+	}
+
+	toggleFilter() {
+		this.filterToggled = !this.filterToggled;
+		this.setTableDimentions()
+	}
+
+	public sortByKey(array, key) {
+		let cachedValue
+		if (this.inputPath) {
+			cachedValue = this._cache.getCachedValue(this.inputPath)
+		}
+		return array.sort(function (a, b) {
+			var x = a[key]; var y = b[key];
+			if (cachedValue) {
+				if (cachedValue[a._originalOrder] && cachedValue[a._originalOrder][key]) {
+					x = cachedValue[a._originalOrder][key]
+				}
+				if (cachedValue[b._originalOrder] && cachedValue[b._originalOrder][key]) {
+					y = cachedValue[b._originalOrder][key]
+				}
+			}
+			// return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+			return (x.localeCompare(y, undefined, { numeric: true }));
+		});
+	}
+
+	iconAction(key){
+		this.onAction.emit({key:key})
 	}
 
 }

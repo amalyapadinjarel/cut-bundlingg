@@ -6,9 +6,13 @@
 
             <smd-datatable-column title=" " field=" " *ngIf="_shared.getRolesTaskFlowAccessEditable()" [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
+                    {{model[_shared.rolesTaskFlowAccessPrimaryKey]}}
+
                     <div class="row-operations">
                         <mat-icon *ngIf="model[_shared.rolesTaskFlowAccessPrimaryKey]==0" class="mat-color-danger"
                             matTooltip="delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+                            <mat-icon *ngIf="model[_shared.rolesTaskFlowAccessPrimaryKey] != 0" style="color:gray"
+                            matTooltip="Delete disabled" >delete</mat-icon> 
                     </div>
                 </ng-template>
             </smd-datatable-column>

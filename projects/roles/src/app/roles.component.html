@@ -10,6 +10,9 @@
               <a (click)="newRoles()">Create</a>
               <a *ngIf="_shared.id!=0 && _shared.getHeaderAttributeValue('author')!='S'" (click)="editRoles()">Edit</a>
               <!-- <a *ngIf="_shared.id" (click)="copyRoles()">Copy</a> -->
+              <a *ngIf="_shared.id" (click)="copy()">Copy</a>
+
+              <!-- <a (click)="copyRoles()">Copy</a> -->
 
           </ng-container>
 

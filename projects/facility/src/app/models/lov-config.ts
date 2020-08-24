@@ -11,11 +11,11 @@ export const CompanyLovConfig: any = {
         {
        
         key: 'shortCode',
-        title: 'Company Short Code'
+        title: 'Short Code'
     }, 
     {
         key: 'label',
-        title: 'Company Name'
+        title: 'Name'
     }
     ]
     
@@ -33,7 +33,7 @@ export const DivisionLovConfig: any = {
   
     {
         key: 'label',
-        title: 'Division Name'
+        title: 'Name'
     }
     ]
     
@@ -87,11 +87,11 @@ export const CountryLovConfig: any = {
         {
        
         key: 'countryCode',
-        title: 'Country Code'
+        title: ' Code'
     }, 
     {
         key: 'countryName',
-        title: 'Country Name'
+        title: ' Name'
     }
     ]
     

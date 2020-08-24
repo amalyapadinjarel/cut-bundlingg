@@ -3,11 +3,11 @@ export const UserLovConfig: any = {
     url: 'lovs/users',
     dataHeader: 'data',
     returnKey: 'userId',
-    displayKey: 'knownAs',
-    filterAttributes: ['knownAs'],
+    displayKey: 'userName',
+    filterAttributes: ['userName'],
     displayFields: [
         {
-            title: 'Username',
+            title: 'User Name',
             key: 'userName'
         },
         {
@@ -27,44 +27,52 @@ export const UserLovConfig: any = {
     
 };
 
-export const facilityLovConfig: any = {
+export function facilityLovConfig(UserId) {
+  let json =
+    {
 	title: 'Select Facility',
-	url: 'lovs/facility-for-user',
+	url: 'lovs/facility?userAcessOnly=true&ignoreDivision=true&userId='+UserId,
   dataHeader: 'data',
   returnKey: 'value',
   displayKey: 'shortCode',
-	filterAttributes: ['label'],
+	filterAttributes: ['shortCode'],
 	displayFields: [
-	  {
-		key: 'label',
-		title: 'Name'
-    },
     {
       key: 'shortCode',
       title: 'Short Code'
-      }
+      },
+    {
+		key: 'label',
+		title: 'Name'
+    }
+   
   ]
-  
+}
+return json
   }
 
-  export const WorkcenterLovConfig: any = {
+  export function WorkcenterLovConfig(facilityId) {
+    let json =
+    {
 	title: 'Select Workcenter',
-	url: 'lovs/work-center',
+  url: "lovs/work-center?facility="+facilityId ,
   dataHeader: 'data',
   returnKey: 'value',
-  displayKey: 'label',
-	filterAttributes: ['label'],
+  displayKey: 'shortCode',
+	filterAttributes: ['shortCode'],
 	displayFields: [
-	  {
-		key: 'label',
-		title: 'Name'
-    },
     {
       key: 'shortCode',
       title: 'Short Code'
-      }
-  ]
+      },
+    {
+		key: 'label',
+		title: 'Name'
+    }
   
+  ]
+}
+return json
 
   }
 
@@ -73,11 +81,11 @@ export const facilityLovConfig: any = {
     url: 'user-workcenter-access/CopyFromUsers',
     dataHeader: 'data',
     returnKey: 'userId',
-    displayKey: 'knownAs',
-    filterAttributes: ['knownAs'],
+    displayKey: 'userName',
+    filterAttributes: ['userName'],
     displayFields: [
         {
-            title: 'Username',
+            title: 'User Name',
             key: 'userName'
         },
         {

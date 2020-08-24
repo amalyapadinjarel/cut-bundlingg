@@ -58,17 +58,15 @@ export var CopyFromRolesLovConfig: any = {
     ],
     displayFields: [
         {
-            title: 'Role Name',
-            key: 'roleName'
-        },
-        {
-            title: 'Role Short Code',
+            title: 'Short Code',
             key: 'roleShortCode'
         },
+        
         {
-            title: 'Role Description',
-            key: 'description'
+            title: 'Name',
+            key: 'roleName'
         }
+        
 
     ],
     allowMultiple: true,
@@ -86,13 +84,13 @@ export var CopyFromDivisionLovConfig: any = {
     ],
     displayFields: [
         {
-            title: 'Division Name',
-            key: 'divisionName'
+            title: 'Short Code',
+            key: 'divisionShortCode'
         },
         {
-            title: 'Division Short Code',
-            key: 'divisionShortCode'
-        }
+            title: 'Name',
+            key: 'divisionName'
+        }      
 
     ],
     allowMultiple: true,
@@ -108,36 +106,14 @@ export var CopyFromFacilityLovConfig: any = {
     ],
     displayFields: [
         {
-            title: 'Facility Name',
-            key: 'facilityName'
-        },
-        {
-            title: 'Facility Short Code',
+            title: 'Short Code',
             key: 'facilityShortCode'
-        }
-
-    ],
-    allowMultiple: true,
-    preFetchPages: 10,
-    primaryKey: ['facilityId']
-}
-
-export var CopyFromOrgAccessLovConfig: any = {
-    title: 'Select Division/Facility',
-    url: 'user-app/copyFromOrgAccess',
-    dataHeader: 'orgAccess',
-    filterAttributes: [
-        ''
-    ],
-    displayFields: [
-        {
-            title: 'Division',
-            key: 'divisionShortCode'
         },
+       
         {
-            title: 'Facility',
+            title: 'Name',
             key: 'facilityName'
-        }
+        }    
 
     ],
     allowMultiple: true,
@@ -145,4 +121,26 @@ export var CopyFromOrgAccessLovConfig: any = {
     primaryKey: ['facilityId']
 }
 
-;
+// export var CopyFromOrgAccessLovConfig: any = {
+//     title: 'Select Division/Facility',
+//     url: 'user-app/copyFromOrgAccess',
+//     dataHeader: 'orgAccess',
+//     filterAttributes: [
+//         ''
+//     ],
+//     displayFields: [
+//         {
+//             title: 'Division',
+//             key: 'divisionShortCode'
+//         },
+//         {
+//             title: 'Facility',
+//             key: 'facilityName'
+//         }
+
+//     ],
+//     allowMultiple: true,
+//     preFetchPages: 10,
+//     primaryKey: ['facilityId']
+// }
+

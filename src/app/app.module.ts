@@ -234,6 +234,21 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([
 		loadChildren: () => import('../../projects/work-center/src/app/work-center.module').then(m => m.WorkCenterModule)
 	},
 	{
+		path: 'defect-group',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/defect-group/src/app/defect-group.module').then(m => m.DefectGroupModule)
+	},
+	{
+		path: 'uom',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/uom/src/app/uom.module').then(m => m.UomModule)
+	},
+	{
+		path: 'production-processes',
+		canActivate: [AuthGuard],
+		loadChildren: () => import('../../projects/production-processes/src/app/production-processes.module').then(m => m.ProductionProcessesModule)
+	},
+	{
 	path: '**',
 		redirectTo: 'not-found'
 	}

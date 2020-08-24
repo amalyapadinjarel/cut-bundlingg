@@ -1,13 +1,16 @@
 <smd-datatable [tableId]="_shared.appKey + '.rolesOrgAccess'" [paginated]="!_shared.getRolesOrgAccessEditable()"
     [loading]="_shared.rolesOrgAccessLoading" class="tnz-input-table"
-    [filterEnabled]="!_shared.getRolesOrgAccessEditable()" [sortEnabled]="!_shared.getRolesOrgAccessEditable()"
-    (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
+    [sortEnabled]="!_shared.getRolesOrgAccessEditable()" (onRowSelected)="onRowSelected()"
+    (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" [inputPath]="_shared.rolesOrgAccessPath"
+    [primaryKey]="_shared.rolesOrgAccessPrimaryKey">
 
     <smd-datatable-column title=" " field=" " *ngIf="_shared.getRolesOrgAccessEditable()" [colStyle]="{'width':'10px'}">
         <ng-template let-model="data" let-index="index">
             <div class="row-operations">
                 <mat-icon *ngIf="model[_shared.rolesOrgAccessPrimaryKey]==0" class="mat-color-danger"
                     matTooltip="delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+                <mat-icon *ngIf="model[_shared.rolesOrgAccessPrimaryKey] != 0" class="mat-color-disabled-danger"
+                    matTooltip="Delete disabled">delete</mat-icon>
             </div>
         </ng-template>
     </smd-datatable-column>
@@ -27,11 +30,10 @@
         [colStyle]="{'width':'10px'}">
         <ng-template let-model="data" let-index="index">
             <div class="checkbox-center-align" *ngIf="!_shared.getRolesOrgAccessEditable('access')">
-                <!-- <mat-checkbox [ngModel]="model.access == 'Y'" disabled></mat-checkbox> -->
-                <mat-icon *ngIf="model.access=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                    matTooltip="Active">check_circle</mat-icon>
-                <mat-icon *ngIf="model.access!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
-                    matTooltip="Inactive">cancel</mat-icon>
+                <mat-icon *ngIf="model.access == 'Y'" class="active-icon" matTooltip="Active">check_circle
+                </mat-icon>
+                <mat-icon *ngIf="model.access == 'N'" class="inactive-icon" matTooltip="Inactive">cancel
+                </mat-icon>
             </div>
             <div *ngIf="_shared.getRolesOrgAccessEditable('access')" class="checkbox-center-align">
                 <tnz-input type="checkbox" [path]="_shared.getRolesOrgAccessPath(index,'access')"
@@ -46,14 +48,16 @@
         [colStyle]="{'width':'15px'}">
         <ng-template let-model="data" let-index="index">
             <div class="checkbox-center-align" *ngIf="!_shared.getRolesOrgAccessEditable('default')">
-                <mat-checkbox [ngModel]="model.default == 'Y'" disabled></mat-checkbox>
+                <mat-icon *ngIf="model.default=='Y'" class="default-icon"
+                    matTooltip="Default">check_circle</mat-icon>
+                
             </div>
             <div *ngIf="_shared.getRolesOrgAccessEditable('default')" class="checkbox-center-align">
                 <tnz-input type="checkbox" [path]="_shared.getRolesOrgAccessPath(index,'default')"
                     [primaryKey]="_shared.rolesOrgAccessPrimaryKey" [sharedData]="_shared.formData"
                     [isEdit]="getIfEditable(index,'default')"
                     [loading]="_shared.rolesOrgAccessLoading || _shared.loading"
-                    (valueChanged)="defaultFacilityCheck($event,model,index)">
+                    (valueChanged)="defaultCheck($event,model,index)">
                 </tnz-input>
             </div>
         </ng-template>
@@ -64,10 +68,10 @@
             <div class="row-operations" *ngIf="model.facilityId==0">
                 <button mat-button matTooltip="Add Facility">
                     <mat-icon class="mat-color-info" (click)="copyFromFacility(model)">add_box</mat-icon>
-
-                    <!-- <mat-icon class="mat-color-info" (click)="_shared.addLine('userOrgAccess','division')">add_box</mat-icon> -->
                 </button>
             </div>
         </ng-template>
     </smd-datatable-column>
 </smd-datatable>
+
+

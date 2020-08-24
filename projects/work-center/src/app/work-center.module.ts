@@ -12,7 +12,8 @@ import { SmdModule } from 'app/shared/component/smd/smd.module';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { TnzInputModule } from 'app/shared/tnz-input/tnz-input.module';
 import { SharedModule } from 'app/shared/shared.module';
-
+// import { NgSelectModule } from '@ng-select/ng-select';
+// import { FormsModule } from '@angular/forms';
 const PROVIDERS = [WorkCenterService, WorkCenterSharedService, LocalCacheService, TnzInputService];
 @NgModule({
   declarations: [
@@ -24,7 +25,9 @@ const PROVIDERS = [WorkCenterService, WorkCenterSharedService, LocalCacheService
     SmdModule,
     PerfectScrollbarModule,
     TnzInputModule,
-    SharedModule
+    SharedModule,
+    // NgSelectModule,
+    // FormsModule
   ],
   providers: [PROVIDERS],
   bootstrap: [WorkCenterComponent]

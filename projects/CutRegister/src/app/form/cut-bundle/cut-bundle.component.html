@@ -1,5 +1,9 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="true" [loading]="_shared.cutBundleLoading" class="tnz-input-table"
- [showCheckBox]="false">
+ [showCheckBox]="false" (onAction)=onAction($event) title="Bundle Lines">
+	<ng-container *ngIf="_shared.getCutBundleEditable()">
+		<smd-datatable-icon-button icon="delete_sweep" key="delete" tooltip="delete lines" class="mat-color-danger"></smd-datatable-icon-button>
+		<smd-datatable-icon-button icon="autorenew" key="regenerate" tooltip="generate lines" class="mat-color-success"></smd-datatable-icon-button>
+	</ng-container>
 	<smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" numeric="true">
 		<ng-template let-index="index">{{index + 1}}</ng-template>
 	</smd-datatable-column>

@@ -116,25 +116,44 @@ export class UserOrgAccessComponent implements OnInit {
 
   }
 
-  //Method To Update Default Facility
-  defaultFacilityCheck(event, model, index) {
-    if (event.value == 'Y') {
-      if (model.facilityId != 0) {
-            let data = this._shared.formData['userOrgAccess'];
-            let key = 'userOrgAccess';
-                if (data && data.length) {
-                      data.forEach((element, idx) => {
-                            if (index != idx && element.facilityId != 0) {
-                              element.default = 'N';
-                              let path = this._shared.getUserOrgAccessPath(idx, 'default');
-                              this.inputService.updateInput(path, 'N', element.orgAccessId)
-                            }
-                      });
-                  }
-          }
-    }
- }
+   //Method To Update Default Division and Facility
 
+   defaultCheck(event, model, index) {
+
+    if (event.value == 'Y') {
+      if (model.facilityId == 0) {
+        let data = this._shared.formData['userOrgAccess'];
+        let key = 'userOrgAccess';
+        if (data && data.length) {
+          data.forEach((element, idx) => {
+            if (index != idx && element.facilityId == 0) {
+
+              element.default = 'N';
+              let path = this._shared.getUserOrgAccessPath(idx, 'default');
+              this.inputService.updateInput(path, 'N', this._shared.userOrgAccessPrimaryKey)
+            }
+          });
+        }
+      }
+
+      if (model.facilityId != 0) {
+        let data = this._shared.formData['userOrgAccess'];
+        let key = 'userOrgAccess';
+        if (data && data.length) {
+          data.forEach((element, i) => {
+            if (index != i && element.facilityId != 0) {
+              element.default = 'N';
+              let path = this._shared.getUserOrgAccessPath(i, 'default');
+              if (model.divisionId == element.divisionId)
+                this.inputService.updateInput(path, 'N', this._shared.userOrgAccessPrimaryKey)
+            }
+
+          });
+        }
+      }
+
+    }
+  }
 
 
 }

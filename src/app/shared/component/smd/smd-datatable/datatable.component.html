@@ -1,6 +1,23 @@
-<div class="smd-datatable-wrap" [class.table-filter]="filterEnabled && showTableFilter"
-    [class.column-filter]="filterEnabled && showColumnFilter && isTitleNeeded" [class.paginated]="paginated"
-    [class.has-title]="isTitleNeeded">
+<div class="functionalitites" *ngIf="filterEnabled && showColumnFilter && isTitleNeeded && !primaryListing">
+    <h3 *ngIf="title">{{title}}</h3>
+    <button mat-icon-button (click)="toggleFilter()" [class.selected]="filterToggled">
+        <mat-icon>filter_list</mat-icon>
+    </button>
+    <span class="flex-filler"></span>
+    <button mat-icon-button *ngFor="let iconButton of iconButtons._results" (click)="iconAction(iconButton.key)" [matTooltip]="iconButton.tooltip">
+        <mat-icon [class]="iconButton.class">{{iconButton.icon}}</mat-icon>
+    </button>
+    <ng-container *ngFor="let menuButton of menuButtons._results">
+        <button mat-button [matMenuTriggerFor]="menu" [matTooltip]="menuButton.tooltip">
+            <mat-icon [class]="menuButton.class">{{menuButton.icon}}</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let op of menuButton.options" (click)="iconAction(op.value)">{{op.label}}</button>
+        </mat-menu>
+    </ng-container>
+</div>
+<div class="smd-datatable-wrap" [class.table-filter]="filterEnabled && showTableFilter" [class.column-filter]="filterEnabled && showColumnFilter && isTitleNeeded"
+    [class.paginated]="paginated" [class.has-title]="isTitleNeeded">
     <mat-form-field class="common-filter" *ngIf="filterEnabled && showTableFilter">
         <input matInput [formControl]="filterInput" />
         <mat-icon matPrefix (click)="refresh()">search</mat-icon>
@@ -11,68 +28,64 @@
                 <thead>
                     <tr>
                         <th *ngIf="_shouldRenderCheckbox()" class="checkbox">
-                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()"
-                                [disabled]="!selectMultiple">
+                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                             </mat-checkbox>
                         </th>
-                        <th *ngFor="let column of columns;let index = index"
-                            [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
+                        <th *ngFor="let column of columns;let index = index" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
                             [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
-                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
-                                [class.smd-sorted-asc]="column.sortDir == 'ASC'"
+                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}" [class.smd-sorted-asc]="column.sortDir == 'ASC'"
                                 [class.smd-sorted-desc]="column.sortDir == 'DESC'">
                                 {{column.title}}
                             </span>
+                            <mat-checkbox *ngIf="column.showCheckBox" [(ngModel)]="column.checked" (change)="_onChecked($event)">
+                            </mat-checkbox>
                         </th>
+
+
+
                     </tr>
-                    <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter">
-                        <th *ngIf="_shouldRenderCheckbox()"  class="checkbox">
+                    <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter && filterToggled">
+                        <th *ngIf="_shouldRenderCheckbox()" class="checkbox">
                             <div style="display: flex;    place-content: center;">
-                                <mat-icon (click)="resetTable()" style="cursor:pointer;">filter_list</mat-icon>
+                                <mat-icon (click)="resetTable()" style="cursor:pointer;" matTooltip="reset">find_replace</mat-icon>
 
                             </div>
                         </th>
                         <th *ngFor="let column of columns" [style.width]="((column.headerWidth||0) + 16) +'px'">
-                            <input [formControl]="columnFilterInputs[column.id]"
-                                *ngIf="column.filterable && columnFilterInputs[column.id]"
-                                [ngStyle]="{'text-align':column.numeric?'right':'left'}" class="filter-input" />
-                            <input *ngIf="!column.filterable || !columnFilterInputs[column.id]" disabled
+                            <input [formControl]="columnFilterInputs[column.id]" *ngIf="column.filterable && columnFilterInputs[column.id]" [ngStyle]="{'text-align':column.numeric?'right':'left'}"
                                 class="filter-input" />
+                            <input *ngIf="!column.filterable || !columnFilterInputs[column.id]" disabled class="filter-input" />
                         </th>
                     </tr>
                     <tr *ngIf="responsive && _shouldRenderCheckbox()" class="smd-datatable-responsive-header">
                         <th [attr.colspan]="columns.length + (_shouldRenderCheckbox() ? 1 : 0)">
-                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()"
-                                [disabled]="!selectMultiple">
+                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                             </mat-checkbox>
                         </th>
                     </tr>
                 </thead>
             </table>
         </div>
-        <div class="smd-table-body" [style.height]="isPrimaryListing ? tableHeight + 'px' : 'auto'" [style.margin-top]="isPrimaryListing ? tableMargin + 'px' : 'auto'" (scroll)="onBodyScroll($event)">
+        <div class="smd-table-body" [style.height]="isPrimaryListing ? tableHeight + 'px' : 'auto'" [style.margin-top]="isPrimaryListing ? tableMargin + 'px' : 'auto'"
+            (scroll)="onBodyScroll($event)">
             <table class="smd-data-table full-width">
                 <thead *ngIf="isTitleNeeded">
                     <tr>
                         <th *ngIf="_shouldRenderCheckbox()" [attr.rowSpan]="hasSubheader ? '2' : ''">
-                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()"
-                                [disabled]="!selectMultiple">
+                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                             </mat-checkbox>
                         </th>
-                        <th *ngFor="let column of (hasSubheader ?  headerColumns : columns)"
-                            [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
-                            [class.smd-numeric-column]="column.numeric"
-                            [attr.rowSpan]="column.SubColumns.length == 0 ? hasSubheader ? '2' : '' : ''"
-                            [attr.colSpan]="column.SubColumns.length"
-                            [ngStyle]="{'text-align': column.SubColumns.length == 0 ? 'left' :'center'}">
+                        <th *ngFor="let column of (hasSubheader ?  headerColumns : columns)" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
+                            [class.smd-numeric-column]="column.numeric" [attr.rowSpan]="column.SubColumns.length == 0 ? hasSubheader ? '2' : '' : ''"
+                            [attr.colSpan]="column.SubColumns.length" [ngStyle]="{'text-align': column.SubColumns.length == 0 ? 'left' :'center'}">
                             <div *ngIf="column.SubColumns.length == 0;then heading else subHeading"></div>
                             <ng-template #heading>
-                                <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
-                                    [class.smd-sorted-asc]="column.sortDir == 'ASC'"
-                                    [class.smd-sorted-desc]="column.sortDir == 'DESC'" class="column-title"
-                                    [ngStyle]="{'white-space': column.numeric ? 'normal' : 'nowrap'}">
+                                <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}" [class.smd-sorted-asc]="column.sortDir == 'ASC'"
+                                    [class.smd-sorted-desc]="column.sortDir == 'DESC'" class="column-title" [ngStyle]="{'white-space': column.numeric ? 'normal' : 'nowrap'}">
                                     {{column.title}}
                                 </span>
+                                <mat-checkbox *ngIf="column.showCheckBox" [(ngModel)]="column.checked" (change)="column._onChecked()">
+                                </mat-checkbox>
                             </ng-template>
                             <ng-template #subHeading>
                                 <span>{{column.title}}</span>
@@ -82,47 +95,38 @@
 
                     </tr>
                     <tr *ngIf="hasSubheader" class="sub-header">
-                        <th *ngFor="let column of subHeaderColums"
-                            [class.smd-datatable-column-sortable]="column.sortable && sortEnabled"
-                            [class.smd-numeric-column]="column.numeric" [style.width]="column.headerWidth+'px'">
-                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}"
-                                [class.smd-sorted-asc]="column.sortDir == 'ASC'"
+                        <th *ngFor="let column of subHeaderColums" [class.smd-datatable-column-sortable]="column.sortable && sortEnabled" [class.smd-numeric-column]="column.numeric"
+                            [style.width]="column.headerWidth+'px'">
+                            <span (click)="_sortColumn(column)" matTooltip="{{column.titleTooltip}}" [class.smd-sorted-asc]="column.sortDir == 'ASC'"
                                 [class.smd-sorted-desc]="column.sortDir == 'DESC'">
                                 {{column.title}}
                             </span>
                         </th>
                     </tr>
-                    <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter">
+                    <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter && filterToggled">
                         <th *ngIf="_shouldRenderCheckbox()">
                             <div style="display: flex;    place-content: center;">
-                                <mat-icon (click)="resetTable()">filter_list</mat-icon>
+                                <mat-icon (click)="resetTable()" matTooltip="reset">find_replace</mat-icon>
                             </div>
                         </th>
                         <th *ngFor="let column of (hasSubheader ?  tempColumns : columns)">
-                            <input [formControl]="columnFilterInputs[column.id]"
-                                *ngIf="!isPrimaryListing && column.filterable && columnFilterInputs[column.id]"
+                            <input [formControl]="columnFilterInputs[column.id]" *ngIf="!isPrimaryListing && column.filterable && columnFilterInputs[column.id]"
                                 [ngStyle]="{'text-align':column.numeric?'right':'left'}" class="filter-input" />
-                            <input *ngIf="isPrimaryListing || !column.filterable || !columnFilterInputs[column.id]" disabled
-                                class="filter-input" />
+                            <input *ngIf="isPrimaryListing || !column.filterable || !columnFilterInputs[column.id]" disabled class="filter-input" />
                         </th>
                     </tr>
                     <tr *ngIf="responsive && _shouldRenderCheckbox()" class="smd-datatable-responsive-header">
                         <th [attr.colspan]="columns.length + (_shouldRenderCheckbox() ? 1 : 0)">
-                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()"
-                                [disabled]="!selectMultiple">
+                            <mat-checkbox [(ngModel)]="checked" (change)="_onMasterCheckChange()" [disabled]="!selectMultiple">
                             </mat-checkbox>
                         </th>
                     </tr>
                 </thead>
                 <mat-dialog-content *ngIf="isModel">
                     <tbody *ngIf="!loading && rows?.length > 0">
-                        <tr #dataTableRow smd-datatable-row *ngFor="let row of visibleRows"
-                            [class.is-selected]="row.checked"
-                            [class.is-current-row]="(showSelectedRow && row.selected?true:false)"
-                            (click)="_onRowSelection($event, row)" [isTitleNeeded]="isTitleNeeded"
-                            (dblclick)="_onRowSelection($event, row, true)" [row]="row"
-                            [renderCheckbox]="_shouldRenderCheckbox()" [columns]="columns"
-                            [ngStyle]="row.model.smdProperties?.style"></tr>
+                        <tr #dataTableRow smd-datatable-row *ngFor="let row of visibleRows" [class.is-selected]="row.checked" [class.is-current-row]="(showSelectedRow && row.selected?true:false)"
+                            (click)="_onRowSelection($event, row)" [isTitleNeeded]="isTitleNeeded" (dblclick)="_onRowSelection($event, row, true)"
+                            [row]="row" [renderCheckbox]="_shouldRenderCheckbox()" [columns]="columns" [ngStyle]="row.model.smdProperties?.style"></tr>
                         <tr *ngIf="showTotal" class="total-row">
                             <td class="smd-datatable-body-checkbox">
                                 <div class="smd-checkbox">
@@ -153,13 +157,9 @@
                     </tbody>
                 </mat-dialog-content>
                 <tbody *ngIf="!isModel && !loading && rows?.length > 0">
-                    <tr #dataTableRow smd-datatable-row *ngFor="let row of visibleRows"
-                        [class.is-selected]="row.checked"
-                        [class.is-current-row]="(showSelectedRow && row.selected?true:false)"
-                        (click)="_onRowSelection($event, row)" [isTitleNeeded]="isTitleNeeded"
-                        (dblclick)="_onRowSelection($event, row, true)" [row]="row"
-                        [renderCheckbox]="_shouldRenderCheckbox()" [columns]="columns"
-                        [ngStyle]="row.model.smdProperties?.style"></tr>
+                    <tr #dataTableRow smd-datatable-row *ngFor="let row of visibleRows" [class.is-selected]="row.checked" [class.is-current-row]="(showSelectedRow && row.selected?true:false)"
+                        (click)="_onRowSelection($event, row)" [isTitleNeeded]="isTitleNeeded" (dblclick)="_onRowSelection($event, row, true)"
+                        [row]="row" [renderCheckbox]="_shouldRenderCheckbox()" [columns]="columns" [ngStyle]="row.model.smdProperties?.style"></tr>
                     <tr *ngIf="showTotal" class="total-row">
                         <td class="smd-datatable-body-checkbox">
                             <div class="smd-checkbox">
@@ -194,15 +194,13 @@
             <div class="no-data-div">
                 <mat-icon class="no-data-icon">{{noDataDisplayIcon}}</mat-icon>
                 <span class="text">{{noDataDisplayMessage}}</span>
-                <button *ngIf="ndActionShow" mat-flat-button color="accent"
-                    (click)="newRecord($event)">{{ndActionText}}</button>
+                <button *ngIf="ndActionShow" mat-flat-button color="accent" (click)="newRecord($event)">{{ndActionText}}</button>
             </div>
         </div>
     </div>
     <div class="smd-table-pagination" [class.hidden]="loading || !paginated || rows.length == 0">
-        <smd-paginator [selectedPage]="selectedPage" (range)="rangeChanged($event)"
-            [selectedRowCount]="selectedRowCount" [count]="rowCount" [dummyRowCount]="dummyRowCount"
-            [ranges]="paginatorRanges" (pageChange)="_onPageChange()">
+        <smd-paginator [selectedPage]="selectedPage" (range)="rangeChanged($event)" [selectedRowCount]="selectedRowCount" [count]="rowCount"
+            [dummyRowCount]="dummyRowCount" [ranges]="paginatorRanges" (pageChange)="_onPageChange()">
         </smd-paginator>
     </div>
     <div *ngIf="loading && paginated" class="smd-table-pagination">

@@ -7,6 +7,7 @@ import { RolesOrgAccess } from '../models/roles-org-access';
 import { DateUtilities } from 'app/shared/utils';
 import { RolesAppAccess } from '../models/roles-application-access';
 import { RolesTaskFlowAccess } from '../models/roles-taskflow-access';
+import { JSONUtils } from 'app/shared/utils/json.utility';
 
 @Injectable(
   // {  providedIn: 'root'}
@@ -21,19 +22,30 @@ export class RolesSharedService {
   //variable to control editing
   editMode = false;
 
-  //id:number=0;
-  id;
+  id: number = 0;
   formData: any = {};
+  refreshVariable = true;
 
-  refreshVariable=true;
+  //expansion panel related
+  orgAccessList: any = [];
+  divisionList: any = [];
+  facilityList: any = [];
 
+  saveOrgAccessData: any = [];
+  saveIndex: any = [];
+  saveFacilityIndex: any = [];
+  removedAll = false
+
+
+  //copy
+  copy=false;
 
   //defining array to store lines
   linesData: any = [];
   roleUsers: any = [];
   rolesOrgAccess: any = [];
   roleAppAccess: any[];
-  roleTaskFlowAccess: any[];
+  rolesTaskFlowAccess: any[];
 
   //defining loading
   loading = true;
@@ -42,7 +54,8 @@ export class RolesSharedService {
   roleUsersLoading = true;
   rolesOrgAccessLoading = true;
   rolesAppAccessLoading = true;
-  rolesTaskFlowAccessLoading = false;
+  // rolesTaskFlowAccessLoading = false;
+  rolesTaskFlowAccessLoading = true;
 
   //defining primary key
   primaryKey = 'roleId';
@@ -52,6 +65,7 @@ export class RolesSharedService {
   rolesAppAccessPrimaryKey = 'roleAppAssignmentId';
 
   rolesTaskFlowAccessPrimaryKey = 'roleTaskFlowAssignmentId';
+  rolesRootTaskFlowAccessPrimaryKey = 'roleTaskFlowAssignmentId';
 
   //variables for attributes
   roleUsersAttributes = Object.keys(new RoleUsers());
@@ -79,7 +93,6 @@ export class RolesSharedService {
 
   //define line sections
   lineKeys = ['roleUsers', 'rolesOrgAccess', 'rolesAppAccess', 'rolesTaskFlowAccess'];
-  // lineKeys = ['roleUsers', 'rolesOrgAccess'];
 
 
   //variables for navigation
@@ -96,8 +109,14 @@ export class RolesSharedService {
 
   //newly added for application access
   changeEmitted$: any;
-  selectedApplicationCode: string;
-  selectedAppAccess:string;
+  selectedIndex: number = 0;
+  get selectedApplicationCode(): string {
+    return this.formData['rolesAppAccess'] ? this.formData['rolesAppAccess'][this.selectedIndex].applicationShortCode : "";
+  }
+  get selectedAppAccess(): string {
+    return this.inputService.getInputValue(this.getRolesAppAccessPath(this.selectedIndex, 'isAllowed')) || (this.formData['rolesAppAccess'] ? this.formData['rolesAppAccess'][this.selectedIndex]?.isAllowed : "");
+  }
+
 
   //define constructor
   constructor(
@@ -111,10 +130,7 @@ export class RolesSharedService {
     this.id = 0;
     this.editMode = false;
     this.formData = {};
-  
-    this.selectedApplicationCode = "";
-    this.selectedAppAccess='';
-    
+
     this.refreshHeaderData = new BehaviorSubject(false);
     this.refreshData = new BehaviorSubject(false);
 
@@ -129,7 +145,7 @@ export class RolesSharedService {
     this.rolesOrgAccess = [];
 
     this.roleAppAccess = [];
-    this.roleTaskFlowAccess = [];
+    this.rolesTaskFlowAccess = [];
 
     //variable for nav
     this.listData = null;
@@ -138,6 +154,8 @@ export class RolesSharedService {
     this._roleUsersSeq = 1;
     this.roleUsersSeqIncBy = 1;
 
+    this.selectedIndex = 0;
+
   }
 
   //destroy or clear variables
@@ -145,9 +163,6 @@ export class RolesSharedService {
 
     this.id = 0;
     this.editMode = false;
-
-    this.selectedApplicationCode = "";
-    this.selectedAppAccess='';
 
     this.refreshData.unsubscribe();
     this.refreshHeaderData.unsubscribe();
@@ -164,9 +179,12 @@ export class RolesSharedService {
     this.rolesOrgAccess = [];
 
     this.roleAppAccess = [];
-    this.roleTaskFlowAccess = [];
+    this.rolesTaskFlowAccess = [];
 
     this.linesData = [];
+
+    this.selectedIndex = 0;
+
   }
 
   //method to setListData
@@ -223,13 +241,29 @@ export class RolesSharedService {
   }
 
   //getter for rolesTaskFlowAccessPath
-  get rolesTaskFlowAccessPath() {
+  get rolesRootTaskFlowAccessPath() {
     return this.appPath + '.rolesTaskFlowAccess';
   }
 
   //getter for rolesTaskFlowAccessRemovedKeysPath
-  get rolesTaskFlowAccessRemovedKeysPath() {
+  get rolesRootTaskFlowAccessRemovedKeysPath() {
     return this.appPath + '.rolesTaskFlowAccessRemovedKeys';
+  }
+
+  get rolesTaskFlowAccessPath() {
+    // return this.appPath + '.rolesTaskFlowAccess';
+    // return this.appPath + '.rolesAppAccess['+this.selectedIndex+'].taskflows';
+    return this.appPath + '.rolesAppAccess[' + this.selectedIndex + '].rolesTaskFlowAccess';
+
+
+  }
+
+  //getter for rolesTaskFlowAccessRemovedKeysPath
+  get rolesTaskFlowAccessRemovedKeysPath() {
+    // return this.appPath + '.rolesTaskFlowAccessRemovedKeys';
+    // return this.appPath + '.rolesAppAccess['+this.selectedIndex+'].taskflowsRemovedKeys';
+    return this.appPath + '.rolesAppAccess[' + this.selectedIndex + '].rolesTaskFlowAccessRemovedKeys';
+
   }
 
 
@@ -278,8 +312,14 @@ export class RolesSharedService {
   getRolesAppAccessPath(line, attr) {
     return this.rolesAppAccessPath + '[' + line + '].' + attr;
   }
+  getRolesTaskFlowAccessRootPath(line, attr) {
+    return this.appPath + '.rolesTaskFlowAccess' + '[' + line + '].' + attr;
+  }
   getRolesTaskFlowAccessPath(line, attr) {
     return this.rolesTaskFlowAccessPath + '[' + line + '].' + attr;
+  }
+  getFullRolesTaskFlowAccessPath(app, line, attr) {
+    return this.appPath + '.rolesAppAccess[' + app + '].rolesTaskFlowAccess' + '[' + line + '].' + attr;
   }
   getHeaderEditable(attr, id) {
     let editable = this.editMode;
@@ -294,8 +334,6 @@ export class RolesSharedService {
   //method to reset lines
   resetLines() {
     this.lineKeys.forEach(key => {
-
-      // console.log("key=", key)
       if (this[key].length) {
         this.formData[key] = JSON.parse(JSON.stringify(this[key]));
       }
@@ -382,6 +420,9 @@ export class RolesSharedService {
       case 'rolesAppAccess':
         newLine = model ? new RolesAppAccess(model) : new RolesAppAccess();
         break;
+      case 'rolesRootTaskFlowAccess':
+        newLine = model ? new RolesTaskFlowAccess(model) : new RolesTaskFlowAccess();
+        break;
       case 'rolesTaskFlowAccess':
         newLine = model ? new RolesTaskFlowAccess(model) : new RolesTaskFlowAccess();
         break;
@@ -396,18 +437,15 @@ export class RolesSharedService {
 
 
   getRoleUsersEditable(attr = null) {
-    // let editable = this.editMode && this.id !== 0;
     let editable = this.editMode;
     return editable;
   }
 
   getRolesOrgAccessEditable(attr = null) {
-    // let editable = this.editMode && this.id !== 0;
     let editable = this.editMode;
     return editable;
   }
   getRolesAppAccessEditable(attr = null) {
-    // let editable = this.editMode && this.id !== 0;
     let editable = this.editMode;
     return editable;
   }
@@ -425,7 +463,7 @@ export class RolesSharedService {
 
   isLoading() {
     return this.loading || this.headerLoading || this.linesLoading || this.roleUsersLoading || this.rolesOrgAccessLoading
-   // ||this.rolesTaskFlowAccessLoading;
+    // ||this.rolesTaskFlowAccessLoading;
   }
 
   //method to add new Lines
@@ -449,7 +487,6 @@ export class RolesSharedService {
       let value;
       if (model) value = model[attr];
       if (attr == primaryKey) value = 0;
-      // else if (attr==seqKey) value=seq.tostring();
       if (typeof value == 'undefined' || value == '') newLine[attr] = '';
       else {
         newLine[attr] = value;
@@ -462,6 +499,15 @@ export class RolesSharedService {
     this.refreshLines(key);
   }
 
+
+  //method to add taskflows
+
+  addTaskflows(model) {
+
+
+  }
+
+
   //method to reset seq
   resetSeq(key) {
     this['_' + key + 'Seq'] = 1;
@@ -470,7 +516,7 @@ export class RolesSharedService {
   //method to delete lines
   deleteLine(key, index) {
     let linePrimaryKey = this[key + 'PrimaryKey'];
-    let data = this.formData[key];
+    let data = key == 'rolesTaskFlowAccess' ? this.formData.rolesAppAccess[this.selectedIndex][key] : this.formData[key];
     let path = this[key + 'Path'];
     let model = data[index];
 
@@ -496,7 +542,11 @@ export class RolesSharedService {
 
 
   resetAllInput() {
- //   this.inputService.resetSharedData();
+    //   this.inputService.resetSharedData();
+  }
+
+  updateInput(path, value) {
+    this.inputService.updateInput(path, value);
   }
 
 }

@@ -108,9 +108,7 @@
                     <mat-icon *ngIf="_shared.getHeaderAttributeValue('isDefault')=='Y'"
                         style="color:dodgerblue;font-size:20px;vertical-align: middle;padding-left: 5px;"
                         matTooltip="Default">check_circle</mat-icon>
-                    <mat-icon *ngIf="_shared.getHeaderAttributeValue('isDefault')!='Y'"
-                        style="color:gray;font-size:20px;vertical-align: middle;padding-left: 5px;"
-                        matTooltip="Not default">cancel</mat-icon>
+                 
                 </div>
                 <div class="checkbox-center-align" *ngIf="getIfEditable('isDefault')">
                     <tnz-input type="checkbox" [path]="_shared.getHeaderAttrPath('isDefault')"

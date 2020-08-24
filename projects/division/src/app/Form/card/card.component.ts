@@ -38,7 +38,10 @@ export class CardComponent implements OnInit , OnDestroy{
       })
       this.subs.sink = this._shared.refreshData.subscribe(change => {
           this.loadData();
+          if(this._shared.id==0)
+          this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
       })
+     
     }
     setDivision() {
       if (this.router.url.endsWith('/create')) {

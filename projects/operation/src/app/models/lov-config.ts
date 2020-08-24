@@ -17,3 +17,17 @@ export const ParentOperationLovconfig: any = {
         }
     ]
 };
+
+export var ProcessLovConfigurationModel: any = {
+    title: 'Select Process',
+    url: 'lovs/process?opId=',
+    dataHeader: 'data',
+    returnKey: 'value',
+    displayKey: 'label',
+    filterAttributes: ['label'],
+    displayFields: [ {
+        key: 'label',
+        title: 'Process Name'
+    }]
+    
+};

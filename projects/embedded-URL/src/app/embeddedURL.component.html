@@ -9,7 +9,7 @@
             <ng-container *ngIf="!_shared.editMode">
                 <a (click)="newEmbeddedURL()">Create</a>
                 <a *ngIf="_shared.id!=0" (click)="editEmbeddedURL()">Edit</a>
-                <!-- <a *ngIf="_shared.id" (click)="copyRoles()">Copy</a> -->
+                <a *ngIf="_shared.id" (click)="copy()">Copy</a>
               </ng-container>
   
             <ng-container class="group" *ngIf="_shared.editMode">

@@ -39,7 +39,7 @@ pageChanged(event) {
 }
 
   rowSelected(event){
-  // this._shared.id=event.model.userId;
+  this._shared.id=event.model.userId;
     if(event.selected){
       this.router.navigateByUrl("/user/"+event.model.userId);
     }

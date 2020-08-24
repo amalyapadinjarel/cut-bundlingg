@@ -1,6 +1,10 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getCutPanelDetailsEditable()" [loading]="_shared.cutPanelDetailsLoading"
- class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [filterEnabled]="!_shared.getCutPanelDetailsEditable()"
- [sortEnabled]="!_shared.getMarkerDetailsEditable()" [showCheckBox]="_shared.getCutPanelDetailsEditable()">
+ class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="_shared.getCutPanelDetailsEditable()" [inputPath]="_shared.cutPanelDetailsPath"
+ (onAction)=onAction($event) title="Cut Panels">
+	<ng-container *ngIf="_shared.getCutPanelDetailsEditable()">
+		<smd-datatable-icon-button icon="delete" key="delete" tooltip="delete line" class="mat-color-danger"></smd-datatable-icon-button>
+		<smd-datatable-icon-button icon="restore_page" key="regenerate" tooltip="regenerate cut panels" class="mat-color-success"></smd-datatable-icon-button>
+	</ng-container>
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">

@@ -39,7 +39,7 @@ export const LocationLovConfig: any = {
     // }, 
     {
         key: 'label',
-        title: 'Location Name'
+        title: 'Location'
     }
     ]
     

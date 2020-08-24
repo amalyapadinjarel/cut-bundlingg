@@ -1,7 +1,11 @@
 <smd-datatable [dataUrl]="_shared.apiBase + '/carton-list/' + this._shared.poId + '/' + this._shared.orderId + '/' + this._shared.parentProductId" 
 dataHeader="cartonDetails" [rowCount]="_shared.cartonCount" [primaryListing]="false" (dataChange)="_onDataChange($event)"
-[rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
-	<smd-datatable-column title="Pack#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
+[rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" (onAction)=onAction($event) title="Carton">
+<ng-container *ngIf="_shared.getPacksDetailsEditable()">
+	<smd-datatable-icon-button icon="delete_sweep" key="delete" tooltip="delete lines" class="mat-color-danger"></smd-datatable-icon-button>
+	<smd-datatable-icon-button icon="autorenew" key="regenerate" tooltip="generate lines" class="mat-color-success"></smd-datatable-icon-button>
+</ng-container>
+<smd-datatable-column title="Pack#" field="sequence" sortable="true" [filterable]="true" [colStyle]="{'width':'45px'}" numeric="true">
 		<ng-template let-model="data" let-index="index">
 			<span>{{model.sequence}}</span>
 		</ng-template>

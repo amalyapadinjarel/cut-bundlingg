@@ -1,0 +1,25 @@
+ <html>
+   <body>
+    <h1 style="color:#2a1944"> Logic to calculate effective org access</h1>
+    <h4>If org access is configured only via User application,</h4>
+    <ul>
+      <li> Effective org access is populated from the org access in User application.</li>
+      <li> Default division and facility is populated from the configuration provided in the User application if it is specified in the user application.</li>
+   
+     </ul>
+   
+     <h4>If org access is configured only via Roles application,</h4>
+     <ul>
+       <li> Effective org access is populated from all roles accessible to the user based on the org access provided in the Roles application.</li>
+       <li> Default division and facility is populated from the configuration provided in the roles.</li>
+    
+      </ul>
+    
+      <h4>If org access is configured in both User and  Roles application,</h4>
+      <ul>
+        <li>Then the user will have access to the  division and facilities which are common to both the User and Roles application.</li>
+        <li> Default division and facility is populated from the configuration provided in the User application if it is specified in the user application.</li>
+     
+       </ul>
+   </body>
+ </html>

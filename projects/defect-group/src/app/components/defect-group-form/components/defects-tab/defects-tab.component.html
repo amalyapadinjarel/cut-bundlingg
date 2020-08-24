@@ -1,0 +1,71 @@
+<div class="group">
+    <div class="group-header">
+        <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
+    </div>
+</div>
+<ng-template #actionButtons>
+    <span class="flex-filler"></span>
+    <div style="display:flex" *ngIf="_shared.editMode && _shared.id != 0">
+        <button mat-button matTooltip="Copy Defects">
+            <mat-icon class="mat-color-info" (click)="copy()">content_copy</mat-icon>
+        </button>
+        <button mat-button matTooltip="add line">
+            <mat-icon class="mat-color-info" (click)="_shared.addLine('false','defect')">add_box</mat-icon>
+        </button>
+    </div>
+</ng-template>
+
+<smd-datatable [tableId]="_shared.appKey + '.defectsLines'" scrollType="scroll" defaultRange="10" [loading]="false" [inputPath]="_shared.appKey + '.defectsList'"
+    [filterEnabled]="true" [sortEnabled]="true" class="tnz-input-table" [showCheckBox]="false">
+
+    <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
+        <ng-template let-model="data" let-index="index">
+            <div class="row-operations" *ngIf="getIfEditable('shortCode',index)">
+                <mat-icon class="mat-color-danger" matTooltip="delete line" (click)=" this._shared.deleteLine('defect', index)">delete
+                </mat-icon>
+            </div>
+            <div class="row-operations" *ngIf="!getIfEditable('shortCode',index)">
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Seq #" field="sequence" [sortable]="true" [filterable]="true" [colStyle]="{'width':'70px','text-align':'center'}"
+        [numeric]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getdefectDetailsPath(index,'sequence')" [primaryKey]="_shared.defectPrimaryKey" [sharedData]="_shared.formData"
+                [isEdit]="_shared.editMode" [loading]=" _shared.headerLoading" validators="required" (keypress)="omit_other_char($event)" class="tnz-input-center-align">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Short Code" field="shortCode" [sortable]="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" class="text-upper" [path]="_shared.getdefectDetailsPath(index,'shortCode')" [primaryKey]="_shared.defectPrimaryKey"
+                [sharedData]="_shared.formData" [isEdit]="getIfEditable('shortCode' , index)" [loading]=" _shared.headerLoading"
+                (valueChanged)=" validateData($event, index, 'shortCode') " validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Name" field="name" [sortable]="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getdefectDetailsPath(index,'name')" [primaryKey]="_shared.defectPrimaryKey" [sharedData]="_shared.formData"
+                [isEdit]="_shared.editMode" [loading]=" _shared.headerLoading" (valueChanged)=" validateData($event, index, 'name') "
+                validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Active" field="active" [sortable]="true" [filterable]="true" [colStyle]="{'width':'5px','text-align':'center'}">
+        <ng-template let-model="data" let-index="index">
+            <div class="val" *ngIf=!_shared.editMode>
+                <mat-icon *ngIf=" model.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">
+                    check_circle</mat-icon>
+                <mat-icon *ngIf="model.active =='N'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">
+                    cancel</mat-icon>
+            </div>
+            <div class="val" *ngIf=_shared.editMode>
+                <tnz-input type="checkbox" [path]="_shared.getdefectDetailsPath(index,'active')" [primaryKey]="_shared.defectPrimaryKey" style  = "padding-left: 10px;"
+                    [sharedData]="_shared.formData" validators="required" [isEdit]="_shared.editMode" [loading]="_shared.headerLoading"> 
+                </tnz-input>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+</smd-datatable>

@@ -34,6 +34,8 @@
                     {{model.description}}
                 </ng-template>
             </smd-datatable-column> 
+            <smd-datatable-column title="Seq #" field="sequence" sortable="true" [filterable]="true">
+            </smd-datatable-column> 
             
             <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
             [colStyle]="{'width':'10px','text-align':'center'}"> 

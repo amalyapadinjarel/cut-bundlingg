@@ -16,6 +16,16 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 	private refreshSub: Subscription;
 	private refreshOrderDetails: Subscription;
 	public key = 'orderDetails';
+	public copyFromOptions = [
+		{
+			label: "Copy From SO",
+			value: "SO"
+		},
+		{
+			label: "Copy From MO",
+			value: "MO"
+		},
+	]
 
 	@ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
 
@@ -91,5 +101,37 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
 	deleteLine(index, model) {
 		this._service.deleteDetailsLine(this.key, index, model);
+	}
+
+	compute() {
+		let cutAllowance = this._shared.getHeaderAttributeValue('cutAllowance');
+		let primaryKey = this._shared.orderDetailsPrimaryKey;
+		if (typeof cutAllowance != 'undefined' && cutAllowance !== '') {
+			this._shared.formData.orderDetails.forEach((data, index) => {
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), cutAllowance, primaryKey)
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '', primaryKey)
+				let allowQty = this._service.calculateAllowedQty(data.lineQty, cutAllowance);
+				this._inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty, primaryKey)
+			});
+		}
+	}
+
+	onAction(event){
+		console.log(event)
+		switch(event.key){
+			case 'delete':
+				this._service.deleteLines(this.key);
+				break;
+			case 'compute':
+				this.compute();
+				break;
+			case 'SO':
+				this._service.copyFrom(event.key);
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+
+		}
 	}
 }

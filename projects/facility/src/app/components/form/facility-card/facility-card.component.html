@@ -57,6 +57,14 @@
             </div>
         </li>
         <li>
+            <label id = "label">Seq#</label>
+            <div class="val">
+                <tnz-input  type="text" [path]="_shared.getHeaderAttrPath('sequence')" [primaryKey]="_shared.primaryKey"  validators="required,length:10"
+                    [sharedData]="_shared.formData" [isEdit]="getIfEditable('sequence')" [loading]="_shared.headerLoading || _shared.loading"  (keypress)="omit_other_char($event)"
+                   ></tnz-input>
+            </div>
+        </li>
+        <li>
             <label id = "label">Active</label>
             <div *ngIf="!getIfEditable('active')">
                 <mat-icon *ngIf=" _shared.formData.header?.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;padding-left: 8px;" matTooltip="Active">check_circle</mat-icon>

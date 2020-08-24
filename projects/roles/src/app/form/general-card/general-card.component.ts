@@ -159,32 +159,4 @@ export class GeneralCardComponent implements OnInit {
     
   }
 
-  // lengthCheck(event, index, attr) {
-  //   let val = event.value;
-  //   let limit;
-
-  //   //update TO DO
-  //   switch (attr) {
-  //     case 'lookupCode':
-  //       limit = 30;
-  //       break;
-  //     case 'meaning':
-  //       limit = 80;
-  //       break;
-  //     case 'header1': case 'header2': case 'header3': case 'header4': case 'header5':
-  //       limit = 60;
-  //       break;
-  //     case 'description':
-  //       limit = 240;
-  //       break;
-  //     default:
-  //       limit = 150;
-  //       break;
-  //   }
-
-  //   if (val.length > limit) {
-  //     //	this._inputService.setError(this._shared.getLookupValuePath(index,attr), 'Length exceeded ' + limit + ' characters!');
-  //   }
-  // }
-
 }

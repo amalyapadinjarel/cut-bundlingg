@@ -40,9 +40,8 @@ pageChanged(event) {
 }
 
   rowSelected(event){
-  //this._shared.id=event.model.roleId;
+  this._shared.id=event.model.roleId;
     if(event.selected){
-     // console.log(this._shared.id)
       this.router.navigateByUrl("/roles/"+event.model.roleId);
     }
   }

@@ -1,6 +1,5 @@
 <smd-datatable [tableId]="_shared.appKey + '.parameter'" [paginated]="!_shared.getParametersEditable()" [loading]="_shared.parametersDetailsLoading" [primaryListing]="false"
-class="tnz-input-table"  [filterEnabled]="!_shared.getParametersEditable()" [sortEnabled]="!_shared.getParametersEditable()" [showCheckBox]="false" (dataChange)="onDataChange($event)"
-[inputPath]="_shared.parametersDetailsPath">
+class="tnz-input-table"  [showCheckBox]="false" (dataChange)="onDataChange($event)" [inputPath]="_shared.parametersDetailsPath">
    <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
        <ng-template let-model="data" let-index="index">
            <div class="row-operations">
@@ -138,7 +137,7 @@ class="tnz-input-table"  [filterEnabled]="!_shared.getParametersEditable()" [sor
         </div>
     </ng-template>
 </smd-datatable-column>
-<smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true">
+<!-- <smd-datatable-column title="Created By" field="createdBy" sortable="true" [filterable]="true">
     <ng-template let-model="data" let-index="index">
         <tnz-input [path]="_shared.getParameterDetailsPath(index,'createdBy')" [primaryKey]="_shared.parametersDetailsPrimaryKey"
             [sharedData]="_shared.formData" [isEdit]="false" [loading]="_shared.parametersDetailsLoading || _shared.loading">
@@ -165,5 +164,5 @@ class="tnz-input-table"  [filterEnabled]="!_shared.getParametersEditable()" [sor
             [sharedData]="_shared.formData" [isEdit]="false" [loading]="_shared.parametersDetailsLoading || _shared.loading">
         </tnz-input>
     </ng-template>
-</smd-datatable-column>
+</smd-datatable-column> -->
 </smd-datatable>

@@ -109,4 +109,18 @@ export class CutPanelsComponent implements OnInit {
 		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
 
+	onAction(event) {
+		switch (event.key) {
+			case 'delete':
+				this._service.deleteLines(this.key);
+				break;
+			case 'add':
+				this._shared.addLine(this.key);
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+		}
+	}
+
 }

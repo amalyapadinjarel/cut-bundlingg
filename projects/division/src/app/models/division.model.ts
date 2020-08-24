@@ -36,6 +36,7 @@ export class Division {
             CountryName : division.countryName,
             PostalCode : division.postalCode,
             TelephoneNumber : division.telephoneNumber,
+            TelephoneNumber2 : division.telephoneNumber2,
             Email : division.email,
             WebsiteUrl : division.websiteUrl
 
@@ -59,6 +60,7 @@ export class Division {
         countryName: String;
         postalCode: String;
         telephoneNumber: String;
+        telephoneNumber2: String;
         email: String;
         websiteUrl: String;
      
@@ -73,6 +75,7 @@ export class Division {
             this.countryName = address.CountryName;
             this.postalCode = address.PostalCode;
             this.telephoneNumber = address.TelephoneNumber;
+            this.telephoneNumber2 = address.TelephoneNumber2;
             this.email = address.Email;
             this.websiteUrl = address.WebsiteUrl;
         }

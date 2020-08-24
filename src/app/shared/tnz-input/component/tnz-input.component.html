@@ -10,7 +10,7 @@
     <ng-container *ngIf="!loading && isEdit">
 
         <input #Element [id]="path" *ngIf="type == 'text' " [value]="value"  [type]="dataType" (change)="onValueChange($event)" [matTooltip]="alert"
-               [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)"
+               [ngClass]="status" (keyup.ENTER)="handleKeyboadEnter($event)" (keyup.shift.ENTER)="handleKeyboadEnter($event)" autocomplete="off"
                (focus)="$event.target.select()" [disabled]="disable"/>
 
         <input #Element [id]="path" *ngIf="type == 'mask'" [value]="value"   [mask]="maskInput"  type="text" (change)="onValueChange($event)" [matTooltip]="alert"

@@ -9,6 +9,7 @@ import { SubSink } from 'subsink';
 import { ParentOperationLovconfig } from '../models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { AlertUtilities } from 'app/shared/utils';
+import { ProcessLovConfigurationModel } from '../models/lov-config';
 
 @Component({
   selector: 'operation-list',
@@ -44,6 +45,11 @@ export class ListComponent implements OnInit {
 
   getOperationsLov(id) {
     let lov = JSON.parse(JSON.stringify(ParentOperationLovconfig));
+    lov.url += id;
+    return lov;
+  }
+  getProcessLov(id){
+    let lov = JSON.parse(JSON.stringify(ProcessLovConfigurationModel));
     lov.url += id;
     return lov;
   }

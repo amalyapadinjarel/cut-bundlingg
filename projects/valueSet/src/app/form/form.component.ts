@@ -60,7 +60,6 @@ export class FormComponent implements OnInit, OnDestroy {
      else {
     
        this._shared.id = this.route.snapshot.params.setId;
-       console.log('id-------'+this.route.snapshot.params.setId);
  
        if (this.router.url.endsWith('/edit')) {
          this._shared.editMode = true;
@@ -122,7 +121,7 @@ export class FormComponent implements OnInit, OnDestroy {
    
    
    print() {
-     console.log((this._shared.formData));
+
    }
  
    /*deleteLines(key:

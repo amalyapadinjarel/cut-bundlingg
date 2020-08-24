@@ -1,4 +1,4 @@
-import { OnInit, Component, ViewChild } from '@angular/core';
+import { OnInit, Component, ViewChild, Input, ChangeDetectorRef } from '@angular/core';
 import { SmdDataTable } from 'app/shared/component';
 import { Subscription } from 'rxjs';
 import { WorkCenterSharedService } from '../services/work-center-shared.service';
@@ -8,6 +8,7 @@ import { ApiService } from 'app/shared/services';
 import { AlertUtilities } from 'app/shared/utils';
 import { WorkCenterService } from '../services/work-center.service';
 import { WorkCenterTypeLovConfigurationModel, FacilityLovConfigurationModel } from '../model/lov-config';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'work-center-list',
@@ -19,6 +20,9 @@ export class ListComponent implements OnInit {
     private refreshListData: Subscription;
     typeLovList = JSON.parse(JSON.stringify(WorkCenterTypeLovConfigurationModel));
     facilityLovList =  JSON.parse(JSON.stringify(FacilityLovConfigurationModel));
+    // processControl = {}
+    processList = [];
+    // JSON.parse(JSON.stringify(processListModel))
     constructor(
         public _shared: WorkCenterSharedService,
         private router: Router,
@@ -31,6 +35,12 @@ export class ListComponent implements OnInit {
         this.refreshListData = this._shared.refreshWorkCenterData.subscribe(
             change => { this.datatable.refresh(this._shared.formData['workCenter']) }
         );
+        this.apiService.get('/lovs/process').subscribe(list => {
+            this.processList =  list.data;
+            
+       
+            
+        })
     }
 
     pageChanged(event) {
@@ -89,4 +99,13 @@ export class ListComponent implements OnInit {
             });
         }
     }
+
+    compareFn(process1, process2) {
+        return process1 && process2 ? process1.value === process2.value : process1 === process2;
+    }
+
+    getShortCode(id, model){
+       return this._inputService.getCache(this._shared.appPath)['workCenter']?.workCenter[id]?.shortCode || model.shortCode
+    }
+    
 }

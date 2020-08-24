@@ -26,6 +26,9 @@ import { TnzInputModule } from 'app/shared/tnz-input/tnz-input.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { UserRolesComponent } from './form/user-roles/user-roles.component';
 import { UserOrgAccessComponent } from './form/user-org-access/user-org-access.component';
+import { OrgAccessFromRolesComponent } from './form/roles-org-access/roles-org-access.component';
+import { EffectiveOrgAccessFromRolesComponent } from './form/effective-org-access/effective-org-access.component';
+import { HelpComponent } from './form/help/help';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -80,7 +83,10 @@ const userRouting: ModuleWithProviders = RouterModule.forChild([
     ListComponent,
     GeneralCardComponent,
     UserRolesComponent,
-    UserOrgAccessComponent
+    UserOrgAccessComponent,
+    OrgAccessFromRolesComponent,
+    EffectiveOrgAccessFromRolesComponent,
+    HelpComponent
   ],
   imports: [
     //BrowserModule,

@@ -3,7 +3,7 @@
 
         <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="operations" [primaryListing]="false" class="tnz-input-table"
             (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage"
-            [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode" [showCheckBox]="true">
+            [sortEnabled]="!_shared.editMode" [showCheckBox]="true" [tableId]="_shared.appKey+'.list'" [inputPath]="_shared.operationsPath">
 
             <smd-datatable-column title=" " field=" " *ngIf="_shared.getOperationsEditable()" [colStyle]="{'width':'10px','text-align':'center'}">
                 <ng-template let-model="data" let-index="index">
@@ -32,6 +32,29 @@
                         validators="required" [isEdit]="_shared.getOperationsEditable('opName',model.opId)"
                         [loading]="false" stretch="true" (valueChanged)="validateData($event,index,'opName')">
                     </tnz-input>
+                </ng-template>
+            </smd-datatable-column>
+
+            <!-- <smd-datatable-column title="Production Processes" field="process" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <tnz-input type="text" [path]="_shared.getOperationsPath(index,'process')"
+                        [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                         [isEdit]="_shared.getOperationsEditable('process',model.opId)"
+                        [loading]="false" stretch="true" (valueChanged)="validateData($event,index,'process')">
+                    </tnz-input>
+                </ng-template>
+            </smd-datatable-column> -->
+
+            <smd-datatable-column title="Production Processes" field="process" sortable="true" [filterable]="true">
+                <ng-template let-model="data" let-index="index">
+                    <span *ngIf="!_shared.getOperationsEditable()">{{model.process}}</span>
+                    <div *ngIf="_shared.getOperationsEditable('process')">
+                        <tnz-input type="lov" [lovConfig]="getProcessLov(model.opId)"
+                            [path]="_shared.getOperationsPath(index,'process')"
+                            [primaryKey]="_shared.operationsPrimaryKey" [sharedData]="_shared.formData"
+                            [isEdit]="_shared.getOperationsEditable('process')" [loading]="false" stretch="true">
+                        </tnz-input>
+                    </div>
                 </ng-template>
             </smd-datatable-column>
 

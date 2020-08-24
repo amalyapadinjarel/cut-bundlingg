@@ -1,7 +1,12 @@
 <smd-datatable [tableId]="_shared.appKey + '.prodlist'" [paginated]="!_shared.getOrderDetailsEditable()" [loading]="_shared.orderDetailsLoading"
- class="tnz-input-table" [filterEnabled]="!_shared.getOrderDetailsEditable()" [sortEnabled]="!_shared.getOrderDetailsEditable()"
- (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" 
- [showCheckBox]="_shared.getOrderDetailsEditable()">
+ class="tnz-input-table" (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="_shared.getOrderDetailsEditable()"
+ [inputPath]="_shared.orderDetailsPath" (onAction)=onAction($event) title="Order Details">
+	<ng-container *ngIf = "_shared.getOrderDetailsEditable()">
+		<smd-datatable-icon-button icon="delete" key="delete" tooltip="delete line" class="mat-color-danger"></smd-datatable-icon-button>
+		<smd-datatable-icon-button icon="developer_board" key="compute" class="mat-color-info"></smd-datatable-icon-button>
+		<!-- <smd-datatable-icon-button icon="library_add" key="copyFrom" tooltip="add line" class="mat-color-success"></smd-datatable-icon-button> -->
+		<smd-datatable-menu-button icon="library_add" key="copyFrom" [options]="copyFromOptions" tooltip="add line" class="mat-color-success"></smd-datatable-menu-button>
+	</ng-container>
 	<smd-datatable-column title=" " field=" " *ngIf="_shared.getOrderDetailsEditable()" [colStyle]="{'width':'20px'}">
 		<ng-template let-model="data" let-index="index">
 			<div class="row-operations">
@@ -9,7 +14,8 @@
 			</div>
 		</ng-template>
 	</smd-datatable-column>
-	<smd-datatable-column title="#" field="displayOrder" [sortable]="true" [filterable]="true" [colStyle]="{'width':'15px'}" numeric="true">
+	<smd-datatable-column title="#" field="displayOrder" [sortable]="true" [filterable]="true" [colStyle]="{'width':'15px'}"
+	 numeric="true">
 		<ng-template let-model="data">
 			{{model.displayOrder}}
 		</ng-template>

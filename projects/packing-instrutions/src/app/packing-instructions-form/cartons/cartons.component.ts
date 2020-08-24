@@ -45,4 +45,18 @@ export class CartonsComponent implements OnInit {
     }
   }
 
+  onAction(event) {
+    switch (event.key) {
+      case 'delete':
+        this._service.deleteCartonLines();
+        break;
+      case 'regenerate':
+        this._service.generateCartonLines();
+        break;
+      default:
+        console.log('Unimplemented action')
+        break;
+    }
+  }
+
 }

@@ -9,53 +9,38 @@
         <div style="display: flex">
             <span class="flex-filler"></span>
             <div class="form-nav">
-                <span class="doc-contributors" *ngIf="_shared.formData.header?.createdBy != '' && _shared.formData.header?.creationDate != ''"> 
+                <span class="doc-contributors" *ngIf="_shared.formData.header?.createdBy != '' && _shared.formData.header?.creationDate != ''">
                     Created by {{_shared.formData.header?.createdBy}} on {{_shared.formData.header?.creationDate}}, Modified by {{_shared.formData.header?.lastUpdateBy}}
                     on {{_shared.formData.header?.lastUpdateDate|date:dateUtils.dateMinFormat}}
                 </span>
-                <!-- <form-nav [apiUrl]="'/packing-instructions/navigation/' + _shared.poId + '/' + _shared.orderId + '/' + _shared.parentProductId" navUrl="/packing-instructions" [params]="_shared.params"></form-nav> -->
+                <form-nav [apiUrl]="'/packing-instructions/navigation/' + _shared.poId + '/' + _shared.orderId + '/' + _shared.parentProductId"
+                    navUrl="/packing-instructions" [params]="_shared.params" [multipleKey]="true" [multipleKeyArray]="navKeyArray"></form-nav>
             </div>
         </div>
         <mat-tab-group>
             <mat-tab label="Details">
-                <perfect-scrollbar>
-                    <div class="group">
-                        <div class="group-header">
-                            <span class="flex-filler"></span>
-                            <div style="display:flex" *ngIf="_shared.getPacksDetailsEditable()">
-                                <button mat-button matTooltip="Delete line">
-                                    <mat-icon class="mat-color-danger" (click)="deleteLine('packsDetails')">delete</mat-icon>
-                                </button>
-                                <button mat-button matTooltip="Add solid pack">
-                                    <mat-icon class="mat-color-info" (click)="addLine('packDetailsSolid')">add_box</mat-icon>
-                                </button>
-                                <button mat-button matTooltip="Add ratio pack">
-                                    <mat-icon class="mat-color-info" (click)="addLine('packDetailsRatio')">library_add</mat-icon>
-                                </button>
-                            </div>
+                <div class="group">
+                    <div class="group-header">
+                        <span class="flex-filler"></span>
+                        <div style="display:flex" *ngIf="_shared.getPacksDetailsEditable()">
+                            <button mat-button matTooltip="Delete line">
+                                <mat-icon class="mat-color-danger" (click)="deleteLine('packsDetails')">delete</mat-icon>
+                            </button>
+                            <button mat-button matTooltip="Add solid pack">
+                                <mat-icon class="mat-color-info" (click)="addLine('packDetailsSolid')">add_box</mat-icon>
+                            </button>
+                            <button mat-button matTooltip="Add ratio pack">
+                                <mat-icon class="mat-color-info" (click)="addLine('packDetailsRatio')">library_add</mat-icon>
+                            </button>
                         </div>
-                        <app-packs></app-packs>
                     </div>
-                </perfect-scrollbar>
+                    <app-packs></app-packs>
+                </div>
             </mat-tab>
             <mat-tab label="Carton">
-                <perfect-scrollbar>
-                    <div class="group">
-                        <div class="group-header">
-                            <h3>Carton</h3>
-                            <span class="flex-filler"></span>
-                            <div style="display:flex" *ngIf="_shared.getPacksDetailsEditable()">
-                                <button mat-button matTooltip="delete lines">
-                                    <mat-icon class="mat-color-danger" (click)="deleteCartonLines()">delete_sweep</mat-icon>
-                                </button>
-                                <button mat-button matTooltip="generate lines">
-                                    <mat-icon class="mat-color-success" (click)="generateCartonLines()">autorenew</mat-icon>
-                                </button>
-                            </div>
-                        </div>
-                        <app-cartons></app-cartons>
-                    </div>
-                </perfect-scrollbar>
+                <div class="group">
+                    <app-cartons></app-cartons>
+                </div>
             </mat-tab>
         </mat-tab-group>
     </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService, LocalCacheService } from 'app/shared/services/';
 import { CutRegisterSharedService } from './cut-register-shared.service';
-import { CutRegister, Product, CutPanelDetails } from '../models/cut-register.model';
+import { CutRegister, Product, CutPanelDetails, OrderDetails, MarkerDetails } from '../models/cut-register.model';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Router } from '@angular/router';
 import { AlertUtilities, CommonUtilities } from 'app/shared/utils';
@@ -9,6 +9,8 @@ import { HttpParams } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from 'app/shared/component';
 import { Location } from '@angular/common';
+import { CopyFromSOLovConfig } from '../models/lov-config';
+import { TnzInputLOVComponent } from 'app/shared/tnz-input/input-lov/input-lov.component';
 
 @Injectable()
 export class CutRegisterService {
@@ -229,7 +231,7 @@ export class CutRegisterService {
         });
     }
 
-    generateBundleLines(id: number) {
+    generateAllBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to approve bundle.";
         return new Promise((resolve, reject) => {
             this.apiService.get('/' + this._shared.apiBase + '/generate-bundle/' + this._shared.id)
@@ -245,7 +247,7 @@ export class CutRegisterService {
         });
     }
 
-    deleteBundleLines(id: number) {
+    deleteAllBundleLines(id: number) {
         let defaultMsg = "Unknown Error. Failed to delete bundle.";
         return new Promise((resolve, reject) => {
             this.apiService.delete('/' + this._shared.apiBase + '/garment-cut-bundles/' + this._shared.id)
@@ -681,5 +683,224 @@ export class CutRegisterService {
             saveData[key] = sortedModel;
         }
         return saveData;
+    }
+
+    copyFrom(op) {
+        let lovConfig: any = {};
+        if (op == 'SO') {
+            lovConfig = JSON.parse(JSON.stringify(CopyFromSOLovConfig));
+        }
+        lovConfig.url += this._shared.getHeaderAttributeValue('attributeSet');
+        const dialogRef = this._dialog.open(TnzInputLOVComponent);
+        dialogRef.componentInstance.lovConfig = lovConfig;
+        dialogRef.afterClosed().subscribe(resArray => {
+            let routingIds = [];
+            let unAddedOrderLines = [];
+            if (resArray && resArray.length) {
+                resArray.forEach(res => {
+                    let routingId = res.routingId
+                    res = this.mapResToOrderDetails(res);
+                    let orderLineIndex = this._shared.formData.orderDetails.findIndex(data => {
+                        return res.refDocLineId == data.refDocLineId
+                    })
+                    if (orderLineIndex == -1) {
+                        routingIds.push(routingId);
+                        this._shared.addLine('orderDetails', res);
+                        let index = this._shared.formData.markerDetails.findIndex(data => {
+                            return data.attrValId == res.attrValId;
+                        });
+                        if (index == -1) {
+                            res = this.mapFromOrderToMarkerDetails(res);
+                            this._shared.addLine('markerDetails', res);
+                        }
+                    } else {
+                        unAddedOrderLines.push(res)
+                    }
+                });
+                if (unAddedOrderLines.length) {
+                    this.alertUtils.showAlerts(unAddedOrderLines.length + " line(s) are not coppied as they already exist.")
+                }
+                if (routingIds.length)
+                    this.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
+                        cutPanels.forEach(line => {
+                            let index = this._shared.formData.cutPanelDetails.findIndex(data => {
+                                return data.panelName == line.panelCode && data.refProdId == line.refProdId;
+                            });
+                            if (index == -1) {
+                                let cutPanelLine = this.mapToCutPanelLine(line);
+                                this._shared.addLine('cutPanelDetails', cutPanelLine)
+                            }
+                        })
+                    })
+            }
+        })
+    }
+
+    mapResToOrderDetails(res) {
+        let model = new OrderDetails();
+        model.layRegstrId = this._shared.id ? this._shared.id.toString() : "0";
+        model.bpartName = res.customer ? res.customer : "";
+        model.bpartnerDocNo = res.bpartnerDocNo ? res.bpartnerDocNo : "";
+        model.bpartnerId = res.bpartnerId ? res.bpartnerId : "";
+        model.ordQtyUom = res.qtyUom ? res.qtyUom : "";
+        model.lineQty = res.orderQty ? res.orderQty : "";
+        model.kit = res.kit ? res.kit : "";
+        model.allwdQty = res.maxAllowQty ? res.maxAllowQty : "";;
+
+        model.refDocId = res.orderId ? res.orderId : "";
+        model.refDocLineId = res.orderLineId ? res.orderLineId : "";
+        model.refDocRevNo = res.revisionNo ? res.revisionNo : "";
+        model.refBaseDoc = res.refBaseDoc ? res.refBaseDoc : "";
+        model.refDocTypeId = res.docTypeId ? res.docTypeId : "";
+        model.refDocNo = res.documentNo ? res.documentNo : "";
+        model.refDocDate = res.orderDate ? res.orderDate : "";
+        model.refDoc = res.docType ? res.docType : "";
+        model.refProduct = res.productNum ? res.productNum : "";
+        model.refProductId = res.productId ? res.productId : "";
+        model.refProdAttr = res.prdAttribute ? res.prdAttribute : "";
+
+
+        model.excQty = res.excQty ? res.excQty : "";
+        model.color = res.color ? res.color : "";
+        model.displayOrder = res.displayOrder ? res.displayOrder : "";
+        model.cutAllowanceQty = res.cutAllowanceQty ? res.cutAllowanceQty : "";
+        model.createdBy = res.createdBy ? res.createdBy : "";
+        model.layOrderRefId = res.layOrderRefId ? res.layOrderRefId : "";
+        model.facility = res.facility ? res.facility : "";
+        model.orderRefNo = res.orderReference ? res.orderReference : "";
+        model.bpartnerDocNo = res.orderReference ? res.orderReference : "";
+
+        model.cutAllowancePercent = this._shared.getHeaderAttributeValue('cutAllowance');
+        model.totalOrderQty = this.calculateAllowedQty(res.orderQty, model.cutAllowancePercent);
+        model.attribute1 = res.attribute1 ? res.attribute1 : "";
+        model.attribute2 = res.attribute2 ? res.attribute2 : "";
+        model.attribute3 = res.attribute3 ? res.attribute3 : "";
+        model.attribute4 = res.attribute4 ? res.attribute4 : "";
+        model.attribute5 = res.attribute5 ? res.attribute5 : "";
+        model.attribute6 = res.attribute6 ? res.attribute6 : "";
+        model.attribute7 = res.attribute7 ? res.attribute7 : "";
+        model.attribute8 = res.attribute8 ? res.attribute8 : "";
+        model.attribute9 = res.attribute9 ? res.attribute9 : "";
+        model.attribute10 = res.attribute10 ? res.attribute10 : "";
+        model.totCutQty = res.totCutQty ? res.totCutQty : "";
+        model.color = res.attribute1 ? res.attribute1 : "";
+
+        model.prevqty = res.prevCutQty ? res.prevCutQty : "";
+        model.comboTr = res.comboTitle ? res.comboTitle : "";
+        model.combo = res.combo ? res.combo : "";
+        model.routingId = res.routingId ? res.routingId : "";
+        model.markerAttrVal = res.markerAttrVal ? res.markerAttrVal : "";
+        model.attrValId = res.attrValId ? res.attrValId : "";
+        model.styleId = res.parProdId ? res.parProdId : "";
+        return model;
+    }
+
+    mapFromOrderToMarkerDetails(res: OrderDetails) {
+        let model = new MarkerDetails();
+        let headerAttrSet = this._shared.getHeaderAttributeValue('attributeSet');
+        model.layRegstrId = res.layRegstrId;
+        model.prodName = res.refProduct;
+        // model.productId = res.refProductId; Commented for as marker details don't need to save prdt id
+        model.prodAttr = res.markerAttrVal;
+        model.facility = res.facility;
+        model.attrValId = res.attrValId;
+        if (headerAttrSet === 'SIZE') {
+            model.attribute2 = res.attribute2;
+        }
+        if (headerAttrSet === 'COLOR_SIZE') {
+            model.attribute1 = res.attribute1;
+            model.attribute2 = res.attribute2;
+        }
+        if (headerAttrSet === 'COLOR_SIZE_INSEAM') {
+            model.attribute1 = res.attribute1;
+            model.attribute2 = res.attribute2;
+            model.attribute3 = res.attribute3;
+        }
+        model.attribute4 = res.attribute4;
+        model.attribute5 = res.attribute5;
+        model.attribute6 = res.attribute6;
+        model.attribute7 = res.attribute7;
+        model.attribute8 = res.attribute8;
+        model.attribute9 = res.attribute9;
+        model.attribute10 = res.attribute10;
+        return model;
+    }
+
+    mapToCutPanelLine(line) {
+        let cutPanel = new CutPanelDetails();
+        cutPanel.layRegstrId = this._shared.id.toString();
+        cutPanel.panelName = line.panelCode;
+        cutPanel.panelNameTr = line.panelName;
+        cutPanel.mOpId = line.opId;
+        cutPanel.opSeq = line.opSequence;
+        cutPanel.refProdId = line.refProdId;
+        cutPanel.facility = this._shared.getHeaderAttributeValue('cutFacility');
+        return cutPanel;
+    }
+
+    generateBundleLines() {
+        if (this.checkIfEdited()) {
+            this.alertUtils.showAlerts('Changes detected. Please save the changes before generating bundle lines.')
+        } else {
+            this.generateAllBundleLines(this._shared.id).then(data => {
+                this.loadData('cutBundle');
+                this._shared.refreshHeaderData.next(true)
+            }).catch(err => {
+                this.alertUtils.showAlerts(err);
+            })
+        }
+    }
+
+    deleteBundleLines() {
+        if (this._shared.formData.cutBundle && this._shared.formData.cutBundle.length) {
+            if (this.checkIfEdited()) {
+                this.alertUtils.showAlerts('Changes detected. Please save the changes before deleting bundle lines.')
+            } else {
+                let dialogRef = this._dialog.open(ConfirmPopupComponent);
+                dialogRef.componentInstance.dialogTitle = 'Delete Bundle Line(s)';
+                dialogRef.componentInstance.message = 'Are you sure you want to delete all the bundle lines '
+                dialogRef.afterClosed().subscribe(flag => {
+                    if (flag) {
+                        this.deleteAllBundleLines(this._shared.id).then(data => {
+                            this.loadData('cutBundle');
+                        }).catch(err => {
+                            this.alertUtils.showAlerts(err);
+                        })
+                    }
+                })
+            }
+
+        }
+    }
+
+    compute() {
+        let cutAllowance = this._shared.getHeaderAttributeValue('cutAllowance');
+        let primaryKey = this._shared.orderDetailsPrimaryKey;
+        if (typeof cutAllowance != 'undefined' && cutAllowance !== '') {
+            this._shared.formData.orderDetails.forEach((data, index) => {
+                this.inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowancePercent'), cutAllowance, primaryKey)
+                this.inputService.updateInput(this._shared.getOrderDetailsPath(index, 'cutAllowanceQty'), '', primaryKey)
+                let allowQty = this.calculateAllowedQty(data.lineQty, cutAllowance);
+                this.inputService.updateInput(this._shared.getOrderDetailsPath(index, 'allwdQty'), allowQty, primaryKey)
+            });
+        }
+    }
+
+    regenerateCutPanels() {
+        this._shared.cutPanelDetailsLoading = true;
+        let routingIds = [];
+        this._shared.formData.orderDetails.forEach(line => {
+            if (routingIds.indexOf(line.routingId) == -1)
+                routingIds.push(line.routingId);
+        })
+        if (routingIds.length)
+            this.getCutPanelsFromRoutingIds(routingIds).then((cutPanels: any) => {
+                this.deleteAll('cutPanelDetails');
+                cutPanels.forEach(line => {
+                    let cutPanelLine = this.mapToCutPanelLine(line);
+                    this._shared.addLine('cutPanelDetails', cutPanelLine)
+                })
+                this._shared.cutPanelDetailsLoading = false;
+            })
     }
 }

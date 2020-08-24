@@ -4,6 +4,7 @@ import { UserWcAccessSharedService } from '../_services/user-wc-access-shared.se
 import { Subscription } from 'rxjs';
 import { UserLovConfig, facilityLovConfig, WorkcenterLovConfig } from '../Models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
+import { UserWcAccessService } from '../_services/user-wc-access.service';
 @Component({
   selector: 'user-wc-access-list',
   templateUrl: './list.component.html',
@@ -13,49 +14,89 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(SmdDataTable, { static: true }) dataTable: SmdDataTable;
   private refreshSub: Subscription;
+  private refreshLoadData: Subscription;
   UserLov = JSON.parse(JSON.stringify(UserLovConfig));
-  facilityLov = JSON.parse(JSON.stringify(facilityLovConfig));
-  WorkcenterLov = JSON.parse(JSON.stringify(WorkcenterLovConfig));
+  
+  
   constructor(public _shared: UserWcAccessSharedService,
-    public _inputService: TnzInputService) { }
+    public _inputService: TnzInputService,
+    private _service:UserWcAccessService  ) { }
 
   ngOnInit(): void {
+   
+    this.refreshLoadData = this._shared.refreshData.subscribe(change => {
+      this._service.loadData();
+  
+
+    });
     this.refreshSub = this._shared.refreshUserWcAccessData.subscribe(
       change => {
-
-
-        this.dataTable.refresh(this._shared.formData['userWcAccess'])
+        if(change) {
+      
+        this.refreshTable();
+       
+     
+      }
+       
       }
     );
 
   }
   ngOnDestroy(): void {
     this.refreshSub.unsubscribe();
+    this.refreshLoadData.unsubscribe();
+  }
+  workCenterLov(index) {
+  
+    let cache = this._inputService.getInputValue(this._shared.getuserWcAccessAttrPath(index,'facility'))
+    return JSON.parse(JSON.stringify(WorkcenterLovConfig(cache ? cache.value != "" ? cache.value: null: null)));
+  }
+  facilityLov(index) {
+    let cache = this._inputService.getInputValue(this._shared.getuserWcAccessAttrPath(index,'userName'))
+    return JSON.parse(JSON.stringify(facilityLovConfig(cache ? cache.userId != "" ? cache.userId: null : null)));
   }
   _onDataChange(dataChange: any) {
     if (dataChange.data && dataChange.data.userWcAccess) {
       this._shared.setListData(dataChange.data);
     }
   }
+  refreshTable(){
+  this.dataTable.refresh(this._shared.formData['userWcAccess'])
+}
   pageChanged(event) {
     this._shared.selectedPage = event.page;
   }
   _onPageChange(pageChangeEvent: any) {
     this._shared.selectedPage = pageChangeEvent.page;
   }
-  valueChangedFromFacility(index, event, primaryKeyvalue = null) {
+  valueChangedFromUI(index, key, primaryKeyvalue = null) {
 
     if (primaryKeyvalue == 0) {
+      if(key==='facility'){
+  
       this._inputService.updateInput(this._shared.getuserWcAccessAttrPath(index, 'workCenter'), '');
-    }
-    else {
       this._shared.formData["userWcAccess"][index].workCenter = "";
     }
+      if(key==='userName'){
+        
+      this._inputService.updateInput(this._shared.getuserWcAccessAttrPath(index, 'facility'), '');
+      this._inputService.updateInput(this._shared.getuserWcAccessAttrPath(index, 'workCenter'), '');
+      this._shared.formData["userWcAccess"][index].facility = "";
+      this._shared.formData["userWcAccess"][index].workCenter = "";
+    }
+    }
+    else {
+      if(key==='facility'){
+     
+      this._shared.formData["userWcAccess"][index].workCenter = "";
+    }
+      if(key==='userName'){
+       
+      this._shared.formData["userWcAccess"][index].facility = "";
+      this._shared.formData["userWcAccess"][index].workCenter = "";
+    }
+    }
 
-    let wcParam = `?facility=${event.value.value}`;
-    let wcUrl = 'lovs/work-center';
-    let newUrl = wcUrl + wcParam
-    this.WorkcenterLov = { ...this.WorkcenterLov, url: newUrl };
 
 
   }

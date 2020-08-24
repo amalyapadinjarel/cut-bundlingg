@@ -30,7 +30,7 @@ export class GeneralDetailsComponent implements OnInit {
 }
 
 export const styleLovconfig: any = {
-  title: 'Select operation',
+  title: 'Select Style',
   url: 'lovs/styles',
   dataHeader: 'data',
   returnKey: 'value',
@@ -39,7 +39,7 @@ export const styleLovconfig: any = {
   displayFields: [
     {
       key: 'label',
-      title: 'Style'
+      title: 'Name'
     }]
 };
 

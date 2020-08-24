@@ -12,8 +12,6 @@ import { User } from '../../models/user';
   selector: 'user-general-card',
   templateUrl: './general-card.component.html',
   styleUrls: ['./general-card.component.scss'],
-  // host: { 'class': 'header-card' }
-
   host: { 'class': 'general-card' }
 })
 

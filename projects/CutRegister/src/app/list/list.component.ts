@@ -28,6 +28,12 @@ export class ListComponent implements OnInit {
   }
 
   rowSelected(event) {
+    if(event.model){
+      this._shared.reportData["pCutId"] = event.model.registerId;
+      this._shared.reportData["pDocumentNum"] = event.model.documentNo;
+    } else {
+      this._shared.reportData = {}
+    }
     if (event.selected) {
       this.router.navigateByUrl('/cut-register/' + event.model.registerId);
     }

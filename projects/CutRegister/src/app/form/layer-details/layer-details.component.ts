@@ -14,6 +14,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 })
 export class LayerDetailsComponent implements OnInit, OnDestroy {
 
+	key = "layerDetails"
 	disabled: any = {};
 	fabricLovConfig: any;
 	stickerColorLovConfig = JSON.parse(JSON.stringify(StickerColorLovConfig))
@@ -157,5 +158,19 @@ export class LayerDetailsComponent implements OnInit, OnDestroy {
 			this.disabled[index] = [];
 		let i = this.disabled[index].indexOf(key);
 		return i == -1 && this._shared.getLayerDetailsEditable();
+	}
+
+	onAction(event) {
+		switch (event.key) {
+			case 'delete':
+				this._service.deleteLines(this.key);
+				break;
+			case 'add':
+				this._shared.addLine(this.key);
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+		}
 	}
 }

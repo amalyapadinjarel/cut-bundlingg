@@ -53,7 +53,7 @@ get appPath() {
       if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
         editable = false
     }
-    let editableAttrs = ['facility','facilityGroup','description','location'];// attributes that can be edited 
+    let editableAttrs = ['facility','facilityGroup','description','location' , 'sequence'];// attributes that can be edited 
   
     return editable;
   }

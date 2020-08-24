@@ -1,0 +1,158 @@
+<div class="group-header">
+  <h3>Org Access Expandable</h3>
+  <span class="flex-filler"></span>
+  <div style="display:flex" *ngIf="_shared.getStatusDetailsEditable()">
+    <button mat-button matTooltip="Add line">
+      <mat-icon class="mat-color-info" (click)="addStatus()">add_box</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-card class="input-card no-padding" class="expansion-table-card">
+  <div class="header">
+    <div class="icon" *ngIf="_shared.getStatusDetailsEditable()"></div>
+    <span>#</span>
+    <span>Division</span>
+    <span class="flex-filler"></span>
+    <span>Facility</span>
+    <span>Edit</span>
+    <span>Revise</span>
+    <button mat-button *ngIf="_shared.getStatusDetailsEditable()" style="border: none;">
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-expansion-panel *ngFor="let statusRow of this._shared.statusList;let index = index" class="expansion-table">
+      <mat-expansion-panel-header>
+        <div  *ngIf="_shared.getStatusDetailsEditable() ">
+          <div class="row-operations" *ngIf="statusRow.roledocStatusAssignmentId == 0">
+            <mat-icon *ngIf="statusRow.roledocStatusAssignmentId == 0" class="mat-color-danger" matTooltip="Delete Line"
+              (click)="deleteStatusLine(index)" style="vertical-align: middle !important;padding-top: 3px;">delete
+            </mat-icon>
+          </div>
+          <div class="row-operations" *ngIf="statusRow.roledocStatusAssignmentId != 0">
+            <mat-icon *ngIf="statusRow.roledocStatusAssignmentId != 0" class="mat-color-disabled-danger"
+              matTooltip="Delete Line" style="vertical-align: middle !important;padding-top: 3px;">delete</mat-icon>
+          </div>
+        </div>
+        <span>{{index+1}}</span>
+        <span>{{statusRow.docStatus.label}}</span>
+        <span class="flex-filler"></span>
+        <span *ngIf="!_shared.getStatusDetailsEditable('active')">
+          <mat-icon *ngIf=" statusRow.active==true "
+            style="color:green;font-size:20px;text-align:'center';vertical-align: middle; ">
+            check_circle</mat-icon>
+          <mat-icon *ngIf=" statusRow.active ==false"
+            style="color:red;font-size:20px;vertical-align: middle;text-align:'center';">cancel
+          </mat-icon>
+        </span>
+        <span *ngIf="_shared.getStatusDetailsEditable('active')">
+          <mat-checkbox [(ngModel)]="statusRow.active" (click)="valueChanged($event,index,'active')"></mat-checkbox>
+        </span>
+        <span *ngIf="!_shared.getStatusDetailsEditable('isEditAllowed')">
+          <mat-icon *ngIf=" statusRow.isEditAllowed==true"
+            style="color:green;font-size:20px;text-align:'center';vertical-align: middle;">
+            check_circle</mat-icon>
+          <mat-icon *ngIf=" statusRow.isEditAllowed ==false"
+            style="color:red;font-size:20px;vertical-align: middle;text-align:'center'">cancel
+          </mat-icon>
+        </span>
+        <span *ngIf="_shared.getStatusDetailsEditable('isEditAllowed')">
+          <mat-checkbox [(ngModel)]="statusRow.isEditAllowed" (click)="valueChanged($event,index,'isEditAllowed')">
+          </mat-checkbox>
+        </span>
+        <span *ngIf="!_shared.getStatusDetailsEditable('isRevisionAllowed')">
+          <mat-icon *ngIf=" statusRow.isRevisionAllowed==true"
+            style="color:green;font-size:20px;text-align:'center';vertical-align: middle;">
+            check_circle</mat-icon>
+          <mat-icon *ngIf=" statusRow.isRevisionAllowed ==false"
+            style="color:red;font-size:20px;vertical-align: middle;text-align:'center'">cancel
+          </mat-icon>
+        </span>
+        <span *ngIf="_shared.getStatusDetailsEditable('isRevisionAllowed')">
+          <mat-checkbox [(ngModel)]="statusRow.isRevisionAllowed"
+            (click)="valueChanged($event,index,'isRevisionAllowed')"></mat-checkbox>
+        </span>
+        <button mat-button matTooltip="Add line" *ngIf="_shared.getStatusDetailsEditable()">
+          <mat-icon class="mat-color-info" (click)="addRole(index)">add_box</mat-icon>
+        </button>
+      </mat-expansion-panel-header>
+      <div *ngIf=" statusRow.roles.length!=0">
+        <table id="table">
+          <thead>
+            <div class="icon" *ngIf="_shared.getStatusDetailsEditable()"></div>
+            <th>
+              <span>
+                Role
+              </span>
+            </th>
+            <span class="flex-filler"></span>
+            <th>
+              <span>
+                Active
+              </span>
+            </th>
+            <th><span>
+                Edit
+              </span> </th>
+            <th>
+              <span>
+                Revise
+              </span>
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of statusRow.roles ;let i = index">
+              <div  *ngIf="_shared.getStatusDetailsEditable()">
+                <div class="row-operations" *ngIf="row.roledocStatusAssignmentId == 0">
+                  <mat-icon *ngIf="row.roledocStatusAssignmentId == 0" class="mat-color-danger" matTooltip="Delete Line"
+                    (click)="deleteRolesLine(index,i)" style="vertical-align: middle;">delete</mat-icon>
+                </div>
+                <div class="row-operations" *ngIf="row.roledocStatusAssignmentId != 0">
+                  <mat-icon *ngIf="row.roledocStatusAssignmentId != 0" class="mat-color-disabled-danger"
+                    matTooltip="Delete Line" style="vertical-align: middle;">delete</mat-icon>
+                </div>
+              </div>
+              <td> {{row.role.label}} </td>
+              <span class="flex-filler"></span>
+              <td>
+                <span *ngIf="!_shared.getStatusDetailsEditable('active')">
+                  <mat-checkbox [ngModel]="row.active" disabled></mat-checkbox>
+                </span>
+                <span *ngIf="_shared.getStatusDetailsEditable('active')">
+                  <mat-checkbox [(ngModel)]="row.active " (click)="RolevalueChanged($event,index,i)"></mat-checkbox>
+                </span>
+              </td>
+              <td>
+                <span *ngIf="!_shared.getStatusDetailsEditable('isEditAllowed')">
+                  <mat-checkbox [ngModel]="row.isEditAllowed" disabled></mat-checkbox>
+                </span>
+                <span *ngIf="_shared.getStatusDetailsEditable('isEditAllowed')">
+                  <mat-checkbox [(ngModel)]="row.isEditAllowed" (click)="RolevalueChanged($event,index,i)">
+                  </mat-checkbox>
+                </span>
+              </td>
+              <td>
+                <span *ngIf="!_shared.getStatusDetailsEditable('isRevisionAllowed')">
+                  <mat-checkbox [ngModel]="row.isRevisionAllowed" disabled></mat-checkbox>
+                </span>
+                <span *ngIf="_shared.getStatusDetailsEditable('isRevisionAllowed')">
+                  <mat-checkbox [(ngModel)]="row.isRevisionAllowed" (click)="RolevalueChanged($event,index,i)">
+                  </mat-checkbox>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-expansion-panel>
+
+
+
+  </mat-dialog-content>
+  <div *ngIf="!this._shared.statusList.length">
+    <div class="no-data-div">
+      <mat-icon class="no-data-icon">{{noDataDisplayIcon}}</mat-icon>
+      <span class="text">{{noDataDisplayMessage}}</span>
+
+    </div>
+  </div>
+</mat-card>

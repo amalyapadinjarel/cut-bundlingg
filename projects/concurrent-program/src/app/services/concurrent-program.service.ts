@@ -273,6 +273,7 @@ saveData(id): Promise<any> {
                   .subscribe(res => {
                       if (res && res.success) {
                           this._shared.id = res.data && res.data.pgmId ? res.data.pgmId : this._shared.id;
+                          this._shared.listData = null;
                           resolve(res)
                       } else {
                           reject(res && res.message ? res.message : 'Unknown error');

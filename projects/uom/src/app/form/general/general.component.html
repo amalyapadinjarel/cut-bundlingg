@@ -1,0 +1,44 @@
+<div class="group">
+    <h4>General</h4>
+   <ul >
+    <li >
+        <label id="header">Category</label>
+        <div class="val">
+          <tnz-input  type="text" 
+          [path]="_shared.getHeaderAttrPath('categoryName')"
+          [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+              validators="required,length:60"  [isEdit]="getIfEditable('categoryName')" 
+              [loading]="_shared.headerLoading || _shared.loading"  (valueChangedFromUI)="validateData($event,'machineCode')"> 
+            </tnz-input>              
+        </div>
+    </li> 
+    <li>
+            <label id="header">Active</label>
+            <div class="val" *ngIf=_shared.editMode >
+                
+                <tnz-input  type="checkbox" [path]="_shared.getHeaderAttrPath('active')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" 
+                   [isEdit]="getIfEditable('active')" 
+                  [loading]="_shared.headerLoading || _shared.loading" > 
+                </tnz-input> 
+            </div>
+             <div class="val" *ngIf=!_shared.editMode style="padding-left: 9px">
+                
+                <mat-icon *ngIf=" _shared.formData.header?.active =='Y'"  style="color:green;font-size:20px;vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+                <mat-icon *ngIf=" _shared.formData.header?.active !='Y'"  style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+
+       </li>  
+ </ul>
+</div>
+<div class="group">
+    <h4>Description</h4>
+    <ul>
+        <li>
+            <div class="val">
+                <tnz-input type="textarea" [path]="_shared.getHeaderAttrPath('description')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData" stretch="true"
+                    [isEdit]="getIfEditable('description')" [loading]="_shared.headerLoading || _shared.loading">
+                </tnz-input>
+            </div>
+        </li> 
+    </ul> 
+</div>

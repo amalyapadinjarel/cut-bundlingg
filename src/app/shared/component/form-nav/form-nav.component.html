@@ -1,8 +1,8 @@
 <ng-container>
     <button *ngIf="prevId" mat-button [class.spinner]="loading" [disabled]="loading" matTooltip="previous">
-        <mat-icon class="mat-color-disabled" (click)="navigateRecord()">navigate_before</mat-icon>
+        <mat-icon class="nav-icon" (click)="navigateRecord()">navigate_before</mat-icon>
     </button>
     <button *ngIf="nextId" mat-button [class.spinner]="loading" [disabled]="loading" matTooltip="next">
-        <mat-icon class="mat-color-disabled" (click)="navigateRecord(true)">navigate_next</mat-icon>
+        <mat-icon class="nav-icon" (click)="navigateRecord(true)">navigate_next</mat-icon>
     </button>
 </ng-container>

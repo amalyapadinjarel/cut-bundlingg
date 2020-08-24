@@ -19,8 +19,8 @@ material-app {
 }
 
 *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -77,6 +77,12 @@ material-app {
 
     &.inactive-icon {
         color: red;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+    &.default-icon {
+        color: dodgerblue;
         font-size: 20px;
         vertical-align: middle;
     }
@@ -423,7 +429,7 @@ tnz-input {
     bottom: 0;
     overflow: hidden;
     z-index: -1;
-    background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
+    background: #f3f2f4;
     background-size: cover;
 
     >* {
@@ -653,7 +659,7 @@ tnz-input {
                         line-height: 21px;
                         min-width: 230px;
                         max-width: 230px;
-                        margin-right: 12px;
+                        margin-right: 10px;
                         box-sizing: border-box;
                         border-radius: 0 0 4px 0;
                         // background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
@@ -768,12 +774,21 @@ tnz-input {
                     flex: 1;
                     overflow: hidden;
 
+                    .ps__rail-y {
+                        width: 8px;
+
+                        .ps__thumb-y {
+                            width: 8px;
+                            background-color: #a299ad;
+                        }
+                    }
+
                     .header-card {
                         display: flex;
                         flex-direction: column;
                         min-width: 230px;
                         max-width: 230px;
-                        margin-right: 12px;
+                        margin-right: 10px;
 
                         .group {
                             margin: 12px 0 0;
@@ -851,8 +866,8 @@ tnz-input {
                                             border-color: rgba(95, 81, 117, 0.32);
                                         }
 
-                                        .upper-case{
-                                            input{
+                                        .upper-case {
+                                            input {
                                                 text-transform: uppercase;
                                             }
                                         }
@@ -916,9 +931,9 @@ tnz-input {
                                     }
 
                                     >label {
-                                         min-width: 100px;
-                                         max-width: 120px;
-                                        //width:100px;
+                                        min-width: 100px;
+                                        max-width: 120px;
+                                        // width:100px;
                                         padding-right: 4px;
                                         text-align: right;
                                         border-right: 1px solid #ccc;
@@ -970,6 +985,7 @@ tnz-input {
                         flex: 1;
                         overflow: hidden;
                         position: relative;
+                        margin-left: -2px;
 
                         .doc-contributors {
                             line-height: 20px;
@@ -991,8 +1007,12 @@ tnz-input {
                         }
 
                         >.mat-tab-group {
-                            flex: 1;
+                            // flex: 1;
                             overflow: hidden;
+                            margin-bottom: 10px;
+                            margin-left: 5px;
+                            box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 2px 0px 2px 0 rgba(0, 0, 0, 0.14), -2px 1px 5px 0 rgba(0, 0, 0, 0.12);
+                            border-radius: 0 0 0 4px;
 
                             >.mat-tab-header {
                                 background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
@@ -1017,7 +1037,7 @@ tnz-input {
                                 }
 
                                 .mat-tab-labels {
-                                    background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
+                                    background: #f3f2f4;
                                 }
                             }
 
@@ -1025,6 +1045,11 @@ tnz-input {
                                 // flex: 1;
                                 // height:fit-content;
                                 background: white;
+
+                                .mat-tab-body-content {
+                                    height: calc(100% - 16px);
+                                    padding: 8px;
+                                }
                             }
                         }
 
@@ -1037,7 +1062,7 @@ tnz-input {
                             overflow: hidden;
 
                             h3 {
-                                margin: 7px 0 0 0;
+                                margin: 4px 6px 0 0;
                                 // padding: 0 4px;
                                 // line-height: 24px;
                                 font-weight: 500;
@@ -1063,9 +1088,13 @@ tnz-input {
 
                             smd-datatable {
                                 display: block;
-                                margin: 2px 8px 0px 0px;
-                                border: 1px solid #90859e;
-                                border-radius: 2px;
+                                margin: 2px 0px 0px 0px;
+
+                                .smd-datatable-wrap {
+                                    border-radius: 2px;
+                                    border: 1px solid #90859e;
+
+                                }
 
                                 .smd-data-table {
                                     // background: #fff url(assets/images/backgrounds/bg-pattern.png) top center no-repeat;
@@ -1081,12 +1110,13 @@ tnz-input {
 
                             .group-header {
                                 display: flex;
-                                margin-right: 8px;
+                                // margin-right: 8px;
                             }
                         }
 
                         .group-flex {
                             display: flex;
+                            column-gap: 8px;
 
                             >div {
                                 flex: 1;
@@ -1096,7 +1126,7 @@ tnz-input {
                 }
 
                 .mat-button {
-                    border: 1px solid #b1adad73;
+                    // border: 1px solid #b1adad73;
                     margin: 0 2px;
                 }
             }
@@ -1631,8 +1661,9 @@ mat-card.input-card .date-tracks {
 }
 
 .downloads tr {
-    border: none!important;
-    td{
-        border: none!important;
+    border: none !important;
+
+    td {
+        border: none !important;
     }
 }

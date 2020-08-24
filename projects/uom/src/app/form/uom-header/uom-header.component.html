@@ -1,0 +1,161 @@
+
+<!-- <smd-datatable [tableId]="_shared.appKey + '.uomlist'" scrollType="scroll"  [loading]="_shared.UomdetailLoading"
+class="tnz-input-table" [filterEnabled]="!_shared.getUomdetailsEditable()" [sortEnabled]="!_shared.getUomdetailsEditable()"
+[showCheckBox]="false" [inputPath]="_shared.UomdetailPath"  (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"> -->
+<smd-datatable [tableId]="_shared.appKey + '.uomlist'" [paginated]="true"
+[loading]="false"
+class="tnz-input-table"
+[filterEnabled]="true" [inputPath]="_shared.appKey + '.uomlist'"
+(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
+[showCheckBox]="false">
+
+<smd-datatable-column title=" " field=" " [colStyle]="{'min-width':'10px'}"  *ngIf="_shared.editMode">
+    <ng-template let-model="data" let-index="index" >
+        <div class="row-operations" *ngIf= "_shared.getUomdetailsEditable('uomCode',model.uomCode)" >
+            <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine('Uomdetail',index)">delete</mat-icon>
+        </div>
+        <div class="row-operations" *ngIf= "!_shared.getUomdetailsEditable('uomCode',model.uomCode)" >
+            <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Seq#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}" >
+	<ng-template let-index="index">
+		{{index+1}}
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Code" field="uomCode" sortable="true" [filterable]="true" >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getUomdetailsEditable('uomCode',model.uomCode)">{{model.uomCode}}</span>
+        <div *ngIf="_shared.getUomdetailsEditable('uomCode',model.uomCode)" >
+            <tnz-input type="text" class="text-upper"
+                       [path]="_shared.getUomdetailPath(index,'uomCode')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required,length:20"
+                       [isEdit]="_shared.getUomdetailsEditable('uomCode',model.uomCode)"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Name" field="uomName" sortable="true" [filterable]="true"  >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getUomdetailsEditable('uomName',model.uomName)">{{model.uomName}}</span>
+        <div *ngIf="_shared.getUomdetailsEditable('uomName',model.uomName)" >
+            <tnz-input type="text"
+                       [path]="_shared.getUomdetailPath(index,'uomName')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required,length:60"
+                       [isEdit]="_shared.getUomdetailsEditable('uomName',model.uomName)"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Symbol" field="symbol" sortable="true" [filterable]="true"   >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getUomdetailsEditable('symbol',model.symbol)">{{model.symbol}}</span>
+        <div *ngIf="_shared.getUomdetailsEditable('symbol',model.symbol)" >
+            <tnz-input type="text"
+                       [path]="_shared.getUomdetailPath(index,'symbol')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required,length:15"
+                       [isEdit]="_shared.getUomdetailsEditable('symbol',model.symbol)" 
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true" >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getUomdetailsEditable('description',model.description)">{{model.description}}</span>
+        <div *ngIf="_shared.getUomdetailsEditable('description',model.description)" >
+            <tnz-input type="text"
+                       [path]="_shared.getUomdetailPath(index,'description')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="length:255"
+                       [isEdit]="_shared.getUomdetailsEditable('description',model.description)"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"   
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<!-- <smd-datatable-column  title="Base UOM" field="baseUomFlag" sortable="true" [filterable]="true"  [colStyle]="{'max-width':'10px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.editMode">
+            <mat-icon *ngIf=" model.baseUomFlag =='Y'"  style="color:green;font-size:20px;text-align:'center';vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+        </span>
+        <div *ngIf="_shared.editMode" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getUomdetailPath(index,'baseUomFlag')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="true"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       style="padding-left: 15px"
+                      >
+            </tnz-input>
+        </div>
+        
+    </ng-template>
+</smd-datatable-column>  -->
+<smd-datatable-column  title="Base UOM" field="baseUomFlag" sortable="true" [filterable]="true" [colStyle]="{'width':'15px','text-align':'center'}" >
+    <ng-template let-model="data" let-index="index">
+
+
+        <div *ngIf="!_shared.editMode && model.baseUomFlag =='Y'" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getUomdetailPath(index,'baseUomFlag')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="false"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       style="padding-left: 15px"
+                      >
+            </tnz-input>
+        </div>
+        <div *ngIf="_shared.editMode" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getUomdetailPath(index,'baseUomFlag')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]=  " isBaseUomCheckEditable()"
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       style="padding-left: 15px" (valueChanged)="defaultBaseUomCheck($event,model,index)"
+                      >
+            </tnz-input>
+        </div>
+        
+    </ng-template>
+</smd-datatable-column> 
+<smd-datatable-column  title="Active" field="active" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getUomdetailsEditable('active', model.active)">
+            <mat-icon *ngIf=" model.active =='Y'"  style="color:green;font-size:20px;text-align:'center';vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+            <mat-icon *ngIf=" model.active =='N'"  style="color:red;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Inactive">cancel</mat-icon>
+        </span>
+        <div *ngIf="_shared.getUomdetailsEditable('active')" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getUomdetailPath(index,'active')"
+                       [primaryKey]="_shared.UomdetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="isActiveEditable(index) "
+                       [loading]="_shared.UomdetailLoading || _shared.loading"
+                       style="padding-left: 15px"
+                      >
+            </tnz-input>
+        </div>
+        
+    </ng-template>
+</smd-datatable-column> 
+
+
+</smd-datatable> 

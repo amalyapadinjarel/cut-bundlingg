@@ -55,6 +55,7 @@ export class DivisionComponent {
   this.router.navigateByUrl('/division/create').then(done => {
     this._shared.editMode = true;
    this._shared.initLocalCache();
+   this._inputService.updateInput(this._shared.getHeaderAttrPath('active'),'Y');
   });
 }).catch(err => {
   this.alertutils.showAlerts(err)

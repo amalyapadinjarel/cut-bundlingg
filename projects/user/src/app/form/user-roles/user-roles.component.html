@@ -20,12 +20,14 @@
 		</ng-template>
 	</smd-datatable-column>
 
-	<!-- <smd-datatable-column title="Role Short Code" field="roleShortCode" sortable="true" [filterable]="true">
+	<smd-datatable-column title="Short Code" field="roleShortCode" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
-			{{model.roleShortCode}}
+			<!-- {{model.roleShortCode}} -->
+			<a class="internal-link" [routerLink]="'/roles/'+ model.roleId"  target="_blank" title="View Role">   {{model.roleShortCode}}</a>
+
 		</ng-template>
-	</smd-datatable-column> -->
-	<smd-datatable-column title="Role Name" field="roleName" sortable="true" [filterable]="true" stretch="true">
+	</smd-datatable-column>
+	<smd-datatable-column title="Name" field="roleName" sortable="true" [filterable]="true" stretch="true">
 		<ng-template let-model="data">
 			{{model.roleName}}
 		</ng-template>
@@ -60,13 +62,22 @@
 	<smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
 		<ng-template let-model="data">
 			<div class="checkbox-center-align">
-				<!-- <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox> -->
-				<mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+				<mat-icon *ngIf="model.active=='Y'" class="active-icon"
 					matTooltip="Active">check_circle</mat-icon>
-				<mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+				<mat-icon *ngIf="model.active!='Y'" class="inactive-icon"
 					matTooltip="Inactive">cancel</mat-icon>
 			</div>
 		</ng-template>
 	</smd-datatable-column>
 
+	<smd-datatable-column title="Role Status" field="roleStatus" sortable="true" [filterable]="true">
+		<ng-template let-model="data">
+			<div class="checkbox-center-align">
+				<mat-icon *ngIf="model.roleStatus=='Y'" class="active-icon"
+					matTooltip="Active Role">check_circle</mat-icon>
+				<mat-icon *ngIf="model.roleStatus!='Y'" class="inactive-icon"
+					matTooltip="Inactive Role">cancel</mat-icon>
+			</div>
+		</ng-template>
+	</smd-datatable-column>
 </smd-datatable>

@@ -9,7 +9,8 @@
             <ng-container *ngIf="!_shared.editMode">
                 <a (click)="newUser()">Create</a>
                 <a *ngIf="_shared.id" (click)="editUser()">Edit</a>
-                <a *ngIf="_shared.id" (click)="copyUser()">Copy</a>
+                <!-- <a *ngIf="_shared.id" (click)="copyUser()">Copy</a> -->
+                <a *ngIf="_shared.id" (click)="copy()">Copy</a>
 
                 <a *ngIf="_shared.id && _shared.getHeaderAttributeValue('attemptsLeft')==0"
                     (click)="unlock()">Unlock</a>

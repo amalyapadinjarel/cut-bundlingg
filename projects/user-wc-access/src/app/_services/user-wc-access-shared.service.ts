@@ -18,13 +18,16 @@ export class UserWcAccessSharedService {
   listData;
   count
   addFlag=false
+  Loading=true
   userWcAccessAttributes = Object.keys(new UserWcAccessModel());
   refreshUserWcAccessData: BehaviorSubject<boolean> =  new BehaviorSubject(false); 
+  refreshData: BehaviorSubject<boolean> =  new BehaviorSubject(false); 
   constructor(private _cache: LocalCacheService, private inputService: TnzInputService) { }
   initLocalCache() {
     this._cache.setLocalCache(this.appKey, {});
   }
   setListData(data) {
+   
     this.formData = data;
     this.count=data.count
   }
@@ -41,8 +44,9 @@ clear() {
 }
 
 resetLines() {
+
   this.formData['userWcAccess'] = null;
-  this.refreshLines();
+  this.refreshData.next(true);
 }
 refreshLines() {
   this.refreshUserWcAccessData.next(true);
@@ -108,4 +112,17 @@ deleteLine(key, index) {
   data.splice(index, 1);
   this.refreshLines();
 }
+getuserWcAccessEdiable(attr,index,mapId=0) {
+  let editable = this.editMode;
+let nonEditableAttr=['workCenter','userName','facility','delete'];
+let id=0
+ id = this.inputService.getCache(this.getuserWcAccessAttrPath(index,'mapId'))
+
+
+if ((id != 0)&& nonEditableAttr.indexOf(attr) > -1) {
+  editable = false
+}
+return editable;
+}
+
 }

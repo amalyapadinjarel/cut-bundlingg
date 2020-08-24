@@ -1,8 +1,7 @@
-<div>
-    <perfect-scrollbar>
+        <!-- <div> -->
         <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="roles" (onRowSelected)="rowSelected($event)"
-            [primaryListing]="false" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
-            [selectedPage]="_shared.selectedPage" tableId="_shared.appKey.list">
+            [primaryListing]="true" (dataChange)="_onDataChange($event)" [rowCount]="_shared.count"
+            [selectedPage]="_shared.selectedPage" [tableId]="_shared.appKey+'.list'" >
             
             <smd-datatable-column title="Short Code" field="roleShortCode" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
@@ -10,7 +9,7 @@
                 </ng-template>
             </smd-datatable-column>
            
-            <smd-datatable-column title="Role Name" field="roleName" sortable="true" [filterable]="true">
+            <smd-datatable-column title="Name" field="roleName" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.roleName}}
                 </ng-template>
@@ -72,5 +71,4 @@
                 </ng-template>
             </smd-datatable-column>
         </smd-datatable>
-    </perfect-scrollbar>
-</div>
+    <!-- </div> -->

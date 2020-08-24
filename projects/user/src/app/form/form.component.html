@@ -19,8 +19,7 @@
             </div>
         </div>
         <mat-tab-group>
-            <mat-tab label="Details">
-                <perfect-scrollbar>
+            <mat-tab label="Security">
                     <div class="group-flex">
                         <div class="group">
                             <div class="group-header">
@@ -28,22 +27,21 @@
                                 <span class="flex-filler"></span>
                                 <div style="display:flex">
                                     <ng-container *ngIf="_shared.getUserRolesEditable()">
-
                                         <button mat-button matTooltip="Add Roles">
                                             <mat-icon class="mat-color-info" (click)="copyFromRoles()">add_box
                                             </mat-icon>
                                         </button>
-
-
-
                                     </ng-container>
                                 </div>
                             </div>
                             <user-roles></user-roles>
                         </div>
+                  
+                    </div>
+                    <div class="group-flex">
                         <div class="group">
                             <div class="group-header">
-                                <h3>Org access</h3>
+                                <h3>Org Access Mapped to User</h3>
                                 <span class="flex-filler"></span>
                                 <div style="display:flex" *ngIf="_shared.getUserOrgAccessEditable()">
                                     <button mat-button matTooltip="Add Division">
@@ -53,10 +51,17 @@
                             </div>
                             <user-org-access></user-org-access>
                         </div>
-
+                        <div class="group">
+                            <div class="group-header">
+                                <h3>Effective Org Access</h3>
+                                <button mat-icon-button color="darkGray" (click)="openHelp()" title= "Logic to calculate effective org access">
+                                    <mat-icon class="icon-visibility">help</mat-icon>
+                                </button> 
+                            <span class="flex-filler"></span>
+                            </div>
+                            <effective-org-access></effective-org-access>
+                        </div>
                     </div>
-
-                </perfect-scrollbar>
             </mat-tab>
 
         </mat-tab-group>

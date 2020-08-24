@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SmdDataTable, SmdDatatableActionButton, SmdContextualDatatableButton, SmdDataTableColumnComponent, SmdDataTableRowComponent, SmdDataTableCellComponent } from './smd-datatable';
+import { SmdDataTable, SmdDatatableActionButton, SmdContextualDatatableButton, SmdDataTableColumnComponent, SmdDataTableRowComponent, SmdDataTableCellComponent, SmdDatatableMenuButton, SmdDatatableIconButton } from './smd-datatable';
 import { SmdPaginatorComponent } from './smd-paginator';
 import { SmdFabSpeedDialTrigger, SmdFabSpeedDialActions, SmdFabSpeedDialComponent } from './smd-fab-speed-dial';
 import { SmdBottomNavLabelDirective, SmdBottomNavGroupComponent, SmdBottomNavComponent } from './smd-bottom-nav';
@@ -17,6 +17,7 @@ import { SmdErrorMessageComponent, SmdErrorMessagesComponent } from './smd-error
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonComponentsModule } from '../common-components.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 const COMPONENTS = [
@@ -24,6 +25,8 @@ const COMPONENTS = [
     SmdDatatableActionButton,
     SmdContextualDatatableButton,
     SmdDataTableColumnComponent,
+    SmdDatatableMenuButton,
+    SmdDatatableIconButton,
     SmdDataTableRowComponent,
     SmdDataTableCellComponent,
     SmdPaginatorComponent,
@@ -47,7 +50,8 @@ const MATERIAL_MODULE = [
     MatCheckboxModule,
     MatSelectModule,
     MatInputModule,
-    MatRippleModule
+    MatRippleModule,
+    MatMenuModule
 ];
 
 @NgModule({

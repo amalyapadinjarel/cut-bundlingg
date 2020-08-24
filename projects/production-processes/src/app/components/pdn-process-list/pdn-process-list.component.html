@@ -1,0 +1,150 @@
+<smd-datatable [tableId]="_shared.appKey + '.pdn-process-list'" [dataUrl]="_shared.apiBase" 
+     dataHeader="productionProcesses"  (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" 
+     (pageChange)="pageChanged($event)"  [selectedPage]="_shared.selectedPage"
+      [primaryListing]="false" 
+     [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode"
+     class="tnz-input-table" 
+    >
+
+    <smd-datatable-column title=" " field=" " [colStyle]="{'width':'10px'}" *ngIf="_shared.editMode">
+        <ng-template let-model="data" let-index="index">
+            <div class="row-operations" *ngIf="model[_shared.primaryKey] == 0">
+                <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine(index)">delete</mat-icon>
+            </div>
+            <div class="row-operations" *ngIf="model[_shared.primaryKey] != 0">
+                <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Seq#" field="seq" sortable="true" [filterable]="true" [colStyle]="{'width':'30px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'seq')" [primaryKey]="_shared.primaryKey" [sharedData]="_shared.formData"
+                [isEdit]="_shared.editMode" [loading]=false style=" min-width: 30px;" (valueChanged)="validateData($event,index,'seq')" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input class="text-upper" type="text" [path]="_shared.getProductionProcessesAttrPath(index,'shortCode')" [primaryKey]="_shared.primaryKey"
+                [sharedData]="_shared.formData" [isEdit]="_shared.getPPAttrEditable('shortCode',model.processId)" [loading]=false
+                style=" min-width: 300px;" validators="required" (valueChanged)="validateData($event,index,'shortCode')">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Name" field="name" sortable="true" [filterable]="true" [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'name')" [primaryKey]="_shared.primaryKey"
+                (valueChanged)="validateData($event,index,'name')" [sharedData]="_shared.formData" [isEdit]="_shared.editMode"
+                [loading]=false style=" min-width: 300px;" validators="required">
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true" [colStyle]="{'width':'8px'}">
+        <ng-template let-model="data" let-index="index">
+            <div *ngIf="!_shared.editMode" style=" min-width: 10px;">
+                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle; padding-left: 10px;" matTooltip="Active">check_circle</mat-icon>
+                <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle; padding-left: 10px;" matTooltip="Inactive">cancel</mat-icon>
+            </div>
+            <div *ngIf="_shared.editMode && model[_shared.primaryKey] != 0">
+                <tnz-input type="checkbox" [path]="_shared.getProductionProcessesAttrPath(index,'active')" [primaryKey]="_shared.primaryKey"
+                    style=" min-width: 10px;" [sharedData]="_shared.formData" [isEdit]="_shared.editMode" [loading]=false class="checkbox-center-align">
+                </tnz-input>
+            </div>
+            <div class="checkbox-center-align" *ngIf="model[_shared.primaryKey] == 0">
+                <mat-checkbox [ngModel]="model.active == 'Y'" disabled></mat-checkbox>
+            </div>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'createdByName')" [primaryKey]="_shared.primaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'creationDate')" [primaryKey]="_shared.primaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Updated By" field="lastUpdatedBy" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'lastUpdatedBy')" [primaryKey]="_shared.primaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true">
+        <ng-template let-model="data" let-index="index">
+            <tnz-input type="text" [path]="_shared.getProductionProcessesAttrPath(index,'lastUpdateDate')" [primaryKey]="_shared.primaryKey"
+                [sharedData]="_shared.formData" [isEdit]="false" [loading]=false>
+            </tnz-input>
+        </ng-template>
+    </smd-datatable-column>
+
+    <!-- <smd-datatable-column title="Seq#" field="seq" sortable="true" [filterable]="true" 
+    [colStyle]="{'width':'30px'}">
+        <ng-template let-model="data">
+                     {{model.seq}}
+        </ng-template> 
+     </smd-datatable-column> 
+
+     <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true"
+     [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data">
+                     {{model.shortCode}}
+        </ng-template> 
+     </smd-datatable-column> 
+
+     <smd-datatable-column title="Name" field="name" sortable="true" [filterable]="true"
+     [colStyle]="{'width':'300px'}">
+        <ng-template let-model="data">
+                     {{model.name}}
+        </ng-template> 
+     </smd-datatable-column> 
+
+     <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
+            [colStyle]="{'width':'10px','text-align':'center'}"> 
+          <ng-template let-model="data"> 
+                   <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle</mat-icon> 
+                    <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;" matTooltip="Inactive">cancel</mat-icon>
+           </ng-template> 
+     </smd-datatable-column>
+        
+        <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+            <ng-template let-model="data">
+                {{model.createdByName}}
+            </ng-template>
+        </smd-datatable-column>
+
+        <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+            <ng-template let-model="data">
+                {{model.creationDate}}
+            </ng-template>
+        </smd-datatable-column>
+
+        <smd-datatable-column title="Updated By" field="lastUpdatedBy" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+            <ng-template let-model="data">
+                {{model.lastUpdatedBy}}
+            </ng-template>
+        </smd-datatable-column>
+
+        <smd-datatable-column title="Updated Date" field="lastUpdateDate" sortable="true" [filterable]="true" [colStyle]="{'width':'70px'}">
+            <ng-template let-model="data">
+                {{model.lastUpdateDate}}
+            </ng-template>
+        </smd-datatable-column> -->
+
+    </smd-datatable>
+
+

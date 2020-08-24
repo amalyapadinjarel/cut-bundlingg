@@ -39,28 +39,20 @@ toUser
       } else {
         Object.keys(inputs).some(key => {
           if (inputs[key]) {
-           
             if(inputs[key]._key=="fromuser")
-            
-            this.fromUser= inputs[key]._value.userId
-            // console.log("inutkey",inputs[key]);
+            this.fromUser= inputs[key]._value
             if(inputs[key]._key=="newuser")
             this.toUser= inputs[key]._value
           }
         });
-        console.log("this.fromUser",this.fromUser);
-        console.log("this.toUser",this.toUser);
-        this.service.getCopyUserData(this.fromUser,this.toUser.userId).then(
+     
+        this.service.getCopyUserData(this.fromUser,this.toUser).then(
           (data: any) => {
-            console.log("data",data);
             const newLine = this._shared.getLineModel(null);
-            console.log("newLine",newLine);
             data.forEach(element => {
-           
               newLine['userName']= this.toUser
               newLine['facility']=element.facility
               newLine['workCenter']=element.workCenter
-              console.log("addnewLine",newLine);
               this._shared.addLine("userWcAccess", newLine)
               this.dialogRef.close();
               this._shared.editMode = true;
@@ -68,7 +60,7 @@ toUser
         },
         (err) => {
           if(err="NODATA")
-          this.alertService.showAlerts("No Data to Copy")
+          this.alertService.showAlerts("No Data to Copy!")
 else
           this.alertService.showAlerts("Failed to Copy Mapping")
 
@@ -78,6 +70,4 @@ else
       }
     }    
   }  
-valueChangedFromUI(){
-}
 }

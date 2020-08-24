@@ -1,11 +1,10 @@
 export class RolesTaskFlowAccess {
 
-    roleTaskFlowAssignmentId:string;
+    roleTaskFlowAssignmentId:number;
     taskFlowId: string;
     taskFlowName: string;
-    isAllowed: string;
-    description: string;
-    applicationCode:string;
+   // description: string;
+    applicationShortCode:string;
     isRead:string;
     isEdit:string;
     isCreate:string;
@@ -14,19 +13,19 @@ export class RolesTaskFlowAccess {
     active:string;
     constructor(model = null) {
 
-        this.roleTaskFlowAssignmentId=model?model.roleTaskFlowAssignmentId:"0";
-        this.taskFlowId=model?model.taskFlowId:"0";
-        this.roleId=model?model.roleId:0;
-        this.taskFlowName=model?model.taskFlowName:"";
-        this.isAllowed=model?model.isAllowed:"";
-        this.description=model?model.description:"";
-        this.applicationCode=model?model.applicationCode:"";
-        this.description=model?model.description:"";
-        this.isRead=model?model.isRead:"";
-        this.isEdit=model?model.isEdit:"";
-        this.isCreate=model?model.isCreate:"";
-        this.isDelete=model?model.isDelete:"";
-        this.active=model?model.active:"Y";
+        //this.roleTaskFlowAssignmentId=model && model.roleTaskFlowAssignmentId?model.roleTaskFlowAssignmentId:"0";
+        this.roleTaskFlowAssignmentId=model && model.roleTaskFlowAssignmentId?model.roleTaskFlowAssignmentId:0;
+
+        this.taskFlowId=model && model.taskFlowId?model.taskFlowId:"0";
+        this.roleId=model && model.roleId?model.roleId:0;
+        this.taskFlowName=model && model.taskFlowName?model.taskFlowName:"";
+        this.applicationShortCode=model && model.applicationShortCode?model.applicationShortCode:"";
+        // this.description=model && model.description?model.description:"";
+        this.isRead=model?(model.isRead?model.isRead:"N"):"N";
+        this.isEdit=model?(model.isEdit?model.isEdit:"N"):"N";
+        this.isCreate=model?(model.isCreate?model.isCreate:"N"):"N";
+        this.isDelete=model?(model.isDelete?model.isDelete:"N"):"N";
+        this.active=model?(model.active?model.active:"Y"):"Y";
 
     }
 

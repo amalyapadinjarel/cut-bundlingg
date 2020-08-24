@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DivisionSharedService } from '../services/division-shared.service';
 import { DateUtilities } from 'app/shared/utils';
+import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 
 @Component({
@@ -13,9 +14,10 @@ import { DateUtilities } from 'app/shared/utils';
 export class FormComponent implements OnInit {
 
   constructor(public _shared: DivisionSharedService,
-    public dateUtils:DateUtilities) { }
+    public dateUtils:DateUtilities,) { }
 
   ngOnInit(): void {
+   
   }
 
 }

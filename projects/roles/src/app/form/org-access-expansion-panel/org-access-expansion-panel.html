@@ -1,0 +1,117 @@
+<div class="group-header">
+  <h3>Org Access</h3>
+  <span class="flex-filler"></span>
+  <div style="display:flex" *ngIf="_shared.getRolesOrgAccessEditable()">
+    <button mat-button matTooltip="Add Division">
+      <!-- <mat-icon class="mat-color-info" (click)="copyFromDivision()">add_box</mat-icon> -->
+      <mat-icon class="mat-color-info" (click)="addDivision()">add_box</mat-icon>
+
+    </button>
+  </div>
+</div>
+<mat-card class="input-card no-padding" class="expansion-table-card">
+  <div class="header">
+    <div class="icon" *ngIf="_shared.getRolesOrgAccessEditable()"></div>
+    <span>#</span>
+    <span>Division</span>
+    <span>Facility</span>
+    <span>Access</span>
+    <span>Default</span>
+    <button mat-button *ngIf="_shared.getRolesOrgAccessEditable()" style="border: none;">
+    </button>
+  </div>
+  <mat-dialog-content>
+    <mat-expansion-panel *ngFor="let orgAccessRow of this._shared.orgAccessList;let index = index"
+      class="expansion-table">
+      <mat-expansion-panel-header>
+        <div *ngIf="_shared.getRolesOrgAccessEditable() ">
+          <div class="row-operations" *ngIf="orgAccessRow.orgAccessId == 0">
+            <mat-icon *ngIf="orgAccessRow.orgAccessId == 0" class="mat-color-danger" matTooltip="Delete Line"
+              (click)="deleteDivisionLine(index)" style="vertical-align: middle !important;padding-top: 3px;">delete
+            </mat-icon>
+          </div>
+          <div class="row-operations" *ngIf="orgAccessRow.orgAccessId != 0">
+            <mat-icon *ngIf="orgAccessRow.orgAccessId != 0" class="mat-color-disabled-danger" matTooltip="Delete Line"
+              style="vertical-align: middle !important;padding-top: 3px;">delete</mat-icon>
+          </div>
+        </div>
+        <span>{{index+1}}</span>
+        <span>{{orgAccessRow.division}}</span>
+        <!-- <span>{{orgAccessRow.facility}}</span> -->
+        <span class="flex-filler"></span>
+        <span *ngIf="!_shared.getRolesOrgAccessEditable('access')">
+          <mat-icon *ngIf=" orgAccessRow.access=='Y' " class="active-icon">check_circle</mat-icon>
+          <mat-icon *ngIf=" orgAccessRow.access !='Y'" class="inactive-icon">cancel</mat-icon>
+        </span>
+        <span *ngIf="_shared.getRolesOrgAccessEditable('access')">
+          <mat-checkbox [(ngModel)]="orgAccessRow.access" (click)="valueChanged($event,index,'access')"></mat-checkbox>
+        </span>
+        <span *ngIf="!_shared.getRolesOrgAccessEditable('default')">
+          <mat-icon *ngIf=" orgAccessRow.default=='Y'" class="default-icon">check_circle</mat-icon>
+
+        </span>
+        <span *ngIf="_shared.getRolesOrgAccessEditable('default')">
+          <mat-checkbox [(ngModel)]="orgAccessRow.default" (click)="valueChanged($event,index,'default')">
+          </mat-checkbox>
+        </span>
+
+        <button mat-button matTooltip="Add line" *ngIf="_shared.getRolesOrgAccessEditable()">
+          <mat-icon class="mat-color-info" (click)="addFacility(index)">add_box</mat-icon>
+        </button>
+      </mat-expansion-panel-header>
+      <div *ngIf=" orgAccessRow.facility.length!=0">
+        <table id="table">
+           <tbody>
+            <tr *ngFor="let row of orgAccessRow.facility ;let i = index">
+              <div *ngIf="_shared.getRolesOrgAccessEditable()">
+                <div class="row-operations" *ngIf="row.orgAccessId == 0">
+                  <mat-icon *ngIf="row.orgAccessId == 0" class="mat-color-danger" matTooltip="Delete Line"
+                    (click)="deleteFacilityLine(index,i)" style="vertical-align: middle;">delete</mat-icon>
+                </div>
+                <div class="row-operations" *ngIf="row.orgAccessId != 0">
+                  <mat-icon *ngIf="row.orgAccessId != 0" class="mat-color-disabled-danger" matTooltip="Delete Line"
+                    style="vertical-align: middle;">delete</mat-icon>
+                </div>
+              </div>
+              <td> <span></span></td>
+              <span class="flex-filler"></span>
+
+              <td> {{row.facility}} </td>
+              <span class="flex-filler"></span>
+
+              <td>
+                <span *ngIf="!_shared.getRolesOrgAccessEditable('access')">
+                  <mat-checkbox [ngModel]="row.access" disabled></mat-checkbox>
+                </span>
+                <span *ngIf="_shared.getRolesOrgAccessEditable('access')">
+                  <mat-checkbox [(ngModel)]="row.access " (click)="FacilityValueChanged($event,index,i)"></mat-checkbox>
+                </span>
+              </td>
+              <span class="flex-filler"></span>
+
+              <td>
+                <span *ngIf="!_shared.getRolesOrgAccessEditable('default')">
+                  <mat-checkbox [ngModel]="row.default" disabled></mat-checkbox>
+                </span>
+                <span *ngIf="_shared.getRolesOrgAccessEditable('default')">
+                  <mat-checkbox [(ngModel)]="row.default" (click)="FacilityValueChanged($event,index,i)">
+                  </mat-checkbox>
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </mat-expansion-panel>
+  </mat-dialog-content>
+  <div *ngIf="!this._shared.orgAccessList.length">
+    <div class="no-data-div">
+      <mat-icon class="no-data-icon">{{noDataDisplayIcon}}</mat-icon>
+      <span class="text">{{noDataDisplayMessage}}</span>
+
+    </div>
+  </div>
+</mat-card>

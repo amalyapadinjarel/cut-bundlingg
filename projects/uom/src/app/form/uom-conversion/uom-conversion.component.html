@@ -1,0 +1,109 @@
+
+<!-- <smd-datatable [tableId]="_shared.appKey + '.conversionlist'" scrollType="scroll" defaultRange="10" [loading]="_shared.ConversiondetailLoading"
+class="tnz-input-table" [filterEnabled]="!_shared.getConversiondetailsEditable()" [sortEnabled]="!_shared.getConversiondetailsEditable()"
+[showCheckBox]="false" [inputPath]="_shared.ConversiondetailPath"> -->
+<smd-datatable [tableId]="_shared.appKey + '.conversionlist'" [paginated]="true" [inputPath]="_shared.appKey + '.conversionlist'"
+[loading]="false" 
+class="tnz-input-table" [filterEnabled]="true"
+[sortEnabled]="!_shared.getConversiondetailsEditable()"
+(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
+[showCheckBox]="false">
+<smd-datatable-column title=" " field=" " [colStyle]="{'min-width':'10px'}"  *ngIf="_shared.editMode">
+    <ng-template let-model="data" let-index="index" >
+        <div class="row-operations" *ngIf= "model[_shared.ConversiondetailPrimaryKey] == 0 " >
+            <mat-icon class="mat-color-danger" matTooltip="delete line" (click)="deleteLine('Conversiondetail',index)">delete</mat-icon>
+        </div>
+        <div class="row-operations" *ngIf= "model[_shared.ConversiondetailPrimaryKey] != 0 " >
+            <mat-icon class="mat-color-disabled-danger" matTooltip="delete line">delete</mat-icon>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Seq#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}">
+	<ng-template let-index="index">
+		{{index+1}}
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="    " field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'70px','text-align':'center'}">
+	<ng-template let-index="index">
+		{{1}}
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="From UOM" field="uomId" sortable="true" [filterable]="true"  >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getConversiondetailsEditable('uomId')">{{model.uomId}}</span>
+        <div *ngIf="_shared.getConversiondetailsEditable('uomId')" >
+            <tnz-input type="lov" [lovConfig]="uomsLovconfig(index)"
+                       [path]="_shared.getConversiondetailPath(index,'uomId')"
+                       [primaryKey]="_shared.ConversiondetailPrimaryKey"
+                       [sharedData]="_shared.formData" validators="required"
+                       [isEdit]="model[_shared.ConversiondetailPrimaryKey] == 0 "
+                       [loading]="_shared.ConversiondetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="    " field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'70px','text-align':'center'}">
+	<ng-template let-index="index">
+		=
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Multiple Rate" field="multiplyRate" sortable="true" [filterable]="true"  [colStyle]="{'text-align':'right'}"  >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getConversiondetailsEditable('multiplyRate')">{{model.multiplyRate}}</span>
+        <div *ngIf="_shared.getConversiondetailsEditable('multiplyRate')" >
+            <tnz-input type="number"  
+                       [path]="_shared.getConversiondetailPath(index,'multiplyRate')"
+                       [primaryKey]="_shared.ConversiondetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="model[_shared.ConversiondetailPrimaryKey] == 0 "
+                       [loading]="_shared.ConversiondetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="   " field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'70px','text-align':'center'}">
+	<ng-template let-index="index">
+		*
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column title="Base UOM" field="uomToId" sortable="true" [filterable]="true" >
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.getConversiondetailsEditable('uomToId')">{{model.uomToId}}</span>
+        <div *ngIf="_shared.getConversiondetailsEditable('uomToId')" >
+            <tnz-input type="lov" [lovConfig]="uomsLovconfig(index)"
+                       [path]="_shared.getConversiondetailPath(index,'uomToId')"
+                       [primaryKey]="_shared.ConversiondetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="false"
+                       [loading]="_shared.ConversiondetailLoading || _shared.loading"
+                       >
+            </tnz-input>
+        </div>
+    </ng-template>
+</smd-datatable-column>
+<smd-datatable-column  title="Active" field="active" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+    <ng-template let-model="data" let-index="index">
+        <span *ngIf="!_shared.editMode">
+            <mat-icon *ngIf=" model.active =='Y'"  style="color:green;font-size:20px;text-align:'center';vertical-align: middle;"  matTooltip="Active">check_circle</mat-icon> 
+            <mat-icon *ngIf=" model.active =='N'"  style="color:red;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Inactive">cancel</mat-icon>
+        </span>
+        <div *ngIf="_shared.getConversiondetailsEditable('active')" style="text-align:'center'">
+            
+            <tnz-input type="checkbox" 
+                       [path]="_shared.getConversiondetailPath(index,'active')"
+                       [primaryKey]="_shared.ConversiondetailPrimaryKey"
+                       [sharedData]="_shared.formData" 
+                       [isEdit]="_shared.getConversiondetailsEditable('active')"
+                       [loading]="_shared.ConversiondetailLoading || _shared.loading"
+                       style="padding-left: 15px" 
+                      >
+            </tnz-input>
+        </div>
+        
+    </ng-template>
+</smd-datatable-column> 
+
+
+</smd-datatable> 

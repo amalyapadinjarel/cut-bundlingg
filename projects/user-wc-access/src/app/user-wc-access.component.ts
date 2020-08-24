@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { UserWcAccessSharedService } from './_services/user-wc-access-shared.service';
 import { DocumentService } from 'app/shared/services';
 import { AlertUtilities } from 'app/shared/utils';
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './user-wc-access.component.html',
   styleUrls: ['./user-wc-access.component.scss']
 })
-export class UserWcAccessComponent {
+export class UserWcAccessComponent implements OnInit{
   title = 'user-wc-access';
   constructor(
     public _shared: UserWcAccessSharedService,
@@ -19,8 +19,12 @@ export class UserWcAccessComponent {
     private alertutils: AlertUtilities,
     public _service:UserWcAccessService,
     private dialog: MatDialog
-  ){}
+  ){
 
+  }
+  ngOnInit(){
+    this._shared.refreshData.next(true);
+  }  
   newLine(){
     this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
       .then(data => {

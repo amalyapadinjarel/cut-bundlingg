@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserSharedService } from './_service/user-shared.service';
 import { UserService, NavigationService, DocumentService } from 'app/shared/services';
-import { AlertUtilities } from 'app/shared/utils';
+import { AlertUtilities, DateUtilities } from 'app/shared/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 import { Location } from '@angular/common';
@@ -73,6 +73,7 @@ export class UserComponent {
           this.router.navigateByUrl('/user/create').then(done => {
             if (done) {
               this._shared.editMode = true;
+              this._shared.id=0; //??
               this._shared.initLocalCache();
               success(true);
             }
@@ -136,61 +137,101 @@ export class UserComponent {
     });
   }
 
-
   copyUser() {
     let dialogRef = this.dialog.open(ConfirmPopupComponent);
-    let excludeKey=['creationDate','createdBy','lastUpdateDate','lastUpdatedBy'];
     dialogRef.componentInstance.confirmText = 'CONFIRM';
-    // dialogRef.componentInstance.dialogTitle = 'Copy User:<span>'+this._shared.getHeaderAttributeValue('userName')+'</span>';
-    // dialogRef.componentInstance.dialogTitle = 'Copy User -'+this._shared.getHeaderAttributeValue('userName')+'?';
     dialogRef.componentInstance.dialogTitle = 'Copy User -';
     dialogRef.componentInstance.value = this._shared.getHeaderAttributeValue('userName');
 
     dialogRef.componentInstance.message = 'Are you sure you want to copy the selected user ?'
     dialogRef.afterClosed().subscribe(flag => {
       if (flag) {
-        // this._service.copyUser().then((data: any) => {
-       //   if (data) {
-            this.newUser().then(success => {
-              if (success) {
-                let form = JSON.parse(JSON.stringify(this._shared.formData));
-                // console.log("form=",form);
-                // console.log("data=",data);
-                this._shared.id = 0;
-                this._shared.formData = {};
-               // data.user.userId = 0;
-                form.header.userId = 0;
-                form.userRoles.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    if (key == this._shared.primaryKey || key == this._shared.userRolesPrimaryKey)
-                      this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), 0);
-                    else if(excludeKey.indexOf(key)==-1)
-                      this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), row[key]|| null);
-                  })
-                })
-
-                form.userOrgAccess.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    if (key == this._shared.primaryKey || key == this._shared.userOrgAccessPrimaryKey)
-                      this._inputService.updateInput(this._shared.getUserOrgAccessPath(idx, key), 0);
-                    else if(excludeKey.indexOf(key)==-1)
-                      this._inputService.updateInput(this._shared.getUserOrgAccessPath(idx, key), row[key]);
-                  })
-                })
-
-              } else {
-                console.log("fail")
-              }
-            });
-        //  }
-
-        // }).catch(err => {
-        //   this.alertutils.showAlerts(err)
-        // })
-
+        this.setNewFormData();
       }
     })
 
+  }
+
+  //main method 
+  copy() {
+    if (this._shared.getHeaderData()) {
+      this.copyUser();
+    } else {
+      this.copyUserFromListView();
+    }
+  }
+
+  copyUserFromListView() {
+    this._service.fetchFormData(this._shared.id).then((data: any) => {
+      this._shared.setFormHeader(data);
+      let dialogRef = this.dialog.open(ConfirmPopupComponent);
+      dialogRef.componentInstance.confirmText = 'CONFIRM';
+      dialogRef.componentInstance.message = 'Are you sure you want to copy the selected user ?'
+      dialogRef.componentInstance.dialogTitle = 'Copy User -';
+      dialogRef.componentInstance.value = this._shared.getHeaderAttributeValue('userName');
+
+      dialogRef.afterClosed().subscribe(flag => {
+        if (flag) {
+          Promise.all([
+            this._service.loadData('userRoles'),
+            this._service.loadData('userOrgAccess')
+
+          ]).then(res => {
+            if (res) {
+              this.setNewFormData();
+            }
+          });
+
+        }
+      });
+    }, err => {
+      if (err) {
+        this.alertUtils.showAlerts(err, true);
+      }
+    });
+  }
+
+
+
+  setNewFormData() {
+    let excludeKey = ['creationDate', 'createdBy', 'lastUpdateDate', 'lastUpdatedBy', 'roleStartDate', 'roleEndDate'];
+    this.newUser().then(success => {
+      if (success) {
+        let form = JSON.parse(JSON.stringify(this._shared.formData));
+        this._shared.id = 0;
+        this._shared.formData = {};
+        form.header.userId = 0;
+
+        form.userRoles.forEach((row, idx) => {
+          Object.keys(row).forEach((key) => {
+          //  if(key=="roleUserAssignmentId")
+          //    console.log("key",key)
+            if (key == this._shared.primaryKey || key == this._shared.userRolesPrimaryKey)
+              this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), 0);
+            else if (key == 'roleStartDate') {
+              this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), DateUtilities.formatDate(new Date()))
+            }
+            else if (key == 'active') {
+              this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), 'Y')
+            }
+            else if (excludeKey.indexOf(key) == -1)
+              this._inputService.updateInput(this._shared.getUserRolesPath(idx, key), row[key] || null);
+          })
+        })
+
+        form.userOrgAccess.forEach((row, idx) => {
+          Object.keys(row).forEach((key) => {
+            if (key == this._shared.primaryKey || key == this._shared.userOrgAccessPrimaryKey)
+              this._inputService.updateInput(this._shared.getUserOrgAccessPath(idx, key), 0);
+            else if (excludeKey.indexOf(key) == -1)
+              this._inputService.updateInput(this._shared.getUserOrgAccessPath(idx, key), row[key]);
+          })
+        })
+
+      } else {
+        console.log("fail")
+      }
+    });
   }
 
 }

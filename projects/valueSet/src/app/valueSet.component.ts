@@ -89,8 +89,7 @@ export class ValueSetComponent {
   }
    
    cancelEdit() {
-   console.log('tests');
-   
+
     if (this._shared.id > 0) {
       this.location.go('/valueSet/' + this._shared.id);
       this._shared.editMode = false;

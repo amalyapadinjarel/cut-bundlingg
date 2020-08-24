@@ -24,7 +24,6 @@ export class RolesService {
     private alertUtils: AlertUtilities,
     public inputService: TnzInputService,
     public router: Router,
-    private _dialog: MatDialog,
     //private location: Location
 
   ) { }
@@ -96,6 +95,8 @@ export class RolesService {
 
   }
 
+
+
   //method to save data from cache to the backend by calling post or put
   saveData(id): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -119,9 +120,16 @@ export class RolesService {
               inValid = inputs.some(grp => {
                 if (grp) {
                   return Object.keys(grp).some(key => {
-                    if (grp[key] && grp[key].status != 'ok' && grp[key].status != 'changed') {
+                    if (key == "rolesTaskFlowAccess") {
+                      grp[key].forEach(element => {
+                        if (element.status != 'ok' && element.status != 'changed')
+                          return true;
+                      });
+                    }
+                    else if (grp[key] && grp[key].status != 'ok' && grp[key].status != 'changed') {
                       return true;
                     }
+
                   });
                 }
               });
@@ -132,7 +140,12 @@ export class RolesService {
       if (inValid) {
         reject('Please fill mandatory fields.');
       } else {
-        let saveData = this._cache.getCachedValue(this._shared.appPath);
+
+
+        // let saveData = this._cache.getCachedValue(this._shared.appPath);
+        let saveData = this.inputService.getCache(this._shared.appPath);
+
+        // console.log("1--saveData:",saveData)
         // Adding the removedkeys as active - N to remove them
         if (saveData) {
           this._shared.lineKeys.forEach(key => {
@@ -145,28 +158,48 @@ export class RolesService {
           });
 
           //converting Y ,N to 4 and 0 (isRead,isCreate...)
-          if (saveData['rolesTaskFlowAccess']) {
 
-            let arr: any;
-            arr = saveData['rolesTaskFlowAccess'];
+          saveData['rolesTaskFlowAccess'] = [];
 
-            for (let index = 0; index < arr.length; index++) {
-              let element = arr[index];
-              if (element != null && element!=""&& element!=" ") {
-                if(element.isRead=='Y')          element.isRead =  4 ;
-                else if(element.isRead=='N')     element.isRead =  0 ;
-                
-                if(element.isCreate=='Y')          element.isCreate =  4 ;
-                else if(element.isCreate=='N')     element.isCreate =  0 ;
-                
-                if(element.isEdit=='Y')          element.isEdit =  4 ;
-                else if(element.isEdit=='N')     element.isEdit =  0 ;
+          let flag = false;
+          let index;
+          if (saveData['rolesAppAccess']) {
 
-                if(element.isDelete=='Y')          element.isDelete =  4 ;
-                else if(element.isDelete=='N')     element.isDelete =  0 ;
+            saveData['rolesAppAccess'].forEach((app, i) => {
+              if (app != null) {
+                if (app.rolesTaskFlowAccess != null) {
+                  app.rolesTaskFlowAccess.forEach(element => {
+                    if (element) {
+                      if (element.isRead == 'Y') element.isRead = 4;
+                      else if (element.isRead == 'N') element.isRead = 0;
+
+                      if (element.isCreate == 'Y') element.isCreate = 4;
+                      else if (element.isCreate == 'N') element.isCreate = 0;
+
+                      if (element.isEdit == 'Y') element.isEdit = 4;
+                      else if (element.isEdit == 'N') element.isEdit = 0;
+
+                      if (element.isDelete == 'Y') element.isDelete = 4;
+                      else if (element.isDelete == 'N') element.isDelete = 0;
+                      saveData['rolesTaskFlowAccess'].push(element);
+                    }
+                  });
+
+
+                }
+
+
+                if (app.roleAppAssignmentId >= 0) {
+                  flag = true;
+                  index = i;
+                  app.rolesTaskFlowAccess = null;
+
+                } else app = null;
               }
-            }
+            });
+            if (flag == false) saveData['rolesAppAccess'] = [];
           }
+          // console.log("2--saveData just before post/put:",saveData)
 
           let observable;
           if (id == 0) {
@@ -213,34 +246,56 @@ export class RolesService {
 
 
   //method to loadData
-  loadData(key) {
-    // console.log("key=",key)
-    this._shared[key + 'Loading'] = true;
-    this._shared.setLines(key, []);
+  loadData(key): Promise<any> {
+    return new Promise((resolve, reject) => {
 
-    if (this._shared.id == 0) {
-      let data = this._shared.setLinesFromCache(key, []);
-      this._shared.formData[key] = data;
-      this._shared[key + 'Loading'] = false;
-      this._shared.refreshLines(key);
+      this._shared[key + 'Loading'] = true;
+      this._shared.setLines(key, []);
 
-    } else {
-      this.fetchLinesData(key).then((data: any) => {
-        this._shared.setLines(key, data);
-        data = this._shared.setLinesFromCache(key, data);
-        this._shared.formData[key] = data;
-        this._shared.refreshLines(key);
+      // if (this._shared.id == 0 && key != 'rolesAppAccess') {
+      if (this._shared.id == 0) {
+
+        if (key != 'rolesTaskFlowAccess')
+          this._shared.formData[key] = this._shared.setLinesFromCache(key, []);
+        else if (key == 'rolesTaskFlowAccess') {
+          this._shared.formData[key] = this._shared.setLinesFromCache('rolesRootTaskFlowAccess', []);
+        }
         this._shared[key + 'Loading'] = false;
-
-      }, err => {
         this._shared.refreshLines(key);
-        this._shared[key + 'Loading'] = false;
-        if (err)
-          this.alertUtils.showAlerts(err.message, true);
-      }).catch((err) => {
-        console.log("Exception caught on fetching line Data by key on loadData(key)");
-      });
-    }
+        resolve(true);
+      } else {
+        // if (this._shared.copy == false) {
+        this.fetchLinesData(key).then((data: any) => {
+          // console.log("key:", key, "data:", data);
+          this._shared.setLines(key, data);
+          this._shared.formData[key] = this._shared.setLinesFromCache(key, data);
+          if (key != 'rolesTaskFlowAccess')
+            this._shared.formData[key] = this._shared.setLinesFromCache(key, data);
+          else {
+            this._shared.formData[key] = this._shared.setLinesFromCache('rolesRootTaskFlowAccess', data);
+          }
+          this._shared.refreshLines(key);
+          this._shared[key + 'Loading'] = false;
+          resolve(true);
+        }, err => {
+          this._shared.refreshLines(key);
+          this._shared[key + 'Loading'] = false;
+          if (err)
+            this.alertUtils.showAlerts(err.message, true);
+
+          reject(err);
+        }).catch((err) => {
+          console.log("Exception caught on fetching line Data by key on loadData(key)");
+
+          reject(err);
+        });
+      }
+      // }
+
+    }).catch(err => {
+      console.log("Error on load data", err)
+    });
+
   }
 
   //method to fetch user Roles
@@ -309,19 +364,47 @@ export class RolesService {
   }
 
 
-  //method to fetch roles task flow access
+  // //method to fetch roles task flow access
+  // fetchRolesTaskFlowAccess(id?: number) {
+  //   return new Promise((resolve, reject) => {
+  //     let params: HttpParams = new HttpParams();
+  //     let applicationCode = this._shared.selectedApplicationCode;
+  //     params = params.set("applicationCode", applicationCode);
+
+  //     if (this._shared.id != 0) {
+
+  //       this.apiService.get('/' + this._shared.apiBase + '/taskFlowAccess/' + this._shared.id, params)
+  //         .subscribe(data => {
+  //           if (data.taskFlowAccess) {
+  //             resolve(data.taskFlowAccess);
+  //           }
+  //           else reject();
+  //           //  resolve([]);
+  //         }, err => reject(err));
+  //     }
+  //     else {
+  //       resolve([]);
+  //     }
+  //   }).catch((err) => {
+  //     console.log("Exception caught on fetching Roles App Access", err);
+  //   })
+
+  // }
+
+  //method to fetch all taskflows by role id
   fetchRolesTaskFlowAccess(id?: number) {
     return new Promise((resolve, reject) => {
-      // console.log("inside task")
-      let params: HttpParams = new HttpParams();
-      let applicationCode = this._shared.selectedApplicationCode;
-      // console.log("appcode=",applicationCode);
-      params = params.set("applicationCode", applicationCode);
+      // let params: HttpParams = new HttpParams();
+      // let applicationCode = this._shared.selectedApplicationCode;
+      // params = params.set("applicationCode", applicationCode);
 
       if (this._shared.id != 0) {
 
-        this.apiService.get('/' + this._shared.apiBase + '/taskFlowAccess/' + this._shared.id, params)
+        // this.apiService.get('/' + this._shared.apiBase + '/taskFlowAccess/' + this._shared.id, params)
+        this.apiService.get('/' + this._shared.apiBase + '/taskflows/' + this._shared.id)
+
           .subscribe(data => {
+            // console.log(data)
             if (data.taskFlowAccess) {
               resolve(data.taskFlowAccess);
             }
@@ -338,26 +421,9 @@ export class RolesService {
 
   }
 
-
   //method to delete lines
   deleteDetailsLine(key: string, index: any, model: any) {
-    let attrValId, userRoles, roles, userOrgAccess, roleId;
-
-    switch (key) {
-      case 'userRoles': {
-        this._shared.deleteLine(key, index); // for deleting from cache
-        break;
-      }
-      case 'rolesOrgAccess':
-        this._shared.deleteLine(key, index);
-        break;
-      case 'rolesAppAccess':
-        this._shared.deleteLine(key, index);
-        break;
-      default:
-        this._shared.deleteLine(key, index);
-        break;
-    }
+    this._shared.deleteLine(key, index);
   }
 
   //Method to check for duplicate role code
@@ -380,25 +446,95 @@ export class RolesService {
     })
   }
 
-  //Method to clone Roles
-  copyRoles() {
-    let defaultMsg = "Unknown Error. Failed to copy role.";
-    let params: HttpParams = new HttpParams();
-    // params = params.set('docNum', this._shared.getHeaderAttributeValue('documentNo'))
-    params = params.set('roleShortCode', this._shared.getHeaderAttributeValue('roleShortCode')) //???
 
+  //Method to get all taskflows
+  getAllTaskFlow() {
+    let defaultMsg = "Unknown Error. Failed to fetch taskflows.";
     return new Promise((resolve, reject) => {
-      this.apiService.get('/' + this._shared.apiBase + '/copyRole/' + this._shared.id, params)
+      this.apiService.get('/' + this._shared.apiBase + '/taskflows/' + this._shared.id)
         .subscribe(data => {
-          console.log(data);
           if (data) {
-
             resolve(data);
-
           }
           reject(defaultMsg);
         }, err => reject(defaultMsg));
     });
   }
+
+  //----document type reference--------------
+  fetchOrgAccessDetail(id?: number) {
+    return new Promise((resolve, reject) => {
+      if (this._shared.id > 0) {
+        this.apiService.get('/' + this._shared.apiBase + '/orgAccessExpansion?roleId=' + this._shared.id)
+          .subscribe(data => {
+            if (data.data) {
+              resolve(data.data);
+              reject();
+            }
+          }, err => reject(err));
+      } else {
+        resolve([]);
+      }
+    });
+  }
+
+
+
+  setDivisionData() {
+    console.log("inside set org access data")
+    this._shared.orgAccessList = []
+    // this.fetchOrgAccessDetail()
+    this.fetchRolesOrgAccess(this._shared.id)
+      .then((data: any) => {
+        data.forEach(row => {
+          row.userId = "0";
+         if (row.facilityId == 0) {
+            row.facilityId = 0;
+            row.facility = '';
+            this._shared.orgAccessList.push(row);
+          }
+        })
+        this._shared.orgAccessList.forEach(divisionRow => {
+          divisionRow['facility'] = []
+          data.forEach(row => {
+            if (row.division && row.divisionId && row.facilityId != 0) {
+              divisionRow['facility'].push(row);
+
+            }
+          })
+        })
+      })
+  }
+
+
+  getStatusData() {
+    let flag = false
+    this._shared.saveOrgAccessData = [];
+
+    if (this._shared.orgAccessList) {
+      if (this._shared.saveIndex) {
+        this._shared.saveIndex.forEach(index => {
+          this._shared.saveOrgAccessData.push(this._shared.orgAccessList[index])
+          if (this._shared.saveFacilityIndex && this._shared.saveFacilityIndex.length) {
+            this._shared.saveFacilityIndex.forEach(roleInd => {
+              if (roleInd.StatusIndex == index) {
+                this._shared.saveOrgAccessData.push(this._shared.orgAccessList[index].facility[roleInd.facilityIndex])
+              }
+            });
+          }
+        });
+      }
+
+      if (this._shared.saveOrgAccessData) {
+        this._shared.saveOrgAccessData.forEach(element => {
+          console.log("element:", element)
+          // element.active = element.active == true ? 'Y' : 'N'
+          // element.isEditAllowed = element.isEditAllowed == true ? 'Y' : 'N'
+          // element.isRevisionAllowed = element.isRevisionAllowed == true ? 'Y' : 'N'
+        });
+      }
+    }
+  }
+
 
 }

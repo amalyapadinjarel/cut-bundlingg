@@ -18,10 +18,6 @@
             {
                 title: 'Name',
                 key: 'name'
-            },
-            {
-                title: 'User Description',
-                key: 'description'
             }
     
         ],

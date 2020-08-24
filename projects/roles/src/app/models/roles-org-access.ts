@@ -21,9 +21,31 @@ export class RolesOrgAccess {
     this.access=model?model.access:"";
     this.default=model?model.default:"";
     this.active=model?model.active:"";
-    this.userId=model?model.roleId:0;
-    this.roleId=model?model.userId:"0";
+    this.userId=model?model.userId:"0";
+    this.roleId=model?model.roleId:0;
     }
+
+
+    // roledocStatusAssignmentId: number;
+    // docStatus: any;
+    // isRevisionAllowed: string;
+    // active: string;
+    // docTypeId: number;
+    // isEditAllowed : string;
+    // role : any;
+    // roles : any;
+
+    // constructor(model = null) {
+    //     this.roledocStatusAssignmentId = model?.roledocStatusAssignmentId || '';
+    //     this.docTypeId = model?.docTypeId || '';
+    //     this.docStatus = model?.docStatus || '';
+    //     this.isRevisionAllowed = model?.isRevisionAllowed || '';
+    //     this.active = model?.active || '';
+    //     this.isEditAllowed = model?.isEditAllowed || '';
+    //     this.role = {label:'', value: 0, shortCode: ''}
+    //     this.roles =[];
+        
+    // }
     equals(model:any){
         let flag = true
         Object.keys(new RolesOrgAccess()).forEach(key => {

@@ -1,0 +1,31 @@
+<mat-card class="input-card no-padding" class="expansion-table-card">
+    <div class="header">
+        <span>#</span>
+        <span>Division</span>
+        <span>Facility</span>
+        <span>Access</span>
+        <span>Default</span>
+        <button mat-button *ngIf="_shared.getRolesOrgAccessEditable()" style="border: none;">
+        </button>
+    </div>
+
+    <mat-dialog-content>
+        <mat-expansion-panel class="expansion-table">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <span>CFAIJO</span>
+                    <span class="flex-filler"></span>
+                    <span>Y</span>
+                    <span>Y</span>
+                </mat-panel-title>
+
+            </mat-expansion-panel-header>
+            <div>
+                <span class="flex-filler"></span>
+                <span>CFTRD</span>
+                <span>Y</span>
+                <span>Y</span>
+            </div>
+        </mat-expansion-panel>
+    </mat-dialog-content>
+</mat-card>

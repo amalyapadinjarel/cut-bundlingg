@@ -109,8 +109,8 @@ export class QueueComponent implements OnInit, OnDestroy {
 	}
 
 	resumeSchedule(job) {
-		if (job.secured == 1) {
-			this.schedulerUtils.resumeSchedule(job.tnzJobId).then(
+		if (job.secured == 'Y') {
+				this.schedulerUtils.resumeSchedule(job.tnzJobId).then(
 				(data: any) => {
 					if (data.status == 'S') {
 						let row = this.dataTable.models.find(row => {

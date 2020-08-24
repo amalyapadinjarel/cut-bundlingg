@@ -194,7 +194,7 @@ export class OperationsTabComponent implements OnInit, OnDestroy {
 
 
 export const operationsLovconfig: any = {
-    title: 'Select operation',
+    title: 'Select Operation',
     url: 'lovs/operation',
     dataHeader: 'data',
     returnKey: 'value',
@@ -202,13 +202,13 @@ export const operationsLovconfig: any = {
     filterAttributes: ['label'],
     displayFields: [
         {
-            key: 'label',
-            title: 'Operation'
+            key: 'shortCode',
+            title: 'Short Code'
         },
         {
-            key: 'shortCode',
-            title: 'Operation Code'
-        },]
+            key: 'label',
+            title: 'Name'
+        }]
 };
 
 export const operationsGroupLovconfig: any = {
@@ -220,12 +220,11 @@ export const operationsGroupLovconfig: any = {
     filterAttributes: ['label'],
     displayFields: [
         {
-            key: 'label',
-            title: 'Operation'
+            key: 'shortCode',
+            title: 'Short Code'
         },
         {
-            key: 'shortCode',
-            title: 'Operation Code'
-        },
-    ]
+            key: 'label',
+            title: 'Name'
+        }]
 };

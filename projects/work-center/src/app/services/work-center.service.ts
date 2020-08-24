@@ -56,7 +56,50 @@ export class WorkCenterService {
             if (inValid) {
                 reject('Please fill mandatory fields.');
             } else {
-                const saveData = this.inputService.getCache(this._shared.appPath)['workCenter'];
+                let saveData = this.inputService.getCache(this._shared.appPath)['workCenter'];
+                console.log(saveData);
+                // console.log(this._shared.productionProcessMap);
+                let noChangeInWc = false;
+                Object.keys(this._shared.productionProcessMap).map(key => {
+                    let changed = true;
+                    let original = this._shared.productionProcessMap
+                    let copy = this._shared.productionProcessMapCopy
+                    if (copy && copy[key]) {
+                        changed = false;
+                        let copyValues = copy[key].map(process => process.value)
+                        let originalvalues = original[key].map(process => process.value)
+                        changed = originalvalues.length != copyValues.length || originalvalues.some((value, index) => value != copyValues[index]);
+                    }
+                    
+                    if (changed) {
+                        let splited = key.split(':');
+                        let id = splited[0];
+                        let shortCode = splited[1];
+                        if (!noChangeInWc && saveData?.workCenter?.length) {
+                            saveData.workCenter.forEach(data => {
+                                if (data?.wcId == id) {
+                                    if (data.wcId != 0 || data?.shortCode == shortCode) {
+                                        data.productionProcess = this._shared.productionProcessMap[key]
+                                            .map(process => process.value).toString()
+                                    }
+                                }
+                            })
+                        } else {
+                            noChangeInWc = true;
+                            if (!saveData) {
+                                saveData = {}
+                            }
+                            if (!saveData?.workCenter) {
+                                saveData.workCenter = []
+                            }
+                            let productionProcess = this._shared.productionProcessMap[key]
+                                .map(process => process.value).toString()
+                            saveData.workCenter.push({ wcId: id, productionProcess })
+                        }
+                    }
+
+                })
+
                 if (saveData) {
                     let observable;
                     observable = this.apiService.post('/work-center', saveData);

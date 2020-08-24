@@ -80,4 +80,16 @@ export class MarkerDetailsComponent implements OnInit, OnDestroy {
 	deleteLine(index, model) {
 		this._service.deleteDetailsLine(this.key, index, model)
 	}
+
+	onAction(event) {
+		console.log(event)
+		switch (event.key) {
+			case 'delete':
+				this._service.deleteLines(this.key);
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+		}
+	}
 }

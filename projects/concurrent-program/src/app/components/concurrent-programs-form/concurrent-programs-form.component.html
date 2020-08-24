@@ -1,7 +1,6 @@
 <div class="details">
     <div>
         <perfect-scrollbar>
-            <!-- <concurrent-programs-header></concurrent-programs-header> -->
             <concurrent-programs-card collapsibleComponent style="max-width: 240px;"></concurrent-programs-card>
         </perfect-scrollbar>
     </div>
@@ -16,15 +15,11 @@
         </div>
         <mat-tab-group>
             <mat-tab label="Concurrent Program">
-                <perfect-scrollbar>
                     <div class="group">
                         <div class="group-header">
                             <h3>Parameters</h3>
                             <span class="flex-filler"></span>
                             <div style="display:flex" *ngIf="_shared.getParametersEditable()">
-                                <!-- <button mat-button matTooltip="delete line">
-                                    <mat-icon class="mat-color-danger" (click)="deleteLine('parametersDetails')">delete</mat-icon>
-                                </button> -->
                                 <button mat-button matTooltip="add line">
                                     <mat-icon class="mat-color-info" (click)="_shared.addLine('parametersDetails')">add_box</mat-icon>
                                 </button>
@@ -37,9 +32,6 @@
                             <h3>Template</h3>
                             <span class="flex-filler"></span>
                             <div style="display:flex" *ngIf="_shared.getTemplatesEditable()">
-                                <!-- <button mat-button matTooltip="delete line">
-                                    <mat-icon class="mat-color-danger" (click)="deleteLine('templatesDetails')">delete</mat-icon>
-                                </button> -->
                                 <button mat-button matTooltip="add line">
                                     <mat-icon class="mat-color-info" (click)="_shared.addLine('templatesDetails')">add_box</mat-icon>
                                 </button>
@@ -53,9 +45,6 @@
                                 <h3>Style Sheet</h3>
                                 <span class="flex-filler"></span>
                                 <div style="display:flex" *ngIf="_shared.getStyleSheetEditable()">
-                                    <!-- <button mat-button matTooltip="delete line">
-                                        <mat-icon class="mat-color-danger" (click)="deleteLine('styleSheetDetails')">delete</mat-icon>
-                                    </button> -->
                                     <button mat-button matTooltip="add line" *ngIf="styleSheetCount == 0">
                                         <mat-icon class="mat-color-info" (click)="_shared.addLine('styleSheetDetails')">add_box</mat-icon>
                                     </button>
@@ -68,9 +57,6 @@
                                 <h3>Roles</h3>
                                 <span class="flex-filler"></span>
                                 <div style="display:flex" *ngIf="_shared.getRolesEditable()">
-                                    <!-- <button mat-button matTooltip="delete line">
-                                        <mat-icon class="mat-color-danger" (click)="deleteLine('rolesDetails')">delete</mat-icon>
-                                    </button> -->
                                     <button mat-button matTooltip="add line">
                                         <mat-icon class="mat-color-info" (click)="_shared.addLine('rolesDetails')">add_box</mat-icon>
                                     </button>
@@ -79,7 +65,6 @@
                             <concurrent-programs-roles></concurrent-programs-roles>
                         </div>
                     </div>
-                </perfect-scrollbar>
             </mat-tab>
         </mat-tab-group>
     </div>

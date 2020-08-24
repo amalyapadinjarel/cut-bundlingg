@@ -13,8 +13,8 @@
         <li>
             <label>Short Code</label>
             <div class="val">
-                <div class="break-word text-uppercase" *ngIf="!getIfEditable('displayActive')">{{_shared.getHeaderAttributeValue('shortCode')}}</div>
-                <tnz-input class="upper-case" type="text" *ngIf="getIfEditable('displayActive')" [path]="_shared.getHeaderAttrPath('shortCode')" [primaryKey]="_shared.primaryKey" 
+                <div class="break-word text-uppercase" *ngIf="!getIfEditable('shortCode')">{{_shared.getHeaderAttributeValue('shortCode')}}</div>
+                <tnz-input class="upper-case" type="text" *ngIf="getIfEditable('shortCode')" [path]="_shared.getHeaderAttrPath('shortCode')" [primaryKey]="_shared.primaryKey" 
                     [sharedData]="_shared.formData"  validators="required" [isEdit]="getIfEditable('shortCode')"
                     [loading]="_shared.headerLoading || _shared.loading" (valueChanged)="valueChanged($event)"></tnz-input> 
             </div>

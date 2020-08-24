@@ -16,18 +16,60 @@ export class UserWcAccessService {
         private apiService: ApiService,
         private _shared: UserWcAccessSharedService
     ) { }
+
+    loadData() {
+        this._shared.Loading = true;
+        this.fetchData().then(
+            (data: any) => {
+
+                this._shared.setListData(data);
+                this._shared.refreshLines();
+                this._shared.Loading = false;
+            },
+            (err) => {
+                this._shared.refreshLines();
+                this._shared.Loading = false;
+            }
+        );
+    }
+
+    fetchData(id?: number) {
+
+        return new Promise((resolve, reject) => {
+
+             this.apiService.get('/'+this._shared.apiBase+'?limit=1500')
+                .subscribe(data => {
+                    if (data) {
+
+                        if (data.userWcAccess) {
+                            resolve(data);
+                   
+                        }
+                        else {
+                            reject();
+                        }
+                    } else {
+                        reject();
+                    }
+                }, err => reject(err));
+
+        });
+    }
     save(exit): Promise<any> {
+        this._shared.Loading = true;
         return new Promise((resolve, reject) => {
             this.saveData(this._shared.id)
                 .then(res => {
                     this.inputService.resetInputCache(this._shared.appPath);
-                  
-                    this._shared.refreshUserWcAccessData.next(true);
+
+                    this._shared.refreshData.next(true);
+                    this._shared.Loading = false;
                     resolve(true);
                 }, err => {
                     if (err) {
                         this.alertUtils.showAlerts('Failed to save document. ' + err);
                     }
+                    this._shared.Loading = false;
                     resolve(false);
                 })
         });
@@ -80,18 +122,47 @@ export class UserWcAccessService {
         });
     }
 
-    getCopyUserData(fromUserId, toUserId) {
+    getCopyUserData(fromUser, toUser) {
         return new Promise((resolve, reject) => {
+            let toUserName = toUser.userName
 
-
-            this.apiService.get('/' + this._shared.apiBase + '/user-lines/' + fromUserId + '/' + toUserId)
+            this.apiService.get('/' + this._shared.apiBase + '/user-lines/' + fromUser.userId + '/' + toUser.userId)
                 .subscribe(data => {
-                
-                    if (data && data.length) {
-                        resolve(data);
 
+                    if (data.CopyData && data.CopyData.length) {
+                        resolve(data.CopyData);
+
+                        if (data.InvalidCount) {
+
+                            let cnt = data.InvalidCount.totalCount - data.InvalidCount.resultCount
+                            let msg = cnt + ' line(s) are not copied as the '
+                            if (data.InvalidCount.totalValidCount != data.InvalidCount.totalCount &&
+                                data.InvalidCount.totalValidCount != data.InvalidCount.resultCount) {
+                                this.alertUtils.showAlerts(msg + "User " + toUserName + " has no access to some of the copied facility or Similar lines exists !")
+                            }
+
+                            else if (data.InvalidCount.totalValidCount != data.InvalidCount.totalCount) {
+                                this.alertUtils.showAlerts(msg + "User " + toUserName + " has no access to some of the copied facility !")
+                            }
+                            else if (data.InvalidCount.totalValidCount != data.InvalidCount.resultCount) {
+                                this.alertUtils.showAlerts(msg + "Similar lines exists !")
+                            }
+                        }
                     } else {
-                        reject('NODATA');
+                        if (data.InvalidCount.totalValidCount != data.InvalidCount.totalCount &&
+                            data.InvalidCount.totalValidCount != data.InvalidCount.resultCount) {
+                            this.alertUtils.showAlerts("No lines Copied.User " + toUserName + " has no access to the copying facility or Similar lines exists !")
+                        }
+
+                        else if (data.InvalidCount.totalValidCount != data.InvalidCount.totalCount) {
+                            this.alertUtils.showAlerts("No lines Copied.User " + toUserName + " has no access to the copying facility !")
+                        }
+                        else if (data.InvalidCount.totalValidCount != data.InvalidCount.resultCount) {
+                            this.alertUtils.showAlerts("Similar lines exists !")
+                        }
+                        else {
+                            reject('NODATA');
+                        }
                     }
                 }, err => reject(err));
 

@@ -61,4 +61,19 @@ export class CutPanelDetailsComponent implements OnInit, OnDestroy {
 	onRowSelected() {
 		this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
 	}
+
+	onAction(event) {
+		console.log(event)
+		switch (event.key) {
+			case 'delete':
+				this._service.deleteLines(this.key);
+				break;
+			case 'regenerate':
+				this._service.regenerateCutPanels();
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+		}
+	}
 }

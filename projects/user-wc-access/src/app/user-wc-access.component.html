@@ -5,9 +5,9 @@
 	</div>
 	<div class="app-menus">
 		<div class="group">
-			<a (click)="newLine()">Add</a>
-			<a (click)="CopyUser() " *ngIf="!_shared.editMode">Copy</a>
+			<a (click)="newLine()">Add</a>			
 			<a (click)="edit()" *ngIf="!_shared.editMode">Edit</a>
+			<a (click)="CopyUser() " *ngIf="!_shared.editMode">Copy</a>
 			<a (click)="save()" *ngIf="_shared.editMode">Save</a>
 			<a (click)="cancelEdit()" *ngIf="_shared.editMode">Cancel</a>
 		</div>

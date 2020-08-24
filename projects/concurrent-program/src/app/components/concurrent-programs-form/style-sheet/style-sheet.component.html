@@ -1,6 +1,6 @@
 
 <smd-datatable [tableId]="_shared.appKey + '.styleSheet'" [paginated]="!_shared.getStyleSheetEditable()" [loading]="_shared.styleSheetDetailsLoading" [primaryListing]="false"
-class="tnz-input-table"  [filterEnabled]="!_shared.getStyleSheetEditable()" [sortEnabled]="!_shared.getStyleSheetEditable()" [showCheckBox]="false" (dataChange)="onDataChange($event)"
+class="tnz-input-table" [showCheckBox]="false" (dataChange)="onDataChange($event)"
 [inputPath]="_shared.styleSheetDetailsPath">
    <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
        <ng-template let-model="data" let-index="index">

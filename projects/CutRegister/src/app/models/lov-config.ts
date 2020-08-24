@@ -240,3 +240,26 @@ export const UserFacilityLovConfig: any = {
 };
 
 
+export function CutWorkCenterLovConfig(facilityId) {
+    let json =
+        {
+            title: 'Select Work Center',
+           url: "lovs/cr-work-center?facility="+facilityId ,
+            dataHeader: 'data',
+            returnKey: 'value',
+            displayKey: 'label',
+            filterAttributes: ['shortCode'],
+            displayFields: [{
+                key: 'label',
+                title: 'Name'
+            },
+            {
+                key: 'shortCode',
+                title: 'Short code'
+            }]
+        }
+    return json
+  }
+  
+
+

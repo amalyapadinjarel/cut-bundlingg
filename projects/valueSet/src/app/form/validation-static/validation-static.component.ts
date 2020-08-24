@@ -20,7 +20,6 @@ export class ValidationStaticComponent implements OnInit {
   ngOnInit(): void {
     this.refreshSub = this._shared.refreshData.subscribe(change => {
       this._service.loadData(this.key);
-      console.log("PrimaryKey", this._shared.validDetailsPrimaryKey)
 		});
 		this.refreshvalidValue = this._shared.refreshOpertionTable.subscribe(change => {
 			this.refreshTable();

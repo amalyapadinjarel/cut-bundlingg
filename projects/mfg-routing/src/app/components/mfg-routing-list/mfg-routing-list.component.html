@@ -1,7 +1,7 @@
 <div>
     <perfect-scrollbar>
-        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="routing" (onRowSelected)="rowSelected($event)"
-                       [primaryListing]="false"  (dataChange)="_onDataChange($event)"  [selectedPage]="_shared.selectedPage" (pageChange)="pageChange($event)" >
+        <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="routing" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
+            (dataChange)="_onDataChange($event)" [selectedPage]="_shared.selectedPage" (pageChange)="pageChange($event)" tableId="mfgRoutingList">
             <smd-datatable-column title="Routing#" field="documentNo" sortable="true" [filterable]="true">
             </smd-datatable-column>
             <!-- <smd-datatable-column title="Cut Facility" field="cutFacility" sortable="true" [filterable]="true">
@@ -16,6 +16,9 @@
             <smd-datatable-column title="Name" field="routingName" sortable="true" [filterable]="true">
             </smd-datatable-column>
             <smd-datatable-column title="Status" field="docStatusTR" sortable="true" [filterable]="true">
+                <ng-template let-model="data">
+                    <doc-status [status]="model.docStatus" [insideTable]="true"></doc-status>
+                </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="SMV" field="smv" sortable="true" [filterable]="true">
             </smd-datatable-column>
@@ -23,7 +26,7 @@
             </smd-datatable-column>
             <smd-datatable-column title="Created By" field="createdByName" sortable="true" [filterable]="true">
             </smd-datatable-column>
-            <smd-datatable-column title="Creation Date" field="creationDate" sortable="true" [filterable]="true">
+            <smd-datatable-column title="Created Date" field="creationDate" sortable="true" [filterable]="true">
             </smd-datatable-column>
             <smd-datatable-column title="Updated By" field="lastUpdateByName" sortable="true" [filterable]="true">
             </smd-datatable-column>

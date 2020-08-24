@@ -1,6 +1,6 @@
 
 <smd-datatable [tableId]="_shared.appKey + '.roles'" [paginated]="!_shared.getRolesEditable()" [loading]="_shared.rolesDetailsLoading" [primaryListing]="false"
-class="tnz-input-table"  [filterEnabled]="!_shared.getRolesEditable()" [sortEnabled]="!_shared.getRolesEditable()" [showCheckBox]="false" [inputPath]="_shared.rolesDetailsPath">
+class="tnz-input-table"  [showCheckBox]="false" [inputPath]="_shared.rolesDetailsPath">
    <smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">
        <ng-template let-model="data" let-index="index">
            <div class="row-operations">

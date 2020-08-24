@@ -33,11 +33,15 @@ export class PacksComponent implements OnInit {
 
   ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
+			setTimeout(() => {
 				this._service.loadData(this.key);
 				this._service.loadStyleVarientData();
+			}, 0);
 		});
 		this.refreshPackDetails = this._shared.refreshpacksDetails.subscribe(change => {
-			if (change){}
+			if (change){
+
+			}
 		});
 	}
 

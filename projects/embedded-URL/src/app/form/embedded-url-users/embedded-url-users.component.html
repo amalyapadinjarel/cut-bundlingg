@@ -1,8 +1,9 @@
 <smd-datatable [tableId]="_shared.appKey + '.embeddedURLUsers'" [paginated]="!_shared.getEmbeddedURLUsersEditable()"
     [loading]="_shared.embeddedURLUsersLoading" class="tnz-input-table"
-    [filterEnabled]="!_shared.getEmbeddedURLUsersEditable()" [sortEnabled]="!_shared.getEmbeddedURLUsersEditable()"
+    [sortEnabled]="!_shared.getEmbeddedURLUsersEditable()"
     (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()"
-    [showCheckBox]="_shared.getEmbeddedURLUsersEditable()">
+    [showCheckBox]="_shared.getEmbeddedURLUsersEditable()" [inputPath]="_shared.embeddedURLUsersPath"
+    [primaryKey]="_shared.embeddedURLUsersPrimaryKey">
 
     <smd-datatable-column title=" " field=" " *ngIf="_shared.getEmbeddedURLUsersEditable()"
         [colStyle]="{'width':'10px'}">
@@ -26,13 +27,6 @@
     <smd-datatable-column title="Menu" field="taskflow" sortable="true" [filterable]="true">
         <ng-template let-model="data" let-index="index">
 
-            <!-- <div *ngIf="_shared.getEmbeddedURLUsersEditable('taskflow')"> -->
-            <!-- <tnz-input type="lov" [path]="_shared.getEmbeddedURLUsersPath(index,'taskflow')"
-                    [primaryKey]="_shared.embeddedURLUsersPrimaryKey" displayKey="taskFlowName" returnKey="taskFlowId"
-                    [sharedData]="_shared.formData" [lovConfig]="taskflowLov" [isEdit]="getIfEditable(index,'taskflow')"
-                    [loading]="_shared.embeddedURLUsersLoading || _shared.loading"
-                    (valueChanged)="checkUnique($event,model,index)">
-                </tnz-input> -->
             <span *ngIf="!_shared.getEmbeddedURLUsersEditable('taskflowId')">
                 {{model.taskflow}}
             </span>
@@ -71,10 +65,9 @@
         [colStyle]="{'width':'10px'}">
         <ng-template let-model="data" let-index="index">
             <div class="checkbox-center-align" *ngIf="!_shared.getEmbeddedURLUsersEditable('default')">
-                <mat-icon *ngIf="model.default=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
+                <mat-icon *ngIf="model.default=='Y'" class="default-icon"
                     matTooltip="Active">check_circle</mat-icon>
-                <mat-icon *ngIf="model.default!='Y'" style="color:gray;font-size:20px;vertical-align: middle;"
-                    matTooltip="Inactive">cancel</mat-icon>
+              
             </div>
             <div class="checkbox-center-align" *ngIf="_shared.getEmbeddedURLUsersEditable('default')">
                 <tnz-input type="checkbox" [path]="_shared.getEmbeddedURLUsersPath(index,'default')"
@@ -90,9 +83,9 @@
         [colStyle]="{'width':'10px'}">
         <ng-template let-model="data" let-index="index">
             <div class="checkbox-center-align" *ngIf="!_shared.getEmbeddedURLUsersEditable('active')">
-                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                <mat-icon *ngIf="model.active=='Y'" class="active-icon"
                     matTooltip="Active">check_circle</mat-icon>
-                <mat-icon *ngIf="model.active!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
+                <mat-icon *ngIf="model.active!='Y'" class="inactive-icon"
                     matTooltip="Inactive">cancel</mat-icon>
             </div>
             <div class="checkbox-center-align" *ngIf="_shared.getEmbeddedURLUsersEditable('active')">

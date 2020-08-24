@@ -76,6 +76,7 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
         this._root = keys[1];
         this._key = keys[keys.length - 1];
         this._path = path.substring(this._app.length + this._root.length + 2);
+        //console.log(this._path)
     };
 
     @Input() displayKey: string;
@@ -349,7 +350,6 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
                     // 	this.status = 'warning';
                     // 	this.alert =  'Choose from the given list of options.';
                     // }
-                    console.log(newValue,this.returnKey)
                     if (validator == 'required') {
                         if (typeof newValue == 'undefined' || newValue === '' ||
                             (this.type == 'lov' && (typeof newValue[this.returnKey] !== 'undefined' && newValue[this.returnKey] === '')) 
@@ -727,4 +727,29 @@ export class TnzInputComponent implements OnChanges, OnDestroy {
             this.setValue(json, true)
         }
     }
+
+    setAutoCompleteForLov(){
+        if (this.lovConfig) {
+            this.autoCompleteTimeout = setTimeout(() => {
+                this.lovConfig.url = this._service.resolveUrl(this.lovUrl, this.fullPath);
+ 
+                this.setAutoComplete("").subscribe(res => {
+                    this.autoCompleteOptions = res;
+                    if(res && res.length == 1){
+                        this.setLovValue(res[0]);
+                    }
+                    else{
+                        const json = {};
+                        json[this.returnKey] = '';
+                        json[this.displayKey] = '';
+                        this.setLovValue(json);
+                    }
+                }, err => {
+                });
+ 
+            }, 400);
+        }
+    }
 }
+
+

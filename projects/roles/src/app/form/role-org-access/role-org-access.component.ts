@@ -4,7 +4,7 @@ import { RolesService } from '../../_service/roles.service';
 import { SmdDataTable } from 'app/shared/component';
 import { Subscription } from 'rxjs';
 import { TnzInputLOVComponent } from 'app/shared/tnz-input/input-lov/input-lov.component';
-import { CopyFromFacilityLovConfig } from '../../models/lov-config';
+import { CopyFromFacilityLovConfig, CopyFromDivisionLovConfig } from '../../models/lov-config';
 import { AlertUtilities } from 'app/shared/utils';
 import { MatDialog } from '@angular/material/dialog';
 import { RolesOrgAccess } from '../../models/roles-org-access';
@@ -14,7 +14,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 @Component({
   selector: 'role-org-access',
   templateUrl: './role-org-access.component.html',
-  //styleUrls: ['./user-org-access.component.scss']
+  styleUrls: ['./role-org-access.component.scss']
 })
 export class RolesOrgAccessComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class RolesOrgAccessComponent implements OnInit {
     private _service: RolesService,
     private alertUtils: AlertUtilities,
     public dialog: MatDialog,
-    private cache: LocalCacheService,
+    // private cache: LocalCacheService,
     private inputService: TnzInputService
 
   ) { }
@@ -83,7 +83,7 @@ export class RolesOrgAccessComponent implements OnInit {
             return res.facilityId == data.facilityId
           })
           if (orgAccessLineIndex == -1) {
-            this._shared.addLine('rolesOrgAccess', res,false);
+            this._shared.addLine('rolesOrgAccess', res, false);
           } else {
             unAddedOrderLines.push(res)
           }
@@ -113,29 +113,53 @@ export class RolesOrgAccessComponent implements OnInit {
     model.access = "Y";
     model.default = "N";
     model.active = "Y";
+
     return model;
 
   }
 
-  //Method To Update Default Facility
-  defaultFacilityCheck(event, model, index) {
+
+
+   //Method To Update Default Division and Facility
+
+  defaultCheck(event, model, index) {
+
     if (event.value == 'Y') {
-      if (model.facilityId != 0) {
+
+      if (model.facilityId == 0) {
         let data = this._shared.formData['rolesOrgAccess'];
         let key = 'rolesOrgAccess';
         if (data && data.length) {
           data.forEach((element, idx) => {
-            if (index != idx && element.facilityId != 0) {
+            if (index != idx && element.facilityId == 0) {
               element.default = 'N';
               let path = this._shared.getRolesOrgAccessPath(idx, 'default');
-              this.inputService.updateInput(path, 'N', element.orgAccessId)
+              this.inputService.updateInput(path, 'N', this._shared.rolesOrgAccessPrimaryKey)
             }
           });
         }
       }
+
+      if (model.facilityId != 0) {
+        let data = this._shared.formData['rolesOrgAccess'];
+        let key = 'rolesOrgAccess';
+        if (data && data.length) {
+          data.forEach((element, i) => {
+            if (index != i && element.facilityId != 0) {
+              element.default = 'N';
+              let path = this._shared.getRolesOrgAccessPath(i, 'default');
+              if (model.divisionId == element.divisionId)
+                this.inputService.updateInput(path, 'N', this._shared.rolesOrgAccessPrimaryKey)
+            }
+
+          });
+        }
+      }
+
     }
   }
 
 
+ 
 
 }

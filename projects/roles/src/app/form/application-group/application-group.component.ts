@@ -64,8 +64,6 @@ export class ApplicationGroupComponent implements OnInit {
 
  
   rowSelected(event) {
-    this._shared.selectedApplicationCode=event.model.applicationShortCode;
-  //  this._shared.selectedAppAccess=event.model.isAllowed;
     this._shared.setSelectedLines(this.key, this.dataTable.selectedModels())
     let selectedRow=this._shared.selectedLines[this.key];
   }

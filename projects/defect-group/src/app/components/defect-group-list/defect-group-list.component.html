@@ -1,0 +1,26 @@
+<smd-datatable [dataUrl]="_shared.apiBase" dataHeader="defectGroup" (onRowSelected)="rowSelected($event)" [rowCount]="_shared.count"
+    [primaryListing]="true" class="tnz-input-table" (dataChange)="_onDataChange($event)" [tableId]="_shared.appKey + '.defectGroupList'"
+    [inputPath]="_shared.appKey + '.defectGroupList'">
+    <smd-datatable-column title="Short Code" field="shortCode" sortable="true" [filterable]="true"  [colStyle]="{'width':'700px'}">
+    </smd-datatable-column>
+    <smd-datatable-column title="Name" field="groupName" sortable="true" [filterable]="true"  [colStyle]="{'width':'700px'}">
+    </smd-datatable-column>
+    <smd-datatable-column title="Type" field="defectTypeView" sortable="true" [filterable]="true"  [colStyle]="{'width':'200px'}">
+    </smd-datatable-column>
+    <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"  [colStyle]="{'width':'15px','text-align':'center'}">
+        <ng-template let-model="data">
+            <mat-icon *ngIf="model.active =='Y'" style="color:green;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Active">
+                check_circle</mat-icon>
+            <mat-icon *ngIf=" model.active =='N'" style="color:red;font-size:20px;vertical-align: middle;text-align:center" matTooltip="Inactive">
+                cancel</mat-icon>
+        </ng-template>
+    </smd-datatable-column>
+    <smd-datatable-column title="Created By" field="createdUser" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Created Date" field="creationDateTr" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Updated By" field="lastUpdatedUser" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+    <smd-datatable-column title="Updated Date" field="lastUpdatedDateTr" sortable="true" [filterable]="true">
+    </smd-datatable-column>
+</smd-datatable>

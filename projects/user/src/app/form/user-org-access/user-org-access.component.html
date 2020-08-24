@@ -49,14 +49,13 @@
 			<div class="checkbox-center-align" *ngIf="!_shared.getUserOrgAccessEditable('default')">
                 <mat-icon *ngIf="model.default=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
                     matTooltip="Default">check_circle</mat-icon>
-            
             </div>
 			<div *ngIf="_shared.getUserOrgAccessEditable('default')">
 				<tnz-input type="checkbox" [path]="_shared.getUserOrgAccessPath(index,'default')"
 					[primaryKey]="_shared.userOrgAccessPrimaryKey" [sharedData]="_shared.formData"
 					[isEdit]="getIfEditable(index,'default')"
 					[loading]="_shared.userOrgAccessLoading || _shared.loading"
-					(valueChanged)="defaultFacilityCheck($event,model,index)">
+					(valueChanged)="defaultCheck($event,model,index)">
 				</tnz-input>
 			</div>
 		</ng-template>

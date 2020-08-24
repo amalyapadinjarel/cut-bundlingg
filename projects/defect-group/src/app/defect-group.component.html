@@ -1,0 +1,22 @@
+<div class="app-content-header">
+	<div class="app-title" routerLink="./list">
+		<span class="primary">Defect </span>
+		<span class="accent">Group </span>
+	</div>
+	<div class="app-menus">
+		<div class="group" *ngIf="!_shared.editMode">
+			<a (click)="create()">Create</a>
+			<a *ngIf="_shared.id" (click)="edit()">Edit</a>
+		</div>
+		<div class="group" *ngIf="_shared.editMode">
+			<a (click)="save()">Save</a>
+			<a (click)="save(true)">Save & exit</a>
+			<a (click)="cancelEdit()">Cancel</a>
+		</div>
+	</div>
+</div>
+<div class="app-content-container">
+	<div class="app-content-wrapper">
+		<router-outlet></router-outlet>
+	</div>
+</div>

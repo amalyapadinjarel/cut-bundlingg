@@ -37,7 +37,7 @@ export class StatusDetailsComponent implements OnInit, OnDestroy {
     this.subs.sink = this._shared.refreshData.subscribe(change => {
      
       this._service.setStatusData();
-      console.log("length",this._shared.statusList)
+     
    
   });
 

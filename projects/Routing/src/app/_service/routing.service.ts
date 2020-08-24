@@ -192,6 +192,7 @@ export class RoutingService {
                         .subscribe(res => {
                             if (res && res.success) {
                                 this._shared.id = res.data && res.data.routingId ? res.data.routingId : this._shared.id;
+                                this._shared.listData = null;
                                 resolve(res)
                             } else {
                                 reject(res && res.message ? res.message : 'Unknown error');

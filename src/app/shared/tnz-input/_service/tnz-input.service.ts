@@ -6,7 +6,7 @@ import { JSONUtils } from 'app/shared/utils/json.utility';
 import { shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class TnzInputService {
     
 
@@ -237,4 +237,11 @@ export class TnzInputService {
 	resetSharedData(){
 		this.sharedData = {};
 	}
+
+	autoCompleteLov(path){
+        let input = JSONUtils.getJSONPath(this.registeredInputs, path);
+        if (input) {
+            input.setAutoCompleteForLov();
+        }
+    }
 }

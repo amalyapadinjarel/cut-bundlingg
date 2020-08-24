@@ -206,6 +206,8 @@ export class OperationSharedService {
   }
 
 
+
+
   isLoading() {
     return this.loading || this.headerLoading || this.linesLoading
   }

@@ -5,6 +5,7 @@ import { UserRoles } from '../models/user-roles';
 import { BehaviorSubject } from 'rxjs';
 import { UserOrgAccess } from '../models/user-org-access';
 import { DateUtilities } from 'app/shared/utils';
+import { EffectiveOrgAccess } from '../models/effective-org-access';
 
 @Injectable(
   //  {  providedIn: 'root'}
@@ -19,7 +20,7 @@ export class UserSharedService {
   //variable to control editing
   editMode = false;
 
-  id: number;
+  id: number=0;
 
   formData: any = {};
 
@@ -27,6 +28,9 @@ export class UserSharedService {
   linesData: any = [];
   userRoles: any = [];
   userOrgAccess: any = [];
+  
+  rolesOrgAccess: any = []; //orgAccess inherited from roles
+  effectiveOrgAccess: any = []; //combined org access
 
   //defining loading
   loading = true;
@@ -35,14 +39,24 @@ export class UserSharedService {
   userRolesLoading = true;
   userOrgAccessLoading = true;
 
+
+  rolesOrgAccessLoading = true; //orgAccess inherited from roles
+  effectiveOrgAccessLoading = true; //combined org access
+
   //defining primary key
   primaryKey = 'userId';
   userRolesPrimaryKey = 'roleUserAssignmentId';
   userOrgAccessPrimaryKey = 'orgAccessId';
 
+  rolesOrgAccessPrimaryKey = 'orgAccessId'; //orgAccess inherited from roles
+  effectiveOrgAccessPrimaryKey = 'orgAccessId'; //combined org access
+
   //variables for attributes
   userRolesAttributes = Object.keys(new UserRoles());
   userOrgAccessAttributes = Object.keys(new UserOrgAccess());
+
+  rolesOrgAccessAttributes = Object.keys(new UserOrgAccess());//orgAccess inherited from roles
+  effectiveOrgAccessAttributes = Object.keys(new EffectiveOrgAccess());//combined org access
 
   selectedLines = {}; //??
 
@@ -59,8 +73,14 @@ export class UserSharedService {
   refreshUserRolesData: BehaviorSubject<boolean> = new BehaviorSubject(false);
   refreshOrgAccessData: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  //orgAccess inherited from roles
+  refreshRolesOrgAccessData: BehaviorSubject<boolean> = new BehaviorSubject(false);
+ 
+  //combined org access
+  refreshEffectiveOrgAccessData: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  
   //define line sections
-  lineKeys = ['userRoles', 'userOrgAccess'];
+  lineKeys = ['userRoles', 'userOrgAccess','rolesOrgAccess','effectiveOrgAccess'];
 
 
   //variables for navigation
@@ -91,11 +111,18 @@ export class UserSharedService {
     this.refreshHeaderData = new BehaviorSubject(false);
     this.refreshData = new BehaviorSubject(false);
     this.refreshOrgAccessData = new BehaviorSubject(false);
+
+    this.refreshRolesOrgAccessData = new BehaviorSubject(false);
+    this.refreshEffectiveOrgAccessData = new BehaviorSubject(false);
+
     this.refreshUserRolesData = new BehaviorSubject(false);
 
     this.linesData = [];
     this.userRoles = [];
     this.userOrgAccess = [];
+
+    this.rolesOrgAccess = [];
+    this.effectiveOrgAccess = [];
 
     //variable for nav
     this.listData = null;
@@ -117,10 +144,19 @@ export class UserSharedService {
     this.refreshUserRolesData.unsubscribe();
     this.refreshOrgAccessData.unsubscribe();
 
+    this.refreshRolesOrgAccessData.unsubscribe();
+    this.refreshEffectiveOrgAccessData.unsubscribe();
+
+
     this.formData = {};
 
     this.userRoles = [];
     this.userOrgAccess = [];
+
+    this.rolesOrgAccess = [];
+    this.effectiveOrgAccess = [];
+
+
     this.linesData = [];
   }
 
@@ -176,6 +212,27 @@ export class UserSharedService {
   get userOrgAccessRemovedKeysPath() {
     return this.appPath + '.userOrgAccessRemovedKeys';
   }
+
+  //getter for rolesOrgAccessPath
+  get rolesOrgAccessPath() {
+    return this.appPath + '.rolesOrgAccess';
+  }
+
+  //getter for rolesOrgAccessRemovedKeysPath
+  get rolesOrgAccessRemovedKeysPath() {
+    return this.appPath + '.rolesOrgAccessRemovedKeys';
+  }
+
+  //getter for effectiveOrgAccessPath
+  get effectiveOrgAccessPath() {
+    return this.appPath + '.effectiveOrgAccess';
+  }
+
+  //getter for effectiveOrgAccessRemovedKeysPath
+  get effectiveOrgAccessRemovedKeysPath() {
+    return this.appPath + '.effectiveOrgAccessRemovedKeys';
+  }
+
   //getter for userRolesSeq
   get userRolesSeq() {
     this._userRolesSeq += this.userRolesSeqIncBy;
@@ -210,9 +267,16 @@ export class UserSharedService {
     return this.userOrgAccessPath + '[' + line + '].' + attr;
   }
 
+  getRolesOrgAccessPath(line, attr) {
+    return this.rolesOrgAccessPath + '[' + line + '].' + attr;
+  }
+
+  getEffectiveOrgAccessPath(line, attr) {
+    return this.rolesOrgAccessPath + '[' + line + '].' + attr;
+  }
+
   getHeaderEditable(attr, id) {
     let editable = this.editMode;
-  //  let nonEditableAttrs = ['userName', 'attemptsLeft','startDate','personnelNum'];// attributes that cannot be edited after creation
     let nonEditableAttrs = ['userName','startDate','attemptsLeft'];// attributes that cannot be edited after creation
 
     if (this.id != 0 && nonEditableAttrs.indexOf(attr) > -1) {
@@ -243,6 +307,12 @@ export class UserSharedService {
       case 'userOrgAccess':
         this.refreshOrgAccessData.next(true);
         break;
+      case 'rolesOrgAccess':
+        this.refreshRolesOrgAccessData.next(true);
+        break;
+      case 'effectiveOrgAccess':
+          this.refreshEffectiveOrgAccessData.next(true);
+          break;
       default:
         break;
     }
@@ -305,6 +375,12 @@ export class UserSharedService {
       case 'userOrgAccess':
         newLine = model ? new UserOrgAccess(model) : new UserOrgAccess();
         break;
+      // case 'rolesOrgAccess':
+      //   newLine = model ? new UserOrgAccess(model) : new UserOrgAccess();
+      //   break;
+        case 'effectiveOrgAccess':
+        newLine = model ? new EffectiveOrgAccess(model) : new EffectiveOrgAccess();
+        break;
       default:
         break;
     }
@@ -324,7 +400,15 @@ export class UserSharedService {
     return editable;
   }
 
+  getRolesOrgAccessEditable(attr = null) {
+    let editable = this.editMode;
+    return editable;
+  }
 
+  getEffectiveOrgAccessEditable(attr = null) {
+    let editable = this.editMode;
+    return editable;
+  }
   getHeaderAttributeValue(key) {
 
     let val = this.inputService.getInputValue(this.getHeaderAttrPath(key));

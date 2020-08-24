@@ -12,6 +12,7 @@ import { Product, OrderDetails } from '../../models/cut-register.model';
 })
 export class CutBundleComponent implements OnInit, OnDestroy {
 
+	key = "cutBundle";
 	private refreshSub: Subscription;
 	private refreshCutBundle: Subscription;
 
@@ -26,7 +27,7 @@ export class CutBundleComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.refreshSub = this._shared.refreshData.subscribe(change => {
-			this._service.loadData("cutBundle");
+			this._service.loadData(this.key);
 		});
 		this.refreshCutBundle = this._shared.refreshCutBundle.subscribe(change => {
 				this.refreshTable();
@@ -42,5 +43,19 @@ export class CutBundleComponent implements OnInit, OnDestroy {
 
 	refreshTable(){
 		this.dataTable.refresh(this._shared.formData.cutBundle);
+	}
+
+	onAction(event) {
+		switch (event.key) {
+			case 'delete':
+				this._service.deleteBundleLines();
+				break;
+			case 'regenerate':
+				this._service.generateBundleLines();
+				break;
+			default:
+				console.log('Unimplemented action')
+				break;
+		}
 	}
 }

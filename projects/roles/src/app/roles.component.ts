@@ -8,6 +8,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 import { Location } from '@angular/common';
 import { RolesService } from './_service/roles.service';
 import { ConfirmPopupComponent } from 'app/shared/component';
+import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 
 @Component({
   selector: 'app-roles',
@@ -22,12 +23,10 @@ export class RolesComponent {
     private location: Location,
     public _shared: RolesSharedService,
     public _service: RolesService,
-    private alertutils: AlertUtilities,
-    private navService: NavigationService,
-    private userService: UserService,
+    private alertUtils: AlertUtilities,
     private dialog: MatDialog,
     private docService: DocumentService,
-    public inputservice: TnzInputService
+    public _inputService: TnzInputService
 
   ) {
 
@@ -51,7 +50,7 @@ export class RolesComponent {
             if (done) {
               this._shared.editMode = true;
               this._shared.initLocalCache();
-              this._shared.fetchAppData.next(true);
+            //this._shared.fetchAppData.next(true);
               success(true);
             }
             else {
@@ -63,7 +62,7 @@ export class RolesComponent {
           });
         }).catch(err => {
           success(false);
-          this.alertutils.showAlerts(err);
+          this.alertUtils.showAlerts(err);
         })
     });
   }
@@ -73,10 +72,10 @@ export class RolesComponent {
       .then(data => {
         this.location.go('roles/' + this._shared.id + '/edit');
         this._shared.editMode = true;
-       this._shared.initLocalCache();
+        this._shared.initLocalCache();
       })
       .catch(err => {
-        this.alertutils.showAlerts(err)
+        this.alertUtils.showAlerts(err)
       })
   }
 
@@ -91,12 +90,13 @@ export class RolesComponent {
       this.router.navigateByUrl('/roles/list').then(done => {
         this._shared.editMode = false;
         this._shared.initLocalCache();
-        
+
       });
     }
   }
 
   save(exit = false) {
+    this._shared.copy=false;
     this._service.save(exit)
       .then((flag) => {
         if (flag && exit) {
@@ -105,74 +105,133 @@ export class RolesComponent {
       })
   }
 
+  //main method 
+  copy() {
+    this._shared.copy=true;
+      if (this._shared.getHeaderData()) {
+      this.copyRoles();
+    } else {
+      this.copyRolesFromListView();
+    }
+  }
+
+  mapMenuToApps() {
+    this._shared.formData['rolesAppAccess'].forEach((app, i) => {
+      if (app)
+        this._shared.formData['rolesAppAccess'][i].rolesTaskFlowAccess = this._shared.formData['rolesTaskFlowAccess'].filter(item => {
+          return app.applicationShortCode == item.applicationShortCode;
+        });
+    });
+    this._shared.setLines('rolesAppAccess', this._shared.formData['rolesAppAccess']);
+    // if (this._shared.selectedIndex > -1) {
+      this._shared.refreshTaskFlowAccessData.next(true);
+    // }
+  }
+
+  copyRolesFromListView() {
+    this._service.fetchFormData(this._shared.id).then((data: any) => {
+      this._shared.setFormHeader(data);
+
+      let dialogRef = this.dialog.open(ConfirmPopupComponent);
+      dialogRef.componentInstance.confirmText = 'CONFIRM';
+      dialogRef.componentInstance.message = 'Are you sure you want to copy the selected role ?'
+      dialogRef.componentInstance.dialogTitle = 'Copy Role -';
+      dialogRef.componentInstance.value = this._shared.getHeaderAttributeValue('roleShortCode');
+
+      dialogRef.afterClosed().subscribe(flag => {
+        if (flag) {
+          Promise.all([
+            this._service.loadData('roleUsers'),
+            this._service.loadData('rolesOrgAccess'),
+            this._service.loadData('rolesAppAccess'),
+            this._service.loadData('rolesTaskFlowAccess')
+          ]).then(res => {
+            if (res[0] && res[1] && res[2] && res[3]) {
+              if (res[2] && res[3]) {
+                this.mapMenuToApps();
+              }
+
+             this.setNewFormData();
+            }
+          });
+
+        }
+      });
+
+
+    }, err => {
+      if (err) {
+        this.alertUtils.showAlerts(err, true);
+      }
+    });
+
+
+  }
+
+setNewFormData(){
+  this.newRoles().then(success => {
+
+    if (success) {
+      let form = JSON.parse(JSON.stringify(this._shared.formData));
+      this._shared.id = 0;
+      this._shared.formData = {};
+      form.header.roleId = 0;
+
+        form.rolesAppAccess.forEach((row, idx) => {
+        Object.keys(row).forEach((key) => {
+          if (key == this._shared.primaryKey || key == this._shared.rolesAppAccessPrimaryKey)
+            this._inputService.updateInput(this._shared.getRolesAppAccessPath(idx, key), 0);
+          else if (key == "rolesTaskFlowAccess") {  
+            row[key].forEach((element, i) => {
+              Object.keys(element).forEach((tkey) => {
+                if (tkey == 'roleTaskFlowAssignmentId')
+                  element.roleTaskFlowAssignmentId = 0;
+                this._inputService.updateInput(this._shared.getFullRolesTaskFlowAccessPath(idx, i, tkey), element[tkey]);
+              });
+            });
+          } else
+            this._inputService.updateInput(this._shared.getRolesAppAccessPath(idx, key), row[key]);
+        })
+      })
+
+      form.rolesTaskFlowAccess.forEach((row, idx) => {
+        Object.keys(row).forEach((key) => {
+          if (key == this._shared.primaryKey || key == this._shared.rolesTaskFlowAccessPrimaryKey)
+            this._inputService.updateInput(this._shared.getRolesTaskFlowAccessRootPath(idx, key), 0);
+          else
+            this._inputService.updateInput(this._shared.getRolesTaskFlowAccessRootPath(idx, key), row[key]);
+        })
+      })
+
+      form.rolesOrgAccess?.forEach((row, idx) => {
+        Object.keys(row).forEach((key) => {
+          if (key == this._shared.primaryKey || key == this._shared.rolesOrgAccessPrimaryKey)
+            this._inputService.updateInput(this._shared.getRolesOrgAccessPath(idx, key), 0);
+          else
+            this._inputService.updateInput(this._shared.getRolesOrgAccessPath(idx, key), row[key]);
+        })
+      })
+
+    } else {
+      // console.log("fail")
+    }
+  });
+}
+
+
   //method to clone
   copyRoles() {
+    let excludeKey = ['creationDate', 'createdBy', 'lastUpdateDate', 'lastUpdatedBy'];
+
     let dialogRef = this.dialog.open(ConfirmPopupComponent);
     dialogRef.componentInstance.confirmText = 'CONFIRM';
-    dialogRef.componentInstance.dialogTitle = 'Copy Role: <role>';
     dialogRef.componentInstance.message = 'Are you sure you want to copy the selected role ?'
+    dialogRef.componentInstance.dialogTitle = 'Copy Role -';
+    dialogRef.componentInstance.value = this._shared.getHeaderAttributeValue('roleShortCode');
+
     dialogRef.afterClosed().subscribe(flag => {
       if (flag) {
-        this._service.copyRoles().then((data: any) => {
-          if (data) {
-            this.newRoles().then(success => {
-              if (success) {
-                let form = JSON.parse(JSON.stringify(this._shared.formData));
-                console.log("form=",form);
-                console.log("data=",data);
-                this._shared.id = 0;
-                this._shared.formData = {};
-                data.role.roleId = 0;
-                // data.header.roleShortCode = '';
-                // data.header.roleName += '-Copy';
-                Object.keys(data.role).forEach(key => {
-                  this.inputservice.updateInput(this._shared.getHeaderAttrPath(key), data.role[key]);
-                })
-                data.roleApplicationAccess.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    if (key == this._shared.primaryKey || key == this._shared.rolesAppAccessPrimaryKey)
-                      this.inputservice.updateInput(this._shared.getRolesAppAccessPath(idx, key), 0);
-                    else
-                      this.inputservice.updateInput(this._shared.getRolesAppAccessPath(idx, key), row[key]);
-                  })
-                })
-
-                data.roleUsers.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    if (key == this._shared.primaryKey || key == this._shared.roleUsersPrimaryKey)
-                      this.inputservice.updateInput(this._shared.getRoleUsersPath(idx, key), 0);
-                    else
-                      this.inputservice.updateInput(this._shared.getRoleUsersPath(idx, key), row[key]);
-                  })
-                })
-
-                data.roleTaskFlowAccess.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    if (key == this._shared.primaryKey || key == this._shared.rolesTaskFlowAccessPrimaryKey)
-                      this.inputservice.updateInput(this._shared.getRolesTaskFlowAccessPath(idx, key), 0);
-                    else
-                      this.inputservice.updateInput(this._shared.getRolesTaskFlowAccessPath(idx, key), row[key]);
-                  })
-                })
-
-                data.roleOrgAccess.forEach((row, idx) => {
-                  Object.keys(row).forEach((key) => {
-                    console.log("key=",key)
-                    if (key == this._shared.primaryKey || key == this._shared.rolesOrgAccessPrimaryKey)
-                      this.inputservice.updateInput(this._shared.getRolesOrgAccessPath(idx, key), 0);
-                    else
-                      this.inputservice.updateInput(this._shared.getRolesOrgAccessPath(idx, key), row[key]);
-                  })
-                })
-
-              }else{
-                console.log("fail")
-              }
-            });
-          }
-        }).catch(err => {
-          this.alertutils.showAlerts(err)
-        })
+        this.setNewFormData();
       }
     })
 

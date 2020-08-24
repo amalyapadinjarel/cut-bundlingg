@@ -5,7 +5,8 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 import { WorkCenterModel } from '../model/work-center.model';
 
 @Injectable()
-export class WorkCenterSharedService{
+export class WorkCenterSharedService {
+
 
     editMode = false;
     apiBase = 'work-center';
@@ -24,12 +25,15 @@ export class WorkCenterSharedService{
     refreshWorkCenterData: BehaviorSubject<boolean>;
     workCenterAttributes = Object.keys(new WorkCenterModel());
     lineKeys = ['workCenter'];
+    productionProcessMap = {};
+    productionProcessMapCopy: {};
     constructor(
         private _cache: LocalCacheService,
         private inputService: TnzInputService
     ) { }
 
     init() {
+        this.productionProcessMap = {};
         this.editMode = false;
         this.refreshWorkCenterData = new BehaviorSubject(false);
     }
@@ -93,7 +97,7 @@ export class WorkCenterSharedService{
             let value;
             if (model) { value = model[attr]; }
             if (attr == primaryKey) { value = 0; }
-            if (attr == 'active') {value = 'Y'};
+            if (attr == 'active') { value = 'Y' };
             if (typeof value == 'undefined' || value === '') {
                 newLine[attr] = '';
             }
@@ -113,19 +117,41 @@ export class WorkCenterSharedService{
         const path = this[key + 'Path'];
         const cache = this.inputService.getCache(path) || [];
         if (cache && cache.length > index) {
-          cache.splice(index, 1);
+            cache.splice(index, 1);
         }
         this._cache.setLocalCache(path, cache);
         data.splice(index, 1);
         this.refreshLines(key);
-      }
+    }
 
-      getWCAttrEditable(attr, idv = 0) {
+    getWCAttrEditable(attr, idv = 0) {
         let editable = this.editMode;
         const nonEditableAttrs = ['shortCode', 'facilityCode', 'wcTypeMeaning'];
         if (idv != 0 && nonEditableAttrs.indexOf(attr) > -1) {
-          editable = false
+            editable = false
         }
         return editable;
-      }
+    }
+
+    processProductionProcess() {
+      
+            this.formData.workCenter.map(wc => {
+                if (wc.process) {
+                    const processLabels = wc.process.split(",")
+                    const processValues = wc.processId.split(",")
+                    const processShortCode = wc.processShortCode.split(",")
+                    const processes = processLabels.map((label, index) => {
+                        return {
+                            label: label.replace(' ',''),
+                            value: +processValues[index],
+                            shortCode: processShortCode[index].replace(' ','')
+                        }
+                    });
+                    this.productionProcessMap[wc.wcId + ':' + wc.shortCode] = processes
+                }
+
+            })
+
+            this.productionProcessMapCopy = {...this.productionProcessMap}
+    }
 }

@@ -11,18 +11,13 @@ export var CopyFromUsersLovConfig: any = {
             key: 'userName'
         },
         {
-            title: 'Name',
-            key: 'name'
-        },
-        {
             title: 'Known As',
             key: 'knownAs'
         },
         {
-            title: 'User Description',
-            key: 'description'
+            title: 'Name',
+            key: 'name'
         }
-
     ],
     allowMultiple: true,
     preFetchPages: 10,
@@ -30,26 +25,27 @@ export var CopyFromUsersLovConfig: any = {
 }
 
 export var CopyFromTaskFlowLovConfig: any = {
-    title: 'Select TaskFlow',
+    title: 'Select Menu',
     url: 'roles/copyFromTaskFlows/',
     dataHeader: 'taskFlows',
-    returnKey:'taskFlowId',
+    returnKey: 'taskFlowId',
     filterAttributes: [
         ''
     ],
     displayFields: [
         {
-            title: 'TaskFlow Name',
+            title: 'Name',
             key: 'taskFlowName'
         },
         {
             title: 'Description',
             key: 'description'
-        },
-        {
-            title: 'Application',
-            key: 'applicationCode'
         }
+        // ,
+        // {
+        //     title: 'Application Code',
+        //     key: 'applicationCode'
+        // }
 
     ],
     allowMultiple: true,
@@ -61,20 +57,19 @@ export var CopyFromDivisionLovConfig: any = {
     title: 'Select Division',
     url: 'roles/copyFromDivision',
     dataHeader: 'division',
-    returnKey:'divisionId',
+    returnKey: 'divisionId',
     filterAttributes: [
         ''
     ],
     displayFields: [
         {
-            title: 'Division Name',
-            key: 'divisionName'
+            title: 'Short Code',
+            key: 'divisionShortCode'
         },
         {
-            title: 'Division Short Code',
-            key: 'divisionShortCode'
+            title: 'Name',
+            key: 'divisionName'
         }
-
     ],
     allowMultiple: true,
     preFetchPages: 10,
@@ -89,35 +84,13 @@ export var CopyFromFacilityLovConfig: any = {
         ''
     ],
     displayFields: [
+
         {
-            title: 'Facility Name',
-            key: 'facilityName'
-        },
-        {
-            title: 'Facility Short Code',
+            title: 'Short Code',
             key: 'facilityShortCode'
-        }
-
-    ],
-    allowMultiple: true,
-    preFetchPages: 10,
-    primaryKey: ['facilityId']
-}
-
-export var CopyFromOrgAccessLovConfig: any = {
-    title: 'Select Division/Facility',
-    url: 'user-app/copyFromOrgAccess',
-    dataHeader: 'orgAccess',
-    filterAttributes: [
-        ''
-    ],
-    displayFields: [
-        {
-            title: 'Division',
-            key: 'divisionShortCode'
         },
         {
-            title: 'Facility',
+            title: 'Name',
             key: 'facilityName'
         }
 
@@ -126,4 +99,27 @@ export var CopyFromOrgAccessLovConfig: any = {
     preFetchPages: 10,
     primaryKey: ['facilityId']
 }
+
+// export var CopyFromOrgAccessLovConfig: any = {
+//     title: 'Select Division/Facility',
+//     url: 'user-app/copyFromOrgAccess',
+//     dataHeader: 'orgAccess',
+//     filterAttributes: [
+//         ''
+//     ],
+//     displayFields: [
+//         {
+//             title: 'Division',
+//             key: 'divisionShortCode'
+//         },
+//         {
+//             title: 'Facility',
+//             key: 'facilityName'
+//         }
+
+//     ],
+//     allowMultiple: true,
+//     preFetchPages: 10,
+//     primaryKey: ['facilityId']
+// }
 

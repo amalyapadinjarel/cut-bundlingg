@@ -44,6 +44,7 @@ export class CutRegister {
     description: string;
     layNo: string; 
     docStatusColor: string;
+    wcName: string;
 
     constructor(model) {
         this.registerId = model.registerId;
@@ -86,6 +87,7 @@ export class CutRegister {
         this.lastUpdateByName = model.lastUpdateByName;
         this.lastUpdateDateTime = model.lastUpdateDateTime;
         this.docStatusColor = model.docStatusColor;
+        this.wcName = model.wcName;
     }
 
 }
@@ -319,7 +321,7 @@ export class MarkerDetails {
     attribute: string;
     lastUpdatedBy: string;
     currcutqtysql: string;
-    productId: string;
+    // productId: string;
     active: string;
     markerRatio: string;
     creationDate: string;
@@ -348,7 +350,7 @@ export class MarkerDetails {
         this.attribute = model ? model.attribute : "";
         this.lastUpdatedBy = model ? model.lastUpdatedBy : "";
         this.currcutqtysql = model ? model.currcutqtysql : "";
-        this.productId = model ? model.productId : "";
+        // this.productId = model ? model.productId : "";
         this.active = model ? model.active : "";
         this.markerRatio = model ? model.markerRatio : "";
         this.creationDate = model ? model.creationDate : "";

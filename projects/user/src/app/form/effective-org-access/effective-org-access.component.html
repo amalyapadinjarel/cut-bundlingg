@@ -1,0 +1,27 @@
+<!-- <div style="width: 400px;"> -->
+<smd-datatable [tableId]="_shared.appKey + '.effectiveOrgAccess'" [paginated]="!_shared.getEffectiveOrgAccessEditable()"
+	[loading]="_shared.effectiveOrgAccessLoading" class="tnz-input-table"
+	 [sortEnabled]="!_shared.getEffectiveOrgAccessEditable()"
+	(onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false" [inputPath]="_shared.effectiveOrgAccessPath">
+
+	<smd-datatable-column title="Division" field="division" sortable="true" [filterable]="true" [colStyle]="{'width':'35px'}">
+		<ng-template let-model="data">
+			{{model.facility==""?model.division:""}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Facility" field="facility" sortable="true" [filterable]="true" [colStyle]="{'width':'35px'}">
+		<ng-template let-model="data">
+			{{model.facility}}
+		</ng-template>
+	</smd-datatable-column>
+	<smd-datatable-column title="Default" field="default" sortable="true" [filterable]="true"
+		[colStyle]="{'width':'15px'}">
+		<ng-template let-model="data" let-index="index">
+                <mat-icon *ngIf="model.default=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
+                    matTooltip="Default">check_circle</mat-icon>
+        	
+		</ng-template>
+	</smd-datatable-column>
+
+</smd-datatable>
+<!-- </div> -->

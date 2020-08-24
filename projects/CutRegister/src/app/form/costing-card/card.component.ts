@@ -4,7 +4,7 @@ import { DateUtilities, AlertUtilities } from 'app/shared/utils';
 import { CutRegisterSharedService } from '../../_service/cut-register-shared.service';
 import { CutRegisterService } from '../../_service/cut-register.service';
 import { Subscription } from 'rxjs';
-import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLovConfig, UserFacilityLovConfig } from '../../models/lov-config';
+import { FacilityLovConfig, OddBundleLovConfig, AttributeSetLovConfig, CutTypeLovConfig, UserFacilityLovConfig, CutWorkCenterLovConfig } from '../../models/lov-config';
 import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service';
 
 @Component({
@@ -125,6 +125,7 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 				if (change.value && typeof change.value == 'object'){
 					this.updateExtraCutValues(change.value.value)
 					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), change.value);
+					this._inputService.autoCompleteLov(this._shared.getHeaderAttrPath('wcName'));
 				}
 				else
 					this._inputService.updateInput(this._shared.getHeaderAttrPath('sewingFacility'), '');
@@ -189,4 +190,9 @@ export class PdmCostingCardComponent implements OnInit, OnDestroy {
 			this.alertUtils.showAlerts(err)
 		})
 	}
+
+	workCenterLov(field) {
+		let cache = this._inputService.getInputValue(this._shared.getHeaderAttrPath('cutFacility'));
+		return JSON.parse(JSON.stringify(CutWorkCenterLovConfig(cache ? cache.value != "" ? cache.value: 0 : 0)));
+	  }
 }

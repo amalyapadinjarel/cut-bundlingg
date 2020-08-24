@@ -1,11 +1,10 @@
 <div>
-	<div *ngFor="let data of _shared.formData[key].grpKey; let i = index">
+	<div *ngFor="let data of _shared.formData[key]?.grpKey; let i = index">
 		<div><app-solid-packs  *ngIf="data.packType == 'SOLID'" [mainIndex]="i" [formData]="_shared.formData[key].grpData[i]"></app-solid-packs></div>
 		<div><app-ratio-packs *ngIf="data.packType == 'RATIO'" [mainIndex]="i" [formData]="_shared.formData[key].grpData[i]">j</app-ratio-packs></div>
 	</div>
 	
-	<div *ngIf="_shared.packsDetailsLoading || _shared.formData[key].length == 0">
-		
+	<div *ngIf="_shared.packsDetailsLoading || _shared.formData[key]?.length == 0">
 		<smd-datatable [paginated]="true" [loading]="_shared.packsDetailsLoading"
 		 class="tnz-input-table"  [filterEnabled]="true">
 			<smd-datatable-column title=" " field=" " *ngIf="_shared.editMode" [colStyle]="{'width':'20px'}">

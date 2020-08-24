@@ -4,12 +4,10 @@ export class RoleUsers {
     userId: string;
     userName: string;
     knownAs: string;
-    // userAssignmentStartDate: Date;
-    // userAssignmentEndDate: Date;
     userAssignmentStartDate: string;
     userAssignmentEndDate: string;
     active: string;
-
+    userStatus: string;
     constructor(model = null) {
         this.roleUserAssignmentId = model ? model.roleUserAssignmentId : "";
         this.roleId = model ? model.roleId : "";
@@ -19,6 +17,8 @@ export class RoleUsers {
         this.userAssignmentStartDate = model ? model.userAssignmentStartDate : "";
         this.userAssignmentEndDate = model ? model.userAssignmentEndDate : "";
         this.active = model ? model.active : "";
+        this.userStatus = model ? model.userStatus : "";
+
     }
     equals(model: any) {
         let flag = true

@@ -1,10 +1,8 @@
-
-<div class="group-flex">
-    <div class="group" style="max-width: 350px;">
+<div class="application-taskflow">
         <smd-datatable #rolesAppAccess [tableId]="_shared.appKey + '.rolesAppAccess'" [paginated]="false"
-            [loading]="_shared.rolesAppAccessLoading" [filterEnabled]="false"
-            [sortEnabled]="!_shared.getRolesAppAccessEditable()" (onRowSelected)="rowSelected($event)"
-            [showCheckBox]="false">
+            [loading]="_shared.rolesAppAccessLoading" [sortEnabled]="!_shared.getRolesAppAccessEditable()"
+            (onRowSelected)="rowSelected($event)" [showCheckBox]="false" [inputPath]="_shared.rolesAppAccessPath"
+            [primaryKey]="_shared.rolesAppAccessPrimaryKey" [isTitleNeeded] ="false">
             <smd-datatable-column title="Application" field="applicationName" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.applicationName}}
@@ -15,7 +13,7 @@
                 <ng-template let-model="data" let-index="index">
                     <div class="checkbox-center-align" *ngIf="!_shared.getRolesAppAccessEditable('isAllowed')">
                         <mat-icon *ngIf="model.isAllowed=='Y'"
-                            style="color:green;font-size:20px;vertical-align: middle;" matTooltip="Active">check_circle
+                            style="color:green;font-size:20px;vertical-align: middle;text-align:'center'" matTooltip="Active">check_circle
                         </mat-icon>
                         <mat-icon *ngIf="model.isAllowed!='Y'" style="color:red;font-size:20px;vertical-align: middle;"
                             matTooltip="Inactive">cancel</mat-icon>
@@ -32,30 +30,24 @@
             </smd-datatable-column>
 
         </smd-datatable>
-    </div>
-    <div class="group">
-        
-        <smd-datatable-column title="#" field=" " [sortable]="false" [filterable]="false" [colStyle]="{'width':'15px','text-align':'center'}" >
-            <ng-template let-index="index">
-                {{index+1}}
-            </ng-template>
-        </smd-datatable-column>
-        <smd-datatable #rolesTaskFlowAccess [tableId]="_shared.appKey + '.rolesTaskFlowAccess'" [paginated]="false"
-            [loading]="_shared.rolesTaskFlowAccessLoading" [filterEnabled]="!_shared.getRolesTaskFlowAccessEditable()"
-            [sortEnabled]="!_shared.getRolesTaskFlowAccessEditable()" (onRowSelected)="onRowSelected()"
-            (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false">
 
+        <smd-datatable #rolesTaskFlowAccess [tableId]="_shared.appKey + '.rolesTaskFlowAccess'" [paginated]="false"
+            [loading]="_shared.rolesTaskFlowAccessLoading" [sortEnabled]="!_shared.getRolesTaskFlowAccessEditable()"
+            (onRowSelected)="onRowSelected()" (onAllRowsSelected)="onRowSelected()" [showCheckBox]="false"
+            [inputPath]="_shared.rolesTaskFlowAccessPath" [primaryKey]="_shared.rolesTaskFlowAccessPrimaryKey">
 
             <smd-datatable-column title=" " field=" " *ngIf="_shared.getRolesTaskFlowAccessEditable()"
                 [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
                     <div class="row-operations">
                         <mat-icon *ngIf="model[_shared.rolesTaskFlowAccessPrimaryKey]==0" class="mat-color-danger"
-                            matTooltip="delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+                            matTooltip="Delete line" (click)="deleteLine(index,model)">delete</mat-icon>
+                        <mat-icon *ngIf="model[_shared.rolesTaskFlowAccessPrimaryKey]!= 0" style="color:gray"
+                            matTooltip="Delete disabled">delete</mat-icon>
                     </div>
                 </ng-template>
             </smd-datatable-column>
-                <smd-datatable-column title="Menu" field="taskFlowName" sortable="true" [filterable]="true" stretch="true">
+            <smd-datatable-column title="Menu" field="taskFlowName" sortable="true" [filterable]="true" stretch="true">
                 <ng-template let-model="data" style="max-width: 80px;">
                     {{model.taskFlowName}}
                 </ng-template>
@@ -66,13 +58,15 @@
                 </ng-template>
             </smd-datatable-column> -->
             <smd-datatable-column title="View" field="isRead" sortable="true" [filterable]="true"
-                [colStyle]="{'width':'10px'}">
+                [showCheckBox]="_shared.getRolesTaskFlowAccessEditable('isRead')" [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
                     <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('isRead')">
-                        <mat-icon *ngIf="model.isRead=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                            matTooltip="Active">check_circle</mat-icon>
-                        <mat-icon *ngIf="model.isRead=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                            matTooltip="Inactive">cancel</mat-icon>
+                        <!-- <mat-icon *ngIf="model.isRead=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                            matTooltip="Enabled">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.isRead=='N'" style="color:grey;font-size:20px;vertical-align: middle;"
+                            matTooltip="Disabled">cancel</mat-icon> -->
+                            <mat-checkbox [ngModel]="model.isRead == 'Y'" disabled></mat-checkbox>
+
                     </div>
                     <div *ngIf="_shared.getRolesTaskFlowAccessEditable('isRead')" class="checkbox-center-align">
                         <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'isRead')"
@@ -85,13 +79,15 @@
             </smd-datatable-column>
 
             <smd-datatable-column title="Create" field="isCreate" sortable="true" [filterable]="true"
-                [colStyle]="{'width':'10px'}">
+                [showCheckBox]="_shared.getRolesTaskFlowAccessEditable('isCreate')" [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
                     <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('isCreate')">
-                        <mat-icon *ngIf="model.isCreate=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                            matTooltip="Active">check_circle</mat-icon>
-                        <mat-icon *ngIf="model.isCreate=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                            matTooltip="Inactive">cancel</mat-icon>
+                        <!-- <mat-icon *ngIf="model.isCreate=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                            matTooltip="Enabled">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.isCreate=='N'" style="color:grey;font-size:20px;vertical-align: middle;"
+                            matTooltip="Disabled">cancel</mat-icon> -->
+                            <mat-checkbox [ngModel]="model.isCreate == 'Y'" disabled></mat-checkbox>
+
                     </div>
                     <div *ngIf="_shared.getRolesTaskFlowAccessEditable('isCreate')" class="checkbox-center-align">
                         <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'isCreate')"
@@ -104,13 +100,15 @@
             </smd-datatable-column>
 
             <smd-datatable-column title="Edit" field="isEdit" sortable="true" [filterable]="true"
-                [colStyle]="{'width':'10px'}">
+                [showCheckBox]="_shared.getRolesTaskFlowAccessEditable('isEdit')" [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
                     <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('isEdit')">
-                        <mat-icon *ngIf="model.isEdit=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                            matTooltip="Active">check_circle</mat-icon>
-                        <mat-icon *ngIf="model.isEdit=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                            matTooltip="Inactive">cancel</mat-icon>
+                        <!-- <mat-icon *ngIf="model.isEdit=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
+                            matTooltip="Enabled">check_circle</mat-icon>
+                        <mat-icon *ngIf="model.isEdit=='N'" style="color:grey;font-size:20px;vertical-align: middle;"
+                            matTooltip="Disabled">cancel</mat-icon> -->
+                            <mat-checkbox [ngModel]="model.isEdit == 'Y'" disabled></mat-checkbox>
+
                     </div>
                     <div *ngIf="_shared.getRolesTaskFlowAccessEditable('isEdit')" class="checkbox-center-align">
                         <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'isEdit')"
@@ -123,14 +121,10 @@
             </smd-datatable-column>
 
             <smd-datatable-column title="Delete" field="isDelete" sortable="true" [filterable]="true"
-                [colStyle]="{'width':'10px'}">
-                <!-- <mat-checkbox [ngModel]="model.isDelete" [disabled]="false"></mat-checkbox> -->
+                [showCheckBox]="_shared.getRolesTaskFlowAccessEditable('isDelete')" [colStyle]="{'width':'10px'}">
                 <ng-template let-model="data" let-index="index">
                     <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('isDelete')">
-                        <mat-icon *ngIf="model.isDelete=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                            matTooltip="Active">check_circle</mat-icon>
-                        <mat-icon *ngIf="model.isDelete=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                            matTooltip="Inactive">cancel</mat-icon>
+                        <mat-checkbox [ngModel]="model.isDelete == 'Y'" disabled></mat-checkbox>
                     </div>
                     <div *ngIf="_shared.getRolesTaskFlowAccessEditable('isDelete')" class="checkbox-center-align">
                         <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'isDelete')"
@@ -142,24 +136,22 @@
                 </ng-template>
             </smd-datatable-column>
             <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true"
-            [colStyle]="{'width':'10px'}">
-            <!-- <mat-checkbox [ngModel]="model.isDelete" [disabled]="false"></mat-checkbox> -->
-            <ng-template let-model="data" let-index="index">
-                <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('isDelete')">
-                    <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                        matTooltip="Active">check_circle</mat-icon>
-                    <mat-icon *ngIf="model.active=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                        matTooltip="Inactive">cancel</mat-icon>
-                </div>
-                <div *ngIf="_shared.getRolesTaskFlowAccessEditable('active')" class="checkbox-center-align">
-                    <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'active')"
-                        [primaryKey]="_shared.rolesTaskFlowAccessPrimaryKey" [sharedData]="_shared.formData"
-                        [isEdit]="getIfEditable(index,'active')"
-                        [loading]="_shared.rolesTaskFlowAccessLoading || _shared.loading">
-                    </tnz-input>
-                </div>
-            </ng-template>
-        </smd-datatable-column>
+                [colStyle]="{'width':'10px'}">
+                <ng-template let-model="data" let-index="index">
+                    <div class="checkbox-center-align" *ngIf="!_shared.getRolesTaskFlowAccessEditable('active')">
+                        <mat-icon *ngIf="model.active == 'Y'" class="active-icon" matTooltip="Active">check_circle
+                        </mat-icon>
+                        <mat-icon *ngIf="model.active == 'N'" class="inactive-icon" matTooltip="Inactive">cancel
+                        </mat-icon>
+                    </div>
+                    <div *ngIf="_shared.getRolesTaskFlowAccessEditable('active')" class="checkbox-center-align">
+                        <tnz-input type="checkbox" [path]="_shared.getRolesTaskFlowAccessPath(index,'active')"
+                            [primaryKey]="_shared.rolesTaskFlowAccessPrimaryKey" [sharedData]="_shared.formData"
+                            [isEdit]="getIfEditable(index,'active')"
+                            [loading]="_shared.rolesTaskFlowAccessLoading || _shared.loading">
+                        </tnz-input>
+                    </div>
+                </ng-template>
+            </smd-datatable-column>
         </smd-datatable>
-    </div>
 </div>

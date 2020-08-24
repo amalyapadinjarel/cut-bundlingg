@@ -78,53 +78,54 @@ export class LookupValueComponent implements OnInit, OnDestroy {
 		return Date.now;
 	}
 
-	
+
 
 	//Method to check duplicate Lookupcode
 	checkDuplicateLookupCode(event, index) {
 		let val = event.value;
-		if (val != null && val != "" && val != " ")
-			val = val.toUpperCase();
-		else {
-			this._inputService.setError(event.path, 'Lookup code cannot be blank!');
-		}
-		val = val.trim();
-		this._inputService.updateInput(event.path, val);
+		console.log(val, val != "")
+		if (val != null && val != "" && val != " "
+			&& (typeof val != "object" || val.value != "")) {
+			val = val.toUpperCase().trim();
+			this._inputService.updateInput(event.path, val);
 
 
-		if (val.length > 30) {
-			this._inputService.setError(event.path, 'Length exceeded 30 characters!');
-		}
+			if (val.length > 30) {
+				this._inputService.setError(event.path, 'Length exceeded 30 characters!');
+			}
 
-		 else {
-			this._inputService.resetError(this._shared.getLookupValuePath(index, 'lookupCode'));
-			this._shared.formData.lookupValue.forEach((line, i) => {
-				let value = this._inputService.getInputValue(this._shared.getLookupValuePath(i, 'lookupCode'));
-				if (i != index&& value!=null) {
-					value = value.trim();
-					if (value.toUpperCase() == val) {
-						this._inputService.setError(this._shared.getLookupValuePath(index, 'lookupCode'), 'Duplicate lookupcode');
+			else {
+				this._inputService.resetError(this._shared.getLookupValuePath(index, 'lookupCode'));
+				this._shared.formData.lookupValue.forEach((line, i) => {
+					let value = this._inputService.getInputValue(this._shared.getLookupValuePath(i, 'lookupCode'));
+					if (i != index && value != null) {
+						value = value.trim();
+						if (value.toUpperCase() == val) {
+							this._inputService.setError(this._shared.getLookupValuePath(index, 'lookupCode'), 'Duplicate lookupcode');
+						}
+						// else {
+						// 	// if (this._inputService.getStatus(this._shared.getLookupValuePath(i, 'lookupCode')) == 'error') {
+						// 	// 	this._inputService.resetError(this._shared.getLookupValuePath(i, 'lookupCode'));
+
+						// 	// }
+						// }
 					}
-					// else {
-					// 	// if (this._inputService.getStatus(this._shared.getLookupValuePath(i, 'lookupCode')) == 'error') {
-					// 	// 	this._inputService.resetError(this._shared.getLookupValuePath(i, 'lookupCode'));
-
-					// 	// }
-					// }
-				}
 
 
-			})
+				})
 
-			// //duplicate lookup code check
-			// //duplicate check from db
-			// this._service.duplicateLookupTypeCheck().then(data => {
-			// 	if (data) {
-			// 		this._inputService.setError(event.path, 'Duplicate operation code -' + tmp + ' !');
-			// 	}
-			// }).catch(err => {
-			// 	console.log("Exception caught on duplicate check", err)
-			// });
+				// //duplicate lookup code check
+				// //duplicate check from db
+				// this._service.duplicateLookupTypeCheck().then(data => {
+				// 	if (data) {
+				// 		this._inputService.setError(event.path, 'Duplicate operation code -' + tmp + ' !');
+				// 	}
+				// }).catch(err => {
+				// 	console.log("Exception caught on duplicate check", err)
+				// });
+			}
+		} else {
+			this._inputService.setError(event.path, 'Lookup code cannot be blank!');
 		}
 	}
 

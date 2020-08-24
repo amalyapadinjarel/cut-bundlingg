@@ -1,7 +1,7 @@
 <div>
-    <smd-datatable tableId="_shared.apiBase.list" [dataUrl]="_shared.apiBase" dataHeader="embeddedURL" (onRowSelected)="rowSelected($event)"
-        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [primaryListing]="false"
-        [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage" >
+    <smd-datatable [tableId]="_shared.appKey+'.list'" [dataUrl]="_shared.apiBase" dataHeader="embeddedURL"
+        (onRowSelected)="rowSelected($event)" (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)"
+        [primaryListing]="true" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
 
         <!-- <smd-datatable-column title="URL ID" field="URLId" sortable="true" [filterable]="true">
             <ng-template let-model="data">
@@ -50,22 +50,19 @@
         </smd-datatable-column>
         <smd-datatable-column title="Active" field="active" sortable="true" [filterable]="true">
             <ng-template let-model="data">
-                <mat-icon *ngIf="model.active=='Y'" style="color:green;font-size:20px;vertical-align: middle;"
-                matTooltip="Active">check_circle
-            </mat-icon>
-            <mat-icon *ngIf="model.active=='N'" style="color:red;font-size:20px;vertical-align: middle;"
-                matTooltip="Inactive">cancel</mat-icon>
+                <mat-icon *ngIf="model.active=='Y'" class="active-icon"
+                    matTooltip="Active">check_circle
+                </mat-icon>
+                <mat-icon *ngIf="model.active=='N'" class="inactive-icon"
+                    matTooltip="Inactive">cancel</mat-icon>
             </ng-template>
         </smd-datatable-column>
         <smd-datatable-column title="Default" field="isDefault" sortable="true" [filterable]="true">
             <ng-template let-model="data">
-                <!-- {{model.default}} -->
+                <mat-icon *ngIf="model.isDefault=='Y'" class="default-icon"
+                    matTooltip="Default URL">check_circle
+                </mat-icon>
 
-                <mat-icon *ngIf="model.isDefault=='Y'" style="color:dodgerblue;font-size:20px;vertical-align: middle;"
-                matTooltip="Default URL">check_circle
-            </mat-icon>
-            <mat-icon *ngIf="model.isDefault=='N'" style="color:gray;font-size:20px;vertical-align: middle;"
-                matTooltip="Not defaulted">cancel</mat-icon>
             </ng-template>
         </smd-datatable-column>
         <smd-datatable-column title="Description" field="description" sortable="true" [filterable]="true">
@@ -73,7 +70,7 @@
                 {{model.description}}
             </ng-template>
         </smd-datatable-column>
-       
+
         <smd-datatable-column title="Created By" field="createdByUser" sortable="true" [filterable]="true">
             <ng-template let-model="data">
                 {{model.createdByUser}}

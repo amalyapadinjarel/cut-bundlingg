@@ -14,7 +14,7 @@
             <label>Address Line 1</label>
             <div class="val">
                 <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine1')" 
-                   [isEdit]="true" validators="required" > 
+                   [isEdit]="true" validators="required,length:240" > 
                 </tnz-input> 
             </div>
         </li>
@@ -22,7 +22,7 @@
             <label>Address Line 2</label>
             <div class="val">
                 <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine2')" 
-                   [isEdit]="true" 
+                   [isEdit]="true"  validators="length:240"
                    > 
                 </tnz-input> 
             </div>
@@ -31,7 +31,7 @@
             <label>Address Line 3</label>
             <div class="val">
                 <tnz-input  type="text" [path]="_shared.getlocationPath('addressLine3')" 
-                   [isEdit]="true" 
+                   [isEdit]="true"  validators="length:240"
                   > 
                 </tnz-input> 
             </div>
@@ -49,7 +49,7 @@
             <label>State</label>
             <div class="val">
                 <tnz-input  type="text" [path]="_shared.getlocationPath('state')" 
-                [isEdit]="true"
+                [isEdit]="true" validators="length:60"
                   > 
                 </tnz-input> 
             </div>
@@ -59,7 +59,7 @@
         <label>City</label>
         <div class="val">
             <tnz-input  type="text" [path]="_shared.getlocationPath('city')" 
-               [isEdit]="true" 
+               [isEdit]="true" validators="length:60"
               > 
             </tnz-input> 
         </div>
@@ -68,7 +68,7 @@
         <li>
             <label>Zip Code</label>
             <div class="val">
-                <tnz-input  type="text" [path]="_shared.getlocationPath('postalCode')" [isEdit]="true"  >
+                <tnz-input  type="text" [path]="_shared.getlocationPath('postalCode')" [isEdit]="true"  validators="length:60" >
                 </tnz-input> 
             </div>
         </li>
@@ -76,7 +76,7 @@
             <label>Email</label>
             <div class="val">
                 <tnz-input type="text" [path]="_shared.getlocationPath('email')" 
-                   [isEdit]="true"  (valueChanged)="emailValidation($event)" 
+                   [isEdit]="true"  (valueChanged)="emailValidation($event)" validators="length:240"
                   > 
                 </tnz-input> 
             </div>
@@ -85,21 +85,30 @@
             <label>Website</label>
             <div class="val">
                 <tnz-input  type="text" [path]="_shared.getlocationPath('websiteUrl')" 
-                   [isEdit]="true" 
+                   [isEdit]="true" validators="length:240"
                  > 
                 </tnz-input> 
             </div>
         </li>
         <li>
-            <label>Telephone</label>
+            <label>Telephone No 1</label>
             <div class="val">
                 <tnz-input  type="number" [path]="_shared.getlocationPath('telephoneNo1')" 
-                   [isEdit]="true" validators="required" (valueChanged)="PhoneNumberValidation($event)" 
+                   [isEdit]="true" validators="required,length:60" (valueChanged)="PhoneNumberValidation($event)" 
                  > 
                 </tnz-input> 
             </div>
         </li>
-      
+        <li>
+            <label>Telephone No 2</label>
+            <div class="val">
+                <tnz-input type="number" 
+                [path]="_shared.getlocationPath('telephoneNo2')"
+                validators="length:60"   [isEdit]="true" 
+                (valueChanged)="PhoneNumberValidation($event)"  > 
+                </tnz-input> 
+            </div>
+        </li>
         
     </ul>
 </div>

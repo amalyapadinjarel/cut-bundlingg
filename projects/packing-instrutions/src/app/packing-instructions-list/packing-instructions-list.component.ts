@@ -46,6 +46,14 @@ export class PackingInstructionsListComponent implements OnInit {
   }
 
   rowSelected(event) {
+    if (event.model) {
+      this._shared.reportData["pCsId"] = event.model['csId'];
+      this._shared.reportData["pSo"] = event.model.orderId;
+      this._shared.reportData["pPo"] = event.model.po;
+      this._shared.reportData["pStyle"] = event.model.parentProduct;
+    } else {
+      this._shared.reportData = {}
+    }
     if (event.selected) {
       this._shared.poId = event.model.po;
       this._shared.orderId = event.model.orderId;
@@ -76,7 +84,6 @@ export class PackingInstructionsListComponent implements OnInit {
   onRowChecked(event) {
     let models = this.dataTable.selectedModels()
     if (models.length && models.length == 1) {
-      console.log(models[0])
       this._shared.reportData["pCsId"] = models[0]['csId'];
       this._shared.reportData["pSo"] = models[0].orderId;
       this._shared.reportData["pPo"] = models[0].po;

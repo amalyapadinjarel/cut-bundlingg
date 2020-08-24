@@ -136,4 +136,10 @@ setCompanyLovValue(event)
   
   this.showDivision = event.value?.value != '';
 }
+omit_other_char(event)
+{   
+   var k;  
+   k = event.charCode; 
+   return( k >= 48 && k <= 57); 
+}
 }

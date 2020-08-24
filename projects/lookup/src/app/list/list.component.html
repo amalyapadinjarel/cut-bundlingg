@@ -1,7 +1,7 @@
 <div>
     <perfect-scrollbar>
         <smd-datatable [dataUrl]="_shared.apiBase" dataHeader="lookups" (onRowSelected)="rowSelected($event)" [primaryListing]="false"
-        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage">
+        (dataChange)="_onDataChange($event)" (pageChange)="pageChanged($event)" [rowCount]="_shared.count" [selectedPage]="_shared.selectedPage"  [tableId]="_shared.appKey+'.list'">
             <smd-datatable-column title="Lookup Type" field="lookupType" sortable="true" [filterable]="true">
                 <ng-template let-model="data">
                     {{model.lookupType}}

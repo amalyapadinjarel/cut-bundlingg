@@ -3,18 +3,20 @@ import { UserSharedService } from '../_service/user-shared.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd, ResolveEnd } from '@angular/router';
 import { UserAppService } from '../_service/user.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TnzInputLOVComponent } from 'app/shared/tnz-input/input-lov/input-lov.component';
-import { CopyFromRolesLovConfig,  CopyFromOrgAccessLovConfig, CopyFromDivisionLovConfig } from '../models/lov-config';
+import { CopyFromRolesLovConfig, CopyFromDivisionLovConfig } from '../models/lov-config';
 import { UserRoles } from '../models/user-roles';
 import { AlertUtilities, DateUtilities } from 'app/shared/utils';
 import { UserOrgAccess } from '../models/user-org-access';
 import { date } from 'app/shared/directives/validators/date';
 import { getLocaleDateTimeFormat, getLocaleDateFormat } from '@angular/common';
+import { HelpComponent } from './help/help';
 
 @Component({
   selector: 'user-form',
   templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
   host: { 'class': 'form-view' }
 })
 export class FormComponent implements OnInit {
@@ -25,7 +27,8 @@ export class FormComponent implements OnInit {
 
   private routerSubs: Subscription;
 
-  
+  private matDialogRef: MatDialogRef<HelpComponent, any>;
+
   constructor(
     public _shared:UserSharedService,
     private route:ActivatedRoute,
@@ -117,7 +120,7 @@ export class FormComponent implements OnInit {
 
 	mapResToUserRoles(res) {
 		let model = new UserRoles();
-		model.roleUserAssignmentId="0"; 
+		model.roleUserAssignmentId=0; 
 		model.userId = this._shared.id;
 		model.roleId = res.roleId ? res.roleId : "";
 		model.roleShortCode = res.roleShortCode ? res.roleShortCode : "";
@@ -170,6 +173,9 @@ export class FormComponent implements OnInit {
 	}
 
 
+	openHelp(){
+		this.matDialogRef = this.dialog.open(HelpComponent);
 
+	}
 
 }

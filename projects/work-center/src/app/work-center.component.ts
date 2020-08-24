@@ -34,6 +34,7 @@ export class WorkCenterComponent {
       .then(data => {
         this._shared.editMode = true;
         this._shared.initLocalCache();
+        this._shared.processProductionProcess();
       })
       .catch(err => {
         this.alertutils.showAlerts(err)

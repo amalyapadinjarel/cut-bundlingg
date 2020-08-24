@@ -49,7 +49,6 @@ export class ListComponent implements OnInit {
   }
   rowSelected(event) {
 
-console.log('row selected------')
     
    //  if (event.selected) {
       // this._shared.id = event.model.;
@@ -71,7 +70,6 @@ console.log('row selected------')
 //     this._shared.params = this.dataTable.getParams();
 //   }
 onRowSelected(){
-  console.log('onRowSelected')
 this._shared.setSelectedLines('list',this.dataTable.selectedModels());
 let idArray = this._shared.selectedLines['list'].map(elem => elem.setId);
 this._shared.selectedListLinesId = idArray;

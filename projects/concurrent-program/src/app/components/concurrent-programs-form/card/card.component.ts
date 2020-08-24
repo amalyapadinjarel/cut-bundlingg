@@ -91,7 +91,8 @@ export class CardComponent implements OnInit {
   setDefaultValues() {
 		if (this._shared.id == 0) {
 			let defaultValues = {
-        'reqdParamCount': "0"
+        'reqdParamCount': "0",
+        'active': "Y"
 			}
 			Object.keys(defaultValues).forEach(attr => {
 				this.inputService.updateInput(this._shared.getHeaderAttrPath(attr), defaultValues[attr])

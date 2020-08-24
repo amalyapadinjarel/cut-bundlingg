@@ -155,8 +155,9 @@ export class AddPacksComponent implements OnInit {
               let cdata = cacheData[index];
               if (cacheData[index]) {
                 element.size.forEach((elem) => {
-                  if (cdata[elem.sizeValue] && cdata[elem.sizeValue] != 0) {
-                    elem.value = cdata[elem.sizeValue];
+                  let sizeValue = elem.sizeValue ? elem.sizeValue.endsWith('.') ? elem.sizeValue.slice(0,-1) : elem.sizeValue: elem.sizeValue;
+                  if (cdata[sizeValue] && cdata[sizeValue] != 0) {
+                    elem.value = cdata[sizeValue];
                     qtyPerCarton = qtyPerCarton + Number(elem.value);
                     tempdata.size.push(elem);
                   }
@@ -179,9 +180,7 @@ export class AddPacksComponent implements OnInit {
               workCenter: headerData.workCenter
             };
             if (this.validateQty(data)) {
-              this.alertUtils.showAlerts(
-                "Specified quantity is greater than order quantity"
-              );
+              this.alertUtils.showAlerts("Specified quantity is greater than order quantity");
             } else {
               this.resetCache();
               if(data.orderQty != 0 ){
@@ -406,9 +405,10 @@ export class AddPacksComponent implements OnInit {
     let cdata = cacheData[i];
     if (cacheData[i]) {
       element.size.forEach((elem) => {
-        if (cdata[elem.sizeValue] && cdata[elem.sizeValue] != 0) {
-          totalUnit = totalUnit + Number(cdata[elem.sizeValue]);
-        }
+          let sizeValue = elem.sizeValue ? elem.sizeValue.endsWith('.') ? elem.sizeValue.slice(0,-1) : elem.sizeValue: elem.sizeValue;
+          if (cdata[sizeValue] && cdata[sizeValue] != 0) {
+            totalUnit = totalUnit + Number(cdata[sizeValue]);
+          }
       });
     }
     this.updateTotalUnit(i,totalUnit);
@@ -443,13 +443,10 @@ export class AddPacksComponent implements OnInit {
     model.color.forEach((elem, index) => {
       elem["size"].forEach((element, index2) => {
         if ( Number(model.noOfCartons) * Number(element.value) > Number(element.orderQty) ) {
-          this.inputService.setError("po." + this._shared.id + ".ratioPack" + "[" + index + "]." + element.sizeValue,"Specified quantity is greater than order quantity(" + element.orderQty + ")");
+          let sizeValue = element.sizeValue ? element.sizeValue.endsWith('.') ? element.sizeValue.slice(0,-1) : element.sizeValue: element.sizeValue;
+          this.inputService.setError("po." + this._shared.id + ".ratioPack" + "[" + index + "]." + sizeValue,"Specified quantity is greater than order quantity(" + element.orderQty + ")");
           flag = true;
         }
-        // if(Number(element.value) == 0){
-        //   this.inputService.setError("po." + this._shared.id + ".ratioPack" + "[" + index + "]." + element.sizeValue,"Ratio should be greater than 0 or empty");
-        //   flag = true;
-        // }
       });
     });
     return flag;

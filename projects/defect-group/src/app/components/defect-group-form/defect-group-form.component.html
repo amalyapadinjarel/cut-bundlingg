@@ -1,0 +1,26 @@
+<div class="details">
+    <div>
+        <general-details></general-details>
+    </div>
+
+    <div class="line-details">
+        <div style="display: flex">
+            <span class="flex-filler"></span>
+            <div *ngIf="!_shared.editMode" class="form-nav">
+                <span class="doc-contributors">
+                    Created by {{_shared.formData.header?.createdUser}} on {{_shared.formData.header?.creationDateTr}} , Modified by {{_shared.formData.header?.lastUpdatedUser}}
+                    on {{_shared.formData.header?.lastUpdatedDateTr}}
+                </span>
+                <form-nav [apiUrl]="'/defect-group/navigation/' + _shared.id" navUrl="/defect-group" [params]="_shared.params"></form-nav>
+            </div>
+        </div>
+        <mat-tab-group>
+            <mat-tab label="Defects">
+                <div class="group" >
+                    <defects-tab></defects-tab>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+</div>
