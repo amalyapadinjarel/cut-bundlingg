@@ -45,7 +45,7 @@
                 </ng-template>
             </smd-datatable-column> -->
 
-            <smd-datatable-column title="Production Processes" field="process" sortable="true" [filterable]="true">
+            <smd-datatable-column title="Production Process" field="process" sortable="true" [filterable]="true">
                 <ng-template let-model="data" let-index="index">
                     <span *ngIf="!_shared.getOperationsEditable()">{{model.process}}</span>
                     <div *ngIf="_shared.getOperationsEditable('process')">

@@ -3,7 +3,7 @@
 	<smd-datatable [dataUrl]="lovConfig.url" [preFilters]="lovConfig.filter" [dataHeader]="lovConfig.dataHeader" (onRowSelected)="rowSelected($event)"
 		[selectMultiple]="!!lovConfig.allowMultiple" [preFetchPages]="preFetchPages"
 		[apiClass]= "lovConfig.apiClass" [apiMethod]="lovConfig.apiMethod" [postBody]="lovConfig.postBody"
-		(pageChange)="_onPageChange($event)">
+		(pageChange)="_onPageChange($event)" [filterToggled]="true">
 		<smd-datatable-column [field]="field.key" *ngFor="let field of lovConfig.displayFields" [title]="field.title"
 			[filterable]="true" [sortable]="true">
 			<ng-template let-model="data">

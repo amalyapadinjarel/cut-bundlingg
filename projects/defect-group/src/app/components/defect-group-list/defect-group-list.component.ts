@@ -20,18 +20,10 @@ export class ListComponent implements OnInit {
         public _service: DefectGroupService) { }
 
     ngOnInit() {
-        this.refreshListData = this._shared.refreshdefectGroupHeaderData.subscribe(
-            change => {
-                this.dataTable.refresh(this._shared.formData['defectGroup'])
-            }
-        );
-
         this.dataTable.refresh([])
         setTimeout(_ => {
             this.dataTable.refresh();
         }, 0);
-        this._shared.id = 0;
-
     }
 
     rowSelected(event) {

@@ -4,6 +4,7 @@ import { TnzInputService } from 'app/shared/tnz-input/_service/tnz-input.service
 import { DefectGroupService } from '../../../../services/defect-group.service';
 import { AlertUtilities } from 'app/shared/utils';
 import { Subscription } from 'rxjs';
+import { SubSink } from 'subsink';
 
 @Component({
     selector: 'general-details',
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
     host: { 'class': 'header-card' }
 })
 export class GeneralDetailsComponent implements OnInit, OnDestroy {
-    private refreshSub: Subscription;
+    private subs = new SubSink();
     DefectTypeOptions = [
         {
             label: 'Rework',
@@ -27,12 +28,12 @@ export class GeneralDetailsComponent implements OnInit, OnDestroy {
         private _service: DefectGroupService,
         private alertUtils: AlertUtilities) { }
     ngOnInit() {
-        this.refreshSub = this._shared.refreshdefectGroupHeaderData.subscribe(change => {
-            this.loadData();
-        })
+        this.subs.sink = this._shared.refreshdefectGroupHeaderData.subscribe(change => {
+			this.loadData();
+		  })
     }
     ngOnDestroy() {
-        this.refreshSub.unsubscribe();
+        this.subs.unsubscribe();
     }
     getIfEditable(key) {
         return this._shared.getDefectGrpEditable(key, this._shared.id);

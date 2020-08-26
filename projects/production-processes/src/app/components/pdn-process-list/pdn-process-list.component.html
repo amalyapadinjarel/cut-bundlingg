@@ -1,8 +1,8 @@
 <smd-datatable [tableId]="_shared.appKey + '.pdn-process-list'" [dataUrl]="_shared.apiBase" 
      dataHeader="productionProcesses"  (dataChange)="_onDataChange($event)" [rowCount]="_shared.count" 
      (pageChange)="pageChanged($event)"  [selectedPage]="_shared.selectedPage"
-      [primaryListing]="false" 
-     [sortEnabled]="!_shared.editMode" [filterEnabled]="!_shared.editMode"
+      [primaryListing]="true" 
+     [sortEnabled]="true" [filterEnabled]="true"
      class="tnz-input-table" 
     >
 

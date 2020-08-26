@@ -38,6 +38,7 @@ export class DefectGroupFormComponent implements OnInit, OnDestroy {
         if (this.router.url.endsWith('/create')) {
             this._shared.id = 0;
             this._shared.editMode = true;
+            this._shared.refreshdefectGroupHeaderData.next(true)
         }
         else {
             this._shared.id = Number(this.route.snapshot.params.defGroupId);

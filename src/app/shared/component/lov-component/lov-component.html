@@ -10,7 +10,7 @@
 	 (dataChange)="_onDataChange($event)" [searchDB]="searchDB" [postBody]="postBody" [showTableFilter]="showTableFilter" [showColumnFilter]="showColumnFilter"
 	 [paginated]="paginated" [isTitleNeeded]="isTitleNeeded"
 	 noDataDisplayMessage="No records to display." [rowCount]="rowCount" (onRowSelected)="rowSelected($event)" [showSelectedRow]="true"
-	 [showCheckBox]="selectMultiple">
+	 [showCheckBox]="selectMultiple" [filterToggled]="true">
 		<smd-datatable-column [field]="field.key" *ngFor="let field of fields" [title]="field.title" [filterable]="field.filterable"
 		 [sortable]="field.sortable" [numeric]="field.numeric">
 			<ng-template let-model="data">

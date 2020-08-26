@@ -25,7 +25,7 @@ export class DefectGroupComponent {
     private dialog: MatDialog,
     public docService: DocumentService,
     private alertutils: AlertUtilities,
-  ) {  }
+  ) { this._shared.init(); }
 
   ngOnDestroy() {
     this._shared.clear();
@@ -60,30 +60,19 @@ export class DefectGroupComponent {
   create() {
     this.docService.checkAppPermission(this._shared.taskFlowName, 'create')
       .then(() => {
-        if (this._shared.id != 0) {
-          this.location.go('/defect-group/create');
-          this._shared.id = 0;
-          this._service.inputService.resetInputCache(this._shared.appPath);
-          this._shared.resetLines()
+        this.router.navigateByUrl('/defect-group/create').then(done => {
           this._shared.editMode = true;
           this._shared.initLocalCache();
-          this._shared.refreshdefectGroupHeaderData.next(true);
-          this._inputService.updateInput(this._shared.getdefectGroupHeaderAttrPath('active'), 'Y');
-        }
-        else {
-          this.router.navigateByUrl('/defect-group/create').then(done => {
-            this._shared.editMode = true;
-            this._shared.initLocalCache();
-            if (this._shared.id == 0) {
-              this._inputService.updateInput(this._shared.getdefectGroupHeaderAttrPath('active'), 'Y');
-            }
-          }).catch(reason => console.log(reason))
-        }
-       
+          this._shared.id = 0;
+          if (this._shared.id == 0) {
+            this._inputService.updateInput(this._shared.getdefectGroupHeaderAttrPath('active'), 'Y');
+          }
+        }).catch(reason => console.log(reason))
+
       }).catch(err => {
         this.alertutils.showAlerts(err)
       })
-   
+
   }
 
 

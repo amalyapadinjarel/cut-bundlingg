@@ -30,6 +30,7 @@ import { TaskFlowComponent } from './form/taskflow/taskflow.component';
 import { ApplicationComponent } from './form/application/application.component';
 import { OrgAccessExpansionComponent } from './form/org-access-expansion-panel/org-access-expansion-panel';
 import { TestComponent } from './form/test/test.component';
+import { ApplicationAccessComponent } from './form/application-access/application-access.component';
 
 const MATERIAL_MODULE = [
   MatCardModule,
@@ -89,7 +90,9 @@ const rolesRouting: ModuleWithProviders = RouterModule.forChild([
     TaskFlowComponent,
     ApplicationComponent,
     OrgAccessExpansionComponent,
-    TestComponent
+    TestComponent,
+    ApplicationAccessComponent
+
   ],
   imports: [
    rolesRouting,

@@ -46,8 +46,8 @@
                     </tr>
                     <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter && filterToggled">
                         <th *ngIf="_shouldRenderCheckbox()" class="checkbox">
-                            <div style="display: flex;    place-content: center;">
-                                <mat-icon (click)="resetTable()" style="cursor:pointer;" matTooltip="reset">find_replace</mat-icon>
+                            <div style="display: flex; place-content: center; cursor:pointer;">
+                                <mat-icon (click)="resetTable()" matTooltip="reset">find_replace</mat-icon>
 
                             </div>
                         </th>
@@ -105,7 +105,7 @@
                     </tr>
                     <tr class="filter-row" *ngIf="filterEnabled && showColumnFilter && filterToggled">
                         <th *ngIf="_shouldRenderCheckbox()">
-                            <div style="display: flex;    place-content: center;">
+                            <div style="display: flex; place-content: center; cursor:pointer;">
                                 <mat-icon (click)="resetTable()" matTooltip="reset">find_replace</mat-icon>
                             </div>
                         </th>

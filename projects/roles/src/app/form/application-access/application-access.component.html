@@ -1,1 +1,37 @@
-<p>application-access works!</p>
+<mat-card>
+    <mat-toolbar style="display: flex;place-content:  space-between">Application Access
+        <button mat-icon-button matTooltip="refresh" color="accent" (click)="reloadPrograms()">
+            <mat-icon style="color: white" class="mat-icon-medium">refresh</mat-icon>
+        </button>
+    </mat-toolbar>
+    <mat-card-content>
+        <div class="all-programs">
+                <div class="program-group-wrap" [class.component-loading]="loading">
+                <perfect-scrollbar class="groups">
+                    <div class="program-list">
+                        <span *ngIf="groups.length === 0" class="no-data-text">There are no applications!</span>
+                        <div *ngFor="let grp of groups" class="program-list-item"
+                            [class.selected]="selGroup == grp.handle" mat-ripple (click)="selectGroup(grp.handle)">
+                            <div class="title text-truncate flex-filler sm-hidden">{{grp.title}}</div>
+                            <div class="title text-truncate flex-filler sm-visible">{{grp.handle}}</div>
+                            <span class="count">{{grp.count}}</span>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+                <perfect-scrollbar class="programs">
+                    <div class="program-list">
+                        <span *ngIf="programs.length === 0" class="no-data-text">There are no programs!</span>
+                        <div class="program-list-item" *ngFor="let pgm of programs" mat-ripple
+                            (click)="loadProgram(pgm.pgmId)">
+                          
+                            <div class="info">
+                                <div class="title text-truncate">{{pgm.pgmName}}</div>
+                                <div class="desc text-truncate">{{pgm.description}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </perfect-scrollbar>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

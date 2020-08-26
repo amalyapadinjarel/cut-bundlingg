@@ -48,7 +48,6 @@ export class RolesService {
   fetchFormData(id?: number) {
     return new Promise((resolve, reject) => {
       if (this._shared.id != 0) {
-        // console.log(this._shared.id)
         this.apiService.get('/' + this._shared.apiBase + '/' + this._shared.id)
           .subscribe(data => {
             if (data.role) {
@@ -252,9 +251,7 @@ export class RolesService {
       this._shared[key + 'Loading'] = true;
       this._shared.setLines(key, []);
 
-      // if (this._shared.id == 0 && key != 'rolesAppAccess') {
-      if (this._shared.id == 0) {
-
+      if (this._shared.id == 0 && key != 'rolesAppAccess') {
         if (key != 'rolesTaskFlowAccess')
           this._shared.formData[key] = this._shared.setLinesFromCache(key, []);
         else if (key == 'rolesTaskFlowAccess') {
@@ -263,15 +260,14 @@ export class RolesService {
         this._shared[key + 'Loading'] = false;
         this._shared.refreshLines(key);
         resolve(true);
+
       } else {
-        // if (this._shared.copy == false) {
+
         this.fetchLinesData(key).then((data: any) => {
-          // console.log("key:", key, "data:", data);
           this._shared.setLines(key, data);
-          this._shared.formData[key] = this._shared.setLinesFromCache(key, data);
-          if (key != 'rolesTaskFlowAccess')
+          if (key != 'rolesTaskFlowAccess' && key != 'rolesAppAccess')
             this._shared.formData[key] = this._shared.setLinesFromCache(key, data);
-          else {
+          else if (key == 'rolesTaskFlowAccess'){
             this._shared.formData[key] = this._shared.setLinesFromCache('rolesRootTaskFlowAccess', data);
           }
           this._shared.refreshLines(key);

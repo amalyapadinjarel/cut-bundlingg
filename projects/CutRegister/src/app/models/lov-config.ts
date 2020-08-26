@@ -249,14 +249,16 @@ export function CutWorkCenterLovConfig(facilityId) {
             returnKey: 'value',
             displayKey: 'label',
             filterAttributes: ['shortCode'],
-            displayFields: [{
-                key: 'label',
-                title: 'Name'
-            },
-            {
+            displayFields: [
+			{
                 key: 'shortCode',
                 title: 'Short code'
-            }]
+            },
+			{
+                key: 'label',
+                title: 'Name'
+            }
+            ]
         }
     return json
   }

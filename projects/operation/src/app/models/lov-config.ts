@@ -27,7 +27,7 @@ export var ProcessLovConfigurationModel: any = {
     filterAttributes: ['label'],
     displayFields: [ {
         key: 'label',
-        title: 'Process Name'
+        title: 'Name'
     }]
     
 };

@@ -230,7 +230,7 @@ export class SmdDatatableIconButton {
 	}
 
 	ngOnInit(): void {
-		if(!this.tooltip){
+		if (!this.tooltip) {
 			this.tooltip = this.key;
 		}
 		if (!this.icon) {
@@ -241,7 +241,7 @@ export class SmdDatatableIconButton {
 		}
 	}
 
-	
+
 }
 
 @Component({
@@ -269,7 +269,7 @@ export class SmdDatatableMenuButton {
 		}
 	}
 
-	
+
 }
 
 @Component({
@@ -319,7 +319,6 @@ export class SmdContextualDatatableButton {
 })
 export class SmdDataTable
 	implements AfterContentInit, OnDestroy {
-	filterToggled: boolean = false;
 	totalRow: any;
 	rows: SmdDataRowModel[] = [];
 	private visibleRows: SmdDataRowModel[] = [];
@@ -418,7 +417,8 @@ export class SmdDataTable
 	isHeaderReady = false;
 	@Input() primaryKey = null;
 	@Input() title;
-
+	@Input() filterToggled: boolean = false;
+	
 	get isPrimaryListing() {
 		return this.primaryListing || (this.scrollType == 'scroll');
 	}
@@ -465,7 +465,7 @@ export class SmdDataTable
 	}
 
 	ngAfterContentInit() {
-		if(this.primaryListing){
+		if (this.primaryListing) {
 			this.filterToggled = true;
 		}
 		if (this.scrollType == 'scroll') {
@@ -918,9 +918,9 @@ export class SmdDataTable
 	}
 
 	public refresh(model: any[] = null) {
-	//unchecking column checkbox
-		this.columns?.forEach(data=>{
-			data.checked=false;
+		//unchecking column checkbox
+		this.columns ?.forEach(data => {
+			data.checked = false;
 		});
 
 		if (model) {
@@ -1332,9 +1332,14 @@ export class SmdDataTable
 					let rowsHeight = ((this.loading ? this.dummyRows.length : (this.scrollType == 'scroll' ? (this.defaultRange < this.visibleRows.length ? this.defaultRange : this.visibleRows.length) : this.visibleRows.length)) * bodyRow.offsetHeight) + headerHeight + (this.showTotal ? 27 : 0);
 					// rowsHeight -= 8 
 					if (this.primaryListing) {
+						let viewWidth = domTable.querySelectorAll(".smd-table-container")[0].offsetWidth
+						let tableWidth = domTable.querySelectorAll(".smd-table-body > table")[0].offsetWidth
 						let viewHeight =
 							domTable.parentElement.offsetHeight - (this.paginated ? this.paginatorComponent.nativeElement.nativeElement.offsetHeight + 1 : 0);
+						if (viewWidth < tableWidth)
+							viewHeight -= 8
 						this.tableHeight = viewHeight < rowsHeight ? viewHeight : rowsHeight;
+
 					}
 					else {
 						this.tableHeight = rowsHeight;
@@ -1520,8 +1525,8 @@ export class SmdDataTable
 		});
 	}
 
-	iconAction(key){
-		this.onAction.emit({key:key})
+	iconAction(key) {
+		this.onAction.emit({ key: key })
 	}
 
 }

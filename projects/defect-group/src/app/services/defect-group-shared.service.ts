@@ -17,8 +17,8 @@ export class DefectGroupSharedService {
     count;
     formData: any = [];
     status;
-    refreshdefectGroupHeaderData: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    refreshDefectData: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    refreshdefectGroupHeaderData: BehaviorSubject<boolean> ;
+    refreshDefectData: BehaviorSubject<boolean>;
     headerLoading = false;
     params;
     lineKeys = ['defect']

@@ -20,7 +20,7 @@ import { RolesTaskFlowAccess } from '../../models/roles-taskflow-access';
 export class ApplicationComponent implements OnInit {
 
   disabled: any = {};
-  @ViewChild('rolesAppAccess', { static: true }) rolesAppAccessTable: SmdDataTable;
+  // @ViewChild('rolesAppAccess', { static: true }) rolesAppAccessTable: SmdDataTable;
   @ViewChild('rolesTaskFlowAccess', { static: true }) rolesTaskFlowAccessTable: SmdDataTable;
 
   private refreshSub: Subscription;
@@ -40,11 +40,10 @@ export class ApplicationComponent implements OnInit {
 
   ngOnInit(): void {
 
-   // this._shared.selectedIndex=0;
     this.refreshSub = this._shared.refreshData.subscribe(change => {
+      this._shared.selectedIndex = 0;
       Promise.all([
         this._service.loadData('rolesAppAccess'),
-        // this._service.fetchRolesAppAccess(this._shared.id),
         this._service.loadData(this.key)
       ]).then(res => {
         if (res[0] && res[1])
@@ -53,38 +52,38 @@ export class ApplicationComponent implements OnInit {
 
     })
 
- 
 
-    this.refreshAppAccessSub = this._shared.refreshAppAccessData.subscribe(change => {
-      this.rolesAppAccessTable.refresh(this._shared.formData['rolesAppAccess']);
-    })
+
+    // this.refreshAppAccessSub = this._shared.refreshAppAccessData.subscribe(change => {
+    //   this.rolesAppAccessTable.refresh(this._shared.formData['rolesAppAccess']);
+    // })
     this.refreshTFAccessSub = this._shared.refreshTaskFlowAccessData.subscribe(change => {
-      if (this._shared.formData['rolesAppAccess'] && this._shared.formData['rolesAppAccess'][this._shared.selectedIndex])
-        this.rolesTaskFlowAccessTable.refresh(this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].isAllowed == 'Y' ? this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].rolesTaskFlowAccess : []);
+      if (this._shared.formData['rolesAppAccess'] && this._shared.formData['rolesAppAccess'][this._shared.selectedIndex]) {
+        this.rolesTaskFlowAccessTable.refresh(this._shared.selectedAppAccess== 'Y' ? this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].rolesTaskFlowAccess : []);
 
-        // let activeIndex = this._shared.formData.rolesAppAccess.findIndex(data => {
-        //   return data.isAllowed == 'Y';
-        // });
-        // this.rolesTaskFlowAccessTable.refresh(activeIndex?this._shared.formData['rolesAppAccess'][activeIndex].rolesTaskFlowAccess : [])
+      }
+    
     })
   }
 
   mapMenuToApps() {
+    let idx = -1;
     this._shared.formData['rolesAppAccess'].forEach((app, i) => {
-      if (app)
+      if (app) {
         this._shared.formData['rolesAppAccess'][i].rolesTaskFlowAccess = this._shared.formData[this.key].filter(item => {
           return app.applicationShortCode == item.applicationShortCode;
         });
+        idx = (idx == -1 && app.isAllowed == 'Y') ? i : idx;
+      }
     });
-   this._shared.setLines('rolesAppAccess', this._shared.formData['rolesAppAccess']);
-  //  let activeIndex = this._shared.formData.rolesAppAccess.findIndex(data => {
-  //   return data.isAllowed == 'Y';
-  // })
-  // console.log("activeIndex:",activeIndex)
-  // this.rolesTaskFlowAccessTable.refresh(activeIndex?this._shared.formData['rolesAppAccess'][activeIndex].rolesTaskFlowAccess : [])
-   
-  if (this._shared.formData['rolesAppAccess'] && this._shared.formData['rolesAppAccess'][this._shared.selectedIndex])
-      this.rolesTaskFlowAccessTable.refresh(this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].isAllowed == 'Y' ? this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].rolesTaskFlowAccess : []);
+    this._shared.selectedIndex = idx;
+
+    this._shared.setLines('rolesAppAccess', this._shared.formData['rolesAppAccess']);
+  
+    if (this._shared.formData['rolesAppAccess'] && this._shared.formData['rolesAppAccess'][this._shared.selectedIndex]) {
+      this.rolesTaskFlowAccessTable.refresh(this._shared.selectedAppAccess== 'Y' ? this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].rolesTaskFlowAccess : []);
+
+    }
   }
 
   ngOnDestroy(): void {
@@ -112,10 +111,7 @@ export class ApplicationComponent implements OnInit {
     this.inputService.updateInputCache(this._shared.getRolesAppAccessPath(index, 'applicationId'), model.applicationId, model.roleAppAssignmentId)
   }
 
-  rowSelected(event) {
-    let index = this._shared.formData.rolesAppAccess.findIndex(data => {
-      return event.model.applicationShortCode == data.applicationShortCode
-    })
+  appSelected(index) {
     this._shared.selectedIndex = index;
     this.rolesTaskFlowAccessTable.refresh(this._shared.selectedAppAccess == 'Y' ? this._shared.formData['rolesAppAccess'][this._shared.selectedIndex].rolesTaskFlowAccess || [] : []);
   }
