@@ -1,0 +1,34 @@
+# Pipeline to automatically mirror
+# an Azure DevOps repository in AWS CodeCommit
+
+# Trigger on all branches
+trigger:
+- '*'
+
+# Use latest Ubuntu image
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Pipeline
+steps:
+- checkout: none
+- script: |
+      
+      # Install urlencode function to encode reserved characters in passwords
+      sudo apt-get install gridsite-clients
+
+      # Create local mirror of Azure DevOps repository
+      git clone --mirror https://${AZURE_GIT_USERNAME}:$(urlencode ${AZURE_GIT_PASSWORD})@${AZURE_REPO_URL} repo-mirror
+      
+      # Sync AWS CodeCommit repository
+      cd repo-mirror
+      git push --mirror https://${AWS_GIT_USERNAME}:$(urlencode ${AWS_GIT_PASSWORD})@${AWS_REPO_URL}
+      
+  displayName: 'Sync repository with AWS CodeCommit'
+  env:
+    AZURE_REPO_URL: $dev.azure.com/trendzapps/Trendz%20CMP/_git/cut-bundling
+    AZURE_GIT_USERNAME: $amalya.joy
+    AZURE_GIT_PASSWORD: $472vkft7psj4h2lych3npk63ly562f2hrfpfibf2vyfkaklgbnpa
+    AWS_REPO_URL: $git-codecommit.us-east-2.amazonaws.com/v1/repos/cut-bundling
+    AWS_GIT_USERNAME: $azure-devops-pipeline-at-376934618136
+    AWS_GIT_PASSWORD: $K4kOtHgTlOUiBT7pfElMJAOJypRaG7CFB0mfe9aZ4xs=
